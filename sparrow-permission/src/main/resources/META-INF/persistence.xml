@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.2" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd">
+	<persistence-unit name="data-permission">
+		<class>cn.sparrow.model.permission.AbstractDataFieldPermissionPK</class>
+		<class>cn.sparrow.model.permission.AbstractDataPermissionPK</class>
+		<class>cn.sparrow.model.permission.AbstractModelAttributePermissionPK</class>
+		<class>cn.sparrow.model.permission.AbstractModelPermissionPK</class>
+		<class>cn.sparrow.model.permission.AbstractOperationLog</class>
+		<class>cn.sparrow.model.permission.AbstractSparrowEntity</class>
+		<class>cn.sparrow.model.permission.GroupDataFieldPermission</class>
+		<class>cn.sparrow.model.permission.GroupDataFieldPermissionPK</class>
+		<class>cn.sparrow.model.permission.GroupDataPermission</class>
+		<class>cn.sparrow.model.permission.GroupDataPermissionPK</class>
+		<class>cn.sparrow.model.permission.GroupModelAttributePermission</class>
+		<class>cn.sparrow.model.permission.GroupModelAttributePermissionPK</class>
+		<class>cn.sparrow.model.permission.GroupModelPermission</class>
+		<class>cn.sparrow.model.permission.GroupModelPermissionPK</class>
+		<class>cn.sparrow.model.permission.Model</class>
+		<class>cn.sparrow.model.permission.ModelAttribute</class>
+		<class>cn.sparrow.model.permission.ModelAttributePK</class>
+		<class>cn.sparrow.model.permission.OrganizationDataFieldPermission</class>
+		<class>cn.sparrow.model.permission.OrganizationDataFieldPermissionPK</class>
+		<class>cn.sparrow.model.permission.OrganizationDataPermission</class>
+		<class>cn.sparrow.model.permission.OrganizationDataPermissionPK</class>
+		<class>cn.sparrow.model.permission.OrganizationModelAttributePermission</class>
+		<class>cn.sparrow.model.permission.OrganizationModelAttributePermissionPK</class>
+		<class>cn.sparrow.model.permission.OrganizationModelPermission</class>
+		<class>cn.sparrow.model.permission.OrganizationModelPermissionPK</class>
+		<class>cn.sparrow.model.permission.SysroleDataFieldPermission</class>
+		<class>cn.sparrow.model.permission.SysroleDataFieldPermissionPK</class>
+		<class>cn.sparrow.model.permission.SysroleDataPermission</class>
+		<class>cn.sparrow.model.permission.SysroleDataPermissionPK</class>
+		<class>cn.sparrow.model.permission.SysroleModelAttributePermission</class>
+		<class>cn.sparrow.model.permission.SysroleModelAttributePermissionPK</class>
+		<class>cn.sparrow.model.permission.SysroleModelPermission</class>
+		<class>cn.sparrow.model.permission.SysroleModelPermissionPK</class>
+		<class>cn.sparrow.model.permission.UserDataFieldPermission</class>
+		<class>cn.sparrow.model.permission.UserDataFieldPermissionPK</class>
+		<class>cn.sparrow.model.permission.UserDataPermission</class>
+		<class>cn.sparrow.model.permission.UserDataPermissionPK</class>
+		<class>cn.sparrow.model.permission.UserModelAttributePermission</class>
+		<class>cn.sparrow.model.permission.UserModelAttributePermissionPK</class>
+		<class>cn.sparrow.model.permission.UserModelPermission</class>
+		<class>cn.sparrow.model.permission.UserModelPermissionPK</class>
+	</persistence-unit>
+</persistence>

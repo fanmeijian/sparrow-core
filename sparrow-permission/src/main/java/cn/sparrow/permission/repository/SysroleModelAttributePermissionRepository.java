@@ -1,0 +1,8 @@
+package cn.sparrow.permission.repository;
+
+import cn.sparrow.model.permission.SysroleModelAttributePermission;
+import cn.sparrow.model.permission.SysroleModelAttributePermissionPK;
+
+public interface SysroleModelAttributePermissionRepository extends AbstractModelAttributePermissionRepository<SysroleModelAttributePermission, SysroleModelAttributePermissionPK> {
+
+}

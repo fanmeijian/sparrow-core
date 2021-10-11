@@ -1,0 +1,40 @@
+package cn.sparrow.model.organization;
+
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import org.springframework.data.domain.Persistable;
+import cn.sparrow.model.permission.AbstractOperationLog;
+import lombok.Getter;
+import lombok.Setter;
+
+/**
+ * @author fansword
+ * @version 1.0
+ * @created 28-Sep-2021 4:56:38 PM
+ */
+
+@Getter
+@Setter
+@Entity
+@Table(name = "spr_group_level")
+public class GroupLevel extends AbstractOperationLog implements Persistable<GroupLevelPK>{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	@EmbeddedId
+	private GroupLevelPK id;
+	private String stat;
+
+	public GroupLevel(){
+
+	}
+
+	@Override
+	public boolean isNew() {
+		return true;
+	}
+
+}
