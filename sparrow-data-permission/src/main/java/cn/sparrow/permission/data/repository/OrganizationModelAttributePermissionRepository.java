@@ -1,0 +1,8 @@
+package cn.sparrow.permission.data.repository;
+
+import cn.sparrow.permission.data.model.OrganizationModelAttributePermission;
+import cn.sparrow.permission.data.model.OrganizationModelAttributePermissionPK;
+
+public interface OrganizationModelAttributePermissionRepository extends AbstractModelAttributePermissionRepository<OrganizationModelAttributePermission, OrganizationModelAttributePermissionPK> {
+
+}

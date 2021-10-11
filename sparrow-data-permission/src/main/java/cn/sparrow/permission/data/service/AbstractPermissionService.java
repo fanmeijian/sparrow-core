@@ -1,0 +1,44 @@
+package cn.sparrow.permission.data.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import cn.sparrow.permission.data.repository.GroupDataFieldPermissionRepository;
+import cn.sparrow.permission.data.repository.GroupDataPermissionRepository;
+import cn.sparrow.permission.data.repository.GroupModelAttributePermissionRepository;
+import cn.sparrow.permission.data.repository.GroupModelPermissionRepository;
+import cn.sparrow.permission.data.repository.OrganizationDataFieldPermissionRepository;
+import cn.sparrow.permission.data.repository.OrganizationDataPermissionRepository;
+import cn.sparrow.permission.data.repository.OrganizationModelAttributePermissionRepository;
+import cn.sparrow.permission.data.repository.OrganizationModelPermissionRepository;
+import cn.sparrow.permission.data.repository.SysroleDataFieldPermissionRepository;
+import cn.sparrow.permission.data.repository.SysroleDataPermissionRepository;
+import cn.sparrow.permission.data.repository.SysroleModelAttributePermissionRepository;
+import cn.sparrow.permission.data.repository.SysroleModelPermissionRepository;
+import cn.sparrow.permission.data.repository.UserDataFieldPermissionRepository;
+import cn.sparrow.permission.data.repository.UserDataPermissionRepository;
+import cn.sparrow.permission.data.repository.UserModelAttributePermissionRepository;
+import cn.sparrow.permission.data.repository.UserModelPermissionRepository;
+
+public abstract class AbstractPermissionService<T> implements IPermission<T> {
+	@Autowired UserModelPermissionRepository userModelPermissionRepository;
+	@Autowired UserModelAttributePermissionRepository userModelAttributePermissionRepository;
+	@Autowired UserDataPermissionRepository userDataPermissionRepository;
+	@Autowired UserDataFieldPermissionRepository userDataFieldPermissionRepository;
+	
+	@Autowired SysroleModelPermissionRepository sysroleModelPermissionRepository;
+	@Autowired SysroleModelAttributePermissionRepository sysroleModelAttributePermissionRepository;
+	@Autowired SysroleDataPermissionRepository sysroleDataPermissionRepository;
+	@Autowired SysroleDataFieldPermissionRepository sysroleDataFieldPermissionRepository;
+	
+	
+	@Autowired GroupModelPermissionRepository groupModelPermissionRepository;
+	@Autowired GroupModelAttributePermissionRepository groupModelAttributePermissionRepository;
+	@Autowired GroupDataPermissionRepository groupDataPermissionRepository;
+	@Autowired GroupDataFieldPermissionRepository groupDataFieldPermissionRepository;
+	
+	@Autowired OrganizationModelPermissionRepository OrganizationModelPermissionRepository;
+	@Autowired OrganizationModelAttributePermissionRepository organizationModelAttributePermissionRepository;
+	@Autowired OrganizationDataPermissionRepository organizationDataPermissionRepository;
+	@Autowired OrganizationDataFieldPermissionRepository organizationDataFieldPermissionRepository;
+	
+}
