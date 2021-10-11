@@ -19,8 +19,12 @@ import cn.sparrow.model.permission.AbstractOperationLog;
 import cn.sparrow.model.permission.SysroleUrPermission;
 import cn.sparrow.model.permission.UserUrlPermission;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 @Data
+@EqualsAndHashCode(callSuper=false)
+@NoArgsConstructor
 @Entity
 @Table(name = "spr_url")
 public class SparrowUrl extends AbstractOperationLog implements Serializable {
@@ -50,5 +54,12 @@ public class SparrowUrl extends AbstractOperationLog implements Serializable {
   @ManyToOne
   @JoinColumn(name = "app_id")
   private SparrowApp sparrowApp;
+  
+  public SparrowUrl(String name, String uri,HttpMethod method , String clientId) {
+    this.name = name;
+    this.uri = uri;
+    this.method = method;
+    this.clientId = clientId;
+  }
 
 }
