@@ -13,9 +13,15 @@ import cn.sparrow.model.menu.Menu;
 import cn.sparrow.model.organization.Group;
 import cn.sparrow.model.permission.AbstractSparrowEntity;
 import cn.sparrow.model.url.SparrowUrl;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 @Data
+@EqualsAndHashCode(callSuper = false)
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "spr_sysrole")
 @NamedQuery(name = "Sysrole.findAll", query = "SELECT s FROM Sysrole s")
@@ -25,11 +31,11 @@ public class Sysrole extends AbstractSparrowEntity {
 	private String name;
 
 	// uni-directional many-to-many association to SwdAuthority
-	@JsonInclude(JsonInclude.Include.NON_EMPTY)
-	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "spr_sysrole_authority", joinColumns = {
-			@JoinColumn(name = "SYSROLE_ID") }, inverseJoinColumns = { @JoinColumn(name = "AUTHORITY_ID") })
-	private Set<SparrowUrl> urls;
+//	@JsonInclude(JsonInclude.Include.NON_EMPTY)
+//	@ManyToMany(fetch = FetchType.LAZY)
+//	@JoinTable(name = "spr_sysrole_authority", joinColumns = {
+//			@JoinColumn(name = "SYSROLE_ID") }, inverseJoinColumns = { @JoinColumn(name = "AUTHORITY_ID") })
+//	private Set<SparrowUrl> urls;
 
 	// uni-directional many-to-many association to SwdMenu
 	@JsonInclude(JsonInclude.Include.NON_EMPTY)

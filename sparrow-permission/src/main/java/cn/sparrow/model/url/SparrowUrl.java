@@ -16,14 +16,14 @@ import org.hibernate.annotations.GenericGenerator;
 import org.springframework.http.HttpMethod;
 import cn.sparrow.model.app.SparrowApp;
 import cn.sparrow.model.permission.AbstractOperationLog;
-import cn.sparrow.model.permission.SysroleUrPermission;
-import cn.sparrow.model.permission.UserUrlPermission;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import cn.sparrow.model.permission.SysroleUrlPermission;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
-@EqualsAndHashCode(callSuper=false)
+
+@Getter
+@Setter
 @NoArgsConstructor
 @Entity
 @Table(name = "spr_url")
@@ -41,25 +41,29 @@ public class SparrowUrl extends AbstractOperationLog implements Serializable {
 
   @Enumerated(EnumType.STRING)
   private HttpMethod method;
+  
+  @Enumerated(EnumType.STRING)
+  private UrlPermissionEnum permission;
 
   @Column(name = "client_id")
   private String clientId;
 
-  @OneToMany(mappedBy = "sparrowUrl")
-  Set<UserUrlPermission> userUrlPermissions;
+//  @OneToMany(mappedBy = "sparrowUrl")
+//  Set<UserUrlPermission> userUrlPermissions;
 
   @OneToMany(mappedBy = "sparrowUrl")
-  Set<SysroleUrPermission> sysroleUrPermissions;
+  Set<SysroleUrlPermission> sysroleUrPermissions;
 
   @ManyToOne
   @JoinColumn(name = "app_id")
   private SparrowApp sparrowApp;
   
-  public SparrowUrl(String name, String uri,HttpMethod method , String clientId) {
+  public SparrowUrl(String name, String uri,HttpMethod method , String clientId, UrlPermissionEnum permission) {
     this.name = name;
     this.uri = uri;
     this.method = method;
     this.clientId = clientId;
+    this.permission = permission;
   }
 
 }

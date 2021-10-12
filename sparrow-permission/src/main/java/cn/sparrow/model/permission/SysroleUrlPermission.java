@@ -5,15 +5,20 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import cn.sparrow.model.permission.AbstractOperationLog;
 import cn.sparrow.model.url.SparrowUrl;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 
 @Data
+@EqualsAndHashCode(callSuper = false)
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "spr_sysrole_url_permission")
-public class SysroleUrPermission extends AbstractOperationLog {
+public class SysroleUrlPermission extends AbstractOperationLog {
   private static final long serialVersionUID = 1L;
 
   @EmbeddedId

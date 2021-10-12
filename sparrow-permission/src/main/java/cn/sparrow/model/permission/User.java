@@ -17,7 +17,6 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import cn.sparrow.model.menu.Menu;
 import cn.sparrow.model.sysrole.Sysrole;
-import cn.sparrow.model.url.SparrowUrl;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -46,11 +45,11 @@ public class User implements Serializable {
 
 	// uni-directional many-to-many association to SwdAuthority
 	// @LazyCollection(LazyCollectionOption.FALSE)
-	@JsonIgnoreProperties("users") // 用来防止无限循环，因为menu里面含user的列表
-	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "spr_user_url", joinColumns = { @JoinColumn(name = "username") }, inverseJoinColumns = {
-			@JoinColumn(name = "url_id") })
-	private Set<SparrowUrl> urls;
+//	@JsonIgnoreProperties("users") // 用来防止无限循环，因为menu里面含user的列表
+//	@ManyToMany(fetch = FetchType.LAZY)
+//	@JoinTable(name = "spr_user_url", joinColumns = { @JoinColumn(name = "username") }, inverseJoinColumns = {
+//			@JoinColumn(name = "url_id") })
+//	private Set<SparrowUrl> urls;
 
 	@JsonManagedReference
 //	@JsonIgnoreProperties("users") // 用来防止无限循环，因为menu里面含user的列表
