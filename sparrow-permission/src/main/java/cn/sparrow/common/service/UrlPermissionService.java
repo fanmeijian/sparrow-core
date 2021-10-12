@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import cn.sparrow.common.repository.SysroleUrlPermissionRepository;
 import cn.sparrow.common.repository.UrlRepository;
-import cn.sparrow.common.repository.UserUrlPermissionRepository;
 import cn.sparrow.model.url.SparrowUrl;
 import cn.sparrow.model.url.UrlPermissionEnum;
 
@@ -24,8 +23,6 @@ public class UrlPermissionService {
   
   @Autowired SysroleUrlPermissionRepository sysroleUrlPermissionRepository;
 
-  @Autowired
-  UserUrlPermissionRepository userUrlPermissionRepository;
 
   private static Logger logger = LoggerFactory.getLogger(UrlPermissionService.class);
 

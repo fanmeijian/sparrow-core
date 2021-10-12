@@ -1,7 +1,6 @@
 package cn.sparrow.model.organization;
 
 import java.util.Set;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
@@ -32,7 +31,6 @@ public class Group extends AbstractSparrowEntity {
 	private String code;
 	private String name;
 	private String owner;
-	@Column(name = "parent_id")
 	private String parentId;
 	private String stat;
 
