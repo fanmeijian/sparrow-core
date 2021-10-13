@@ -18,23 +18,27 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "spr_group_level")
-public class GroupLevel extends AbstractOperationLog implements Persistable<GroupLevelPK>{
+public class GroupLevel extends AbstractOperationLog implements Persistable<GroupLevelPK> {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	@EmbeddedId
-	private GroupLevelPK id;
-	private String stat;
+  /**
+   * 
+   */
+  private static final long serialVersionUID = 1L;
+  @EmbeddedId
+  private GroupLevelPK id;
+  private String stat;
 
-	public GroupLevel(){
+  public GroupLevel() {
 
-	}
+  }
 
-	@Override
-	public boolean isNew() {
-		return true;
-	}
+  public GroupLevel(GroupLevelPK f) {
+    this.id = f;
+  }
+
+  @Override
+  public boolean isNew() {
+    return true;
+  }
 
 }

@@ -18,20 +18,24 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "spr_group_user")
-public class GroupUser extends AbstractOperationLog implements Persistable<GroupUserPK>{
+public class GroupUser extends AbstractOperationLog implements Persistable<GroupUserPK> {
 
-	private static final long serialVersionUID = 1L;
-	@EmbeddedId
-	private GroupUserPK id;
-	private String stat;
+  private static final long serialVersionUID = 1L;
+  @EmbeddedId
+  private GroupUserPK id;
+  private String stat;
 
-	public GroupUser(){
+  public GroupUser() {
 
-	}
+  }
 
-	@Override
-	public boolean isNew() {
-		return true;
-	}
+  public GroupUser(GroupUserPK f) {
+    this.id = f;
+  }
+
+  @Override
+  public boolean isNew() {
+    return true;
+  }
 
 }

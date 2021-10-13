@@ -20,21 +20,25 @@ import lombok.Setter;
 @Table(name = "spr_group_role")
 public class GroupRole extends AbstractOperationLog implements Persistable<GroupRolePK> {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	@EmbeddedId
-	private GroupRolePK id;
-	private String stat;
+  /**
+   * 
+   */
+  private static final long serialVersionUID = 1L;
+  @EmbeddedId
+  private GroupRolePK id;
+  private String stat;
 
-	public GroupRole() {
+  public GroupRole() {
 
-	}
+  }
 
-	@Override
-	public boolean isNew() {
-		return true;
-	}
+  public GroupRole(GroupRolePK f) {
+    this.id = f;
+  }
+
+  @Override
+  public boolean isNew() {
+    return true;
+  }
 
 }

@@ -31,7 +31,6 @@ public class Organization extends AbstractSparrowEntity {
 	private static final long serialVersionUID = 1L;
 	private String code;
 	private String name;
-	private String parentId;
 	private String stat;
 	@Enumerated(EnumType.STRING)
 	private OrganizationTypeEnum type; // 公司还是部门

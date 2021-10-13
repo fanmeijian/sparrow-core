@@ -20,27 +20,32 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "spr_organization_level")
-public class OrganizationLevel extends AbstractOperationLog implements Persistable<OrganizationLevelPK>{
+public class OrganizationLevel extends AbstractOperationLog
+    implements Persistable<OrganizationLevelPK> {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	@EmbeddedId
-	private OrganizationLevelPK id;
-	private String stat;
-	
-	@ManyToMany(mappedBy = "organizationLevels")
-	private Set<Employee> employees;
+  /**
+   * 
+   */
+  private static final long serialVersionUID = 1L;
+  @EmbeddedId
+  private OrganizationLevelPK id;
+  private String stat;
 
-	public OrganizationLevel(){
+  @ManyToMany(mappedBy = "organizationLevels")
+  private Set<Employee> employees;
 
-	}
+  public OrganizationLevel() {
 
-	@Override
-	public boolean isNew() {
-		return true;
-	}
+  }
+
+  public OrganizationLevel(OrganizationLevelPK f) {
+    this.id = f;
+  }
+
+  @Override
+  public boolean isNew() {
+    return true;
+  }
 
 
 }

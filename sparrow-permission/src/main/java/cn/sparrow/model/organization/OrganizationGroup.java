@@ -12,18 +12,23 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "spr_organization_group")
-public class OrganizationGroup extends AbstractOperationLog implements Persistable<OrganizationGroupPK>{
-	private static final long serialVersionUID = 1L;
-	@EmbeddedId
-	private OrganizationGroupPK id;
-	private String stat;
-	
-	public OrganizationGroup(){
+public class OrganizationGroup extends AbstractOperationLog
+    implements Persistable<OrganizationGroupPK> {
+  private static final long serialVersionUID = 1L;
+  @EmbeddedId
+  private OrganizationGroupPK id;
+  private String stat;
 
-	}
+  public OrganizationGroup() {
 
-	@Override
-	public boolean isNew() {
-		return true;
-	}
+  }
+
+  public OrganizationGroup(OrganizationGroupPK f) {
+    this.id = f;
+  }
+
+  @Override
+  public boolean isNew() {
+    return true;
+  }
 }

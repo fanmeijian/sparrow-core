@@ -31,7 +31,6 @@ public class Group extends AbstractSparrowEntity {
 	private String code;
 	private String name;
 	private String owner;
-	private String parentId;
 	private String stat;
 
 	@ManyToMany(mappedBy = "groups")
