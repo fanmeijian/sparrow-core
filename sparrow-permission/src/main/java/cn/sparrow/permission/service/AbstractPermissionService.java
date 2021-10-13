@@ -1,6 +1,8 @@
 package cn.sparrow.permission.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
+import cn.sparrow.common.repository.UserSysroleRepository;
 import cn.sparrow.permission.repository.GroupDataFieldPermissionRepository;
 import cn.sparrow.permission.repository.GroupDataPermissionRepository;
 import cn.sparrow.permission.repository.GroupModelAttributePermissionRepository;
@@ -39,5 +41,7 @@ public abstract class AbstractPermissionService<T> implements IPermission<T> {
 	@Autowired OrganizationModelAttributePermissionRepository organizationModelAttributePermissionRepository;
 	@Autowired OrganizationDataPermissionRepository organizationDataPermissionRepository;
 	@Autowired OrganizationDataFieldPermissionRepository organizationDataFieldPermissionRepository;
+	
+	@Autowired UserSysroleRepository userSysroleRepository;
 	
 }

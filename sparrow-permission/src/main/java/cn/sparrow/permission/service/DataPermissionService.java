@@ -6,70 +6,177 @@ import org.springframework.stereotype.Service;
 import cn.sparrow.model.permission.AbstractDataPermissionPK;
 import cn.sparrow.model.permission.PermissionEnum;
 import cn.sparrow.model.permission.PermissionTypeEnum;
+import cn.sparrow.model.permission.SysroleDataPermissionPK;
 import cn.sparrow.model.permission.UserDataPermissionPK;
+import cn.sparrow.model.sysrole.UserSysrole;
 
 @Service
 public class DataPermissionService extends AbstractPermissionService<AbstractDataPermissionPK> {
 
 	private static Logger logger = LoggerFactory.getLogger(DataPermissionService.class);
-	
-	@Override
-	public boolean isConfigPermission(AbstractDataPermissionPK target) {
-		if (userDataPermissionRepository.countByIdModelNameAndIdPermissionAndIdPermissionTypeAndIdDataId(target.getModelName(),
-				target.getPermission(), target.getPermissionType(), target.getDataId()) > 0) {
-			return true;
-		} else {
-			logger.debug("没有配置权限 {} {} {} {}", target.getModelName(), target.getPermission(), target.getPermissionType(), target.getDataId());
-			return false;
-		}
-	}
+
+//	@Override
+//	public boolean isConfigPermission(AbstractDataPermissionPK target) {
+//		if (userDataPermissionRepository.countByIdModelNameAndIdPermissionAndIdPermissionTypeAndIdDataId(
+//				target.getModelName(), target.getPermission(), target.getPermissionType(), target.getDataId()) > 0) {
+//			return true;
+//		} else {
+//			logger.debug("没有配置权限 {} {} {} {}", target.getModelName(), target.getPermission(),
+//					target.getPermissionType(), target.getDataId());
+//			return false;
+//		}
+//	}
 
 	@Override
 	public boolean hasPermission(AbstractDataPermissionPK target, String username) {
 		// 检查拒绝所有权限
-				if (target.getPermissionType().equals(PermissionTypeEnum.DENY)) {
-					if (isConfigPermission(new AbstractDataPermissionPK(target.getModelName(), PermissionEnum.ALL,
-							PermissionTypeEnum.DENY, target.getDataId()))) {
-						if ((userDataPermissionRepository.findById(new UserDataPermissionPK(target.getModelName(),
-								PermissionEnum.ALL, PermissionTypeEnum.DENY, target.getDataId(), username)).orElse(null)) != null) {
-							logger.debug("用户 {} 拥有权限 {} {} {} {}", username, target.getModelName(), PermissionEnum.ALL,
-									PermissionTypeEnum.DENY,target.getDataId());
-							return true;
-						}
-					}
+		if (target.getPermissionType().equals(PermissionTypeEnum.DENY)) {
+			if (isConfigPermission(new AbstractDataPermissionPK(target.getModelName(), PermissionEnum.ALL,
+					PermissionTypeEnum.DENY, target.getDataId()), PermissionTargetEnum.USER)) {
+				if ((userDataPermissionRepository.findById(new UserDataPermissionPK(target.getModelName(),
+						PermissionEnum.ALL, PermissionTypeEnum.DENY, target.getDataId(), username))
+						.orElse(null)) != null) {
+					logger.debug("用户 {} 拥有权限 {} {} {} {}", username, target.getModelName(), PermissionEnum.ALL,
+							PermissionTypeEnum.DENY, target.getDataId());
+					return true;
+				}
+			}
 
-					// 检查拒绝所有子操作权限
-					if (isConfigPermission(new AbstractDataPermissionPK(target.getModelName(), target.getPermission(),
-							PermissionTypeEnum.DENY, target.getDataId()))) {
-						if ((userDataPermissionRepository
-								.findById(new UserDataPermissionPK(target.getModelName(),
-										PermissionEnum.resolveAll(target.getPermission()), PermissionTypeEnum.DENY, target.getDataId(), username))
-								.orElse(null)) != null) {
-							logger.debug("用户 {} 拥有权限 {} {} {} {}", username, target.getModelName(),
-									PermissionEnum.resolveAll(target.getPermission()), PermissionTypeEnum.DENY,target.getDataId());
-							return true;
-						}
+			// 检查拒绝所有子操作权限
+			if (isConfigPermission(new AbstractDataPermissionPK(target.getModelName(), target.getPermission(),
+					PermissionTypeEnum.DENY, target.getDataId()), PermissionTargetEnum.USER)) {
+				if ((userDataPermissionRepository.findById(new UserDataPermissionPK(target.getModelName(),
+						PermissionEnum.resolveAll(target.getPermission()), PermissionTypeEnum.DENY, target.getDataId(),
+						username)).orElse(null)) != null) {
+					logger.debug("用户 {} 拥有权限 {} {} {} {}", username, target.getModelName(),
+							PermissionEnum.resolveAll(target.getPermission()), PermissionTypeEnum.DENY,
+							target.getDataId());
+					return true;
+				}
+			}
+
+			// 检查本条拒绝操作权限
+			if (isConfigPermission(new AbstractDataPermissionPK(target.getModelName(), target.getPermission(),
+					PermissionTypeEnum.DENY, target.getDataId()), PermissionTargetEnum.USER)) {
+				if ((userDataPermissionRepository.findById(new UserDataPermissionPK(target.getModelName(),
+						target.getPermission(), PermissionTypeEnum.DENY, target.getDataId(), username))
+						.orElse(null)) != null) {
+					logger.debug("用户 {} 拥有权限 {} {} {} {}", username, target.getModelName(), target.getPermission(),
+							PermissionTypeEnum.DENY, target.getDataId());
+					return true;
+				}
+			}
+
+			for (UserSysrole userSysrole : userSysroleRepository.findByIdUsername(username)) {
+				if (isConfigPermission(new AbstractDataPermissionPK(target.getModelName(), PermissionEnum.ALL,
+						PermissionTypeEnum.DENY, target.getDataId()), PermissionTargetEnum.SYSROLE)) {
+					if ((sysroleDataPermissionRepository
+							.findById(new SysroleDataPermissionPK(target.getModelName(), PermissionEnum.ALL,
+									PermissionTypeEnum.DENY, target.getDataId(), userSysrole.getId().getSysroleId()))
+							.orElse(null)) != null) {
+						logger.debug("角色 {} 拥有权限 {} {} {} {}", userSysrole.getId().getSysroleId(),
+								target.getModelName(), PermissionEnum.ALL, PermissionTypeEnum.DENY, target.getDataId());
+						return true;
 					}
 				}
 
-				// 检查允许权限
-				if (target.getPermissionType().equals(PermissionTypeEnum.ALLOW)) {
-					if (isConfigPermission(target)) {
-						if (userDataPermissionRepository.findById(new UserDataPermissionPK(target.getModelName(),
-								target.getPermission(), target.getPermissionType(), target.getDataId(), username)).orElse(null) != null) {
-							logger.debug("用户 {} 拥有权限 {} {} {} {}", username, target.getModelName(), target.getPermission(),
-									target.getPermissionType(),target.getDataId());
+				// 检查拒绝所有子操作权限
+				if (isConfigPermission(new AbstractDataPermissionPK(target.getModelName(), target.getPermission(),
+						PermissionTypeEnum.DENY, target.getDataId()), PermissionTargetEnum.SYSROLE)) {
+					if ((sysroleDataPermissionRepository.findById(new SysroleDataPermissionPK(target.getModelName(),
+							PermissionEnum.resolveAll(target.getPermission()), PermissionTypeEnum.DENY,
+							target.getDataId(), userSysrole.getId().getSysroleId())).orElse(null)) != null) {
+						logger.debug("角色 {} 拥有权限 {} {} {} {}", userSysrole.getId().getSysroleId(),
+								target.getModelName(), PermissionEnum.resolveAll(target.getPermission()),
+								PermissionTypeEnum.DENY, target.getDataId());
+						return true;
+					}
+				}
+
+				// 检查本条拒绝操作权限
+				if (isConfigPermission(new AbstractDataPermissionPK(target.getModelName(), target.getPermission(),
+						PermissionTypeEnum.DENY, target.getDataId()), PermissionTargetEnum.SYSROLE)) {
+					if ((sysroleDataPermissionRepository
+							.findById(new SysroleDataPermissionPK(target.getModelName(), target.getPermission(),
+									PermissionTypeEnum.DENY, target.getDataId(), userSysrole.getId().getSysroleId()))
+							.orElse(null)) != null) {
+						logger.debug("角色 {} 拥有权限 {} {} {} {}", userSysrole.getId().getSysroleId(),
+								target.getModelName(), target.getPermission(), PermissionTypeEnum.DENY,
+								target.getDataId());
+						return true;
+					}
+				}
+			}
+
+		}
+
+		// 检查允许权限
+		if (target.getPermissionType().equals(PermissionTypeEnum.ALLOW)) {
+			if (isConfigPermission(target, PermissionTargetEnum.USER)) {
+				if (userDataPermissionRepository.findById(new UserDataPermissionPK(target.getModelName(),
+						target.getPermission(), target.getPermissionType(), target.getDataId(), username))
+						.orElse(null) != null) {
+					logger.debug("用户 {} 拥有权限 {} {} {} {}", username, target.getModelName(), target.getPermission(),
+							target.getPermissionType(), target.getDataId());
+					return true;
+				} else {
+					logger.debug("用户 {} 不拥有权限 {} {} {} {}", username, target.getModelName(), target.getPermission(),
+							target.getPermissionType(), target.getDataId());
+				}
+			} else {
+				for (UserSysrole userSysrole : userSysroleRepository.findByIdUsername(username)) {
+					if (isConfigPermission(target, PermissionTargetEnum.SYSROLE)) {
+						if (sysroleDataPermissionRepository.findById(new SysroleDataPermissionPK(target.getModelName(),
+								target.getPermission(), target.getPermissionType(), target.getDataId(),
+								userSysrole.getId().getSysroleId())).orElse(null) != null) {
+							logger.debug("角色 {} 拥有权限 {} {} {} {}", userSysrole.getId().getSysroleId(),
+									target.getModelName(), target.getPermission(), target.getPermissionType(),
+									target.getDataId());
 							return true;
 						} else {
-							logger.debug("用户 {} 不拥有权限 {} {} {} {}", username, target.getModelName(), target.getPermission(),
-									target.getPermissionType(),target.getDataId());
+							logger.debug("角色 {} 不拥有权限 {} {} {} {}", userSysrole.getId().getSysroleId(),
+									target.getModelName(), target.getPermission(), target.getPermissionType(),
+									target.getDataId());
 						}
 					} else {
 						return true;
 					}
 				}
+			}
+
+		}
 
 		return false;
+	}
+
+	@Override
+	public boolean isConfigPermission(AbstractDataPermissionPK target, PermissionTargetEnum permissionTarget) {
+		switch (permissionTarget) {
+		case USER:
+			if (userDataPermissionRepository.countByIdModelNameAndIdPermissionAndIdPermissionTypeAndIdDataId(
+					target.getModelName(), target.getPermission(), target.getPermissionType(),
+					target.getDataId()) > 0) {
+				return true;
+			} else {
+				logger.debug("没有配置用户数据权限 {} {} {} {}", target.getModelName(), target.getPermission(),
+						target.getPermissionType(), target.getDataId());
+				return false;
+			}
+		case SYSROLE:
+			if (sysroleDataPermissionRepository.countByIdModelNameAndIdPermissionAndIdPermissionTypeAndIdDataId(
+					target.getModelName(), target.getPermission(), target.getPermissionType(),
+					target.getDataId()) > 0) {
+				return true;
+			} else {
+				logger.debug("没有配置角色数据权限 {} {} {} {}", target.getModelName(), target.getPermission(),
+						target.getPermissionType(), target.getDataId());
+				return false;
+			}
+
+		default:
+			return false;
+		}
+
 	}
 
 }

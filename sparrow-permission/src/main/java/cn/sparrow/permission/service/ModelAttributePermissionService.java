@@ -4,14 +4,16 @@ import cn.sparrow.model.permission.AbstractModelAttributePermissionPK;
 
 public class ModelAttributePermissionService extends AbstractPermissionService<AbstractModelAttributePermissionPK> {
 
+
 	@Override
-	public boolean isConfigPermission(AbstractModelAttributePermissionPK target) {
+	public boolean hasPermission(AbstractModelAttributePermissionPK target, String username) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public boolean hasPermission(AbstractModelAttributePermissionPK target, String username) {
+	public boolean isConfigPermission(AbstractModelAttributePermissionPK target,
+			PermissionTargetEnum permissionTarget) {
 		// TODO Auto-generated method stub
 		return false;
 	}

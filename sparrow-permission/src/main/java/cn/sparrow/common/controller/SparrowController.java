@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 import cn.sparrow.common.repository.UrlRepository;
 import cn.sparrow.common.service.MenuService;
 import cn.sparrow.common.service.SparrowService;
+import cn.sparrow.common.service.SysroleService;
 import cn.sparrow.common.service.UserService;
 import cn.sparrow.model.menu.Menu;
 import cn.sparrow.model.menu.MyTree;
@@ -41,6 +42,7 @@ public class SparrowController {
 	SparrowService sparrowService;
 	@Autowired
 	UserService userService;
+	@Autowired SysroleService sysroleService;
 
 	@Autowired
 	ModelRepository modelRepository;
@@ -84,6 +86,16 @@ public class SparrowController {
 	@PatchMapping("/users/{username}/addMenus")
 	public void addMenus(@PathVariable("username") String username, @RequestBody final List<String> menuIds) {
 		userService.addMenusByMenuId(username, menuIds);
+	}
+	
+	@PatchMapping("/sysroles/{sysroleId}/removeMenus")
+	public void removeSysroleMenus(@PathVariable("sysroleId") String sysroleId, @RequestBody final List<String> menuIds) {
+		sysroleService.removeMenusByMenuId(sysroleId, menuIds);
+	}
+
+	@PatchMapping("/sysroles/{sysroleId}/addMenus")
+	public void addSysroleMenus(@PathVariable("sysroleId") String sysroleId, @RequestBody final List<String> menuIds) {
+		sysroleService.addMenusByMenuId(sysroleId, menuIds);
 	}
 
 	@GetMapping("/models/syncToTable")

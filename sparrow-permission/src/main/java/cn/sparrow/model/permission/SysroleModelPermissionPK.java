@@ -19,5 +19,12 @@ public class SysroleModelPermissionPK extends AbstractModelPermissionPK implemen
 	 */
 	private static final long serialVersionUID = 1L;
 	private String sysroleId;
+	
+	public SysroleModelPermissionPK(String modelName, PermissionEnum permission, PermissionTypeEnum permissionType, String sysroleId) {
+		this.modelName = modelName;
+		this.permission = permission;
+		this.permissionType = permissionType;
+		this.sysroleId = sysroleId;
+	}
 
 }

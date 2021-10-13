@@ -1,14 +1,22 @@
 package cn.sparrow.common.service;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
+
+import cn.sparrow.common.repository.SysroleMenuRepository;
 import cn.sparrow.common.repository.SysroleRepository;
 import cn.sparrow.common.repository.SysroleUrlPermissionRepository;
 import cn.sparrow.common.repository.UrlRepository;
 import cn.sparrow.common.repository.UserSysroleRepository;
+import cn.sparrow.model.menu.SysroleMenu;
+import cn.sparrow.model.menu.SysroleMenuPK;
 import cn.sparrow.model.permission.SysroleUrlPermission;
 import cn.sparrow.model.permission.SysroleUrlPermissionPK;
 import cn.sparrow.model.sysrole.PreserveSysroleEnum;
@@ -22,8 +30,22 @@ public class SysroleService {
   @Autowired SysroleUrlPermissionRepository sysroleUrlPermissionRepository;
   @Autowired UrlRepository urlRepository;
   @Autowired UserSysroleRepository userSysroleRepository;
+  @Autowired SysroleMenuRepository sysroleMenuRepository;
   
   private static Logger logger = LoggerFactory.getLogger(SysroleService.class);
+  
+  public void removeMenusByMenuId(String sysroleId, List<String> menuIds) {
+	  sysroleMenuRepository.deleteByIdSysroleIdAndIdMenuIdIn(sysroleId, menuIds);
+  }
+  
+  public void addMenusByMenuId(String sysroleId, List<String> menuIds) {
+    Set<SysroleMenu> sysroleMenus = new HashSet<SysroleMenu>();
+    menuIds.forEach(f -> {
+    	sysroleMenus.add(new SysroleMenu(new SysroleMenuPK(sysroleId, f)));
+    });
+    sysroleMenuRepository.saveAll(sysroleMenus);
+  }
+  
   
   public void init() {
     sysroleRepository.save(new Sysrole(PreserveSysroleEnum.SYSADMIN.name(), null, null));

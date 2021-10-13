@@ -5,13 +5,13 @@ import cn.sparrow.model.permission.AbstractDataFieldPermissionPK;
 public class DataFieldPermissionService extends AbstractPermissionService<AbstractDataFieldPermissionPK> {
 
 	@Override
-	public boolean isConfigPermission(AbstractDataFieldPermissionPK target) {
+	public boolean hasPermission(AbstractDataFieldPermissionPK target, String username) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public boolean hasPermission(AbstractDataFieldPermissionPK target, String username) {
+	public boolean isConfigPermission(AbstractDataFieldPermissionPK target, PermissionTargetEnum permissionTarget) {
 		// TODO Auto-generated method stub
 		return false;
 	}

@@ -4,6 +4,7 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+
 import cn.sparrow.model.permission.AbstractOperationLog;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,5 +23,9 @@ public class UserSysrole extends AbstractOperationLog {
 
   @EmbeddedId
   private UserSysrolePK id;
+  
+//  @ManyToOne
+//  @JoinColumn(name = "menu_id", insertable = false, updatable = false)
+//  private Menu menu;
 
 }

@@ -14,10 +14,15 @@ import lombok.NoArgsConstructor;
 @Embeddable
 public class SysroleDataPermissionPK extends AbstractDataPermissionPK implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private String sysroleId;
 
+	public SysroleDataPermissionPK(String modelName, PermissionEnum permission, PermissionTypeEnum permissionType,
+			String dataId, String sysroleId) {
+		this.modelName = modelName;
+		this.permission = permission;
+		this.permissionType = permissionType;
+		this.dataId = dataId;
+		this.sysroleId = sysroleId;
+	}
 }
