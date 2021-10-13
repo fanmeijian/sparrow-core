@@ -2,6 +2,8 @@ package cn.sparrow.model.menu;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import cn.sparrow.model.permission.AbstractOperationLog;
@@ -18,5 +20,8 @@ public class SysroleMenu extends AbstractOperationLog {
 	@EmbeddedId
 	private SysroleMenuPK id;
 
+	@ManyToOne
+	@JoinColumn(name = "menu_id", insertable = false, updatable = false)
+	private Menu menu;
 
 }
