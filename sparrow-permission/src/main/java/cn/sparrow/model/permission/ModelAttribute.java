@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import org.springframework.data.rest.core.annotation.RestResource;
 import lombok.Data;
 
 @Data
@@ -24,6 +25,7 @@ public class ModelAttribute extends AbstractOperationLog implements Serializable
   private String nameTxt;
   private String remark;
 
+  @RestResource(exported = false)
   @ManyToOne
   @JoinColumn(name = "model_name", referencedColumnName = "name", insertable = false, updatable = false)
   private Model model;

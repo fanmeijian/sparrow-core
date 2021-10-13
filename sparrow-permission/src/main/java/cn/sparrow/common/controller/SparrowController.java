@@ -5,12 +5,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Table;
 import javax.persistence.metamodel.EntityType;
-
+import javax.validation.constraints.NotEmpty;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.data.repository.query.Param;
@@ -19,7 +18,7 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
+import com.sun.istack.NotNull;
 import cn.sparrow.common.repository.UrlRepository;
 import cn.sparrow.common.service.MenuService;
 import cn.sparrow.common.service.SparrowService;
@@ -27,6 +26,7 @@ import cn.sparrow.common.service.SysroleService;
 import cn.sparrow.common.service.UserService;
 import cn.sparrow.model.menu.Menu;
 import cn.sparrow.model.menu.MyTree;
+import cn.sparrow.model.permission.AbstractModelPermissionPK;
 import cn.sparrow.model.permission.Model;
 import cn.sparrow.model.permission.ModelAttribute;
 import cn.sparrow.model.permission.ModelAttributePK;
@@ -36,13 +36,11 @@ import cn.sparrow.permission.repository.ModelRepository;
 @RestController
 public class SparrowController {
 
-	@Autowired
-	MenuService menuService;
+
 	@Autowired
 	SparrowService sparrowService;
-	@Autowired
-	UserService userService;
-	@Autowired SysroleService sysroleService;
+
+	
 
 	@Autowired
 	ModelRepository modelRepository;
@@ -63,50 +61,11 @@ public class SparrowController {
 		sparrowService.init();
 	}
 
-	@GetMapping("/menus/menuTree")
-	public MyTree<Menu> menuTree(@Param("parentId") String parentId) {
-		return menuService.getTreeByParentId(parentId);
-	}
-
-	@GetMapping("/menus/userMenuTree")
-	public MyTree<Menu> getTreeByUsername(@Param("username") String username) {
-		return menuService.getTreeByUsername(username);
-	}
-
-	@GetMapping("/menus/sysroleMenuTree")
-	public MyTree<Menu> getTreeBySysroleId(@Param("sysroleId") String sysroleId) {
-		return menuService.getTreeBySysroleId(sysroleId);
-	}
-
-	@PatchMapping("/users/{username}/removeMenus")
-	public void removeMenus(@PathVariable("username") String username, @RequestBody final List<String> menuIds) {
-		userService.removeMenusByMenuId(username, menuIds);
-	}
-
-	@PatchMapping("/users/{username}/addMenus")
-	public void addMenus(@PathVariable("username") String username, @RequestBody final List<String> menuIds) {
-		userService.addMenusByMenuId(username, menuIds);
-	}
 	
-	@PatchMapping("/sysroles/{sysroleId}/removeMenus")
-	public void removeSysroleMenus(@PathVariable("sysroleId") String sysroleId, @RequestBody final List<String> menuIds) {
-		sysroleService.removeMenusByMenuId(sysroleId, menuIds);
-	}
 
-	@PatchMapping("/sysroles/{sysroleId}/addMenus")
-	public void addSysroleMenus(@PathVariable("sysroleId") String sysroleId, @RequestBody final List<String> menuIds) {
-		sysroleService.addMenusByMenuId(sysroleId, menuIds);
-	}
 	
-	@PatchMapping("/sysroles/{sysroleId}/removeUrlPermissions")
-	public void removeSysroleUrlPermissions(@PathVariable("sysroleId") String sysroleId, @RequestBody final List<String> urlIds) {
-		sysroleService.delUrlPermission(sysroleId, urlIds);
-	}
-
-	@PatchMapping("/sysroles/{sysroleId}/addUrlPermissions")
-	public void addSysroleUrlPermissions(@PathVariable("sysroleId") String sysroleId, @RequestBody final List<String> urlIds) {
-		sysroleService.addUrlPermission(sysroleId, urlIds);
-	}
+	
+	
 
 	@GetMapping("/models/syncToTable")
 	public Map<String, List<String>> syncToTable() {

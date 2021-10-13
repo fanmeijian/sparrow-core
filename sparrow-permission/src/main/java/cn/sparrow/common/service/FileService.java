@@ -34,7 +34,6 @@ import cn.sparrow.model.file.UserFilePK;
  *
  */
 
-@Controller
 public class FileService {
 
 	private final StorageService storageService;
