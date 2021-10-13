@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import cn.sparrow.permission.service.ModelService;
 
 @Service
 public class SparrowService {
@@ -12,6 +13,7 @@ public class SparrowService {
   
   @Autowired SysroleService sysroleService;
   @Autowired UrlPermissionService urlPermissionService;
+  @Autowired ModelService modelService;
   
   public void init() {
     
@@ -19,6 +21,8 @@ public class SparrowService {
     logger.info("finish url init.");
     sysroleService.init();
     logger.info("finish sysrole init.");
+    modelService.init();
+    logger.info("finish model init.");
 
   }
 }

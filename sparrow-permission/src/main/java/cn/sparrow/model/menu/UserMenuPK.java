@@ -11,13 +11,11 @@ public class UserMenuPK implements Serializable {
   // default serial version id, required for serializable classes.
   private static final long serialVersionUID = 1L;
 
-  @Column
   private String username;
-
   @Column(name = "menu_id")
   private String menuId;
-  
-  
+
+
 
   public boolean equals(Object other) {
     if (this == other) {
@@ -48,6 +46,6 @@ public class UserMenuPK implements Serializable {
   public UserMenuPK() {
     super();
   }
-  
-  
+
+
 }

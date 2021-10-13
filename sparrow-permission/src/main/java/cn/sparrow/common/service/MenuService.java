@@ -11,7 +11,6 @@ import cn.sparrow.common.repository.MenuRepository;
 import cn.sparrow.common.repository.UserMenuRepository;
 import cn.sparrow.model.menu.Menu;
 import cn.sparrow.model.menu.MyTree;
-import cn.sparrow.organization.repository.UserRepository;
 
 @Service
 public class MenuService {
@@ -23,9 +22,6 @@ public class MenuService {
 
   @Autowired
   UserMenuRepository userMenuRepository;
-
-  @Autowired
-  UserRepository userRepository;
 
 
   public MyTree<Menu> getTreeByParentId(String parentId) {
@@ -81,10 +77,10 @@ public class MenuService {
   // 获取用户菜单的亲戚集合（不含兄弟姐妹节点）
   public void getUserMenusWithParentAndChildren(String username, Set<Menu> menus) {
     // menus.addAll(userRepository.findById(username).get().getMenus()) ;
-    userRepository.findById(username).get().getMenus().forEach(f -> {
-      menus.add(f);
-      buildParents(f.getParentId(), menus);
-      buildChildren(f.getId(), menus);
+    userMenuRepository.findByIdUsername(username).forEach(f -> {
+      menus.add(f.getMenu());
+      buildParents(f.getMenu().getParentId(), menus);
+      buildChildren(f.getMenu().getId(), menus);
     });
   }
 

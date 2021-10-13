@@ -2,9 +2,10 @@ package cn.sparrow.model.menu;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.NamedQuery;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
-
 import org.springframework.data.domain.Persistable;
 import cn.sparrow.model.permission.AbstractOperationLog;
 import lombok.Getter;
@@ -14,7 +15,6 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "spr_user_menu")
-@NamedQuery(name = "UserMenu.findAll", query = "SELECT s FROM UserMenu s")
 public class UserMenu extends AbstractOperationLog implements Persistable<UserMenuPK> {
 
 	/**
@@ -23,6 +23,10 @@ public class UserMenu extends AbstractOperationLog implements Persistable<UserMe
 	private static final long serialVersionUID = 1L;
 	@EmbeddedId
 	private UserMenuPK id;
+	
+	@ManyToOne
+	@JoinColumn(name = "menu_id", insertable = false, updatable = false)
+	private Menu menu;
 
 	public UserMenu(UserMenuPK id) {
 		super();
