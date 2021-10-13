@@ -11,6 +11,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import cn.sparrow.model.permission.AbstractSparrowEntity;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 /**
  * ��֯ʵ�壬
@@ -20,13 +22,12 @@ import lombok.Data;
  * @created 28-Sep-2021 4:56:07 PM
  */
 @Data
+@EqualsAndHashCode(callSuper = false)
+@NoArgsConstructor
 @Entity
 @Table(name = "spr_organization")
 public class Organization extends AbstractSparrowEntity {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private String code;
 	private String name;
@@ -52,9 +53,4 @@ public class Organization extends AbstractSparrowEntity {
 	
 	@ManyToMany(mappedBy = "containOrganizations")
 	private Set<Group> inGroups;
-
-	public Organization() {
-
-	}
-
 }
