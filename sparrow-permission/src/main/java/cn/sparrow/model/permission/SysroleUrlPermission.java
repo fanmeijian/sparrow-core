@@ -19,7 +19,11 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "spr_sysrole_url_permission")
 public class SysroleUrlPermission extends AbstractOperationLog {
-  private static final long serialVersionUID = 1L;
+  public SysroleUrlPermission(SysroleUrlPermissionPK f) {
+		this.id = f;
+	}
+
+private static final long serialVersionUID = 1L;
 
   @EmbeddedId
   private SysroleUrlPermissionPK id;

@@ -4,6 +4,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.transaction.Transactional;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +46,19 @@ public class SysroleService {
     	sysroleMenus.add(new SysroleMenu(new SysroleMenuPK(sysroleId, f)));
     });
     sysroleMenuRepository.saveAll(sysroleMenus);
+  }
+  
+  public void addUrlPermission(String sysroleId, List<String> urlIds) {
+	  urlIds.forEach(f->{
+		  sysroleUrlPermissionRepository.save(new SysroleUrlPermission(new SysroleUrlPermissionPK(sysroleId, sysroleId)));
+	  });
+  }
+  
+  @Transactional
+  public void delUrlPermission(String sysroleId, List<String> urlIds) {
+	  urlIds.forEach(f->{
+		  sysroleUrlPermissionRepository.delete(new SysroleUrlPermission(new SysroleUrlPermissionPK(sysroleId, sysroleId)));
+	  });
   }
   
   

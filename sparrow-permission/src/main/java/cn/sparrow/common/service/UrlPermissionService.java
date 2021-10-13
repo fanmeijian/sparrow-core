@@ -5,6 +5,9 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Set;
+
+import javax.transaction.Transactional;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +16,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import cn.sparrow.common.repository.SysroleUrlPermissionRepository;
 import cn.sparrow.common.repository.UrlRepository;
+import cn.sparrow.model.permission.SysroleUrlPermission;
+import cn.sparrow.model.permission.SysroleUrlPermissionPK;
 import cn.sparrow.model.url.SparrowUrl;
 import cn.sparrow.model.url.UrlPermissionEnum;
 
@@ -30,6 +35,21 @@ public class UrlPermissionService {
     return new HashSet<SparrowUrl>();
 
   }
+  
+  public void addSysroleUrlPermission(List<SysroleUrlPermissionPK> sysroleUrlPermissionPKs) {
+	  sysroleUrlPermissionPKs.forEach(f->{
+		  sysroleUrlPermissionRepository.save(new SysroleUrlPermission(f));
+	  });
+  }
+  
+  @Transactional
+  public void delSysroleUrlPermission(List<SysroleUrlPermissionPK> sysroleUrlPermissionPKs) {
+	  sysroleUrlPermissionPKs.forEach(f->{
+		  sysroleUrlPermissionRepository.delete(new SysroleUrlPermission(f));
+	  });
+  }
+  
+
 
   public Set<SparrowUrl> getSparrowUrlsByClientId(String clientId) {
     return new HashSet<SparrowUrl>();

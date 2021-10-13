@@ -97,6 +97,16 @@ public class SparrowController {
 	public void addSysroleMenus(@PathVariable("sysroleId") String sysroleId, @RequestBody final List<String> menuIds) {
 		sysroleService.addMenusByMenuId(sysroleId, menuIds);
 	}
+	
+	@PatchMapping("/sysroles/{sysroleId}/removeUrlPermissions")
+	public void removeSysroleUrlPermissions(@PathVariable("sysroleId") String sysroleId, @RequestBody final List<String> urlIds) {
+		sysroleService.delUrlPermission(sysroleId, urlIds);
+	}
+
+	@PatchMapping("/sysroles/{sysroleId}/addUrlPermissions")
+	public void addSysroleUrlPermissions(@PathVariable("sysroleId") String sysroleId, @RequestBody final List<String> urlIds) {
+		sysroleService.addUrlPermission(sysroleId, urlIds);
+	}
 
 	@GetMapping("/models/syncToTable")
 	public Map<String, List<String>> syncToTable() {
