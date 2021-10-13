@@ -3,10 +3,11 @@ package cn.sparrow.model.organization;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import cn.sparrow.model.permission.AbstractSparrowEntity;
 import lombok.Data;
@@ -31,9 +32,8 @@ public class Organization extends AbstractSparrowEntity {
 	private String name;
 	private String parentId;
 	private String stat;
-	@ManyToOne
-	@JoinColumn(name = "type")
-	private OrganizationType type; // 公司还是部门
+	@Enumerated(EnumType.STRING)
+	private OrganizationTypeEnum type; // 公司还是部门
 
 	@ManyToMany(targetEntity = Role.class, cascade = CascadeType.ALL)
 	@JoinTable(name = "spr_organization_role", joinColumns = {
