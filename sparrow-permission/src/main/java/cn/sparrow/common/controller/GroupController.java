@@ -2,19 +2,40 @@ package cn.sparrow.common.controller;
 
 import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import com.sun.istack.NotNull;
+import cn.sparrow.model.common.MyTree;
+import cn.sparrow.model.organization.Group;
 import cn.sparrow.model.organization.GroupLevelPK;
 import cn.sparrow.model.organization.GroupOrganizationPK;
+import cn.sparrow.model.organization.GroupRelationPK;
 import cn.sparrow.model.organization.GroupRolePK;
 import cn.sparrow.model.organization.GroupSysrolePK;
 import cn.sparrow.model.organization.GroupUserPK;
+import cn.sparrow.model.organization.LevelRelationPK;
+import cn.sparrow.model.organization.Role;
 import cn.sparrow.organization.service.GroupService;
 
 @RestController
 public class GroupController {
   @Autowired GroupService groupService;
+  
+  
+  @PostMapping("/groups/relations")
+  public void addRelations(@NotNull @RequestBody Set<GroupRelationPK> ids) {
+    groupService.addRelations(ids);
+  }
+  
+  @DeleteMapping("/groups/relations")
+  public void delRelations(@NotNull @RequestBody Set<GroupRelationPK> ids) {
+    groupService.delRelations(ids);
+  }
   
   @PostMapping("/groups/organizations")
   public void addOrganizations(Set<GroupOrganizationPK> ids) {
@@ -65,5 +86,11 @@ public class GroupController {
   public void delUsers(Set<GroupUserPK> ids) {
     groupService.delUsers(ids);
   }
+  
+  @GetMapping("/groups/getTreeByParentId")
+  public MyTree<Group> tree(@Nullable @RequestParam("parentId") String parentId){
+    return groupService.getTree(parentId);
+  }
+  
   
 }

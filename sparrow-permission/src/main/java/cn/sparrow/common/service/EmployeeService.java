@@ -5,11 +5,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import cn.sparrow.model.common.MyTree;
 import cn.sparrow.model.organization.Employee;
+import cn.sparrow.model.organization.EmployeeOrganizationLevel;
 import cn.sparrow.model.organization.EmployeeOrganizationLevelPK;
+import cn.sparrow.model.organization.EmployeeOrganizationRole;
 import cn.sparrow.model.organization.EmployeeOrganizationRolePK;
+import cn.sparrow.model.organization.EmployeeRelation;
 import cn.sparrow.model.organization.EmployeeRelationPK;
-import cn.sparrow.model.organization.Organization;
-import cn.sparrow.model.organization.OrganizationRelationPK;
+import cn.sparrow.organization.repository.EmployeeOrganizationLevelRepository;
+import cn.sparrow.organization.repository.EmployeeOrganizationRoleRepository;
 import cn.sparrow.organization.repository.EmployeeRelationRepository;
 import cn.sparrow.organization.repository.EmployeeRepository;
 
@@ -18,21 +21,44 @@ public class EmployeeService {
   
   @Autowired EmployeeRelationRepository employeeRelationRepository;
   @Autowired EmployeeRepository employeeRepository;
+  @Autowired EmployeeOrganizationRoleRepository employeeOrganizationRoleRepository;
+  @Autowired EmployeeOrganizationLevelRepository employeeOrganizationLevelRepository;
 
+  
+  public void addRelations(Set<EmployeeRelationPK> ids) {
+    ids.forEach(f -> {
+      employeeRelationRepository.save(new EmployeeRelation(f));
+    });
+  }
+
+  public void delRelations(Set<EmployeeRelationPK> ids) {
+    ids.forEach(f -> {
+      employeeRelationRepository.deleteById(f);
+    });
+  }
+  
   public void addRoles(Set<EmployeeOrganizationRolePK> ids) {
-
+    ids.forEach(f->{
+      employeeOrganizationRoleRepository.save(new EmployeeOrganizationRole(f));
+    });
   }
 
   public void delRoles(Set<EmployeeOrganizationRolePK> ids) {
-
+    ids.forEach(f->{
+      employeeOrganizationRoleRepository.delete(new EmployeeOrganizationRole(f));
+    });
   }
   
   public void addLevels(Set<EmployeeOrganizationLevelPK> ids) {
-
+    ids.forEach(f->{
+      employeeOrganizationLevelRepository.save(new EmployeeOrganizationLevel(f));
+    });
   }
 
   public void delLevels(Set<EmployeeOrganizationLevelPK> ids) {
-
+    ids.forEach(f->{
+      employeeOrganizationLevelRepository.delete(new EmployeeOrganizationLevel(f));
+    });
   }
   
   public MyTree<Employee> getTree(String parentId) {

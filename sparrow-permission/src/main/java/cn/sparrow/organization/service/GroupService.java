@@ -3,10 +3,14 @@ package cn.sparrow.organization.service;
 import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import cn.sparrow.model.common.MyTree;
+import cn.sparrow.model.organization.Group;
 import cn.sparrow.model.organization.GroupLevel;
 import cn.sparrow.model.organization.GroupLevelPK;
 import cn.sparrow.model.organization.GroupOrganization;
 import cn.sparrow.model.organization.GroupOrganizationPK;
+import cn.sparrow.model.organization.GroupRelation;
+import cn.sparrow.model.organization.GroupRelationPK;
 import cn.sparrow.model.organization.GroupRole;
 import cn.sparrow.model.organization.GroupRolePK;
 import cn.sparrow.model.organization.GroupSysrole;
@@ -44,6 +48,18 @@ public class GroupService {
   @Autowired
   GroupRepository groupRepository;
 
+  public void addRelations(Set<GroupRelationPK> ids) {
+    ids.forEach(f -> {
+      groupRelationRepository.save(new GroupRelation(f));
+    });
+  }
+
+  public void delRelations(Set<GroupRelationPK> ids) {
+    ids.forEach(f -> {
+      groupRelationRepository.deleteById(f);
+    });
+  }
+  
   public void addOrganizations(Set<GroupOrganizationPK> ids) {
     ids.forEach(f->{
       groupOrganizationRepository.save(new GroupOrganization(f));
@@ -101,6 +117,23 @@ public class GroupService {
   public void delUsers(Set<GroupUserPK> ids) {
     ids.forEach(f->{
       groupUserRepository.delete(new GroupUser(f));
+    });
+  }
+  
+  
+  public MyTree<Group> getTree(String parentId) {
+    MyTree<Group> myTree = new MyTree<Group>(parentId==null?null:groupRepository.findById(parentId).orElse(null));
+    buildTree(myTree);
+    return myTree;
+  }
+
+  public void buildTree(MyTree<Group> myTree) {
+    groupRelationRepository.findByIdParentId(myTree.getMe()==null?null:myTree.getMe().getId()).forEach(f -> {
+      MyTree<Group> leaf = new MyTree<Group>(f.getGroup());
+      // 防止死循环
+      if(groupRelationRepository.findById(new GroupRelationPK(f.getId().getParentId(), f.getId().getGroupId())).orElse(null)==null)
+        buildTree(leaf);
+      myTree.getChildren().add(leaf);
     });
   }
 

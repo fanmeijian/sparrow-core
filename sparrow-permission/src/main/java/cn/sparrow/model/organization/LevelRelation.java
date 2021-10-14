@@ -15,6 +15,10 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "spr_level_relation")
 public class LevelRelation {
+  public LevelRelation(LevelRelationPK f) {
+    this.id = f;
+  }
+
   @EmbeddedId
   private LevelRelationPK id;
   

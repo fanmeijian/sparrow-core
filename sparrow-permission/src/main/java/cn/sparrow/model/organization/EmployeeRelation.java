@@ -15,6 +15,10 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "spr_employee_relation")
 public class EmployeeRelation {
+  public EmployeeRelation(EmployeeRelationPK f) {
+    this.id = f;
+  }
+
   @EmbeddedId
   private EmployeeRelationPK id;
   

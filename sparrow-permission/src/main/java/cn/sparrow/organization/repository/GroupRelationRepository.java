@@ -8,4 +8,7 @@ import cn.sparrow.model.organization.GroupRelationPK;
 @RepositoryRestResource(exported = false)
 public interface GroupRelationRepository extends JpaRepository<GroupRelation, GroupRelationPK> {
 
+  Iterable<GroupRelation> findByIdParentId(String object);
+
+
 }

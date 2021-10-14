@@ -32,7 +32,11 @@ public class EmployeeOrganizationLevel extends AbstractOperationLog implements P
 
 	}
 
-	@Override
+	public EmployeeOrganizationLevel(EmployeeOrganizationLevelPK f) {
+    this.id = f;
+  }
+
+  @Override
 	public boolean isNew() {
 		return true;
 	}
