@@ -1,4 +1,4 @@
-package cn.sparrow.model.menu;
+package cn.sparrow.model.common;
 
 import java.util.ArrayList;
 import java.util.List;

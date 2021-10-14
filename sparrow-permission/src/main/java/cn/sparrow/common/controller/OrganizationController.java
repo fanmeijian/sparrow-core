@@ -2,11 +2,16 @@ package cn.sparrow.common.controller;
 
 import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.sun.istack.NotNull;
+import cn.sparrow.model.common.MyTree;
+import cn.sparrow.model.organization.Organization;
 import cn.sparrow.model.organization.OrganizationGroupPK;
 import cn.sparrow.model.organization.OrganizationLevelPK;
 import cn.sparrow.model.organization.OrganizationRelationPK;
@@ -17,6 +22,7 @@ import cn.sparrow.organization.service.OrganizationService;
 public class OrganizationController {
 
   @Autowired OrganizationService organizationService;
+  
   
   @PostMapping("/organizations/relations")
   public void addRelations(@NotNull @RequestBody Set<OrganizationRelationPK> ids) {
@@ -56,6 +62,11 @@ public class OrganizationController {
   @DeleteMapping("/organizations/groups")
   public void delGroups(@NotNull @RequestBody Set<OrganizationGroupPK> ids) {
     organizationService.delGroups(ids);
+  }
+  
+  @GetMapping("/orgranizations/getTreeByParentId")
+  public MyTree<Organization> tree(@Nullable @RequestParam("parentId") String parentId){
+    return organizationService.getTree(parentId);
   }
   
 }

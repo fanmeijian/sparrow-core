@@ -10,8 +10,8 @@ import org.springframework.stereotype.Service;
 import cn.sparrow.common.repository.MenuRepository;
 import cn.sparrow.common.repository.SysroleMenuRepository;
 import cn.sparrow.common.repository.UserMenuRepository;
+import cn.sparrow.model.common.MyTree;
 import cn.sparrow.model.menu.Menu;
-import cn.sparrow.model.menu.MyTree;
 
 @Service
 public class MenuService {

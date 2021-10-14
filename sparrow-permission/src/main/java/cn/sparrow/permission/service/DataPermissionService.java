@@ -1,5 +1,6 @@
 package cn.sparrow.permission.service;
 
+import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -178,5 +179,33 @@ public class DataPermissionService extends AbstractPermissionService<AbstractDat
 		}
 
 	}
+
+  @Override
+  public boolean addPermission(AbstractDataPermissionPK target,
+      PermissionTargetEnum permissionTarget) {
+    // TODO Auto-generated method stub
+    return false;
+  }
+
+  @Override
+  public boolean addPermissions(Set<AbstractDataPermissionPK> targets,
+      PermissionTargetEnum permissionTarget) {
+    // TODO Auto-generated method stub
+    return false;
+  }
+
+  @Override
+  public boolean delPermssion(AbstractDataPermissionPK target,
+      PermissionTargetEnum permissionTarget) {
+    // TODO Auto-generated method stub
+    return false;
+  }
+
+  @Override
+  public boolean delPermssions(AbstractDataPermissionPK target,
+      PermissionTargetEnum permissionTarget) {
+    // TODO Auto-generated method stub
+    return false;
+  }
 
 }

@@ -5,8 +5,8 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import cn.sparrow.common.service.MenuService;
+import cn.sparrow.model.common.MyTree;
 import cn.sparrow.model.menu.Menu;
-import cn.sparrow.model.menu.MyTree;
 
 @RestController
 public class MenuController {
