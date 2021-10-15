@@ -1,4 +1,4 @@
-package cn.sparrow.common.service;
+package cn.sparrow.organization.service;
 
 import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,10 +68,10 @@ public class EmployeeService {
   }
 
   public void buildTree(MyTree<Employee> myTree) {
-    employeeRelationRepository.findByIdParentId(myTree.getMe()==null?null:myTree.getMe().getId()).forEach(f -> {
+    employeeRelationRepository.findByIdParentId(myTree.getMe()==null?null:myTree.getMe().getId()).forEach(f -> {	
       MyTree<Employee> leaf = new MyTree<Employee>(f.getEmployee());
       // 防止死循环
-      if(employeeRelationRepository.findById(new EmployeeRelationPK(f.getId().getParentId(), f.getId().getUsername())).orElse(null)==null)
+      if(employeeRelationRepository.findById(new EmployeeRelationPK(f.getId().getParentId(), f.getId().getEmployeeId())).orElse(null)==null)
         buildTree(leaf);
       myTree.getChildren().add(leaf);
     });

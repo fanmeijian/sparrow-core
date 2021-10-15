@@ -23,6 +23,6 @@ public class EmployeeRelation {
   private EmployeeRelationPK id;
   
   @ManyToOne
-  @JoinColumn(name = "username", insertable = false, updatable = false)
+  @JoinColumn(name = "employee_id", insertable = false, updatable = false)
   private Employee employee;
 }

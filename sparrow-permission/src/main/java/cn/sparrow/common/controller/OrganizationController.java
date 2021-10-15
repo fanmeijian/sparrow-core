@@ -24,42 +24,42 @@ public class OrganizationController {
   @Autowired OrganizationService organizationService;
   
   
-  @PostMapping("/organizations/relations")
+  @PostMapping("/organizations/relations/batch")
   public void addRelations(@NotNull @RequestBody Set<OrganizationRelationPK> ids) {
     organizationService.addRelations(ids);
   }
   
-  @DeleteMapping("/organizations/relations")
+  @DeleteMapping("/organizations/relations/batch")
   public void delRelations(@NotNull @RequestBody Set<OrganizationRelationPK> ids) {
     organizationService.delRelations(ids);
   }
   
-  @PostMapping("/organizations/roles")
+  @PostMapping("/organizations/roles/batch")
   public void addRoles(@NotNull @RequestBody Set<OrganizationRolePK> ids) {
     organizationService.addRoles(ids);
   }
   
-  @DeleteMapping("/organizations/roles")
+  @DeleteMapping("/organizations/roles/batch")
   public void delRoles(@NotNull @RequestBody Set<OrganizationRolePK> ids) {
     organizationService.delRoles(ids);
   }
   
-  @PostMapping("/organizations/levels")
+  @PostMapping("/organizations/levels/batch")
   public void addLevels(@NotNull @RequestBody Set<OrganizationLevelPK> ids) {
     organizationService.addLevels(ids);
   }
   
-  @DeleteMapping("/organizations/levels")
+  @DeleteMapping("/organizations/levels/batch")
   public void delLevels(@NotNull @RequestBody Set<OrganizationLevelPK> ids) {
     organizationService.delLevels(ids);
   }
   
-  @PostMapping("/organizations/groups")
+  @PostMapping("/organizations/groups/batch")
   public void addGroups(@NotNull @RequestBody Set<OrganizationGroupPK> ids) {
     organizationService.addGroups(ids);
   }
   
-  @DeleteMapping("/organizations/groups")
+  @DeleteMapping("/organizations/groups/batch")
   public void delGroups(@NotNull @RequestBody Set<OrganizationGroupPK> ids) {
     organizationService.delGroups(ids);
   }

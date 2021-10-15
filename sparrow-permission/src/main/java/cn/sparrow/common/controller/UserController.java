@@ -19,12 +19,12 @@ public class UserController {
   @Autowired UserService userService;
   
   @PatchMapping("/users/{username}/delMenus")
-  public void removeMenus(@PathVariable("username") String username, @RequestBody final List<String> menuIds) {
+  public void removeMenus(@PathVariable("username") String username, @NotNull @RequestBody  final List<String> menuIds) {
       userService.delMenus(username, menuIds);
   }
 
   @PatchMapping("/users/{username}/addMenus")
-  public void addMenus(@PathVariable("username") String username, @RequestBody final List<String> menuIds) {
+  public void addMenus(@PathVariable("username") String username, @NotNull @RequestBody  final List<String> menuIds) {
       userService.addMenus(username, menuIds);
   }
   
