@@ -11,6 +11,6 @@ public interface MenuRepository extends JpaRepository<Menu, String> {
 
   List<Menu> findByParentId(String parentId);
 
-  List<Menu> findBySparrowAppId(Long appId);
+//  List<Menu> findBySparrowAppId(Long appId);
 
 }

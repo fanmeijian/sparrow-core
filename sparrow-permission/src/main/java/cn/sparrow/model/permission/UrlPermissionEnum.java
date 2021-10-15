@@ -1,5 +1,5 @@
 package cn.sparrow.model.permission;
 
 public enum UrlPermissionEnum {
-  DENY, ANONYMOUS, ATHENTICATED, RESTRICT;
+  DENY, ANONYMOUS, AUTHENTICATED, RESTRICT;
 }

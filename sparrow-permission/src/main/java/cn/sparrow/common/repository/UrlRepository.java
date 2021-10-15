@@ -1,7 +1,8 @@
 package cn.sparrow.common.repository;
 
 
-import java.util.Set;
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import cn.sparrow.model.permission.SparrowUrl;
@@ -11,6 +12,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @Tag(name = "url-controller")
 public interface UrlRepository extends JpaRepository<SparrowUrl, String> {
 
-  Set<SparrowUrl> findByClientId(String clientId);
-  Set<SparrowUrl> findByClientIdAndPermission(String clientId, UrlPermissionEnum permission);
+  List<SparrowUrl> findByClientId(String clientId);
+  List<SparrowUrl> findByClientIdAndPermission(String clientId, UrlPermissionEnum permission);
 }

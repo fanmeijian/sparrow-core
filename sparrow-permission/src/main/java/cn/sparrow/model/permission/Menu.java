@@ -36,9 +36,9 @@ public class Menu extends AbstractOperationLog implements Serializable {
   private String url;
 
   // @JsonIgnore
-  @ManyToOne
-  @JoinColumn(name = "app_id")
-  private SparrowApp sparrowApp;
+//  @ManyToOne
+//  @JoinColumn(name = "app_id")
+//  private SparrowApp sparrowApp;
   
   @OneToMany(mappedBy = "menu")
   private Set<UserMenu> userMenus;

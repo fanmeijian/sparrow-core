@@ -32,9 +32,9 @@ public class SparrowApp extends AbstractSparrowEntity {
 	private String remark;
 	private String deployId;
 
-	@ManyToOne
-	@JoinColumn(name = "developer_id")
-	private Developer developer;
+//	@ManyToOne
+//	@JoinColumn(name = "developer_id")
+//	private Developer developer;
 
 //	@ManyToOne
 //	@JoinColumn(name = "catalog_id")
@@ -43,10 +43,10 @@ public class SparrowApp extends AbstractSparrowEntity {
 //	@OneToMany(targetEntity = Model.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "sparrowApp")
 //	private List<Model> models;
 
-	@OneToMany(targetEntity = Menu.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "sparrowApp")
-	private List<Menu> menus;
-
-	@OneToMany(targetEntity = SparrowUrl.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "sparrowApp")
-	private List<SparrowUrl> authorities;
+//	@OneToMany(targetEntity = Menu.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "sparrowApp")
+//	private List<Menu> menus;
+//
+//	@OneToMany(targetEntity = SparrowUrl.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "sparrowApp")
+//	private List<SparrowUrl> authorities;
 
 }

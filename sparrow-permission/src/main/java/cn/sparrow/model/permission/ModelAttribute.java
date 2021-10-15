@@ -3,14 +3,18 @@ package cn.sparrow.model.permission;
 import java.io.Serializable;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.data.rest.core.annotation.RestResource;
 
 import cn.sparrow.model.common.AbstractOperationLog;
 import lombok.Data;
 
+@EntityListeners({  AuditingEntityListener.class })
 @Data
 @Entity
 @Table(name = "spr_model_attribute")

@@ -33,7 +33,7 @@ public class Developer extends AbstractOperationLog {
 
 	private String license;
 
-	@OneToMany(targetEntity = SparrowApp.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private List<SparrowApp> sparrowApps;
+//	@OneToMany(targetEntity = SparrowApp.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//	private List<SparrowApp> sparrowApps;
 
 }

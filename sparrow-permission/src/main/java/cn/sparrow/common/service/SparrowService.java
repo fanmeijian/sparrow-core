@@ -3,6 +3,7 @@ package cn.sparrow.common.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.stereotype.Service;
 
 import cn.sparrow.permission.service.ModelService;
@@ -18,8 +19,11 @@ public class SparrowService {
   @Autowired UrlPermissionService urlPermissionService;
   @Autowired ModelService modelService;
   
+  @Autowired
+  private ConfigurableApplicationContext appContext;
+  
   public void init() {
-    
+	  
     urlPermissionService.init();
     logger.info("finish url init.");
     sysroleService.init();

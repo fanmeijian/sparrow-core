@@ -15,5 +15,5 @@ public interface SysroleRepository extends JpaRepository<Sysrole, String>{
   @RestResource(exported = true)
 	Page<Sysrole> findByNameContaining(String name,Pageable p);
 	
-	List<Sysrole> findByName(String name);
+	List<Sysrole> findByCode(String name);
 }

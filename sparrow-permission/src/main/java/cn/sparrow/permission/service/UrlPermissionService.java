@@ -23,115 +23,116 @@ import cn.sparrow.model.permission.UrlPermissionEnum;
 
 @Service
 public class UrlPermissionService {
-  @Autowired
-  UrlRepository urlRepository;
-  
-  @Autowired SysroleUrlPermissionRepository sysroleUrlPermissionRepository;
+	@Autowired
+	UrlRepository urlRepository;
 
+	@Autowired
+	SysroleUrlPermissionRepository sysroleUrlPermissionRepository;
 
-  private static Logger logger = LoggerFactory.getLogger(UrlPermissionService.class);
+	private static Logger logger = LoggerFactory.getLogger(UrlPermissionService.class);
 
-  public Set<SparrowUrl> getSparrowUrls() {
-    return new HashSet<SparrowUrl>();
+	public Set<SparrowUrl> getSparrowUrls() {
+		return new HashSet<SparrowUrl>();
 
-  }
-  
-  public void addSysroleUrlPermission(List<SysroleUrlPermissionPK> sysroleUrlPermissionPKs) {
-	  sysroleUrlPermissionPKs.forEach(f->{
-		  sysroleUrlPermissionRepository.save(new SysroleUrlPermission(f));
-	  });
-  }
-  
-  @Transactional
-  public void delSysroleUrlPermission(List<SysroleUrlPermissionPK> sysroleUrlPermissionPKs) {
-	  sysroleUrlPermissionPKs.forEach(f->{
-		  sysroleUrlPermissionRepository.delete(new SysroleUrlPermission(f));
-	  });
-  }
-  
+	}
 
+	public void addSysroleUrlPermission(List<SysroleUrlPermissionPK> sysroleUrlPermissionPKs) {
+		sysroleUrlPermissionPKs.forEach(f -> {
+			sysroleUrlPermissionRepository.save(new SysroleUrlPermission(f));
+		});
+	}
 
-  public Set<SparrowUrl> getSparrowUrlsByClientId(String clientId) {
-    return new HashSet<SparrowUrl>();
-  }
+	@Transactional
+	public void delSysroleUrlPermission(List<SysroleUrlPermissionPK> sysroleUrlPermissionPKs) {
+		sysroleUrlPermissionPKs.forEach(f -> {
+			sysroleUrlPermissionRepository.delete(new SysroleUrlPermission(f));
+		});
+	}
 
-  public Set<SparrowUrl> getSparrowUrlsDenyByClientId(String clientId) {
-    Set<SparrowUrl> sparrowUrls = new HashSet<SparrowUrl>();
+	public List<SparrowUrl> getUrlsByClientIdAndPermission(String clientId, UrlPermissionEnum permission) {
+		return urlRepository.findByClientIdAndPermission(clientId, permission);
+	}
 
-    urlRepository.findByClientIdAndPermission(clientId, UrlPermissionEnum.DENY).forEach(f -> {
-      sparrowUrls.add(f);
-    });
+//	public Set<SparrowUrl> getSparrowUrlsByClientId(String clientId) {
+//		return new HashSet<SparrowUrl>();
+//	}
+//
+//	public Set<SparrowUrl> getSparrowUrlsDenyByClientId(String clientId) {
+//		Set<SparrowUrl> sparrowUrls = new HashSet<SparrowUrl>();
+//
+//		urlRepository.findByClientIdAndPermission(clientId, UrlPermissionEnum.DENY).forEach(f -> {
+//			sparrowUrls.add(f);
+//		});
+//
+//		return sparrowUrls;
+//	}
+//
+//	public Set<SparrowUrl> getSparrowUrlsAnonymousByClientId(String clientId) {
+//		Set<SparrowUrl> sparrowUrls = new HashSet<SparrowUrl>();
+//
+//		urlRepository.findByClientIdAndPermission(clientId, UrlPermissionEnum.ANONYMOUS).forEach(f -> {
+//			sparrowUrls.add(f);
+//		});
+//
+//		return sparrowUrls;
+//	}
+//
+//	public Set<SparrowUrl> getSparrowUrlsAuthenticatedByClientId(String clientId) {
+//		Set<SparrowUrl> sparrowUrls = new HashSet<SparrowUrl>();
+//
+//		urlRepository.findByClientIdAndPermission(clientId, UrlPermissionEnum.AUTHENTICATED).forEach(f -> {
+//			sparrowUrls.add(f);
+//		});
+//
+//		return sparrowUrls;
+//	}
+//
+//	public Set<SparrowUrl> getSparrowUrlsRestrictByClientId(String clientId) {
+//		Set<SparrowUrl> sparrowUrls = new HashSet<SparrowUrl>();
+//
+//		urlRepository.findByClientIdAndPermission(clientId, UrlPermissionEnum.RESTRICT).forEach(f -> {
+//			sparrowUrls.add(f);
+//		});
+//
+//		return sparrowUrls;
+//	}
 
-    return sparrowUrls;
-  }
+	public String[] getSysrolesByUrlId(String urlId) {
+		List<String> list = new ArrayList<String>();
+		sysroleUrlPermissionRepository.findByIdUrlId(urlId).forEach(f -> {
+			list.add(f.getSysrole().getCode());
+		});
+		return list.toArray(new String[] {});
+	}
 
-  public Set<SparrowUrl> getSparrowUrlsAnonymousByClientId(String clientId) {
-    Set<SparrowUrl> sparrowUrls = new HashSet<SparrowUrl>();
+	public void init() {
+		RestTemplate restTemplate = new RestTemplate();
+		LinkedHashMap<?, LinkedHashMap> response = (LinkedHashMap) restTemplate
+				.getForObject("http://localhost:8091/api/profile", LinkedHashMap.class).get("_links");
 
-    urlRepository.findByClientIdAndPermission(clientId, UrlPermissionEnum.ANONYMOUS).forEach(f -> {
-      sparrowUrls.add(f);
-    });
+		logger.debug(response.toString());
 
-    return sparrowUrls;
-  }
+		response.forEach((k, v) -> {
+			if (!k.toString().equals("self")) {
+				urlRepository.save(new SparrowUrl(k.toString(),
+						v.get("href").toString().replace("http://localhost:8091/api/profile", "") + "/**",
+						HttpMethod.GET, "sparrow", UrlPermissionEnum.AUTHENTICATED));
+				urlRepository.save(new SparrowUrl(k.toString(),
+						v.get("href").toString().replace("http://localhost:8091/api/profile", "") + "/**",
+						HttpMethod.POST, "sparrow", UrlPermissionEnum.RESTRICT));
+				urlRepository.save(new SparrowUrl(k.toString(),
+						v.get("href").toString().replace("http://localhost:8091/api/profile", "") + "/**",
+						HttpMethod.PUT, "sparrow", UrlPermissionEnum.DENY));
+				urlRepository.save(new SparrowUrl(k.toString(),
+						v.get("href").toString().replace("http://localhost:8091/api/profile", "") + "/**",
+						HttpMethod.PATCH, "sparrow", UrlPermissionEnum.RESTRICT));
+				urlRepository.save(new SparrowUrl(k.toString(),
+						v.get("href").toString().replace("http://localhost:8091/api/profile", "") + "/**",
+						HttpMethod.DELETE, "sparrow", UrlPermissionEnum.RESTRICT));
+			}
+		});
+		logger.info("finished url init.");
 
-  public Set<SparrowUrl> getSparrowUrlsAuthenticatedByClientId(String clientId) {
-    Set<SparrowUrl> sparrowUrls = new HashSet<SparrowUrl>();
-
-    urlRepository.findByClientIdAndPermission(clientId, UrlPermissionEnum.ATHENTICATED)
-        .forEach(f -> {
-          sparrowUrls.add(f);
-        });
-
-    return sparrowUrls;
-  }
-
-  public Set<SparrowUrl> getSparrowUrlsRestrictByClientId(String clientId) {
-    Set<SparrowUrl> sparrowUrls = new HashSet<SparrowUrl>();
-
-    urlRepository.findByClientIdAndPermission(clientId, UrlPermissionEnum.RESTRICT).forEach(f -> {
-      sparrowUrls.add(f);
-    });
-
-    return sparrowUrls;
-  }
-  
-  public String[] getSysrolesByUrlId(String urlId) {
-    List<String> list = new ArrayList<String>();
-    sysroleUrlPermissionRepository.findByIdUrlId(urlId).forEach(f->{
-      list.add(f.getId().getSysroleId());
-    });
-    return list.toArray(new String[] {});
-  }
-
-  public void init() {
-    RestTemplate restTemplate = new RestTemplate();
-    LinkedHashMap<?, LinkedHashMap> response = (LinkedHashMap) restTemplate
-        .getForObject("http://localhost:8091/api/profile", LinkedHashMap.class).get("_links");
-
-    logger.debug(response.toString());
-
-    response.forEach((k, v) -> {
-      if(!k.toString().equals("self")) {
-        urlRepository.save(new SparrowUrl(k.toString(),
-            v.get("href").toString().replace("http://localhost:8091/api/profile", "") + "/**",
-            HttpMethod.GET, "sparrow", UrlPermissionEnum.ATHENTICATED));
-        urlRepository.save(new SparrowUrl(k.toString(),
-            v.get("href").toString().replace("http://localhost:8091/api/profile", "") + "/**",
-            HttpMethod.POST, "sparrow", UrlPermissionEnum.RESTRICT));
-        urlRepository.save(new SparrowUrl(k.toString(),
-            v.get("href").toString().replace("http://localhost:8091/api/profile", "") + "/**",
-            HttpMethod.PUT, "sparrow", UrlPermissionEnum.DENY));
-        urlRepository.save(new SparrowUrl(k.toString(),
-            v.get("href").toString().replace("http://localhost:8091/api/profile", "") + "/**",
-            HttpMethod.PATCH, "sparrow", UrlPermissionEnum.RESTRICT));
-        urlRepository.save(new SparrowUrl(k.toString(),
-            v.get("href").toString().replace("http://localhost:8091/api/profile", "") + "/**",
-            HttpMethod.DELETE, "sparrow", UrlPermissionEnum.RESTRICT));
-      }
-    });
-    logger.info("finished url init.");
-
-  }
+	}
 
 }

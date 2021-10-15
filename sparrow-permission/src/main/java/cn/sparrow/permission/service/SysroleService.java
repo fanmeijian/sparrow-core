@@ -84,20 +84,20 @@ public class SysroleService {
   
   
   public void init() {
-    sysroleRepository.save(new Sysrole(PreserveSysroleEnum.SYSADMIN.name(), null, null));
+    sysroleRepository.save(new Sysrole("超级管理员",PreserveSysroleEnum.SYSADMIN.name()));
     logger.info("Create sysrole {}",PreserveSysroleEnum.SYSADMIN.name());
     
-    sysroleRepository.save(new Sysrole(PreserveSysroleEnum.ADMIN.name(), null, null));
+    sysroleRepository.save(new Sysrole("系统管理员",PreserveSysroleEnum.ADMIN.name()));
     logger.info("Create sysrole {}",PreserveSysroleEnum.ADMIN.name());
     
     urlRepository.findAll().forEach(f->{
       if(!f.getMethod().equals(HttpMethod.GET)) {
-        sysroleUrlPermissionRepository.save(new SysroleUrlPermission(new SysroleUrlPermissionPK(sysroleRepository.findByName(PreserveSysroleEnum.SYSADMIN.name()).get(0).getId(), f.getId()), null));
+        sysroleUrlPermissionRepository.save(new SysroleUrlPermission(new SysroleUrlPermissionPK(sysroleRepository.findByCode(PreserveSysroleEnum.SYSADMIN.name()).get(0).getId(), f.getId())));
         logger.info("Grant sysrole {} url permission {}",PreserveSysroleEnum.ADMIN.name(),f.getUri());
       }
     });
     
-    userSysroleRepository.save(new UserSysrole(new UserSysrolePK("ROOT", sysroleRepository.findByName(PreserveSysroleEnum.SYSADMIN.name()).get(0).getId())));
+    userSysroleRepository.save(new UserSysrole(new UserSysrolePK("ROOT", sysroleRepository.findByCode(PreserveSysroleEnum.SYSADMIN.name()).get(0).getId())));
     logger.info("Grant user {} sysrole SYSADMIN",PreserveSysroleEnum.ADMIN.name());
 
   }

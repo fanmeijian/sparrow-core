@@ -13,8 +13,6 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.envers.NotAudited;
-import org.hibernate.envers.RevisionNumber;
-import org.hibernate.envers.RevisionTimestamp;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import cn.sparrow.permission.listener.AuditLogListener;
@@ -37,13 +35,7 @@ public class AbstractSparrowEntity extends AbstractOperationLog implements Seria
 	@GenericGenerator(name = "id-generator", strategy = "uuid")
 	@GeneratedValue(generator = "id-generator")
 	protected String id;
-
-	@RevisionNumber
-	private Long version;
-
-	@RevisionTimestamp
-	private Long timestamp;
-
+	
 	@Transient
 	@Size(max = 0)
 	@NotAudited

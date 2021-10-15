@@ -4,14 +4,18 @@ import java.io.Serializable;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import cn.sparrow.model.common.AbstractOperationLog;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+@EntityListeners({  AuditingEntityListener.class })
 @Data
 @EqualsAndHashCode(callSuper=false)
 @Entity
