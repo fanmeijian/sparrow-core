@@ -16,13 +16,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-/**
- * ��֯ʵ�壬
- * 
- * @author fansword
- * @version 1.0
- * @created 28-Sep-2021 4:56:07 PM
- */
 @Data
 @EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor

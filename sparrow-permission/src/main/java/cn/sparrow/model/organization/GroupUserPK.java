@@ -7,11 +7,6 @@ import javax.persistence.Embeddable;
 import lombok.Getter;
 import lombok.Setter;
 
-/**
- * @author fansword
- * @version 1.0
- * @created 28-Sep-2021 4:56:22 PM
- */
 
 @Embeddable
 @Setter
