@@ -6,7 +6,8 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import org.springframework.data.domain.Persistable;
-import cn.sparrow.model.permission.AbstractOperationLog;
+
+import cn.sparrow.model.common.AbstractOperationLog;
 import lombok.Getter;
 import lombok.Setter;
 

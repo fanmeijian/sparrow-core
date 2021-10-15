@@ -8,6 +8,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import org.springframework.data.domain.Persistable;
 
+import cn.sparrow.model.common.AbstractOperationLog;
 import lombok.Getter;
 import lombok.Setter;
 

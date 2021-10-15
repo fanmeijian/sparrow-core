@@ -5,9 +5,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
+
+import cn.sparrow.model.common.AbstractSparrowEntity;
 import cn.sparrow.model.permission.AbstractDataPermissionPK;
 import cn.sparrow.model.permission.AbstractModelPermissionPK;
-import cn.sparrow.model.permission.AbstractSparrowEntity;
 import cn.sparrow.model.permission.PermissionEnum;
 import cn.sparrow.model.permission.PermissionTypeEnum;
 import cn.sparrow.permission.service.IPermission;

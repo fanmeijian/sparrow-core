@@ -10,6 +10,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 import cn.sparrow.model.app.SparrowApp;
+import cn.sparrow.model.common.AbstractOperationLog;
 import lombok.Getter;
 import lombok.Setter;
 

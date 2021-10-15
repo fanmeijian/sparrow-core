@@ -10,6 +10,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import cn.sparrow.model.common.AbstractSparrowEntity;
 import cn.sparrow.model.common.Group;
 import lombok.AllArgsConstructor;
 import lombok.Data;

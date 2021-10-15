@@ -7,6 +7,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import org.springframework.data.rest.core.annotation.RestResource;
+
+import cn.sparrow.model.common.AbstractOperationLog;
 import lombok.Data;
 
 @Data

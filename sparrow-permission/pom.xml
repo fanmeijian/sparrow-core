@@ -52,6 +52,15 @@
 			<artifactId>springdoc-openapi-ui</artifactId>
 			<version>1.5.11</version>
 		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-envers</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.ignite</groupId>
+			<artifactId>ignite-core</artifactId>
+			<version>2.11.0</version>
+		</dependency>
 	</dependencies>
 
 	<build>

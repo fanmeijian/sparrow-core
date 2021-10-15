@@ -5,8 +5,8 @@
 		<class>cn.sparrow.model.permission.AbstractDataPermissionPK</class>
 		<class>cn.sparrow.model.permission.AbstractModelAttributePermissionPK</class>
 		<class>cn.sparrow.model.permission.AbstractModelPermissionPK</class>
-		<class>cn.sparrow.model.permission.AbstractOperationLog</class>
-		<class>cn.sparrow.model.permission.AbstractSparrowEntity</class>
+		<class>cn.sparrow.model.common.AbstractOperationLog</class>
+		<class>cn.sparrow.model.common.AbstractSparrowEntity</class>
 		<class>cn.sparrow.model.permission.GroupDataFieldPermission</class>
 		<class>cn.sparrow.model.permission.GroupDataFieldPermissionPK</class>
 		<class>cn.sparrow.model.permission.GroupDataPermission</class>

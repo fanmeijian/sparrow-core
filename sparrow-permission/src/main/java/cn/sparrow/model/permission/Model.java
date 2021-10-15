@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import cn.sparrow.model.common.AbstractOperationLog;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

@@ -15,6 +15,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.http.HttpMethod;
 import cn.sparrow.model.app.SparrowApp;
+import cn.sparrow.model.common.AbstractOperationLog;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

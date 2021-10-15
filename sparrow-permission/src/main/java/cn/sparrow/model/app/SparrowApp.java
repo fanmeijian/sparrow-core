@@ -9,7 +9,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import cn.sparrow.model.permission.AbstractSparrowEntity;
+import cn.sparrow.model.common.AbstractSparrowEntity;
 import cn.sparrow.model.permission.Developer;
 import cn.sparrow.model.permission.Menu;
 import cn.sparrow.model.permission.SparrowUrl;

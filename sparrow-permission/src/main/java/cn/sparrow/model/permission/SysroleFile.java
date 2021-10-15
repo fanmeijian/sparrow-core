@@ -4,6 +4,7 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import cn.sparrow.model.common.AbstractOperationLog;
 import lombok.Getter;
 import lombok.Setter;
 

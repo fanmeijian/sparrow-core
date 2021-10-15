@@ -10,8 +10,13 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Table;
 import javax.persistence.metamodel.EntityType;
 import javax.validation.constraints.NotEmpty;
+
+import org.apache.ignite.IgniteCheckedException;
+import org.apache.ignite.internal.marshaller.optimized.OptimizedMarshaller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -19,9 +24,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import com.sun.istack.NotNull;
+
+import cn.sparrow.common.repository.AuditLogRepository;
 import cn.sparrow.common.repository.UrlRepository;
 import cn.sparrow.common.service.SparrowService;
 import cn.sparrow.common.service.UserService;
+import cn.sparrow.model.common.AuditLog;
 import cn.sparrow.model.common.MyTree;
 import cn.sparrow.model.permission.AbstractModelPermissionPK;
 import cn.sparrow.model.permission.Menu;
@@ -55,6 +63,9 @@ public class SparrowController {
 	EntityManager entityManager;
 	@Autowired
 	private ApplicationContext applicationContext;
+	
+	@Autowired AuditLogRepository auditLogRepository;
+	@Autowired OptimizedMarshaller marsh;
 
 	@GetMapping("/init")
 	public void init() {
@@ -64,7 +75,19 @@ public class SparrowController {
 	
 
 	
-	
+	@GetMapping("/logs/auditLog")
+	public Page<AuditLog> getAuditLog(Pageable pageable){
+		Page<AuditLog> audits= auditLogRepository.findAll(pageable);
+		audits.forEach(f->{
+			try {
+				f.setSourceObject(marsh.unmarshal(f.getObjectBytearray(), null));
+			} catch (IgniteCheckedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		});
+		return audits;
+	}
 	
 
 	@GetMapping("/models/syncToTable")

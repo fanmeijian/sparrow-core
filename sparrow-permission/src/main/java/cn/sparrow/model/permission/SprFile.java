@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
+import cn.sparrow.model.common.AbstractSparrowEntity;
 import lombok.Getter;
 import lombok.Setter;
 

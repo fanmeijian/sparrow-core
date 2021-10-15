@@ -15,28 +15,29 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
+
+import cn.sparrow.model.common.AbstractSparrowEntity;
 import cn.sparrow.model.permission.AbstractDataPermissionPK;
 import cn.sparrow.model.permission.AbstractModelPermissionPK;
-import cn.sparrow.model.permission.AbstractSparrowEntity;
 import cn.sparrow.model.permission.PermissionEnum;
 import cn.sparrow.model.permission.PermissionTypeEnum;
 import cn.sparrow.permission.service.IPermission;
 
 // jpa级别的校验
 @Component
-public class AbstractEntityListener {
-	private static Logger logger = LoggerFactory.getLogger(AbstractEntityListener.class);
+public final class ReadPermissionListener {
+	private static Logger logger = LoggerFactory.getLogger(ReadPermissionListener.class);
 	private static IPermission<AbstractDataPermissionPK> dataPermissionService;
 	private static IPermission<AbstractModelPermissionPK> modelPermissionService;
 
 	@Autowired
 	public void setModelIPermission(IPermission<AbstractModelPermissionPK> modelPermissionService) {
-		AbstractEntityListener.modelPermissionService = modelPermissionService;
+		ReadPermissionListener.modelPermissionService = modelPermissionService;
 	}
 
 	@Autowired
 	public void setPermissionService(IPermission<AbstractDataPermissionPK> dataPermissionService) {
-		AbstractEntityListener.dataPermissionService = dataPermissionService;
+		ReadPermissionListener.dataPermissionService = dataPermissionService;
 	}
 
 	private void emptyData(Object object) {

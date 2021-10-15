@@ -11,7 +11,6 @@ import javax.persistence.Table;
 import cn.sparrow.model.organization.Level;
 import cn.sparrow.model.organization.Organization;
 import cn.sparrow.model.organization.Role;
-import cn.sparrow.model.permission.AbstractSparrowEntity;
 import cn.sparrow.model.permission.Sysrole;
 import lombok.Getter;
 import lombok.Setter;
