@@ -21,6 +21,12 @@ import cn.sparrow.model.organization.EmployeeRelationPK;
 import cn.sparrow.organization.service.EmployeeService;
 import cn.sparrow.organization.service.OrganizationService;
 
+/**
+ * 
+ * @author fansword
+ *
+ */
+
 @RestController
 public class EmployeeController {
   
@@ -42,6 +48,10 @@ public class EmployeeController {
     employeeService.delRoles(ids);
   }
   
+  /**
+   * 	
+   * @param ids
+   */
   @PostMapping("/employees/levels/batch")
   public void addLevels(@NotNull @RequestBody Set<EmployeeOrganizationLevelPK> ids) {
     employeeService.addLevels(ids);
@@ -52,6 +62,10 @@ public class EmployeeController {
     employeeService.delLevels(ids);
   }
   
+  /**
+   * 
+   * @param ids
+   */
   @PostMapping("/employees/relations/batch")
   public void addRelations(@NotNull @RequestBody Set<EmployeeRelationPK> ids) {
     employeeService.addRelations(ids);

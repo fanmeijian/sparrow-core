@@ -15,12 +15,6 @@ import cn.sparrow.model.permission.Sysrole;
 import lombok.Getter;
 import lombok.Setter;
 
-/**
- * @author fansword
- * @version 1.0
- * @created 28-Sep-2021 4:56:06 PM
- */
-
 @Getter
 @Setter
 @Entity

@@ -10,13 +10,6 @@ import cn.sparrow.model.common.Group;
 import lombok.Getter;
 import lombok.Setter;
 
-/**
- * ��λ
- * 
- * @author fansword
- * @version 1.0
- * @created 28-Sep-2021 4:56:12 PM
- */
 @Getter
 @Setter
 @Entity

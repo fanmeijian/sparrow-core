@@ -11,12 +11,6 @@ import cn.sparrow.model.common.AbstractOperationLog;
 import lombok.Getter;
 import lombok.Setter;
 
-/**
- * @author fansword
- * @version 1.0
- * @created 28-Sep-2021 4:56:35 PM
- */
-
 @Getter
 @Setter
 @Entity
