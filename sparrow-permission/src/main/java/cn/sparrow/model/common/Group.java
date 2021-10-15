@@ -1,4 +1,4 @@
-package cn.sparrow.model.organization;
+package cn.sparrow.model.common;
 
 import java.util.Set;
 import javax.persistence.Entity;
@@ -7,6 +7,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+
+import cn.sparrow.model.organization.Level;
+import cn.sparrow.model.organization.Organization;
+import cn.sparrow.model.organization.Role;
 import cn.sparrow.model.permission.AbstractSparrowEntity;
 import cn.sparrow.model.permission.Sysrole;
 import lombok.Getter;

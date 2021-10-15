@@ -4,8 +4,9 @@ import java.util.List;
 import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import cn.sparrow.model.common.Group;
 import cn.sparrow.model.common.MyTree;
-import cn.sparrow.model.organization.Group;
 import cn.sparrow.model.organization.GroupLevel;
 import cn.sparrow.model.organization.GroupLevelPK;
 import cn.sparrow.model.organization.GroupOrganization;

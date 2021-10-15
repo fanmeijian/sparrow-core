@@ -2,6 +2,7 @@ package cn.sparrow.model.organization;
 
 import java.util.List;
 
+import cn.sparrow.model.common.GroupTypeEnum;
 import lombok.Data;
 
 @Data

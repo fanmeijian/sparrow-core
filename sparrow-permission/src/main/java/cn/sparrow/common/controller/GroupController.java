@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.sun.istack.NotNull;
 
+import cn.sparrow.model.common.Group;
 import cn.sparrow.model.common.MyTree;
-import cn.sparrow.model.organization.Group;
 import cn.sparrow.model.organization.GroupLevelPK;
 import cn.sparrow.model.organization.GroupOrganizationPK;
 import cn.sparrow.model.organization.GroupRelationPK;
