@@ -1,4 +1,4 @@
-package cn.sparrow.common.service;
+package cn.sparrow.permission.service;
 
 import java.util.HashSet;
 import java.util.List;
@@ -11,7 +11,7 @@ import cn.sparrow.common.repository.MenuRepository;
 import cn.sparrow.common.repository.SysroleMenuRepository;
 import cn.sparrow.common.repository.UserMenuRepository;
 import cn.sparrow.model.common.MyTree;
-import cn.sparrow.model.menu.Menu;
+import cn.sparrow.model.permission.Menu;
 
 @Service
 public class MenuService {

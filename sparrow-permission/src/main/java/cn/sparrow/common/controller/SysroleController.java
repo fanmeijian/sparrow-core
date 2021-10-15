@@ -9,9 +9,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import com.sun.istack.NotNull;
-import cn.sparrow.common.service.SysroleService;
+
 import cn.sparrow.model.permission.AbstractDataPermissionPK;
 import cn.sparrow.model.permission.AbstractModelPermissionPK;
+import cn.sparrow.permission.service.SysroleService;
 
 @RestController
 public class SysroleController {

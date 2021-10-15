@@ -1,4 +1,4 @@
-package cn.sparrow.common.service;
+package cn.sparrow.permission.service;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -16,10 +16,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import cn.sparrow.common.repository.SysroleUrlPermissionRepository;
 import cn.sparrow.common.repository.UrlRepository;
+import cn.sparrow.model.permission.SparrowUrl;
 import cn.sparrow.model.permission.SysroleUrlPermission;
 import cn.sparrow.model.permission.SysroleUrlPermissionPK;
-import cn.sparrow.model.url.SparrowUrl;
-import cn.sparrow.model.url.UrlPermissionEnum;
+import cn.sparrow.model.permission.UrlPermissionEnum;
 
 @Service
 public class UrlPermissionService {

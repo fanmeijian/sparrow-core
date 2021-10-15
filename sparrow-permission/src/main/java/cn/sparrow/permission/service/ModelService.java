@@ -1,4 +1,4 @@
-package cn.sparrow.common.service;
+package cn.sparrow.permission.service;
 
 import java.util.ArrayList;
 import java.util.HashMap;

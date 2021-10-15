@@ -8,8 +8,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.data.rest.core.annotation.RestResource;
 
-import cn.sparrow.model.sysrole.UserSysrole;
-import cn.sparrow.model.sysrole.UserSysrolePK;
+import cn.sparrow.model.permission.UserSysrole;
+import cn.sparrow.model.permission.UserSysrolePK;
 
 @RepositoryRestResource(exported = false)
 public interface UserSysroleRepository extends JpaRepository<UserSysrole, UserSysrolePK> {

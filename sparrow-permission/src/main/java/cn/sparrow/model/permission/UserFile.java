@@ -1,9 +1,9 @@
-package cn.sparrow.model.file;
+package cn.sparrow.model.permission;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import cn.sparrow.model.permission.AbstractOperationLog;
+
 import lombok.Getter;
 import lombok.Setter;
 

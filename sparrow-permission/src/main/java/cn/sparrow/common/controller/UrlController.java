@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.sun.istack.NotNull;
 
-import cn.sparrow.common.service.UrlService;
-import cn.sparrow.model.url.SparrowUrl;
+import cn.sparrow.model.permission.SparrowUrl;
+import cn.sparrow.permission.service.UrlService;
 
 @RestController
 public class UrlController {

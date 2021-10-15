@@ -1,4 +1,4 @@
-package cn.sparrow.model.sysrole;
+package cn.sparrow.model.permission;
 
 import java.io.Serializable;
 import javax.persistence.Column;

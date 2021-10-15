@@ -8,10 +8,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import cn.sparrow.model.menu.Menu;
+
 import cn.sparrow.model.permission.AbstractSparrowEntity;
 import cn.sparrow.model.permission.Developer;
-import cn.sparrow.model.url.SparrowUrl;
+import cn.sparrow.model.permission.Menu;
+import cn.sparrow.model.permission.SparrowUrl;
 import lombok.Getter;
 import lombok.Setter;
 

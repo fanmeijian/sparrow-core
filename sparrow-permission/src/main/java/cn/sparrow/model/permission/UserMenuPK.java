@@ -1,4 +1,4 @@
-package cn.sparrow.model.menu;
+package cn.sparrow.model.permission;
 
 import java.io.Serializable;
 import javax.persistence.Column;

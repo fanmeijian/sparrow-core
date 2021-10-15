@@ -4,7 +4,8 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
-import cn.sparrow.model.file.SprFile;
+
+import cn.sparrow.model.permission.SprFile;
 
 @RepositoryRestResource(exported = false)
 public interface FileRepository extends JpaRepository<SprFile, String> {

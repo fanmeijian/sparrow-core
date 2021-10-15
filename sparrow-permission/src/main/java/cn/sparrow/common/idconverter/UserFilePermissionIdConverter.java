@@ -3,8 +3,9 @@ package cn.sparrow.common.idconverter;
 import java.io.Serializable;
 import org.springframework.data.rest.webmvc.spi.BackendIdConverter;
 import org.springframework.stereotype.Component;
-import cn.sparrow.model.file.UserFile;
-import cn.sparrow.model.file.UserFilePK;
+
+import cn.sparrow.model.permission.UserFile;
+import cn.sparrow.model.permission.UserFilePK;
 
 @Component
 public class UserFilePermissionIdConverter implements BackendIdConverter {

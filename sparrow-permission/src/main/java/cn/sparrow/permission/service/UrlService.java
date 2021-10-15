@@ -1,10 +1,10 @@
-package cn.sparrow.common.service;
+package cn.sparrow.permission.service;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import cn.sparrow.common.repository.UrlRepository;
-import cn.sparrow.model.url.SparrowUrl;
+import cn.sparrow.model.permission.SparrowUrl;
 
 @Service
 public class UrlService {

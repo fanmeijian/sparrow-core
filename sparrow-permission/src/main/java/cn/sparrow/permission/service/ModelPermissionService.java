@@ -9,7 +9,7 @@ import cn.sparrow.model.permission.PermissionEnum;
 import cn.sparrow.model.permission.PermissionTypeEnum;
 import cn.sparrow.model.permission.SysroleModelPermissionPK;
 import cn.sparrow.model.permission.UserModelPermissionPK;
-import cn.sparrow.model.sysrole.UserSysrole;
+import cn.sparrow.model.permission.UserSysrole;
 
 @Service
 public class ModelPermissionService extends AbstractPermissionService<AbstractModelPermissionPK> {

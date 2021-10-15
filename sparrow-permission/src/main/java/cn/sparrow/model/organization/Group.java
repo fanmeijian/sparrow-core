@@ -8,7 +8,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import cn.sparrow.model.permission.AbstractSparrowEntity;
-import cn.sparrow.model.sysrole.Sysrole;
+import cn.sparrow.model.permission.Sysrole;
 import lombok.Getter;
 import lombok.Setter;
 

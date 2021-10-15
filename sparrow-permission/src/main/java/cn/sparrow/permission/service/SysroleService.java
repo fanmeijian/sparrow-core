@@ -1,4 +1,4 @@
-package cn.sparrow.common.service;
+package cn.sparrow.permission.service;
 
 import java.util.HashSet;
 import java.util.List;
@@ -15,20 +15,20 @@ import cn.sparrow.common.repository.SysroleRepository;
 import cn.sparrow.common.repository.SysroleUrlPermissionRepository;
 import cn.sparrow.common.repository.UrlRepository;
 import cn.sparrow.common.repository.UserSysroleRepository;
-import cn.sparrow.model.menu.SysroleMenu;
-import cn.sparrow.model.menu.SysroleMenuPK;
 import cn.sparrow.model.permission.AbstractDataPermissionPK;
 import cn.sparrow.model.permission.AbstractModelPermissionPK;
+import cn.sparrow.model.permission.PreserveSysroleEnum;
+import cn.sparrow.model.permission.Sysrole;
 import cn.sparrow.model.permission.SysroleDataPermission;
 import cn.sparrow.model.permission.SysroleDataPermissionPK;
+import cn.sparrow.model.permission.SysroleMenu;
+import cn.sparrow.model.permission.SysroleMenuPK;
 import cn.sparrow.model.permission.SysroleModelPermission;
 import cn.sparrow.model.permission.SysroleModelPermissionPK;
 import cn.sparrow.model.permission.SysroleUrlPermission;
 import cn.sparrow.model.permission.SysroleUrlPermissionPK;
-import cn.sparrow.model.sysrole.PreserveSysroleEnum;
-import cn.sparrow.model.sysrole.Sysrole;
-import cn.sparrow.model.sysrole.UserSysrole;
-import cn.sparrow.model.sysrole.UserSysrolePK;
+import cn.sparrow.model.permission.UserSysrole;
+import cn.sparrow.model.permission.UserSysrolePK;
 import cn.sparrow.permission.repository.SysroleDataPermissionRepository;
 import cn.sparrow.permission.repository.SysroleModelPermissionRepository;
 

@@ -1,4 +1,4 @@
-package cn.sparrow.model.menu;
+package cn.sparrow.model.permission;
 
 import java.io.Serializable;
 import java.util.Set;
@@ -11,7 +11,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 import cn.sparrow.model.app.SparrowApp;
-import cn.sparrow.model.permission.AbstractOperationLog;
 import lombok.Getter;
 import lombok.Setter;
 

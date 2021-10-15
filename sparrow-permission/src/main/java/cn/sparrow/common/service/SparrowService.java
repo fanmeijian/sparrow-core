@@ -5,6 +5,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import cn.sparrow.permission.service.ModelService;
+import cn.sparrow.permission.service.SysroleService;
+import cn.sparrow.permission.service.UrlPermissionService;
+
 @Service
 public class SparrowService {
 

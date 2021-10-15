@@ -23,9 +23,9 @@ import cn.sparrow.common.exception.StorageFileNotFoundException;
 import cn.sparrow.common.repository.FileRepository;
 import cn.sparrow.common.repository.SysroleFileRepository;
 import cn.sparrow.common.repository.UserFileRepository;
-import cn.sparrow.model.file.SprFile;
-import cn.sparrow.model.file.UserFile;
-import cn.sparrow.model.file.UserFilePK;
+import cn.sparrow.model.permission.SprFile;
+import cn.sparrow.model.permission.UserFile;
+import cn.sparrow.model.permission.UserFilePK;
 
 /***
  * perform the file upload, download and permission check;

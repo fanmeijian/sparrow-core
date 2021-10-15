@@ -20,18 +20,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import com.sun.istack.NotNull;
 import cn.sparrow.common.repository.UrlRepository;
-import cn.sparrow.common.service.MenuService;
 import cn.sparrow.common.service.SparrowService;
-import cn.sparrow.common.service.SysroleService;
 import cn.sparrow.common.service.UserService;
 import cn.sparrow.model.common.MyTree;
-import cn.sparrow.model.menu.Menu;
 import cn.sparrow.model.permission.AbstractModelPermissionPK;
+import cn.sparrow.model.permission.Menu;
 import cn.sparrow.model.permission.Model;
 import cn.sparrow.model.permission.ModelAttribute;
 import cn.sparrow.model.permission.ModelAttributePK;
 import cn.sparrow.permission.repository.ModelAttributeRepository;
 import cn.sparrow.permission.repository.ModelRepository;
+import cn.sparrow.permission.service.MenuService;
+import cn.sparrow.permission.service.SysroleService;
 
 @RestController
 public class SparrowController {

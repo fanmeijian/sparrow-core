@@ -1,4 +1,4 @@
-package cn.sparrow.model.sysrole;
+package cn.sparrow.model.permission;
 
 import java.util.Set;
 import javax.persistence.Entity;
@@ -9,10 +9,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import cn.sparrow.model.menu.Menu;
+
 import cn.sparrow.model.organization.Group;
-import cn.sparrow.model.permission.AbstractSparrowEntity;
-import cn.sparrow.model.url.SparrowUrl;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

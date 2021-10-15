@@ -7,8 +7,9 @@ import javax.transaction.Transactional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
-import cn.sparrow.model.menu.SysroleMenu;
-import cn.sparrow.model.menu.SysroleMenuPK;
+
+import cn.sparrow.model.permission.SysroleMenu;
+import cn.sparrow.model.permission.SysroleMenuPK;
 
 @RepositoryRestResource(exported = false)
 public interface SysroleMenuRepository extends JpaRepository<SysroleMenu, SysroleMenuPK> {

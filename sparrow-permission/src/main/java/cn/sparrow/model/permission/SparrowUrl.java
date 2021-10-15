@@ -1,4 +1,4 @@
-package cn.sparrow.model.url;
+package cn.sparrow.model.permission;
 
 import java.io.Serializable;
 import java.util.Set;
@@ -15,8 +15,6 @@ import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.http.HttpMethod;
 import cn.sparrow.model.app.SparrowApp;
-import cn.sparrow.model.permission.AbstractOperationLog;
-import cn.sparrow.model.permission.SysroleUrlPermission;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

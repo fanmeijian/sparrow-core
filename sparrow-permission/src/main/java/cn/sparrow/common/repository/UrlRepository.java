@@ -3,8 +3,9 @@ package cn.sparrow.common.repository;
 
 import java.util.Set;
 import org.springframework.data.jpa.repository.JpaRepository;
-import cn.sparrow.model.url.SparrowUrl;
-import cn.sparrow.model.url.UrlPermissionEnum;
+
+import cn.sparrow.model.permission.SparrowUrl;
+import cn.sparrow.model.permission.UrlPermissionEnum;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @Tag(name = "url-controller")

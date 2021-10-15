@@ -1,4 +1,4 @@
-package cn.sparrow.model.file;
+package cn.sparrow.model.permission;
 
 import java.io.Serializable;
 

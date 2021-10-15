@@ -1,5 +1,6 @@
 package cn.sparrow.organization.service;
 
+import java.util.List;
 import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -137,6 +138,10 @@ public class GroupService {
     });
   }
 
+  
+//  public List<E> getGroupMembers() {
+//	  
+//  }
 
   /**
    * 以树的形式返回
