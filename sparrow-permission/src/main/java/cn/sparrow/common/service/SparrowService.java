@@ -59,12 +59,12 @@ public class SparrowService {
 	public void initSysrole() {
 		jdbcTemplate.execute(
 				"insert into spr_sysrole(id, name, code,  created_date,created_by, modified_date, modified_by) values('"
-						+ UUID.randomUUID().toString().replaceAll("-", "") + "','超级管理员','SYSADMIN',now(),'SparrowSystem',now(),'SparrowSystem');");
+						+ sysroleId + "','超级管理员','SYSADMIN',now(),'SparrowSystem',now(),'SparrowSystem');");
 		logger.info("Create sysrole SYSADMIN");
 
 		jdbcTemplate.execute(
 				"insert into spr_sysrole(id, name, code, created_date,created_by, modified_date, modified_by) values('"
-						+ sysroleId + "','管理员','ADMIN',now(),'SparrowSystem',now(),'SparrowSystem');");
+						+ UUID.randomUUID().toString().replaceAll("-", "") + "','管理员','ADMIN',now(),'SparrowSystem',now(),'SparrowSystem');");
 		logger.info("Create sysrole ADMIN");
 
 		jdbcTemplate.execute(

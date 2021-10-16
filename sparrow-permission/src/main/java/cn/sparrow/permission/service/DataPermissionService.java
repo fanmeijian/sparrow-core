@@ -127,8 +127,8 @@ public class DataPermissionService extends AbstractPermissionService<AbstractDat
 							target.getPermissionType(), target.getDataId());
 				}
 			} else {
-				for (UserSysrole userSysrole : userSysroleRepository.findByIdUsername(username)) {
-					if (isConfigPermission(target, PermissionTargetEnum.SYSROLE)) {
+				if (isConfigPermission(target, PermissionTargetEnum.SYSROLE)) {
+					for (UserSysrole userSysrole : userSysroleRepository.findByIdUsername(username)) {
 						if (sysroleDataPermissionRepository.findById(new SysroleDataPermissionPK(target.getModelName(),
 								target.getPermission(), target.getPermissionType(), target.getDataId(),
 								userSysrole.getId().getSysroleId())).orElse(null) != null) {
@@ -141,9 +141,10 @@ public class DataPermissionService extends AbstractPermissionService<AbstractDat
 									target.getModelName(), target.getPermission(), target.getPermissionType(),
 									target.getDataId());
 						}
-					} else {
-						return true;
+
 					}
+				} else {
+					return true;
 				}
 			}
 

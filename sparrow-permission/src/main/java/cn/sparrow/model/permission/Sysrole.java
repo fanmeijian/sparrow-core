@@ -3,9 +3,11 @@ package cn.sparrow.model.permission;
 import java.util.Set;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import cn.sparrow.model.common.AbstractSparrowEntity;
@@ -36,6 +38,10 @@ public class Sysrole extends AbstractSparrowEntity {
 	@EqualsAndHashCode.Exclude
 	@ManyToMany(mappedBy = "sysroles")
 	private Set<Group> groups;
+	
+	@EqualsAndHashCode.Exclude
+	@OneToMany(fetch = FetchType.LAZY)
+	private Set<SparrowUrl> urls;
 
 	public Sysrole(String name, String code) {
 		super();

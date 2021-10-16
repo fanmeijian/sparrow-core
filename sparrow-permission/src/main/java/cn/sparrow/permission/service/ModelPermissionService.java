@@ -111,8 +111,8 @@ public class ModelPermissionService extends AbstractPermissionService<AbstractMo
 							target.getPermissionType());
 				}
 			} else {
-				for (UserSysrole userSysrole : userSysroleRepository.findByIdUsername(username)) {
-					if (isConfigPermission(target, PermissionTargetEnum.SYSROLE)) {
+				if (isConfigPermission(target, PermissionTargetEnum.SYSROLE)) {
+					for (UserSysrole userSysrole : userSysroleRepository.findByIdUsername(username)) {
 						if (sysroleModelPermissionRepository
 								.findById(new SysroleModelPermissionPK(target.getModelName(), target.getPermission(),
 										target.getPermissionType(), userSysrole.getId().getSysroleId()))
@@ -124,9 +124,10 @@ public class ModelPermissionService extends AbstractPermissionService<AbstractMo
 							logger.debug("角色 {} 不拥有权限 {} {} {} ", userSysrole.getId().getSysroleId(),
 									target.getModelName(), target.getPermission(), target.getPermissionType());
 						}
-					} else {
-						return true;
+
 					}
+				} else {
+					return true;
 				}
 			}
 		}
