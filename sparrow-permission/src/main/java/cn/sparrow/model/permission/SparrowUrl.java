@@ -4,11 +4,13 @@ import java.io.Serializable;
 import java.util.Set;
 
 import javax.persistence.AttributeOverride;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -23,6 +25,7 @@ import org.springframework.http.HttpMethod;
 import cn.sparrow.model.app.SparrowApp;
 import cn.sparrow.model.common.AbstractOperationLog;
 import cn.sparrow.model.common.AbstractSparrowEntity;
+import cn.sparrow.model.common.UrlPermissionEnum;
 import cn.sparrow.permission.listener.AuditLogListener;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -61,7 +64,7 @@ public class SparrowUrl extends AbstractOperationLog implements Serializable {
 //  Set<UserUrlPermission> userUrlPermissions;
 
   @EqualsAndHashCode.Exclude
-  @OneToMany(mappedBy = "sparrowUrl")
+  @OneToMany(mappedBy = "sparrowUrl",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
   Set<SysroleUrlPermission> sysroleUrPermissions;
 
 //  @ManyToOne

@@ -4,9 +4,11 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+
+import cn.sparrow.model.common.PermissionEnum;
+import cn.sparrow.model.common.PermissionTargetEnum;
+import cn.sparrow.model.common.PermissionTypeEnum;
 import cn.sparrow.model.permission.AbstractDataPermissionPK;
-import cn.sparrow.model.permission.PermissionEnum;
-import cn.sparrow.model.permission.PermissionTypeEnum;
 import cn.sparrow.model.permission.SysroleDataPermissionPK;
 import cn.sparrow.model.permission.UserDataPermissionPK;
 import cn.sparrow.model.permission.UserSysrole;

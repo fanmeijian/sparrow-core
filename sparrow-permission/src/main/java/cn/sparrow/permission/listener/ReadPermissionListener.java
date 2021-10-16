@@ -17,10 +17,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import cn.sparrow.model.common.AbstractSparrowEntity;
+import cn.sparrow.model.common.PermissionEnum;
+import cn.sparrow.model.common.PermissionTypeEnum;
 import cn.sparrow.model.permission.AbstractDataPermissionPK;
 import cn.sparrow.model.permission.AbstractModelPermissionPK;
-import cn.sparrow.model.permission.PermissionEnum;
-import cn.sparrow.model.permission.PermissionTypeEnum;
 import cn.sparrow.permission.service.IPermission;
 
 // jpa级别的校验

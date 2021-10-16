@@ -2,6 +2,9 @@ package cn.sparrow.model.permission;
 
 import java.io.Serializable;
 import javax.persistence.MappedSuperclass;
+
+import cn.sparrow.model.common.PermissionEnum;
+import cn.sparrow.model.common.PermissionTypeEnum;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

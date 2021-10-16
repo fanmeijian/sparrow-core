@@ -13,15 +13,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.sun.istack.NotNull;
 
-import cn.sparrow.model.common.Group;
+import cn.sparrow.common.service.GroupService;
 import cn.sparrow.model.common.MyTree;
-import cn.sparrow.model.organization.GroupLevelPK;
-import cn.sparrow.model.organization.GroupOrganizationPK;
-import cn.sparrow.model.organization.GroupRelationPK;
-import cn.sparrow.model.organization.GroupRolePK;
-import cn.sparrow.model.organization.GroupSysrolePK;
-import cn.sparrow.model.organization.GroupUserPK;
-import cn.sparrow.organization.service.GroupService;
+import cn.sparrow.model.group.Group;
+import cn.sparrow.model.group.GroupLevelPK;
+import cn.sparrow.model.group.GroupOrganizationPK;
+import cn.sparrow.model.group.GroupRelationPK;
+import cn.sparrow.model.group.GroupRolePK;
+import cn.sparrow.model.group.GroupSysrolePK;
+import cn.sparrow.model.group.GroupUserPK;
 
 @RestController
 public class GroupController {

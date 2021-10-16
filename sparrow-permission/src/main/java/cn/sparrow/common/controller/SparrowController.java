@@ -69,7 +69,7 @@ public class SparrowController {
 
 	@GetMapping("/init")
 	public void init() {
-		sparrowService.init();
+		sparrowService.init(null);
 	}
 
 	

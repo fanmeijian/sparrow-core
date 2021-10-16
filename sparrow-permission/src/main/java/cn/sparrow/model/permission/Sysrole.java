@@ -9,7 +9,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import cn.sparrow.model.common.AbstractSparrowEntity;
-import cn.sparrow.model.common.Group;
+import cn.sparrow.model.group.Group;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
