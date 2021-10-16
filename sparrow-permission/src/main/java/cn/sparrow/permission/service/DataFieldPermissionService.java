@@ -1,6 +1,8 @@
 package cn.sparrow.permission.service;
 
 import java.util.Set;
+
+import cn.sparrow.model.common.PermissionTargetEnum;
 import cn.sparrow.model.permission.AbstractDataFieldPermissionPK;
 
 public class DataFieldPermissionService extends AbstractPermissionService<AbstractDataFieldPermissionPK> {

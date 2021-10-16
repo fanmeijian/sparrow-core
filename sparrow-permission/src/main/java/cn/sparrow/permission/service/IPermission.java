@@ -2,6 +2,8 @@ package cn.sparrow.permission.service;
 
 import java.util.Set;
 
+import cn.sparrow.model.common.PermissionTargetEnum;
+
 public interface IPermission<T> {
 
 //	@Deprecated

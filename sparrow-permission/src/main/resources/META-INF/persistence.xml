@@ -7,14 +7,14 @@
 		<class>cn.sparrow.model.permission.AbstractModelPermissionPK</class>
 		<class>cn.sparrow.model.common.AbstractOperationLog</class>
 		<class>cn.sparrow.model.common.AbstractSparrowEntity</class>
-		<class>cn.sparrow.model.permission.GroupDataFieldPermission</class>
-		<class>cn.sparrow.model.permission.GroupDataFieldPermissionPK</class>
-		<class>cn.sparrow.model.permission.GroupDataPermission</class>
-		<class>cn.sparrow.model.permission.GroupDataPermissionPK</class>
-		<class>cn.sparrow.model.permission.GroupModelAttributePermission</class>
-		<class>cn.sparrow.model.permission.GroupModelAttributePermissionPK</class>
-		<class>cn.sparrow.model.permission.GroupModelPermission</class>
-		<class>cn.sparrow.model.permission.GroupModelPermissionPK</class>
+		<class>cn.sparrow.model.group.GroupDataFieldPermission</class>
+		<class>cn.sparrow.model.group.GroupDataFieldPermissionPK</class>
+		<class>cn.sparrow.model.group.GroupDataPermission</class>
+		<class>cn.sparrow.model.group.GroupDataPermissionPK</class>
+		<class>cn.sparrow.model.group.GroupModelAttributePermission</class>
+		<class>cn.sparrow.model.group.GroupModelAttributePermissionPK</class>
+		<class>cn.sparrow.model.group.GroupModelPermission</class>
+		<class>cn.sparrow.model.group.GroupModelPermissionPK</class>
 		<class>cn.sparrow.model.permission.Model</class>
 		<class>cn.sparrow.model.permission.ModelAttribute</class>
 		<class>cn.sparrow.model.permission.ModelAttributePK</class>
@@ -42,6 +42,6 @@
 		<class>cn.sparrow.model.permission.UserModelAttributePermissionPK</class>
 		<class>cn.sparrow.model.permission.UserModelPermission</class>
 		<class>cn.sparrow.model.permission.UserModelPermissionPK</class>
-		<class>cn.sparrow.model.organization.GroupSysrole</class>
+		<class>cn.sparrow.model.group.GroupSysrole</class>
 	</persistence-unit>
 </persistence>

@@ -7,9 +7,9 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
 import cn.sparrow.model.common.AbstractSparrowEntity;
+import cn.sparrow.model.common.PermissionEnum;
+import cn.sparrow.model.common.PermissionTypeEnum;
 import cn.sparrow.model.permission.AbstractModelPermissionPK;
-import cn.sparrow.model.permission.PermissionEnum;
-import cn.sparrow.model.permission.PermissionTypeEnum;
 import cn.sparrow.permission.service.IPermission;
 
 // 这个是再repository的校验级别，不是jpa的
