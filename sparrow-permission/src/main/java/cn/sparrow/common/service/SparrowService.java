@@ -280,7 +280,7 @@ public class SparrowService {
 	}
 
 	public void initMenu() {
-		for (int i = 0; i < 13; i++) {
+		for (int i = 0; i < 17; i++) {
 			menuList.add(UUID.randomUUID().toString().replaceAll("-", ""));
 		}
 		jdbcTemplate.execute(
@@ -324,6 +324,17 @@ public class SparrowService {
 				"insert into spr_menu(id, name, parent_id, sort, url, created_date, modified_by, modified_date,created_by) values('"
 						+ menuList.get(12) + "','群组管理','" + menuList.get(8)
 						+ "',0,'/page/group',now(),'SparrowSystem',now(),'SparrowSystem');");
+		jdbcTemplate.execute(
+				"insert into spr_menu(id, name, parent_id, sort, url, created_date, modified_by, modified_date,created_by) values('"
+						+ menuList.get(13) + "','审计日志',null,0,'/#',now(),'SparrowSystem',now(),'SparrowSystem');");
+		jdbcTemplate.execute(
+				"insert into spr_menu(id, name, parent_id, sort, url, created_date, modified_by, modified_date,created_by) values('"
+						+ menuList.get(14) + "','登陆日志','" + menuList.get(13)
+						+ "',0,'/page/loginLog',now(),'SparrowSystem',now(),'SparrowSystem');");
+		jdbcTemplate.execute(
+				"insert into spr_menu(id, name, parent_id, sort, url, created_date, modified_by, modified_date,created_by) values('"
+						+ menuList.get(15) + "','操作日志','" + menuList.get(13)
+						+ "',0,'/page/operationLog',now(),'SparrowSystem',now(),'SparrowSystem');");
 
 		logger.info("Init menu finished");
 	}
