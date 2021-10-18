@@ -12,7 +12,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 public interface MenuRepository extends JpaRepository<Menu, String> {
 
   List<Menu> findByParentId(String parentId);
-
-//  List<Menu> findBySparrowAppId(Long appId);
+  void deleteByIdIn(String[] ids);
 
 }

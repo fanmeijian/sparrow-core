@@ -1,6 +1,7 @@
 package cn.sparrow.model.permission;
 
 import java.io.Serializable;
+
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Table;

@@ -3,6 +3,7 @@ package cn.sparrow.permission.service;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,9 @@ import org.springframework.stereotype.Service;
 import cn.sparrow.common.repository.UserMenuRepository;
 import cn.sparrow.model.common.MyTree;
 import cn.sparrow.model.permission.Menu;
+import cn.sparrow.model.permission.MenuPermission;
+import cn.sparrow.model.permission.SysroleMenu;
+import cn.sparrow.model.permission.UserMenu;
 import cn.sparrow.permission.repository.MenuRepository;
 import cn.sparrow.permission.repository.SysroleMenuRepository;
 
@@ -134,6 +138,30 @@ public class MenuService {
 			menus.add(f);
 			buildChildren(f.getId(), menus);
 		});
+	}
+	
+	public void addPermissions(MenuPermission menuPermission) {
+		if(menuPermission.getUserMenuPKs()!=null) {
+			menuPermission.getUserMenuPKs().forEach(f->{
+				userMenuRepository.save(new UserMenu(f));
+			});
+		}
+		
+		if(menuPermission.getSysroleMenuPKs()!=null) {
+			menuPermission.getSysroleMenuPKs().forEach(f->{
+				sysroleMenuRepository.save(new SysroleMenu(f));
+			});
+		}
+	}
+	
+	public void delPermissions(MenuPermission menuPermission) {
+		if(menuPermission.getUserMenuPKs()!=null) {
+			userMenuRepository.deleteByIdIn(menuPermission.getUserMenuPKs());
+		}
+		
+		if(menuPermission.getSysroleMenuPKs()!=null) {
+			sysroleMenuRepository.deleteByIdIn(menuPermission.getSysroleMenuPKs());
+		}
 	}
 
 }

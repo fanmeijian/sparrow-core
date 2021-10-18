@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+import org.springframework.transaction.annotation.Transactional;
 
 import cn.sparrow.model.common.UrlPermissionEnum;
 import cn.sparrow.model.permission.SparrowUrl;
@@ -16,4 +17,7 @@ public interface UrlRepository extends JpaRepository<SparrowUrl, String> {
 
   List<SparrowUrl> findByClientId(String clientId);
   List<SparrowUrl> findByClientIdAndPermission(String clientId, UrlPermissionEnum permission);
+  
+  @Transactional
+  void deleteByIdIn(String[] ids);
 }

@@ -1,5 +1,6 @@
 package cn.sparrow.common.controller;
 
+import java.security.Principal;
 import java.util.List;
 
 import javax.annotation.Nullable;
@@ -17,12 +18,14 @@ import org.springframework.web.bind.annotation.RestController;
 import cn.sparrow.model.common.MyTree;
 import cn.sparrow.model.permission.Menu;
 import cn.sparrow.model.permission.MenuPermission;
+import cn.sparrow.permission.repository.MenuRepository;
 import cn.sparrow.permission.service.MenuService;
 
 @RestController
 public class MenuController {
 
 	@Autowired MenuService menuService;
+	@Autowired MenuRepository menuRepository;
 
 	@GetMapping("/menus/getTreeByParentId")
 	public MyTree<Menu> getTreeByParentId(@Nullable @Param("parentId") String parentId) {
@@ -40,33 +43,33 @@ public class MenuController {
 	}
 	
 	@GetMapping("/menus/getMyTree")
-	public MyTree<Menu> getMyTree() {
-		return null;
+	public MyTree<Menu> getMyTree(Principal principal) {
+		return menuService.getTreeByUsername(principal.getName());
 	}
 
 	@PostMapping("/menus/batch")
-	public void add(@NotNull @RequestBody final List<Menu> urls) {
-
+	public void add(@NotNull @RequestBody final List<Menu> menus) {
+		menuRepository.saveAll(menus);
 	}
 
 	@PatchMapping("/menus/batch")
-	public void update(@NotNull @RequestBody final List<Menu> urls) {
-
+	public void update(@NotNull @RequestBody final List<Menu> menus) {
+		menuRepository.saveAll(menus);
 	}
 
 	@DeleteMapping("/menus/batch")
-	public void delete(@NotNull @RequestBody final List<String> urls) {
-
+	public void delete(@NotNull @RequestBody final String[] ids) {
+		menuRepository.deleteByIdIn(ids);
 	}
 
 	@PostMapping("/menus/permissions")
 	public void addPermission(@NotNull @RequestBody final MenuPermission menuPermission) {
-
+		menuService.addPermissions(menuPermission);
 	}
 
 	@DeleteMapping("/menus/permissions")
 	public void delPermission(@NotNull @RequestBody final MenuPermission menuPermission) {
-
+		menuService.delPermissions(menuPermission);
 	}
 
 }

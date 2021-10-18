@@ -35,12 +35,12 @@ private static final long serialVersionUID = 1L;
   private SysroleUrlPermissionPK id;
 
   @EqualsAndHashCode.Exclude
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "url_id", insertable = false, updatable = false)
   private SparrowUrl sparrowUrl;
   
   @EqualsAndHashCode.Exclude
-  @ManyToOne(fetch = FetchType.EAGER)
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "sysrole_id", insertable = false, updatable = false)
   private Sysrole sysrole;
 
