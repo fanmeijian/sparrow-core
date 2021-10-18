@@ -15,6 +15,6 @@ public class UserFilePermissionPK implements Serializable {
   private static final long serialVersionUID = 1L;
   
   @Embedded
-  private FilePermissionPK filePermission;
+  private FilePermissionPK filePermissionPK;
   private String username;
 }

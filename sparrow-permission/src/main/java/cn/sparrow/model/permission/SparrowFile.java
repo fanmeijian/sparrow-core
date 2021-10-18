@@ -17,6 +17,10 @@ public class SparrowFile extends AbstractSparrowEntity {
 	private String hash;
 
 	private String name;
+	
+	private String fileName;
 
 	private String url;
+
+	private ModelAttributePK modelAttributePK;
 }

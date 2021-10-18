@@ -18,7 +18,7 @@ public class ModelAttributeIdConverter implements BackendIdConverter {
     String[] parts = id.split(",");
     ModelAttributePK pk = new ModelAttributePK();
     pk.setModelName(parts[0]);
-    pk.setName(parts[1]);
+    pk.setAttributeName(parts[1]);
 
     return pk;
   }
@@ -26,6 +26,6 @@ public class ModelAttributeIdConverter implements BackendIdConverter {
   @Override
   public String toRequestId(Serializable id, Class<?> entityType) {
     ModelAttributePK pk = (ModelAttributePK) id;
-    return String.format("%s,%s", pk.getModelName(), pk.getName());
+    return String.format("%s,%s", pk.getModelName(), pk.getAttributeName());
   }
 }

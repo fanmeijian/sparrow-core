@@ -6,5 +6,5 @@ import cn.sparrow.model.permission.UserFilePermission;
 import cn.sparrow.model.permission.UserFilePermissionPK;
 
 public interface UserFilePermissionRepository extends JpaRepository<UserFilePermission, UserFilePermissionPK> {
-  Long countByIdFilePermission(FilePermissionPK filePermissionPK);
+  Long countByIdFilePermissionPK(FilePermissionPK filePermissionPK);
 }

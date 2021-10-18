@@ -1,5 +1,7 @@
 package cn.sparrow.common.service;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -8,21 +10,23 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.stream.Stream;
-import org.springframework.context.annotation.Configuration;
+
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
+import org.springframework.stereotype.Component;
 import org.springframework.util.FileSystemUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
+
 import cn.sparrow.common.exception.StorageException;
 import cn.sparrow.common.exception.StorageFileNotFoundException;
 
-@Configuration
+@Component
 public class StorageServiceImpl implements StorageService {
 	private final Path rootLocation;
 
 	public StorageServiceImpl() {
-		this.rootLocation = Paths.get("f:\\upload-dir");
+		this.rootLocation = Paths.get(System.getProperty("user.dir"));
 	}
 
 	@Override
@@ -45,6 +49,17 @@ public class StorageServiceImpl implements StorageService {
 	@Override
 	public Path load(String filename) {
 		return rootLocation.resolve(filename);
+	}
+	
+	public byte[] getFileByte(String filename) {
+		Path path = rootLocation.resolve(filename);
+		try {
+			return this.getClass().getResourceAsStream(path.toString()).readAllBytes();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	@Override
@@ -98,4 +113,60 @@ public class StorageServiceImpl implements StorageService {
 		}
 
 	}
+
+	@Override
+	public void store(InputStream file, String fileName) {
+		try {
+			CopyInputStream cis = new CopyInputStream(file);
+
+			Files.copy(cis.getCopy(), this.rootLocation.resolve(fileName), StandardCopyOption.REPLACE_EXISTING);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
 }
+
+//class CopyInputStream
+//{
+//    private InputStream _is;
+//    private ByteArrayOutputStream _copy = new ByteArrayOutputStream();
+//
+//    /**
+//     * 
+//     */
+//    public CopyInputStream(InputStream is)
+//    {
+//        _is = is;
+//
+//        try
+//        {
+//            copy();
+//        }
+//        catch(IOException ex)
+//        {
+//            // do nothing
+//        }
+//    }
+//
+//    private int copy() throws IOException
+//    {
+//        int read = 0;
+//        int chunk = 0;
+//        byte[] data = new byte[256];
+//
+//        while(-1 != (chunk = _is.read(data)))
+//        {
+//            read += data.length;
+//            _copy.write(data, 0, chunk);
+//        }
+//
+//        return read;
+//    }
+//
+//    public InputStream getCopy()
+//    {
+//        return (InputStream)new ByteArrayInputStream(_copy.toByteArray());
+//    }
+//}
