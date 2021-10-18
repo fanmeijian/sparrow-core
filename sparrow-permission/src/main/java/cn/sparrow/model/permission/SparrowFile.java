@@ -11,7 +11,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = false)
 @Entity
 @Table(name = "spr_file")
-public class SprFile extends AbstractSparrowEntity {
+public class SparrowFile extends AbstractSparrowEntity {
 	private static final long serialVersionUID = 1L;
 
 	private String hash;

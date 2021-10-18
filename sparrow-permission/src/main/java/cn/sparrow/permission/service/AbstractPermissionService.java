@@ -17,6 +17,7 @@ import cn.sparrow.permission.repository.SysroleModelAttributePermissionRepositor
 import cn.sparrow.permission.repository.SysroleModelPermissionRepository;
 import cn.sparrow.permission.repository.UserDataFieldPermissionRepository;
 import cn.sparrow.permission.repository.UserDataPermissionRepository;
+import cn.sparrow.permission.repository.UserFilePermissionRepository;
 import cn.sparrow.permission.repository.UserModelAttributePermissionRepository;
 import cn.sparrow.permission.repository.UserModelPermissionRepository;
 
@@ -43,5 +44,7 @@ public abstract class AbstractPermissionService<T> implements IPermission<T> {
 	@Autowired OrganizationDataFieldPermissionRepository organizationDataFieldPermissionRepository;
 	
 	@Autowired UserSysroleRepository userSysroleRepository;
+	
+	@Autowired UserFilePermissionRepository userFilePermissionRepository;
 	
 }
