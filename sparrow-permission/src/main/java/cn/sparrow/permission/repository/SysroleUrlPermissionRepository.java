@@ -1,4 +1,4 @@
-package cn.sparrow.common.repository;
+package cn.sparrow.permission.repository;
 
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;

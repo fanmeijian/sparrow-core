@@ -1,11 +1,13 @@
 package cn.sparrow.common.controller;
 
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -38,6 +40,20 @@ public class EmployeeController {
     return employeeService.getTree(parentId);
   }
   
+  @PostMapping("/employees/batch")
+  public void add(@NotNull @RequestBody List<Employee> employees) {
+  }
+  
+  @PatchMapping("/employees/batch")
+  public void update(@NotNull @RequestBody List<Employee> employees) {
+    
+  }
+  
+  @DeleteMapping("/employees/batch")
+  public void delete(@NotNull @RequestBody List<String> ids) {
+    
+  }
+  
   @PostMapping("/employees/roles/batch")
   public void addRoles(@NotNull @RequestBody Set<EmployeeOrganizationRolePK> ids) {
     employeeService.addRoles(ids);
@@ -48,10 +64,7 @@ public class EmployeeController {
     employeeService.delRoles(ids);
   }
   
-  /**
-   * 	
-   * @param ids
-   */
+
   @PostMapping("/employees/levels/batch")
   public void addLevels(@NotNull @RequestBody Set<EmployeeOrganizationLevelPK> ids) {
     employeeService.addLevels(ids);
@@ -62,10 +75,7 @@ public class EmployeeController {
     employeeService.delLevels(ids);
   }
   
-  /**
-   * 
-   * @param ids
-   */
+
   @PostMapping("/employees/relations/batch")
   public void addRelations(@NotNull @RequestBody Set<EmployeeRelationPK> ids) {
     employeeService.addRelations(ids);

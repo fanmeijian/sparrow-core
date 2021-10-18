@@ -10,10 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
-import cn.sparrow.common.repository.SysroleMenuRepository;
-import cn.sparrow.common.repository.SysroleRepository;
-import cn.sparrow.common.repository.SysroleUrlPermissionRepository;
-import cn.sparrow.common.repository.UrlRepository;
+
 import cn.sparrow.common.repository.UserSysroleRepository;
 import cn.sparrow.model.common.PreserveSysroleEnum;
 import cn.sparrow.model.permission.AbstractDataPermissionPK;
@@ -30,7 +27,11 @@ import cn.sparrow.model.permission.SysroleUrlPermissionPK;
 import cn.sparrow.model.permission.UserSysrole;
 import cn.sparrow.model.permission.UserSysrolePK;
 import cn.sparrow.permission.repository.SysroleDataPermissionRepository;
+import cn.sparrow.permission.repository.SysroleMenuRepository;
 import cn.sparrow.permission.repository.SysroleModelPermissionRepository;
+import cn.sparrow.permission.repository.SysroleRepository;
+import cn.sparrow.permission.repository.SysroleUrlPermissionRepository;
+import cn.sparrow.permission.repository.UrlRepository;
 
 @Service
 public class SysroleService {

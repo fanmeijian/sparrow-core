@@ -25,8 +25,8 @@ public class OpenApiConfig {
 				.info(new Info().title("Sparrow Permission API")
 						.description(
 								"An integration API for enterprise organization management and permission management.")
-						.version("v0.0.1").license(new License().name("Apache 2.0").url("http://sparrow.cn")))
-				.externalDocs(new ExternalDocumentation().description("Spring Permission Wiki Documentation")
-						.url("https://github.com/fanmeijian/sparrow-platform/wiki"));
+						.version("v0.0.1").license(new License().name("Apache 2.0").url("https://github.com/fanmeijian/sparrow/blob/main/LICENSE")))
+				.externalDocs(new ExternalDocumentation().description("Sparrow Permission Wiki Documentation")
+						.url("https://github.com/fanmeijian/sparrow/wiki"));
 	}
 }

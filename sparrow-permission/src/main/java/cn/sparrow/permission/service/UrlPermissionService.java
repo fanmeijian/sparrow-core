@@ -14,12 +14,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import cn.sparrow.common.repository.SysroleUrlPermissionRepository;
-import cn.sparrow.common.repository.UrlRepository;
+
 import cn.sparrow.model.common.UrlPermissionEnum;
 import cn.sparrow.model.permission.SparrowUrl;
 import cn.sparrow.model.permission.SysroleUrlPermission;
 import cn.sparrow.model.permission.SysroleUrlPermissionPK;
+import cn.sparrow.permission.repository.SysroleUrlPermissionRepository;
+import cn.sparrow.permission.repository.UrlRepository;
 
 @Service
 public class UrlPermissionService {

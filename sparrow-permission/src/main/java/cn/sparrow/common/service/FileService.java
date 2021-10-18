@@ -20,12 +20,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import cn.sparrow.common.exception.StorageFileNotFoundException;
-import cn.sparrow.common.repository.FileRepository;
-import cn.sparrow.common.repository.SysroleFileRepository;
 import cn.sparrow.common.repository.UserFileRepository;
 import cn.sparrow.model.permission.SprFile;
 import cn.sparrow.model.permission.UserFile;
 import cn.sparrow.model.permission.UserFilePK;
+import cn.sparrow.permission.repository.FileRepository;
+import cn.sparrow.permission.repository.SysroleFileRepository;
 
 /***
  * perform the file upload, download and permission check;

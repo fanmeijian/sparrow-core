@@ -19,12 +19,12 @@ import org.springframework.data.repository.Repository;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import cn.sparrow.common.repository.SysroleRepository;
-import cn.sparrow.common.repository.SysroleUrlPermissionRepository;
-import cn.sparrow.common.repository.UrlRepository;
 import cn.sparrow.model.permission.SparrowUrl;
 import cn.sparrow.model.permission.Sysrole;
 import cn.sparrow.model.permission.SysroleUrlPermissionPK;
+import cn.sparrow.permission.repository.SysroleRepository;
+import cn.sparrow.permission.repository.SysroleUrlPermissionRepository;
+import cn.sparrow.permission.repository.UrlRepository;
 import cn.sparrow.permission.service.UrlPermissionService;
 
 //@RunWith(SpringJUnit4ClassRunner.class)

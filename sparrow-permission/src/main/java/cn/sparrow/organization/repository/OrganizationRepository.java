@@ -6,6 +6,7 @@ import cn.sparrow.model.organization.Organization;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @Tag(name = "organization-controller")
+@RepositoryRestResource(exported = false)
 public interface OrganizationRepository extends JpaRepository<Organization, String> {
 
 }
