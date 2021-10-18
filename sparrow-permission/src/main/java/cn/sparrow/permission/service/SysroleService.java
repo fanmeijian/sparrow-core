@@ -22,6 +22,7 @@ import cn.sparrow.model.permission.SysroleMenu;
 import cn.sparrow.model.permission.SysroleMenuPK;
 import cn.sparrow.model.permission.SysroleModelPermission;
 import cn.sparrow.model.permission.SysroleModelPermissionPK;
+import cn.sparrow.model.permission.SysrolePermission;
 import cn.sparrow.model.permission.SysroleUrlPermission;
 import cn.sparrow.model.permission.SysroleUrlPermissionPK;
 import cn.sparrow.model.permission.UserSysrole;
@@ -115,4 +116,18 @@ public class SysroleService {
         sysroleModelPermissionRepository.delete(new SysroleModelPermission(new SysroleModelPermissionPK(f.getModelName(), f.getPermission(), f.getPermissionType(), sysroleId)));
       });
   }
+
+	public void addPermissions(SysrolePermission permission) {
+		if(permission.getUserSysrolePKs()!=null) {
+			permission.getUserSysrolePKs().forEach(f->{
+				userSysroleRepository.save(new UserSysrole(f));
+			});
+		}
+	}
+	
+	public void delPermissions(SysrolePermission permission) {
+		if(permission.getUserSysrolePKs()!=null) {
+			userSysroleRepository.deleteByIdIn(permission.getUserSysrolePKs());
+		}
+	}
 }

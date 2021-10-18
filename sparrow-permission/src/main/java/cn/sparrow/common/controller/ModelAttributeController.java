@@ -2,6 +2,7 @@ package cn.sparrow.common.controller;
 
 import java.util.List;
 
+import javax.annotation.Nullable;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,7 @@ public class ModelAttributeController {
 	@Autowired ModelAttributePermissionService modelAttributePermissionService;
 	
 	@GetMapping("/modelAttributes")
-	public Page<?> pages(Pageable pageable) {
+	public Page<?> pages(@Nullable Pageable pageable) {
 		return modelAttributeRepository.findAll(pageable);
 	}
 	

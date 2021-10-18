@@ -12,6 +12,6 @@ import cn.sparrow.model.permission.SysroleModelAttributePermissionPK;
 public interface SysroleModelAttributePermissionRepository extends AbstractModelAttributePermissionRepository<SysroleModelAttributePermission, SysroleModelAttributePermissionPK> {
 
 	@Transactional
-	void deleteByIdin(List<SysroleModelAttributePermissionPK> sysroleModelAttributePermissionPKs);
+	void deleteByIdIn(List<SysroleModelAttributePermissionPK> sysroleModelAttributePermissionPKs);
 
 }

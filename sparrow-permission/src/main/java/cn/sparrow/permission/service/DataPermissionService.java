@@ -3,20 +3,29 @@ package cn.sparrow.permission.service;
 import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import cn.sparrow.model.common.PermissionEnum;
 import cn.sparrow.model.common.PermissionTargetEnum;
 import cn.sparrow.model.common.PermissionTypeEnum;
 import cn.sparrow.model.permission.AbstractDataPermissionPK;
+import cn.sparrow.model.permission.DataPermission;
+import cn.sparrow.model.permission.SysroleDataPermission;
 import cn.sparrow.model.permission.SysroleDataPermissionPK;
+import cn.sparrow.model.permission.UserDataPermission;
 import cn.sparrow.model.permission.UserDataPermissionPK;
 import cn.sparrow.model.permission.UserSysrole;
+import cn.sparrow.permission.repository.SysroleDataPermissionRepository;
+import cn.sparrow.permission.repository.UserDataPermissionRepository;
 
 @Service
 public class DataPermissionService extends AbstractPermissionService<AbstractDataPermissionPK> {
 
 	private static Logger logger = LoggerFactory.getLogger(DataPermissionService.class);
+	
+	@Autowired UserDataPermissionRepository userDataPermissionRepository;
+	@Autowired SysroleDataPermissionRepository sysroleDataPermissionRepository;
 
 //	@Override
 //	public boolean isConfigPermission(AbstractDataPermissionPK target) {
@@ -209,6 +218,28 @@ public class DataPermissionService extends AbstractPermissionService<AbstractDat
       PermissionTargetEnum permissionTarget) {
     // TODO Auto-generated method stub
     return false;
+  }
+  
+  public void addPermissions(DataPermission permission) {
+    if(permission.getUserDataPermissionPKs()!=null) {
+    	permission.getUserDataPermissionPKs().forEach(f->{
+    		userDataPermissionRepository.save(new UserDataPermission(f));
+    	});
+    }
+    
+    if(permission.getSysroleDataPermissionPKs()!=null) {
+    	permission.getSysroleDataPermissionPKs().forEach(f->{
+    		sysroleDataPermissionRepository.save(new SysroleDataPermission(f));
+    	});
+    }
+  }
+
+  public void delPermissions(DataPermission permission) {
+    if(permission.getUserDataPermissionPKs()!=null)
+    	userDataPermissionRepository.deleteByIdIn(permission.getUserDataPermissionPKs());
+    
+    if(permission.getSysroleDataPermissionPKs()!=null)
+    	sysroleDataPermissionRepository.deleteByIdIn(permission.getSysroleDataPermissionPKs());
   }
 
 }

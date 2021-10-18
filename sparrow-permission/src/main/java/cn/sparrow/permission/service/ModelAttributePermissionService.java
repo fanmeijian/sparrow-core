@@ -3,6 +3,7 @@ package cn.sparrow.permission.service;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import cn.sparrow.model.common.PermissionTargetEnum;
 import cn.sparrow.model.permission.AbstractModelAttributePermissionPK;
@@ -11,6 +12,7 @@ import cn.sparrow.model.permission.SysroleModelAttributePermission;
 import cn.sparrow.model.permission.UserModelAttributePermission;
 import cn.sparrow.permission.repository.UserModelAttributePermissionRepository;
 
+@Service
 public class ModelAttributePermissionService extends AbstractPermissionService<AbstractModelAttributePermissionPK> {
 
 	@Autowired UserModelAttributePermissionRepository userModelAttributePermissionRepository;
@@ -76,7 +78,7 @@ public class ModelAttributePermissionService extends AbstractPermissionService<A
 	  }
 	  
 	  if(modelAttributePermission.getSysroleModelAttributePermissionPKs()!=null) {
-		  sysroleModelAttributePermissionRepository.deleteByIdin(modelAttributePermission.getSysroleModelAttributePermissionPKs());
+		  sysroleModelAttributePermissionRepository.deleteByIdIn(modelAttributePermission.getSysroleModelAttributePermissionPKs());
 	  }
   }
 

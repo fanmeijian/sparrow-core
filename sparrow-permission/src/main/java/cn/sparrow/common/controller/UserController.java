@@ -16,7 +16,7 @@ import cn.sparrow.common.service.UserService;
 import cn.sparrow.model.permission.AbstractDataPermissionPK;
 import cn.sparrow.model.permission.AbstractModelPermissionPK;
 
-@RestController
+//@RestController
 public class UserController {
 
   @Autowired UserService userService;

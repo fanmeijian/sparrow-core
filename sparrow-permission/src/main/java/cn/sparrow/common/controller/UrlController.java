@@ -29,7 +29,7 @@ public class UrlController {
 	@Autowired UrlRepository urlRepository;
 	
 	@GetMapping("/sparrowUrls")
-	public Page<SparrowUrl> getUrls(Pageable pageable) {
+	public Page<SparrowUrl> getUrls(@Nullable Pageable pageable) {
 		return urlRepository.findAll(pageable);
 	}
 
