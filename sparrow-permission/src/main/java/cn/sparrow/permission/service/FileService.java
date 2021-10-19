@@ -1,114 +1,129 @@
 package cn.sparrow.permission.service;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
+import org.springframework.data.rest.core.RepositoryConstraintViolationException;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-
+import org.springframework.validation.Errors;
+import org.springframework.web.multipart.MultipartFile;
+import cn.sparrow.common.service.FileUtil;
 import cn.sparrow.common.service.StorageService;
+import cn.sparrow.model.common.PermissionEnum;
+import cn.sparrow.model.common.PermissionTypeEnum;
+import cn.sparrow.model.permission.AbstractDataPermissionPK;
 import cn.sparrow.model.permission.FilePermission;
+import cn.sparrow.model.permission.FilePermissionPK;
 import cn.sparrow.model.permission.SparrowFile;
+import cn.sparrow.model.permission.SysroleFilePermission;
+import cn.sparrow.model.permission.UserFilePermission;
 import cn.sparrow.permission.repository.FileRepository;
 import cn.sparrow.permission.repository.SysroleFilePermissionRepository;
+import cn.sparrow.permission.repository.UserFilePermissionRepository;
 
 @Service
 public class FileService {
 
-	private final StorageService storageService;
+  private final StorageService storageService;
 
-	@Autowired
-	public FileService(StorageService storageService) {
-		this.storageService = storageService;
-	}
+  @Autowired
+  public FileService(StorageService storageService) {
+    this.storageService = storageService;
+  }
 
-	@Autowired
-	FileRepository fileRepository;
+  @Autowired
+  FileRepository fileRepository;
 
-	@Autowired
-	SysroleFilePermissionRepository sysroleFileRepository;
+  @Autowired
+  SysroleFilePermissionRepository sysroleFileRepository;
 
-	@PreAuthorize(value = "")
-	public Resource dowload(String id) {
-//		storageService.load(fileRepository.findById(id).orElse(null).getUrl())
-		return storageService.loadAsResource(fileRepository.findById(id).orElse(null).getUrl());
-	}
+  @Autowired
+  UserFilePermissionRepository userFilePermissionRepository;
+  @Autowired
+  SysroleFilePermissionRepository sysroleFilePermissionRepository;
+  
+  @Autowired FilePermissionService filePermissionService;
+  @Autowired DataPermissionService dataPermissionService;
 
-	@PreAuthorize(value = "")
-	public void share(String fileId, FilePermission filePermission) {
+  @PreAuthorize(value = "")
+  public Resource dowload(String id) throws Exception {
+    // storageService.load(fileRepository.findById(id).orElse(null).getUrl())
+    SparrowFile file = fileRepository.findById(id).orElse(null);
+    
+    boolean allow = dataPermissionService.hasPermission(
+        new AbstractDataPermissionPK(SparrowFile.class.getName(), PermissionEnum.DOWNLOAD, PermissionTypeEnum.ALLOW, id),
+        SecurityContextHolder.getContext().getAuthentication().getName());
+    
+    boolean deny = dataPermissionService.hasPermission(
+        new AbstractDataPermissionPK(SparrowFile.class.getName(), PermissionEnum.DOWNLOAD, PermissionTypeEnum.DENY, id),
+        SecurityContextHolder.getContext().getAuthentication().getName());
+    
+//    
+//    if(file.getErrorMessage().size()>0) {
+//      throw new Exception(file.getErrorMessage().get(0));
+//    }
+    
+    if(deny||!allow) {
+      throw new Exception("无下载权限！");
 
-	}
+    }
+    
+    return storageService.loadAsResource(file.getUrl());
+  }
 
-	@PreAuthorize(value = "")
-	public void forward(String fileId) {
-		// 转发一个副本给别人
-	}
+  @PreAuthorize(value = "")
+  public void share(String fileId, FilePermission filePermission) {
 
-	@GetMapping("/files")
-	@ResponseBody
-	public Iterable<SparrowFile> listUploadedFiles() {
-		// 会显示匿名用户和认证用户的可用文件信息；list权限，即能否看到列表
-		return fileRepository.findAll();
+  }
 
-	}
+  @PreAuthorize(value = "")
+  public void forward(String fileId) {
+    // 转发一个副本给别人
+  }
 
-	public String upload(InputStream file, String fileName, String name) {
-		// upload file and caculate the hash
-		try {
-			MessageDigest digest = MessageDigest.getInstance("MD5");
+  public void addPermissions(FilePermission filePermission) {
+    if (filePermission.getUserFilePermissionPKs() != null) {
+      filePermission.getUserFilePermissionPKs().forEach(f -> {
+        userFilePermissionRepository.save(new UserFilePermission(f));
+      });
+    }
 
-			String shaChecksum = getFileChecksum(digest, file);
-			storageService.store(file, shaChecksum);
-			SparrowFile sparrowFile = new SparrowFile();
-			sparrowFile.setName(name);
-			sparrowFile.setFileName(fileName);
-			sparrowFile.setHash(shaChecksum);
-			sparrowFile.setUrl(storageService.load(shaChecksum).toString());
-			fileRepository.save(sparrowFile);
-			return sparrowFile.getId();
-		} catch (NoSuchAlgorithmException | IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+    if (filePermission.getSysroleFilePermissionPKs() != null) {
+      filePermission.getSysroleFilePermissionPKs().forEach(f -> {
+        sysroleFilePermissionRepository.save(new SysroleFilePermission(f));
+      });
+    }
+  }
 
-		return null;
-	}
+  public void delPermissions(FilePermission filePermission) {
+    if (filePermission.getUserFilePermissionPKs() != null) {
+      userFilePermissionRepository.deleteByIdIn(filePermission.getUserFilePermissionPKs());
+    }
 
-	private String getFileChecksum(MessageDigest digest, InputStream fis) throws IOException {
-		// Get file input stream for reading the file content
-//	    FileInputStream fis = new FileInputStream(file);
+    if (filePermission.getSysroleFilePermissionPKs() != null) {
+      sysroleFilePermissionRepository.deleteByIdIn(filePermission.getSysroleFilePermissionPKs());
+    }
+  }
 
-		// Create byte array to read data in chunks
-		byte[] byteArray = new byte[1024];
-		int bytesCount = 0;
+  public String upload(MultipartFile file) {
+    // upload file and caculate the hash
+    try {
+      String shaChecksum = FileUtil.getChecksum(file.getInputStream());
+      storageService.store(file.getInputStream(), shaChecksum);
+      SparrowFile sparrowFile = new SparrowFile();
+      sparrowFile.setName(file.getName());
+      sparrowFile.setFileName(file.getOriginalFilename());
+      sparrowFile.setHash(shaChecksum);
+      sparrowFile.setUrl(storageService.load(shaChecksum).toString());
+      fileRepository.save(sparrowFile);
+      return sparrowFile.getId();
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
 
-		// Read file data and update in message digest
-		while ((bytesCount = fis.read(byteArray)) != -1) {
-			digest.update(byteArray, 0, bytesCount);
-		}
-		;
-
-		// close the stream; We don't need it now.
-		fis.close();
-
-		// Get the hash's bytes
-		byte[] bytes = digest.digest();
-
-		// This bytes[] has bytes in decimal format;
-		// Convert it to hexadecimal format
-		StringBuilder sb = new StringBuilder();
-		for (int i = 0; i < bytes.length; i++) {
-			sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
-		}
-
-		// return complete hash
-		return sb.toString();
-	}
-
+    return null;
+  }
 }
