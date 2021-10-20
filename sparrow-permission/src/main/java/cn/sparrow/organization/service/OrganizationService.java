@@ -1,8 +1,12 @@
 package cn.sparrow.organization.service;
 
 import java.util.Set;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import cn.sparrow.model.common.MyTree;
 import cn.sparrow.model.organization.Organization;
 import cn.sparrow.model.organization.OrganizationGroup;
@@ -31,11 +35,17 @@ public class OrganizationService {
   @Autowired
   OrganizationGroupRepository organizationGroupRepository;
   @Autowired OrganizationRepository organizationRepository;
-
+  
+  public Organization add(Organization organization) {
+    Organization org = organizationRepository.save(organization);
+    if(organization.getParentId()!=null)
+      organizationRelationRepository.save(new OrganizationRelation(new OrganizationRelationPK(org.getId(),organization.getParentId())));
+    return org;
+  }
 
   public void addRelations(Set<OrganizationRelationPK> ids) {
     ids.forEach(f -> {
-      organizationRelationRepository.save(new OrganizationRelation(f));
+      organizationRelationRepository.saveAndFlush(new OrganizationRelation(f));
     });
   }
 
@@ -47,7 +57,7 @@ public class OrganizationService {
 
   public void addRoles(Set<OrganizationRolePK> ids) {
     ids.forEach(f -> {
-      organizationRoleRepository.save(new OrganizationRole(f));
+      organizationRoleRepository.saveAndFlush(new OrganizationRole(f));
     });
   }
 
@@ -59,7 +69,7 @@ public class OrganizationService {
 
   public void addLevels(Set<OrganizationLevelPK> ids) {
     ids.forEach(f -> {
-      organizationLevelRepository.save(new OrganizationLevel(f));
+      organizationLevelRepository.saveAndFlush(new OrganizationLevel(f));
     });
   }
 
@@ -71,7 +81,7 @@ public class OrganizationService {
 
   public void addGroups(Set<OrganizationGroupPK> ids) {
     ids.forEach(f -> {
-      organizationGroupRepository.save(new OrganizationGroup(f));
+      organizationGroupRepository.saveAndFlush(new OrganizationGroup(f));
     });
   }
 
@@ -82,13 +92,27 @@ public class OrganizationService {
   }
 
   public MyTree<Organization> getTree(String parentId) {
-    MyTree<Organization> myTree = new MyTree<Organization>(parentId==null?null:organizationRepository.findById(parentId).orElse(null));
-    buildTree(myTree);
-    return myTree;
+    
+    if(parentId==null) {
+      MyTree<Organization> rootTree = new MyTree<Organization>(null);
+      organizationRepository.findByRoot(true).forEach(f->{
+        MyTree<Organization> myTree = new MyTree<Organization>(f);
+        buildTree(myTree);
+        rootTree.getChildren().add(myTree);
+      });
+      
+      return rootTree;
+    }else {
+      MyTree<Organization> myTree = new MyTree<Organization>(organizationRepository.findById(parentId).orElse(null));
+      buildTree(myTree);
+      return myTree;
+    }
+    
+    
   }
 
   public void buildTree(MyTree<Organization> myTree) {
-    organizationRelationRepository.findByParentId(myTree.getMe()==null?null:myTree.getMe().getId()).forEach(f -> {
+    organizationRelationRepository.findByIdParentId(myTree.getMe()==null?null:myTree.getMe().getId()).forEach(f -> {
       MyTree<Organization> leaf = new MyTree<Organization>(f.getOrganization());
       // 防止死循环
       if(organizationRelationRepository.findById(new OrganizationRelationPK(f.getId().getParentId(), f.getId().getOrganizationId())).orElse(null)==null)

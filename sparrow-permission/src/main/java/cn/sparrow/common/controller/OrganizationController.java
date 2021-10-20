@@ -27,6 +27,11 @@ public class OrganizationController {
   @Autowired OrganizationService organizationService;
   @Autowired OrganizationRepository organizationRepository;
   
+  @PostMapping("/organizations")
+  public Organization add(@NotNull @RequestBody Organization organization) {
+    return organizationService.add(organization);
+    
+  }
   
   @PostMapping("/organizations/batch")
   public void add(@NotNull @RequestBody List<Organization> organizations) {
@@ -86,7 +91,7 @@ public class OrganizationController {
   
   @GetMapping("/orgranizations/getTreeByParentId")
   public MyTree<Organization> tree(@Nullable @RequestParam("parentId") String parentId){
-    return organizationService.getTree(parentId);
+    return organizationService.getTree(parentId==null||parentId.isBlank()?null:parentId);
   }
   
 }

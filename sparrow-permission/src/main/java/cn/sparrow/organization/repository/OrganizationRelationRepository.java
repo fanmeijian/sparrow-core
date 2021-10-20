@@ -9,5 +9,5 @@ import cn.sparrow.model.organization.OrganizationRelationPK;
 @RepositoryRestResource(exported = false)
 public interface OrganizationRelationRepository extends JpaRepository<OrganizationRelation, OrganizationRelationPK> {
   Set<OrganizationRelation> findByIdOrganizationId(String organizationId);
-  Set<OrganizationRelation> findByParentId(String parentID);
+  Set<OrganizationRelation> findByIdParentId(String parentID);
 }

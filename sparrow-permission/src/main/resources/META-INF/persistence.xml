@@ -41,6 +41,7 @@
 		<class>cn.sparrow.model.permission.UserModelAttributePermission</class>
 		<class>cn.sparrow.model.permission.UserModelAttributePermissionPK</class>
 		<class>cn.sparrow.model.permission.UserModelPermission</class>
+		<class>cn.sparrow.model.app.SparrowApp</class>
 		<class>cn.sparrow.model.permission.UserModelPermissionPK</class>
 		<class>cn.sparrow.model.group.GroupSysrole</class>
 	</persistence-unit>

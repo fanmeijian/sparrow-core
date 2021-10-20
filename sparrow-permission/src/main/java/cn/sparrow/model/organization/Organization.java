@@ -9,7 +9,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-
+import javax.persistence.Transient;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import cn.sparrow.model.common.AbstractSparrowEntity;
 import cn.sparrow.model.common.OrganizationTypeEnum;
 import cn.sparrow.model.group.Group;
@@ -28,6 +29,11 @@ public class Organization extends AbstractSparrowEntity {
 	private String code;
 	private String name;
 	private String stat;
+	private boolean root;
+	// use for create relation at batch
+	@Transient
+	@JsonProperty
+	private String parentId;
 	@Enumerated(EnumType.STRING)
 	private OrganizationTypeEnum type; // 公司还是部门
 

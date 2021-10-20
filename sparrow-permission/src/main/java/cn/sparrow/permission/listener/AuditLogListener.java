@@ -64,6 +64,7 @@ public final class AuditLogListener {
 			entityManager.getTransaction().begin();
 			entityManager.persist(auditLog);
 			entityManager.getTransaction().commit();
+			entityManager.close();
 		} catch (IgniteCheckedException e) {
 			e.printStackTrace();
 		}
