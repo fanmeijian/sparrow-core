@@ -1,10 +1,12 @@
 package cn.sparrow.common.controller;
 
+import java.util.List;
 import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,12 +18,30 @@ import cn.sparrow.model.organization.OrganizationGroupPK;
 import cn.sparrow.model.organization.OrganizationLevelPK;
 import cn.sparrow.model.organization.OrganizationRelationPK;
 import cn.sparrow.model.organization.OrganizationRolePK;
+import cn.sparrow.organization.repository.OrganizationRepository;
 import cn.sparrow.organization.service.OrganizationService;
 
 @RestController
 public class OrganizationController {
 
   @Autowired OrganizationService organizationService;
+  @Autowired OrganizationRepository organizationRepository;
+  
+  
+  @PostMapping("/organizations/batch")
+  public void add(@NotNull @RequestBody List<Organization> organizations) {
+    organizationRepository.saveAll(organizations);
+  }
+  
+  @PatchMapping("/organizations/batch")
+  public void update(@NotNull @RequestBody List<Organization> organizations) {
+    organizationRepository.saveAll(organizations);
+  }
+  
+  @DeleteMapping("/organizations/batch")
+  public void del(@NotNull @RequestBody String[] ids) {
+    organizationRepository.deleteByIdIn(ids);
+  }
   
   
   @PostMapping("/organizations/relations/batch")

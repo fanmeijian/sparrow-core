@@ -21,6 +21,7 @@ import cn.sparrow.model.common.PermissionEnum;
 import cn.sparrow.model.common.PermissionTypeEnum;
 import cn.sparrow.model.permission.AbstractDataPermissionPK;
 import cn.sparrow.model.permission.AbstractModelPermissionPK;
+import cn.sparrow.permission.repository.ModelRepository;
 import cn.sparrow.permission.service.IPermission;
 
 // jpa级别的校验
@@ -29,6 +30,7 @@ public final class ReadPermissionListener {
 	private static Logger logger = LoggerFactory.getLogger(ReadPermissionListener.class);
 	private static IPermission<AbstractDataPermissionPK> dataPermissionService;
 	private static IPermission<AbstractModelPermissionPK> modelPermissionService;
+//	private static ModelRepository modelRepository;
 
 	@Autowired
 	public void setModelIPermission(IPermission<AbstractModelPermissionPK> modelPermissionService) {
@@ -39,6 +41,11 @@ public final class ReadPermissionListener {
 	public void setPermissionService(IPermission<AbstractDataPermissionPK> dataPermissionService) {
 		ReadPermissionListener.dataPermissionService = dataPermissionService;
 	}
+	
+//	@Autowired
+//	public void setModelRepository(ModelRepository modelRepository) {
+//	    ReadPermissionListener.modelRepository = modelRepository;
+//	}
 
 	private void emptyData(Object object) {
 		try {
@@ -110,6 +117,9 @@ public final class ReadPermissionListener {
 		String username = SecurityContextHolder.getContext().getAuthentication() == null ? ""
 				: SecurityContextHolder.getContext().getAuthentication().getName();
 
+		// 将模型对象放进去
+//		abstractEntity.setModel(modelRepository.findById(abstractEntity.getClass().getName()).orElse(null));
+		
 		// 1.模型读者拒绝权限检查
 //    if (permissionService.hasDenyReaderPermission(new Model(abstractEntity.getClass().getName()),
 //        username)) {

@@ -4,15 +4,10 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
 import cn.sparrow.model.common.AbstractSparrowEntity;
-import cn.sparrow.model.permission.Developer;
-import cn.sparrow.model.permission.Menu;
-import cn.sparrow.model.permission.SparrowUrl;
+import cn.sparrow.model.permission.Model;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -40,9 +35,9 @@ public class SparrowApp extends AbstractSparrowEntity {
 //	@JoinColumn(name = "catalog_id")
 //	private Catalog catalog;
 
-//	@OneToMany(targetEntity = Model.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "sparrowApp")
-//	private List<Model> models;
-
+	@OneToMany(targetEntity = Model.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "sparrowApp")
+	private List<Model> models;
+//
 //	@OneToMany(targetEntity = Menu.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "sparrowApp")
 //	private List<Menu> menus;
 //

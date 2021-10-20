@@ -1,19 +1,19 @@
 package cn.sparrow.common.controller;
 
+import java.util.List;
 import java.util.Set;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.sun.istack.NotNull;
-
 import cn.sparrow.common.service.GroupService;
+import cn.sparrow.group.repository.GroupRepository;
 import cn.sparrow.model.common.MyTree;
 import cn.sparrow.model.group.Group;
 import cn.sparrow.model.group.GroupLevelPK;
@@ -26,7 +26,23 @@ import cn.sparrow.model.group.GroupUserPK;
 @RestController
 public class GroupController {
   @Autowired GroupService groupService;
+  @Autowired GroupRepository groupRepository;
   
+  
+  @PostMapping("/groups/batch")
+  public void add(@NotNull @RequestBody final List<Group> groups) {
+    groupRepository.saveAll(groups);
+  }
+
+  @PatchMapping("/groups/batch")
+  public void update(@NotNull @RequestBody final List<Group> groups) {
+    groupRepository.saveAll(groups);
+  }
+
+  @DeleteMapping("/groups/batch")
+  public void delete(@NotNull @RequestBody final String[] ids) {
+    groupRepository.deleteByIdIn(ids);
+  }
   
   @PostMapping("/groups/relations/batch")
   public void addRelations(@NotNull @RequestBody Set<GroupRelationPK> ids) {

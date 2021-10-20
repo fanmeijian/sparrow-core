@@ -14,7 +14,7 @@ import javax.validation.constraints.Size;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.envers.NotAudited;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
+import cn.sparrow.model.permission.Model;
 import cn.sparrow.permission.listener.AuditLogListener;
 import cn.sparrow.permission.listener.ReadPermissionListener;
 import lombok.AllArgsConstructor;
@@ -40,4 +40,8 @@ public class AbstractSparrowEntity extends AbstractOperationLog implements Seria
 	@Size(max = 0)
 	@NotAudited
 	private List<String> errorMessage = new ArrayList<String>();
+	
+//	@Transient
+//	private Model model;
+	
 }
