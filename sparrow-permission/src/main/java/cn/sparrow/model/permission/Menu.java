@@ -28,12 +28,10 @@ public class Menu extends AbstractOperationLog implements Serializable {
   private String id;
 
   private String name;
-
   private String parentId;
-
   private Long sort;
-
   private String url;
+  private boolean system;
 
   // @JsonIgnore
 //  @ManyToOne

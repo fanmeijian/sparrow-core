@@ -46,10 +46,9 @@ public class SparrowUrl extends AbstractOperationLog implements Serializable {
   @GenericGenerator(name = "id-generator", strategy = "uuid")
   @GeneratedValue(generator = "id-generator")
   private String id;
-
   private String name;
-
   private String uri;
+  private boolean system;
 
   @Enumerated(EnumType.STRING)
   private HttpMethod method;
