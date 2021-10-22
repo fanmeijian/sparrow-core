@@ -1,6 +1,8 @@
 package cn.sparrow.model.permission;
 
 import java.io.Serializable;
+
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
 import cn.sparrow.model.common.PermissionEnum;
@@ -21,6 +23,7 @@ public class SysroleModelPermissionPK extends AbstractModelPermissionPK implemen
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	@Column(name = "sysrole_id")
 	private String sysroleId;
 	
 	public SysroleModelPermissionPK(String modelName, PermissionEnum permission, PermissionTypeEnum permissionType, String sysroleId) {

@@ -1,6 +1,7 @@
 package cn.sparrow.model.permission;
 
 import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -25,6 +26,7 @@ public class AbstractModelPermissionPK implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	
+	@Column(name = "model_name")
 	protected String modelName;
 	@Enumerated(EnumType.STRING)
 	@Column(length = 10)

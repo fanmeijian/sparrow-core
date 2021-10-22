@@ -31,6 +31,11 @@ public class ModelController {
 		return modelRepository.findAll(pageable);
 	}
 	
+	@PostMapping("/models/getModelsInId")
+	public Page<Model> getModelsInId(@NotNull @RequestBody String[] ids,@Nullable Pageable pageable) {
+		return modelRepository.findByNameIn(ids,pageable);
+	}
+	
 	@PostMapping("/models/batch")
 	public void add(@NotNull @RequestBody final List<Model> models) {
 		modelRepository.saveAll(models);
