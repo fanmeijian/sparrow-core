@@ -15,6 +15,7 @@ import cn.sparrow.model.permission.SysroleUrlPermissionPK;
 public interface SysroleUrlPermissionRepository extends JpaRepository<SysroleUrlPermission, SysroleUrlPermissionPK> {
 
 	Page<SysroleUrlPermission> findByIdUrlId(String urlId, Pageable pageable);
+	Page<SysroleUrlPermission> findByIdUrlIdIn(String[] urlIds, Pageable pageable);
 	List<SysroleUrlPermission> findByIdUrlId(String urlId);
 	
 	@Transactional

@@ -2,11 +2,11 @@ package cn.sparrow.permission.repository;
 
 
 import java.util.List;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.transaction.annotation.Transactional;
-
 import cn.sparrow.model.common.UrlPermissionEnum;
 import cn.sparrow.model.permission.SparrowUrl;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -20,4 +20,5 @@ public interface UrlRepository extends JpaRepository<SparrowUrl, String> {
   
   @Transactional
   void deleteByIdIn(String[] ids);
+  Page<SparrowUrl> findByIdIn(String[] ids, Pageable unpaged);
 }

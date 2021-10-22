@@ -18,7 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.sun.istack.NotNull;
 
 import cn.sparrow.model.permission.SparrowUrl;
+import cn.sparrow.model.permission.SysroleUrlPermission;
 import cn.sparrow.model.permission.SysroleUrlPermissionPK;
+import cn.sparrow.permission.repository.SysroleUrlPermissionRepository;
 import cn.sparrow.permission.repository.UrlRepository;
 import cn.sparrow.permission.service.UrlService;
 
@@ -27,11 +29,22 @@ public class UrlController {
 
 	@Autowired UrlService urlService;
 	@Autowired UrlRepository urlRepository;
+	@Autowired SysroleUrlPermissionRepository sysroleUrlPermissionRepository;
 	
 	@GetMapping("/sparrowUrls")
 	public Page<SparrowUrl> getUrls(@Nullable Pageable pageable) {
 		return urlRepository.findAll(pageable);
 	}
+	
+	@PostMapping("/sparrowUrls/getPermissionById")
+	public Page<SysroleUrlPermission> getPermissionById(@RequestBody final String[] ids){
+	  return sysroleUrlPermissionRepository.findByIdUrlIdIn(ids, Pageable.unpaged());
+	}
+	
+	@PostMapping("/sparrowUrls/getPermissionByUrlId")
+    public Page<SparrowUrl> getPermissionByUrlId(@RequestBody final String[] ids){
+      return urlRepository.findByIdIn(ids, Pageable.unpaged());
+    }
 
 	@PostMapping("/sparrowUrls/batch")
 	public List<SparrowUrl> add(@NotNull @RequestBody final List<SparrowUrl> urls) {
