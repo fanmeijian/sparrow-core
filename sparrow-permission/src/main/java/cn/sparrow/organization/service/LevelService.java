@@ -1,8 +1,10 @@
 package cn.sparrow.organization.service;
 
 import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import cn.sparrow.model.common.MyTree;
 import cn.sparrow.model.organization.Level;
 import cn.sparrow.model.organization.LevelRelation;
@@ -17,6 +19,14 @@ public class LevelService {
   @Autowired LevelRepository levelRepository;
   
   
+	public Level save(Level role) {
+		Level r = levelRepository.save(role);
+		if (role.getParentId() != null)
+			levelRelationRepository.save(
+					new LevelRelation(new LevelRelationPK(r.getId(), role.getParentId())));
+		return r;
+	}
+  
   public void addRelations(Set<LevelRelationPK> ids) {
     ids.forEach(f -> {
       levelRelationRepository.save(new LevelRelation(f));
@@ -30,11 +40,22 @@ public class LevelService {
   }
   
   
-  public MyTree<Level> getTree(String parentId) {
-    MyTree<Level> myTree = new MyTree<Level>(parentId==null?null:levelRepository.findById(parentId).orElse(null));
-    buildTree(myTree);
-    return myTree;
-  }
+	public MyTree<Level> getTree(String parentId) {
+		if (parentId == null) {
+			MyTree<Level> rootTree = new MyTree<Level>(null);
+			levelRepository.findByRoot(true).forEach(f -> {
+				MyTree<Level> myTree = new MyTree<Level>(f);
+				buildTree(myTree);
+				rootTree.getChildren().add(myTree);
+			});
+
+			return rootTree;
+		} else {
+			MyTree<Level> myTree = new MyTree<Level>(levelRepository.findById(parentId).orElse(null));
+			buildTree(myTree);
+			return myTree;
+		}
+	}
 
   public void buildTree(MyTree<Level> myTree) {
     levelRelationRepository.findByIdParentId(myTree.getMe()==null?null:myTree.getMe().getId()).forEach(f -> {

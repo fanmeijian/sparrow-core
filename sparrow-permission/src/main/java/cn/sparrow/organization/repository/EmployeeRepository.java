@@ -10,4 +10,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @RepositoryRestResource(exported = false)
 public interface EmployeeRepository extends JpaRepository<Employee, String> {
 
+	Iterable<Employee> findByRoot(boolean b);
+
 }

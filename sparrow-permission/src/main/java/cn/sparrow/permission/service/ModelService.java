@@ -75,7 +75,7 @@ public class ModelService {
 
 
     entityTypes.forEach(e -> {
-      Model model = modelRepository.save(new Model(e.getJavaType().getName()));
+      Model model = modelRepository.save(new Model(e.getJavaType().getName(), true));
 
       List<String> attributes = new ArrayList<String>();
       e.getAttributes().forEach(a -> {

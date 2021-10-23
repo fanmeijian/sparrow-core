@@ -1,8 +1,10 @@
 package cn.sparrow.organization.service;
 
 import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import cn.sparrow.model.common.MyTree;
 import cn.sparrow.model.organization.Employee;
 import cn.sparrow.model.organization.EmployeeOrganizationLevel;
@@ -18,62 +20,86 @@ import cn.sparrow.organization.repository.EmployeeRepository;
 
 @Service
 public class EmployeeService {
-  
-  @Autowired EmployeeRelationRepository employeeRelationRepository;
-  @Autowired EmployeeRepository employeeRepository;
-  @Autowired EmployeeOrganizationRoleRepository employeeOrganizationRoleRepository;
-  @Autowired EmployeeOrganizationLevelRepository employeeOrganizationLevelRepository;
 
-  
-  public void addRelations(Set<EmployeeRelationPK> ids) {
-    ids.forEach(f -> {
-      employeeRelationRepository.save(new EmployeeRelation(f));
-    });
-  }
+	@Autowired
+	EmployeeRelationRepository employeeRelationRepository;
+	@Autowired
+	EmployeeRepository employeeRepository;
+	@Autowired
+	EmployeeOrganizationRoleRepository employeeOrganizationRoleRepository;
+	@Autowired
+	EmployeeOrganizationLevelRepository employeeOrganizationLevelRepository;
 
-  public void delRelations(Set<EmployeeRelationPK> ids) {
-    ids.forEach(f -> {
-      employeeRelationRepository.deleteById(f);
-    });
-  }
-  
-  public void addRoles(Set<EmployeeOrganizationRolePK> ids) {
-    ids.forEach(f->{
-      employeeOrganizationRoleRepository.save(new EmployeeOrganizationRole(f));
-    });
-  }
+	public Employee save(Employee employee) {
+		Employee r = employeeRepository.save(employee);
+		if (employee.getParentId() != null)
+			employeeRelationRepository.save(new EmployeeRelation(new EmployeeRelationPK(r.getId(), employee.getParentId())));
+		return r;
+	}
 
-  public void delRoles(Set<EmployeeOrganizationRolePK> ids) {
-    ids.forEach(f->{
-      employeeOrganizationRoleRepository.delete(new EmployeeOrganizationRole(f));
-    });
-  }
-  
-  public void addLevels(Set<EmployeeOrganizationLevelPK> ids) {
-    ids.forEach(f->{
-      employeeOrganizationLevelRepository.save(new EmployeeOrganizationLevel(f));
-    });
-  }
+	public void addRelations(Set<EmployeeRelationPK> ids) {
+		ids.forEach(f -> {
+			employeeRelationRepository.save(new EmployeeRelation(f));
+		});
+	}
 
-  public void delLevels(Set<EmployeeOrganizationLevelPK> ids) {
-    ids.forEach(f->{
-      employeeOrganizationLevelRepository.delete(new EmployeeOrganizationLevel(f));
-    });
-  }
-  
-  public MyTree<Employee> getTree(String parentId) {
-    MyTree<Employee> myTree = new MyTree<Employee>(parentId==null?null:employeeRepository.findById(parentId).orElse(null));
-    buildTree(myTree);
-    return myTree;
-  }
+	public void delRelations(Set<EmployeeRelationPK> ids) {
+		ids.forEach(f -> {
+			employeeRelationRepository.deleteById(f);
+		});
+	}
 
-  public void buildTree(MyTree<Employee> myTree) {
-    employeeRelationRepository.findByIdParentId(myTree.getMe()==null?null:myTree.getMe().getId()).forEach(f -> {	
-      MyTree<Employee> leaf = new MyTree<Employee>(f.getEmployee());
-      // 防止死循环
-      if(employeeRelationRepository.findById(new EmployeeRelationPK(f.getId().getParentId(), f.getId().getEmployeeId())).orElse(null)==null)
-        buildTree(leaf);
-      myTree.getChildren().add(leaf);
-    });
-  }
+	public void addRoles(Set<EmployeeOrganizationRolePK> ids) {
+		ids.forEach(f -> {
+			employeeOrganizationRoleRepository.save(new EmployeeOrganizationRole(f));
+		});
+	}
+
+	public void delRoles(Set<EmployeeOrganizationRolePK> ids) {
+		ids.forEach(f -> {
+			employeeOrganizationRoleRepository.delete(new EmployeeOrganizationRole(f));
+		});
+	}
+
+	public void addLevels(Set<EmployeeOrganizationLevelPK> ids) {
+		ids.forEach(f -> {
+			employeeOrganizationLevelRepository.save(new EmployeeOrganizationLevel(f));
+		});
+	}
+
+	public void delLevels(Set<EmployeeOrganizationLevelPK> ids) {
+		ids.forEach(f -> {
+			employeeOrganizationLevelRepository.delete(new EmployeeOrganizationLevel(f));
+		});
+	}
+
+	public MyTree<Employee> getTree(String parentId) {
+		if (parentId == null) {
+			MyTree<Employee> rootTree = new MyTree<Employee>(null);
+			employeeRepository.findByRoot(true).forEach(f -> {
+				MyTree<Employee> myTree = new MyTree<Employee>(f);
+				buildTree(myTree);
+				rootTree.getChildren().add(myTree);
+			});
+
+			return rootTree;
+		} else {
+			MyTree<Employee> myTree = new MyTree<Employee>(employeeRepository.findById(parentId).orElse(null));
+			buildTree(myTree);
+			return myTree;
+		}
+	}
+
+	public void buildTree(MyTree<Employee> myTree) {
+		employeeRelationRepository.findByIdParentId(myTree.getMe() == null ? null : myTree.getMe().getId())
+				.forEach(f -> {
+					MyTree<Employee> leaf = new MyTree<Employee>(f.getEmployee());
+					// 防止死循环
+					if (employeeRelationRepository
+							.findById(new EmployeeRelationPK(f.getId().getParentId(), f.getId().getEmployeeId()))
+							.orElse(null) == null)
+						buildTree(leaf);
+					myTree.getChildren().add(leaf);
+				});
+	}
 }

@@ -20,6 +20,7 @@ import cn.sparrow.model.organization.Employee;
 import cn.sparrow.model.organization.EmployeeOrganizationLevelPK;
 import cn.sparrow.model.organization.EmployeeOrganizationRolePK;
 import cn.sparrow.model.organization.EmployeeRelationPK;
+import cn.sparrow.model.organization.Role;
 import cn.sparrow.organization.service.EmployeeService;
 import cn.sparrow.organization.service.OrganizationService;
 
@@ -35,9 +36,20 @@ public class EmployeeController {
   @Autowired OrganizationService organizationService;
   @Autowired EmployeeService employeeService;
   
+  
+  @PostMapping("/employees")
+	public Employee save(@NotNull @RequestBody Employee employee) {
+		return employeeService.save(employee);
+	}
+	
+	@GetMapping("/employees/getModelName")
+	public String getModelName() {
+		return "{\"modelName\":\"" +Role.class.getName() + "\"}";
+	}
+  
   @GetMapping("/employees/getTreeByParentId")
   public MyTree<Employee> tree(@Nullable @RequestParam("parentId") String parentId){
-    return employeeService.getTree(parentId);
+		return employeeService.getTree(parentId == null || parentId.isBlank() ? null : parentId);
   }
   
   @PostMapping("/employees/batch")

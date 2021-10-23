@@ -8,6 +8,9 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import cn.sparrow.model.common.AbstractSparrowEntity;
 import lombok.Getter;
@@ -25,6 +28,13 @@ public class Employee extends AbstractSparrowEntity {
 	private static final long serialVersionUID = 1L;
 	
 	private String name;
+	private boolean root;
+
+	// use for create relation at batch
+	@Transient
+	@JsonProperty
+	private String parentId;
+	
 	@ManyToOne
 	@JoinColumn(name = "organization_id")
 	private Organization organization;

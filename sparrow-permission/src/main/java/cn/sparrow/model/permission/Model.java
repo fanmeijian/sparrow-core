@@ -32,6 +32,7 @@ public class Model extends AbstractOperationLog implements Serializable {
   private String name;
   private String nameTxt;
   private String remark;
+  private boolean system;
 
   // @ManyToOne
   // @JoinColumn(name = "catalog_id")
@@ -47,6 +48,11 @@ public class Model extends AbstractOperationLog implements Serializable {
   public Model(String name) {
     this.name = name;
   }
+  
+  public Model(String name, boolean system) {
+	    this.name = name;
+	    this.system = system;
+	  }
   
   // @OneToMany(targetEntity = ModelReader.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY,
   // mappedBy = "model")

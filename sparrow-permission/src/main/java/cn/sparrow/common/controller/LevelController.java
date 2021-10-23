@@ -15,6 +15,7 @@ import com.sun.istack.NotNull;
 import cn.sparrow.model.common.MyTree;
 import cn.sparrow.model.organization.Level;
 import cn.sparrow.model.organization.LevelRelationPK;
+import cn.sparrow.model.organization.Role;
 import cn.sparrow.organization.repository.LevelRepository;
 import cn.sparrow.organization.service.LevelService;
 
@@ -23,6 +24,16 @@ public class LevelController {
 
   @Autowired LevelService levelService;
   @Autowired LevelRepository levelRepository;
+  
+  @PostMapping("/levels")
+	public Level save(@NotNull @RequestBody Level level) {
+		return levelService.save(level);
+	}
+	
+	@GetMapping("/levels/getModelName")
+	public String getModelName() {
+		return "{\"modelName\":\"" +Role.class.getName() + "\"}";
+	}
   
   @PostMapping("/levels/batch")
   public void add(@NotNull @RequestBody final List<Level> levels) {
@@ -52,6 +63,6 @@ public class LevelController {
   
   @GetMapping("/levels/getTreeByParentId")
   public MyTree<Level> tree(@Nullable @RequestParam("parentId") String parentId){
-    return levelService.getTree(parentId);
+		return levelService.getTree(parentId == null || parentId.isBlank() ? null : parentId);
   }
 }

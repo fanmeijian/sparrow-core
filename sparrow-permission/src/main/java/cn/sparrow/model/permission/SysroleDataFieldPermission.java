@@ -3,7 +3,10 @@ package cn.sparrow.model.permission;
 import java.io.Serializable;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.Table;
+
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import cn.sparrow.model.common.AbstractOperationLog;
 import lombok.AllArgsConstructor;
@@ -21,6 +24,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Table(name = "spr_sysrole_data_field_permission")
+@EntityListeners(AuditingEntityListener.class)
 public class SysroleDataFieldPermission extends AbstractOperationLog implements Serializable {
 
 	@EmbeddedId

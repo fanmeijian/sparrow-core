@@ -14,7 +14,9 @@ import javax.validation.constraints.Size;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.envers.NotAudited;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import cn.sparrow.model.permission.Model;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import cn.sparrow.permission.listener.AuditLogListener;
 import cn.sparrow.permission.listener.ReadPermissionListener;
 import lombok.AllArgsConstructor;
@@ -35,6 +37,10 @@ public class AbstractSparrowEntity extends AbstractOperationLog implements Seria
 	@GenericGenerator(name = "id-generator", strategy = "uuid")
 	@GeneratedValue(generator = "id-generator")
 	protected String id;
+	
+	@Transient
+	@JsonProperty
+	protected String modelName = this.getClass().getName();
 	
 	@Transient
 	@Size(max = 0)

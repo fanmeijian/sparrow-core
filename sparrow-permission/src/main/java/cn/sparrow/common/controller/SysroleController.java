@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import cn.sparrow.model.permission.Sysrole;
@@ -31,27 +32,27 @@ public class SysroleController {
   }
   
   @PostMapping("/sysroles/batch")
-  public void add(@NotNull List<Sysrole> sysroles) {
+  public void add(@NotNull @RequestBody List<Sysrole> sysroles) {
 	  sysroleRepository.saveAll(sysroles);
   }
   
   @PatchMapping("/sysroles/batch")
-  public void udpate(@NotNull List<Sysrole> sysroles) {
+  public void udpate(@NotNull @RequestBody List<Sysrole> sysroles) {
 	  sysroleRepository.saveAll(sysroles);
   }
   
   @DeleteMapping("/sysroles/batch")
-  public void delete(@NotNull String[] ids) {
+  public void delete(@NotNull @RequestBody String[] ids) {
 	  sysroleRepository.deleteByIdIn(ids);
   }
   
   @PostMapping("/sysroles/permissions")
-  public void addPermissions(SysrolePermission permission) {
+  public void addPermissions(@NotNull @RequestBody SysrolePermission permission) {
 	  sysroleService.addPermissions(permission);
   }
   
   @DeleteMapping("/sysroles/permissions")
-  public void delPermissions(SysrolePermission permission) {
+  public void delPermissions(@NotNull @RequestBody SysrolePermission permission) {
 	  sysroleService.delPermissions(permission);
   }
   
