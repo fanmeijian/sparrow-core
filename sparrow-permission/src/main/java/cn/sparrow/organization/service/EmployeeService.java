@@ -4,6 +4,7 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import cn.sparrow.model.common.MyTree;
 import cn.sparrow.model.organization.Employee;
@@ -32,8 +33,11 @@ public class EmployeeService {
 
 	public Employee save(Employee employee) {
 		Employee r = employeeRepository.save(employee);
-		if (employee.getParentId() != null)
-			employeeRelationRepository.save(new EmployeeRelation(new EmployeeRelationPK(r.getId(), employee.getParentId())));
+		if(employee.getParentIds()!=null) {
+			employee.getParentIds().forEach(f->{
+				employeeRelationRepository.save(new EmployeeRelation(new EmployeeRelationPK(employee.getId(),f)));
+	    	});
+	    }
 		return r;
 	}
 
@@ -102,4 +106,10 @@ public class EmployeeService {
 					myTree.getChildren().add(leaf);
 				});
 	}
+
+	  @Transactional
+	  public void delBatch(String[] ids) {
+		  employeeRelationRepository.deleteByIdEmployeeIdInOrIdParentIdIn(ids,ids);
+		  employeeRepository.deleteByIdIn(ids);
+	  }
 }

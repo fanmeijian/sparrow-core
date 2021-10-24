@@ -1,5 +1,6 @@
 package cn.sparrow.model.organization;
 
+import java.util.List;
 import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
@@ -30,7 +31,7 @@ public class Role extends AbstractSparrowEntity {
 	// use for create relation at batch
 	@Transient
 	@JsonProperty
-	private String parentId;
+	private List<String> parentIds;
 
 	@ManyToMany(mappedBy = "roles")
 	private Set<Organization> organizations;

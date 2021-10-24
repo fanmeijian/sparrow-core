@@ -2,6 +2,7 @@ package cn.sparrow.common.controller;
 
 import java.util.List;
 import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -11,7 +12,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
 import com.sun.istack.NotNull;
+
 import cn.sparrow.model.common.MyTree;
 import cn.sparrow.model.organization.Organization;
 import cn.sparrow.model.organization.OrganizationGroupPK;
@@ -33,6 +36,11 @@ public class OrganizationController {
     
   }
   
+  @GetMapping("/organizations/getModelName")
+	public String getModelName() {
+		return "{\"modelName\":\"" +Organization.class.getName() + "\"}";
+	}
+  
   @PostMapping("/organizations/batch")
   public void add(@NotNull @RequestBody List<Organization> organizations) {
     organizationRepository.saveAll(organizations);
@@ -45,7 +53,7 @@ public class OrganizationController {
   
   @DeleteMapping("/organizations/batch")
   public void del(@NotNull @RequestBody String[] ids) {
-    organizationRepository.deleteByIdIn(ids);
+	  organizationService.delBatch(ids);
   }
   
   

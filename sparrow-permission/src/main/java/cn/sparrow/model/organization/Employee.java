@@ -1,5 +1,6 @@
 package cn.sparrow.model.organization;
 
+import java.util.List;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -28,12 +29,13 @@ public class Employee extends AbstractSparrowEntity {
 	private static final long serialVersionUID = 1L;
 	
 	private String name;
+	private String code;
 	private boolean root;
 
 	// use for create relation at batch
 	@Transient
 	@JsonProperty
-	private String parentId;
+	private List<String> parentIds;
 	
 	@ManyToOne
 	@JoinColumn(name = "organization_id")

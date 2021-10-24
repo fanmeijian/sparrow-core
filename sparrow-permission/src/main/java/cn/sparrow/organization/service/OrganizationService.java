@@ -1,12 +1,11 @@
 package cn.sparrow.organization.service;
 
 import java.util.Set;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import cn.sparrow.model.common.MyTree;
 import cn.sparrow.model.organization.Organization;
 import cn.sparrow.model.organization.OrganizationGroup;
@@ -38,9 +37,18 @@ public class OrganizationService {
   
   public Organization add(Organization organization) {
     Organization org = organizationRepository.save(organization);
-    if(organization.getParentId()!=null)
-      organizationRelationRepository.save(new OrganizationRelation(new OrganizationRelationPK(org.getId(),organization.getParentId())));
+    if(organization.getParentIds()!=null) {
+    	organization.getParentIds().forEach(f->{
+            organizationRelationRepository.save(new OrganizationRelation(new OrganizationRelationPK(org.getId(),f)));
+    	});
+    }
     return org;
+  }
+  
+  @Transactional
+  public void delBatch(String[] ids) {
+	  organizationRelationRepository.deleteByIdOrganizationIdInOrIdParentIdIn(ids,ids);
+	  organizationRepository.deleteByIdIn(ids);
   }
 
   public void addRelations(Set<OrganizationRelationPK> ids) {

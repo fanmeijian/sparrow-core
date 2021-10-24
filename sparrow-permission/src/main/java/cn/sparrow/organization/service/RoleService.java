@@ -4,6 +4,7 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import cn.sparrow.model.common.MyTree;
 import cn.sparrow.model.organization.Role;
@@ -62,9 +63,17 @@ public class RoleService {
 
 	public Role save(Role role) {
 		Role r = roleRepository.save(role);
-		if (role.getParentId() != null)
-			roleRelationRepository.save(
-					new RoleRelation(new RoleRelationPK(r.getId(), role.getParentId())));
+	    if(role.getParentIds()!=null) {
+	    	role.getParentIds().forEach(f->{
+	    		roleRelationRepository.save(new RoleRelation(new RoleRelationPK(role.getId(),f)));
+	    	});
+	    }
 		return r;
 	}
+
+	@Transactional
+	  public void delBatch(String[] ids) {
+		  roleRelationRepository.deleteByIdRoleIdInOrIdParentIdIn(ids,ids);
+		  roleRepository.deleteByIdIn(ids);
+	  }
 }

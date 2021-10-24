@@ -33,10 +33,10 @@ public class RoleController {
 	public Role save(@NotNull @RequestBody Role role) {
 		return roleService.save(role);
 	}
-	
+
 	@GetMapping("/roles/getModelName")
 	public String getModelName() {
-		return "{\"modelName\":\"" +Role.class.getName() + "\"}";
+		return "{\"modelName\":\"" + Role.class.getName() + "\"}";
 	}
 
 	@PostMapping("/roles/batch")
@@ -51,7 +51,7 @@ public class RoleController {
 
 	@DeleteMapping("/roles/batch")
 	public void delete(@NotNull @RequestBody final String[] ids) {
-		roleRepository.deleteByIdIn(ids);
+		roleService.delBatch(ids);
 	}
 
 	@PostMapping("/roles/relations")

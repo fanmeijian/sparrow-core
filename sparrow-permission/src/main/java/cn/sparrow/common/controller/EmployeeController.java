@@ -62,8 +62,8 @@ public class EmployeeController {
   }
   
   @DeleteMapping("/employees/batch")
-  public void delete(@NotNull @RequestBody List<String> ids) {
-    
+  public void delete(@NotNull @RequestBody String[] ids) {
+	  employeeService.delBatch(ids);
   }
   
   @PostMapping("/employees/roles/batch")

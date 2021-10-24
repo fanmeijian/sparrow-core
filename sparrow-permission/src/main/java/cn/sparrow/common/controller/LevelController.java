@@ -22,47 +22,48 @@ import cn.sparrow.organization.service.LevelService;
 @RestController
 public class LevelController {
 
-  @Autowired LevelService levelService;
-  @Autowired LevelRepository levelRepository;
-  
-  @PostMapping("/levels")
+	@Autowired
+	LevelService levelService;
+	@Autowired
+	LevelRepository levelRepository;
+
+	@PostMapping("/levels")
 	public Level save(@NotNull @RequestBody Level level) {
 		return levelService.save(level);
 	}
-	
+
 	@GetMapping("/levels/getModelName")
 	public String getModelName() {
-		return "{\"modelName\":\"" +Role.class.getName() + "\"}";
+		return "{\"modelName\":\"" + Role.class.getName() + "\"}";
 	}
-  
-  @PostMapping("/levels/batch")
-  public void add(@NotNull @RequestBody final List<Level> levels) {
-    levelRepository.saveAll(levels);
-  }
 
-  @PatchMapping("/levels/batch")
-  public void update(@NotNull @RequestBody final List<Level> levels) {
-    levelRepository.saveAll(levels);
-  }
+	@PostMapping("/levels/batch")
+	public void add(@NotNull @RequestBody final List<Level> levels) {
+		levelRepository.saveAll(levels);
+	}
 
-  @DeleteMapping("/levels/batch")
-  public void delete(@NotNull @RequestBody final String[] ids) {
-    levelRepository.deleteByIdIn(ids);
-  }
-  
-  @PostMapping("/levels/relations/batch")
-  public void addRelations(@NotNull @RequestBody Set<LevelRelationPK> ids) {
-    levelService.addRelations(ids);
-  }
-  
-  @DeleteMapping("/levels/relations/batch")
-  public void delRelations(@NotNull @RequestBody Set<LevelRelationPK> ids) {
-    levelService.delRelations(ids);
-  }
-  
-  
-  @GetMapping("/levels/getTreeByParentId")
-  public MyTree<Level> tree(@Nullable @RequestParam("parentId") String parentId){
+	@PatchMapping("/levels/batch")
+	public void update(@NotNull @RequestBody final List<Level> levels) {
+		levelRepository.saveAll(levels);
+	}
+
+	@DeleteMapping("/levels/batch")
+	public void delete(@NotNull @RequestBody final String[] ids) {
+		levelService.delBatch(ids);
+	}
+
+	@PostMapping("/levels/relations/batch")
+	public void addRelations(@NotNull @RequestBody Set<LevelRelationPK> ids) {
+		levelService.addRelations(ids);
+	}
+
+	@DeleteMapping("/levels/relations/batch")
+	public void delRelations(@NotNull @RequestBody Set<LevelRelationPK> ids) {
+		levelService.delRelations(ids);
+	}
+
+	@GetMapping("/levels/getTreeByParentId")
+	public MyTree<Level> tree(@Nullable @RequestParam("parentId") String parentId) {
 		return levelService.getTree(parentId == null || parentId.isBlank() ? null : parentId);
-  }
+	}
 }
