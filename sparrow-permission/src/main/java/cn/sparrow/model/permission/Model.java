@@ -2,15 +2,20 @@ package cn.sparrow.model.permission;
 
 import java.io.Serializable;
 import java.util.List;
+
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 import cn.sparrow.model.app.SparrowApp;
 import cn.sparrow.model.common.AbstractOperationLog;
 import lombok.AllArgsConstructor;
@@ -33,13 +38,15 @@ public class Model extends AbstractOperationLog implements Serializable {
   private String nameTxt;
   private String remark;
   private boolean system;
+  @Column(name = "app_id")
+  private String appId;
 
   // @ManyToOne
   // @JoinColumn(name = "catalog_id")
   // private Catalog catalog;
 
    @ManyToOne
-   @JoinColumn(name = "app_id")
+   @JoinColumn(name = "app_id",insertable = false, updatable = false)
    private SparrowApp sparrowApp;
 
   @OneToMany(targetEntity = ModelAttribute.class, cascade = CascadeType.ALL, mappedBy = "model")

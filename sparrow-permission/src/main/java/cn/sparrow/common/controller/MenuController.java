@@ -27,6 +27,11 @@ public class MenuController {
 	@Autowired MenuService menuService;
 	@Autowired MenuRepository menuRepository;
 
+	@GetMapping("/menus/getModelName")
+	public String getModelName() {
+		return "{\"modelName\":\"" + Menu.class.getName() + "\"}";
+	}
+	
 	@GetMapping("/menus/getTreeByParentId")
 	public MyTree<Menu> getTreeByParentId(@Nullable @Param("parentId") String parentId) {
 		return menuService.getTreeByParentId(parentId);
@@ -47,6 +52,12 @@ public class MenuController {
 		return menuService.getTreeByUsername(principal.getName());
 	}
 
+	@PostMapping("/menus")
+	public void save(@NotNull @RequestBody final Menu menu) {
+		menuRepository.save(menu);
+	}
+
+	
 	@PostMapping("/menus/batch")
 	public void add(@NotNull @RequestBody final List<Menu> menus) {
 		menuRepository.saveAll(menus);
