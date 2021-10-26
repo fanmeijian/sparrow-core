@@ -12,12 +12,13 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import cn.sparrow.model.common.AbstractSparrowEntity;
 import cn.sparrow.model.common.OrganizationTypeEnum;
 import cn.sparrow.model.group.Group;
+import cn.sparrow.organization.repository.OrganizationRelationRepository;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -40,6 +41,10 @@ public class Organization extends AbstractSparrowEntity {
 	private List<String> parentIds;
 	@Enumerated(EnumType.STRING)
 	private OrganizationTypeEnum type; // 公司还是部门
+	
+	@Transient
+    @JsonProperty
+    private boolean hasChildren;
 
 	@ManyToMany(targetEntity = Role.class, cascade = CascadeType.ALL)
 	@JoinTable(name = "spr_organization_role", joinColumns = {

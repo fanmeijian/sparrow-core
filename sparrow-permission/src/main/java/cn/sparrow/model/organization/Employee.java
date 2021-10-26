@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -40,13 +41,13 @@ public class Employee extends AbstractSparrowEntity {
 	@ManyToOne
 	@JoinColumn(name = "organization_id")
 	private Organization organization;
-	@ManyToMany(cascade = CascadeType.ALL)
+	@ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
 	@JoinTable(name = "spr_employee_organization_role", joinColumns = {
-			@JoinColumn(name = "username") }, inverseJoinColumns = { @JoinColumn(name = "organization_id"),
+			@JoinColumn(name = "employee_id") }, inverseJoinColumns = { @JoinColumn(name = "organization_id"),
 					@JoinColumn(name = "role_id") })
 	private Set<OrganizationRole> organizationRoles;
 
-	@ManyToMany(cascade = CascadeType.ALL)
+	@ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
 	@JoinTable(name = "spr_employee_organization_level", joinColumns = {
 			@JoinColumn(name = "username") }, inverseJoinColumns = { @JoinColumn(name = "organization_id"),
 					@JoinColumn(name = "level_id") })

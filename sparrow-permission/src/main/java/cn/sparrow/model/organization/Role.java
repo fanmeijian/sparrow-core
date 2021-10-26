@@ -6,7 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import cn.sparrow.model.common.AbstractSparrowEntity;
@@ -29,13 +29,25 @@ public class Role extends AbstractSparrowEntity {
 	private boolean root;
 
 	// use for create relation at batch
+//	@Transient
+//	@JsonProperty
+//	private List<String> parentIds;
+	
 	@Transient
-	@JsonProperty
-	private List<String> parentIds;
+    @JsonProperty
+    private List<OrganizationRolePK> parentIds;
+	
+	
+	@Transient
+    @JsonProperty
+    private List<String> organizationIds;
+	
 
+	@JsonIgnore
 	@ManyToMany(mappedBy = "roles")
 	private Set<Organization> organizations;
 
+	@JsonIgnore
 	@ManyToMany(mappedBy = "roles")
 	private Set<Group> groups;
 

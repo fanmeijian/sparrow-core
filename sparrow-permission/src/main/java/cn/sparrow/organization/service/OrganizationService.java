@@ -1,11 +1,12 @@
 package cn.sparrow.organization.service;
 
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
-
+import javax.validation.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import cn.sparrow.model.common.MyTree;
 import cn.sparrow.model.organization.Organization;
 import cn.sparrow.model.organization.OrganizationGroup;
@@ -33,22 +34,50 @@ public class OrganizationService {
   OrganizationLevelRepository organizationLevelRepository;
   @Autowired
   OrganizationGroupRepository organizationGroupRepository;
-  @Autowired OrganizationRepository organizationRepository;
-  
+  @Autowired
+  OrganizationRepository organizationRepository;
+  @Autowired RoleService roleService;
+
   public Organization add(Organization organization) {
     Organization org = organizationRepository.save(organization);
-    if(organization.getParentIds()!=null) {
-    	organization.getParentIds().forEach(f->{
-            organizationRelationRepository.save(new OrganizationRelation(new OrganizationRelationPK(org.getId(),f)));
-    	});
+    if (organization.getParentIds() != null) {
+      organization.getParentIds().forEach(f -> {
+        organizationRelationRepository
+            .save(new OrganizationRelation(new OrganizationRelationPK(org.getId(), f)));
+      });
     }
     return org;
   }
-  
+
+  public List<OrganizationRole> getOrganizationRoles(@NotBlank String organizationId) {
+    List<OrganizationRole> roles = organizationRoleRepository.findByIdOrganizationId(organizationId);
+    roles.forEach(f->{
+      f.setHasChildren(roleService.getChildrent(f.getId()).size()>0?true:false);
+    });
+    return roles;
+  }
+
+  public Set<OrganizationRelation> getChildren(String parentId) {
+    Set<OrganizationRelation> organizationRelations = new HashSet<OrganizationRelation>();
+    if (parentId == null || parentId.isBlank()) {
+
+      organizationRepository.findByRoot(true).forEach(f -> {
+        organizationRelations.add(new OrganizationRelation(f));
+      });
+    } else
+      organizationRelations.addAll(organizationRelationRepository.findByIdParentId(parentId));
+    organizationRelations.forEach(f -> {
+      f.getOrganization().setHasChildren(
+          organizationRelationRepository.countByIdParentId(f.getOrganization().getId()) > 0 ? true
+              : false);
+    });
+    return organizationRelations;
+  }
+
   @Transactional
   public void delBatch(String[] ids) {
-	  organizationRelationRepository.deleteByIdOrganizationIdInOrIdParentIdIn(ids,ids);
-	  organizationRepository.deleteByIdIn(ids);
+    organizationRelationRepository.deleteByIdOrganizationIdInOrIdParentIdIn(ids, ids);
+    organizationRepository.deleteByIdIn(ids);
   }
 
   public void addRelations(Set<OrganizationRelationPK> ids) {
@@ -100,33 +129,37 @@ public class OrganizationService {
   }
 
   public MyTree<Organization> getTree(String parentId) {
-    
-    if(parentId==null) {
+
+    if (parentId == null) {
       MyTree<Organization> rootTree = new MyTree<Organization>(null);
-      organizationRepository.findByRoot(true).forEach(f->{
+      organizationRepository.findByRoot(true).forEach(f -> {
         MyTree<Organization> myTree = new MyTree<Organization>(f);
         buildTree(myTree);
         rootTree.getChildren().add(myTree);
       });
-      
+
       return rootTree;
-    }else {
-      MyTree<Organization> myTree = new MyTree<Organization>(organizationRepository.findById(parentId).orElse(null));
+    } else {
+      MyTree<Organization> myTree =
+          new MyTree<Organization>(organizationRepository.findById(parentId).orElse(null));
       buildTree(myTree);
       return myTree;
     }
-    
-    
+
+
   }
 
   public void buildTree(MyTree<Organization> myTree) {
-    organizationRelationRepository.findByIdParentId(myTree.getMe()==null?null:myTree.getMe().getId()).forEach(f -> {
-      MyTree<Organization> leaf = new MyTree<Organization>(f.getOrganization());
-      // 防止死循环
-      if(organizationRelationRepository.findById(new OrganizationRelationPK(f.getId().getParentId(), f.getId().getOrganizationId())).orElse(null)==null)
-        buildTree(leaf);
-      myTree.getChildren().add(leaf);
-    });
+    organizationRelationRepository
+        .findByIdParentId(myTree.getMe() == null ? null : myTree.getMe().getId()).forEach(f -> {
+          MyTree<Organization> leaf = new MyTree<Organization>(f.getOrganization());
+          // 防止死循环
+          if (organizationRelationRepository.findById(
+              new OrganizationRelationPK(f.getId().getParentId(), f.getId().getOrganizationId()))
+              .orElse(null) == null)
+            buildTree(leaf);
+          myTree.getChildren().add(leaf);
+        });
   }
 
 }

@@ -53,10 +53,8 @@ public class EmployeeService {
 		});
 	}
 
-	public void addRoles(Set<EmployeeOrganizationRolePK> ids) {
-		ids.forEach(f -> {
-			employeeOrganizationRoleRepository.save(new EmployeeOrganizationRole(f));
-		});
+	public void addRoles(Set<EmployeeOrganizationRole> ids) {
+      employeeOrganizationRoleRepository.saveAll(ids);
 	}
 
 	public void delRoles(Set<EmployeeOrganizationRolePK> ids) {

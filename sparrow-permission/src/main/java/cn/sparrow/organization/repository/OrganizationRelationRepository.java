@@ -15,4 +15,5 @@ public interface OrganizationRelationRepository extends JpaRepository<Organizati
   
   @Transactional
   void deleteByIdOrganizationIdInOrIdParentIdIn(String[] ids1,String[] ids2);
+  int countByIdParentId(String id);
 }

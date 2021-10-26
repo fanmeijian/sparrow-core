@@ -2,6 +2,7 @@ package cn.sparrow.model.organization;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -19,7 +20,7 @@ public class OrganizationRelation {
   @EmbeddedId
   private OrganizationRelationPK id;
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "organization_id", insertable = false, updatable = false)
   private Organization organization;
 
@@ -29,6 +30,10 @@ public class OrganizationRelation {
   
   public OrganizationRelation(OrganizationRelationPK id) {
     this.id = id;
+  }
+
+  public OrganizationRelation(Organization f) {
+    this.organization = f;
   }
 
 }

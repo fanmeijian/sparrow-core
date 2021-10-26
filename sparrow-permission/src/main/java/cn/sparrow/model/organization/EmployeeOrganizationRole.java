@@ -2,9 +2,10 @@ package cn.sparrow.model.organization;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.Table;
 import org.springframework.data.domain.Persistable;
-
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import cn.sparrow.model.common.AbstractOperationLog;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,6 +15,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "spr_employee_organization_role")
+@EntityListeners(AuditingEntityListener.class)
 public class EmployeeOrganizationRole extends AbstractOperationLog implements Persistable<EmployeeOrganizationRolePK>{
 
 	/**
