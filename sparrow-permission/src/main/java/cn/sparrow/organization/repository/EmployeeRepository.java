@@ -1,5 +1,10 @@
 package cn.sparrow.organization.repository;
 
+import java.util.List;
+
+import javax.validation.constraints.NotBlank;
+
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,5 +20,7 @@ public interface EmployeeRepository extends JpaRepository<Employee, String> {
 
 	@Transactional
 	void deleteByIdIn(String[] ids);
+
+	List<Employee> findByOrganizationId(@NotBlank String organizationId, Pageable pageable);
 
 }

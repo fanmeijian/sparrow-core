@@ -1,9 +1,19 @@
 package cn.sparrow.model.organization;
 
+import javax.persistence.CascadeType;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
 import org.springframework.data.domain.Persistable;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import cn.sparrow.model.common.AbstractOperationLog;
 import lombok.Getter;
@@ -13,7 +23,9 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "spr_employee_organization_level")
-public class EmployeeOrganizationLevel extends AbstractOperationLog implements Persistable<EmployeeOrganizationLevelPK>{
+@EntityListeners(AuditingEntityListener.class)
+public class EmployeeOrganizationLevel extends AbstractOperationLog
+		implements Persistable<EmployeeOrganizationLevelPK> {
 
 	/**
 	 * 
@@ -23,18 +35,28 @@ public class EmployeeOrganizationLevel extends AbstractOperationLog implements P
 	private EmployeeOrganizationLevelPK id;
 	private String stat;
 
-	public EmployeeOrganizationLevel(){
+	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
+	@JoinColumns({
+			@JoinColumn(name = "organization_id", referencedColumnName = "organization_id", insertable = false, updatable = false),
+			@JoinColumn(name = "level_id", referencedColumnName = "level_id", insertable = false, updatable = false) })
+	private OrganizationLevel organizationLevel;
+
+	@JsonIgnore
+	@ManyToOne
+	@JoinColumn(name = "employee_id", insertable = false, updatable = false)
+	private Employee employee;
+
+	public EmployeeOrganizationLevel() {
 
 	}
 
 	public EmployeeOrganizationLevel(EmployeeOrganizationLevelPK f) {
-    this.id = f;
-  }
+		this.id = f;
+	}
 
-  @Override
+	@Override
 	public boolean isNew() {
 		return true;
 	}
-
 
 }

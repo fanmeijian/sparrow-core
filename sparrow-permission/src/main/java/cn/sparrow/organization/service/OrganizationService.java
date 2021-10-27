@@ -5,9 +5,11 @@ import java.util.List;
 import java.util.Set;
 import javax.validation.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import cn.sparrow.model.common.MyTree;
+import cn.sparrow.model.organization.Employee;
 import cn.sparrow.model.organization.Organization;
 import cn.sparrow.model.organization.OrganizationGroup;
 import cn.sparrow.model.organization.OrganizationGroupPK;
@@ -17,6 +19,7 @@ import cn.sparrow.model.organization.OrganizationRelation;
 import cn.sparrow.model.organization.OrganizationRelationPK;
 import cn.sparrow.model.organization.OrganizationRole;
 import cn.sparrow.model.organization.OrganizationRolePK;
+import cn.sparrow.organization.repository.EmployeeRepository;
 import cn.sparrow.organization.repository.OrganizationGroupRepository;
 import cn.sparrow.organization.repository.OrganizationLevelRepository;
 import cn.sparrow.organization.repository.OrganizationRelationRepository;
@@ -38,6 +41,7 @@ public class OrganizationService {
   OrganizationRepository organizationRepository;
   @Autowired RoleService roleService;
   @Autowired LevelService levelService;
+  @Autowired EmployeeRepository employeeRepository;
 
   public Organization add(Organization organization) {
     Organization org = organizationRepository.save(organization);
@@ -65,6 +69,10 @@ public class OrganizationService {
 	    });
 	    return roles;
 	  }
+  
+  public List<Employee> getEmployees(@NotBlank String organizationId, Pageable pageable) {
+	  return employeeRepository.findByOrganizationId(organizationId, pageable);
+	}
 
   public Set<OrganizationRelation> getChildren(String parentId) {
     Set<OrganizationRelation> organizationRelations = new HashSet<OrganizationRelation>();
@@ -170,5 +178,7 @@ public class OrganizationService {
           myTree.getChildren().add(leaf);
         });
   }
+
+
 
 }

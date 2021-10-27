@@ -11,6 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -53,11 +54,8 @@ public class Employee extends AbstractSparrowEntity {
 					@JoinColumn(name = "role_id") })
 	private Set<OrganizationRole> organizationRoles;
 
-	@ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
-	@JoinTable(name = "spr_employee_organization_level", joinColumns = {
-			@JoinColumn(name = "username") }, inverseJoinColumns = { @JoinColumn(name = "organization_id"),
-					@JoinColumn(name = "level_id") })
-	private Set<OrganizationLevel> organizationLevels;
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "employee",fetch = FetchType.EAGER)
+	private List<EmployeeOrganizationLevel> employeeOrganizationLevels;
 
 	private String username;
 

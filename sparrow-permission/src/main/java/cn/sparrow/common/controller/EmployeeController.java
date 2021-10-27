@@ -17,6 +17,7 @@ import com.sun.istack.NotNull;
 
 import cn.sparrow.model.common.MyTree;
 import cn.sparrow.model.organization.Employee;
+import cn.sparrow.model.organization.EmployeeOrganizationLevel;
 import cn.sparrow.model.organization.EmployeeOrganizationLevelPK;
 import cn.sparrow.model.organization.EmployeeOrganizationRole;
 import cn.sparrow.model.organization.EmployeeOrganizationRolePK;
@@ -79,7 +80,7 @@ public class EmployeeController {
   
 
   @PostMapping("/employees/levels/batch")
-  public void addLevels(@NotNull @RequestBody Set<EmployeeOrganizationLevelPK> ids) {
+  public void addLevels(@NotNull @RequestBody List<EmployeeOrganizationLevel> ids) {
     employeeService.addLevels(ids);
   }
   

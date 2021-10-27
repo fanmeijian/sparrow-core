@@ -7,6 +7,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import cn.sparrow.model.common.MyTree;
+import cn.sparrow.model.organization.Employee;
 import cn.sparrow.model.organization.Organization;
 import cn.sparrow.model.organization.OrganizationGroupPK;
 import cn.sparrow.model.organization.OrganizationLevel;
@@ -53,6 +55,11 @@ public class OrganizationController {
   @GetMapping("/organizations/getLevels")
   public List<OrganizationLevel> getLevels(@NotBlank @RequestParam("organizationId") final String organizationId){
     return organizationService.getOrganizationLevels(organizationId);
+  }
+  
+  @GetMapping("/organizations/getEmployees")
+  public List<Employee> getEmployees(@NotBlank @RequestParam("organizationId") final String organizationId){
+    return organizationService.getEmployees(organizationId, Pageable.unpaged());
   }
   
   @GetMapping("/organizations/getModelName")

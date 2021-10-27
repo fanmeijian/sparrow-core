@@ -1,14 +1,16 @@
 package cn.sparrow.model.organization;
 
-import java.util.Set;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
+import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -45,10 +47,14 @@ public class OrganizationLevel extends AbstractOperationLog
   private boolean hasChildren;
   
   
-  @Exclude
-  @ManyToMany(mappedBy = "organizationLevels",fetch = FetchType.LAZY)
-  private Set<Employee> employees;
+//  @Exclude
+//  @ManyToMany(mappedBy = "organizationLevels",fetch = FetchType.LAZY)
+//  private Set<Employee> employees;
 
+  @Exclude
+  @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
+  @JoinColumns({@JoinColumn(name = "organization_id", referencedColumnName = "organization_id"),@JoinColumn(name = "level_id", referencedColumnName = "level_id")})
+  private List<EmployeeOrganizationLevel> employeeOrganizationLevels;
   
   @Exclude
   @ManyToOne(fetch = FetchType.EAGER)

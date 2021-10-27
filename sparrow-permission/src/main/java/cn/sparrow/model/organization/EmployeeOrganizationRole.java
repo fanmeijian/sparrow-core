@@ -1,11 +1,16 @@
 package cn.sparrow.model.organization;
 
+import javax.persistence.CascadeType;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
 import org.springframework.data.domain.Persistable;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 import cn.sparrow.model.common.AbstractOperationLog;
 import lombok.Getter;
 import lombok.Setter;
@@ -25,6 +30,9 @@ public class EmployeeOrganizationRole extends AbstractOperationLog implements Pe
 	@EmbeddedId
 	private EmployeeOrganizationRolePK id;
 	private String stat;
+	
+	@ManyToOne(cascade = CascadeType.REFRESH,fetch = FetchType.LAZY)
+	private OrganizationRole organizationRole;
 
 	public EmployeeOrganizationRole(){
 
