@@ -37,7 +37,7 @@ public class Model extends AbstractOperationLog implements Serializable {
   private String name;
   private String nameTxt;
   private String remark;
-  private boolean system;
+  private boolean isSystem;
   @Column(name = "app_id")
   private String appId;
 
@@ -56,9 +56,9 @@ public class Model extends AbstractOperationLog implements Serializable {
     this.name = name;
   }
   
-  public Model(String name, boolean system) {
+  public Model(String name, boolean isSystem) {
 	    this.name = name;
-	    this.system = system;
+	    this.isSystem = isSystem;
 	  }
   
   // @OneToMany(targetEntity = ModelReader.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY,

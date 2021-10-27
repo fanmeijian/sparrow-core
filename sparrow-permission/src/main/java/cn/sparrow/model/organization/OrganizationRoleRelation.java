@@ -2,11 +2,15 @@ package cn.sparrow.model.organization;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 import cn.sparrow.model.common.AbstractOperationLog;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -17,6 +21,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Table(name = "spr_organization_role_relation")
+@EntityListeners(AuditingEntityListener.class	)
 public class OrganizationRoleRelation extends AbstractOperationLog{
 
   /**
@@ -25,7 +30,7 @@ public class OrganizationRoleRelation extends AbstractOperationLog{
   private static final long serialVersionUID = 1L;
 
   @EmbeddedId
-  private OrganizatioinRoleRelationPK id;
+  private OrganizationRoleRelationPK id;
 
   @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumns({
@@ -35,7 +40,7 @@ public class OrganizationRoleRelation extends AbstractOperationLog{
           updatable = false)})
   private OrganizationRole organizationRole;
 
-  public OrganizationRoleRelation(OrganizatioinRoleRelationPK id) {
+  public OrganizationRoleRelation(OrganizationRoleRelationPK id) {
     this.id = id;
   }
 

@@ -37,7 +37,7 @@ public class Sysrole extends AbstractOperationLog {
 	
 	private String name;
 	private String code;
-	private boolean system;
+	private boolean isSystem;
 
 	@EqualsAndHashCode.Exclude
 	@ManyToMany

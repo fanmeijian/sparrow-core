@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import cn.sparrow.model.common.MyTree;
-import cn.sparrow.model.organization.OrganizatioinRoleRelationPK;
+import cn.sparrow.model.organization.OrganizationRoleRelationPK;
 import cn.sparrow.model.organization.OrganizationRolePK;
 import cn.sparrow.model.organization.OrganizationRoleRelation;
 import cn.sparrow.model.organization.Role;
@@ -58,12 +58,12 @@ public class RoleController {
 	}
 
 	@PostMapping("/roles/relations")
-	public void addRelations(@NotNull @RequestBody List<OrganizatioinRoleRelationPK> ids) {
+	public void addRelations(@NotNull @RequestBody List<OrganizationRoleRelationPK> ids) {
 		roleService.addRelations(ids);
 	}
 
 	@DeleteMapping("/roles/relations")
-	public void delRelations(@NotNull @RequestBody List<OrganizatioinRoleRelationPK> ids) {
+	public void delRelations(@NotNull @RequestBody List<OrganizationRoleRelationPK> ids) {
 		roleService.delRelations(ids);
 	}
 	

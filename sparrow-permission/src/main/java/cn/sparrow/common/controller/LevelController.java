@@ -15,6 +15,10 @@ import com.sun.istack.NotNull;
 import cn.sparrow.model.common.MyTree;
 import cn.sparrow.model.organization.Level;
 import cn.sparrow.model.organization.LevelRelationPK;
+import cn.sparrow.model.organization.OrganizationLevelPK;
+import cn.sparrow.model.organization.OrganizationLevelRelation;
+import cn.sparrow.model.organization.OrganizationRolePK;
+import cn.sparrow.model.organization.OrganizationRoleRelation;
 import cn.sparrow.model.organization.Role;
 import cn.sparrow.organization.repository.LevelRepository;
 import cn.sparrow.organization.service.LevelService;
@@ -30,6 +34,11 @@ public class LevelController {
 	@PostMapping("/levels")
 	public Level save(@NotNull @RequestBody Level level) {
 		return levelService.save(level);
+	}
+	
+	@GetMapping("/levels/getChildren")
+	public List<OrganizationLevelRelation> getChildren(@NotNull @RequestParam("organizationId") final String organizationId,@NotNull @RequestParam("roleId") final String roleId){
+	  return levelService.getChildrent(new OrganizationLevelPK(organizationId, roleId));
 	}
 
 	@GetMapping("/levels/getModelName")
@@ -53,8 +62,8 @@ public class LevelController {
 	}
 
 	@PostMapping("/levels/relations/batch")
-	public void addRelations(@NotNull @RequestBody Set<LevelRelationPK> ids) {
-		levelService.addRelations(ids);
+	public void addRelations(@NotNull @RequestBody List<OrganizationLevelRelation> organizationLevelRelations) {
+		levelService.addRelations(organizationLevelRelations);
 	}
 
 	@DeleteMapping("/levels/relations/batch")

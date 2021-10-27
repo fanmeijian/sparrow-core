@@ -37,6 +37,7 @@ public class OrganizationService {
   @Autowired
   OrganizationRepository organizationRepository;
   @Autowired RoleService roleService;
+  @Autowired LevelService levelService;
 
   public Organization add(Organization organization) {
     Organization org = organizationRepository.save(organization);
@@ -56,6 +57,14 @@ public class OrganizationService {
     });
     return roles;
   }
+  
+  public List<OrganizationLevel> getOrganizationLevels(@NotBlank String organizationId) {
+	    List<OrganizationLevel> roles = organizationLevelRepository.findByIdOrganizationId(organizationId);
+	    roles.forEach(f->{
+	      f.setHasChildren(levelService.getChildrent(f.getId()).size()>0?true:false);
+	    });
+	    return roles;
+	  }
 
   public Set<OrganizationRelation> getChildren(String parentId) {
     Set<OrganizationRelation> organizationRelations = new HashSet<OrganizationRelation>();

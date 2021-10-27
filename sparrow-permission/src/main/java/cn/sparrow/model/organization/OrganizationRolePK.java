@@ -1,16 +1,16 @@
 package cn.sparrow.model.organization;
 
 import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import lombok.AllArgsConstructor;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 
 @Embeddable
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
 public class OrganizationRolePK implements Serializable{
 
@@ -22,5 +22,10 @@ public class OrganizationRolePK implements Serializable{
 	private String organizationId;
 	@Column(name = "role_id")
 	private String roleId;
+	
+	public OrganizationRolePK(String organizationId, String roleId) {
+		this.organizationId = organizationId;
+		this.roleId = roleId;
+	}
 
 }

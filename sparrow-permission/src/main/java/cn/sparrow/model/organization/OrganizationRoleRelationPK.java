@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Embeddable
-public class OrganizatioinRoleRelationPK implements Serializable {
+public class OrganizationRoleRelationPK implements Serializable {
   /**
    * 
    */

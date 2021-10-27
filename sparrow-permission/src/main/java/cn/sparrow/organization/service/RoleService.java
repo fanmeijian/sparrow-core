@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import cn.sparrow.model.common.MyTree;
-import cn.sparrow.model.organization.OrganizatioinRoleRelationPK;
+import cn.sparrow.model.organization.OrganizationRoleRelationPK;
 import cn.sparrow.model.organization.OrganizationRole;
 import cn.sparrow.model.organization.OrganizationRolePK;
 import cn.sparrow.model.organization.OrganizationRoleRelation;
@@ -48,13 +48,13 @@ public class RoleService {
     });
   }
 
-  public void addRelations(List<OrganizatioinRoleRelationPK> ids) {
+  public void addRelations(List<OrganizationRoleRelationPK> ids) {
     ids.forEach(f -> {
       organizationRoleRelationRepository.save(new OrganizationRoleRelation(f));
     });
   }
 
-  public void delRelations(List<OrganizatioinRoleRelationPK> ids) {
+  public void delRelations(List<OrganizationRoleRelationPK> ids) {
     ids.forEach(f -> {
       organizationRoleRelationRepository.deleteById(f);
     });
@@ -105,7 +105,7 @@ public class RoleService {
         if (role.getParentIds() != null) {
           role.getParentIds().forEach(parentId -> {
             organizationRoleRelationRepository.save(new OrganizationRoleRelation(
-                new OrganizatioinRoleRelationPK(organizationRole.getId(), parentId)));
+                new OrganizationRoleRelationPK(organizationRole.getId(), parentId)));
           });
         }
       });

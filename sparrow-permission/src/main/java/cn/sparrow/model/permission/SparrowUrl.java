@@ -48,7 +48,7 @@ public class SparrowUrl extends AbstractOperationLog implements Serializable {
   private String id;
   private String name;
   private String uri;
-  private boolean system;
+  private boolean isSystem;
 
   @Enumerated(EnumType.STRING)
   private HttpMethod method;

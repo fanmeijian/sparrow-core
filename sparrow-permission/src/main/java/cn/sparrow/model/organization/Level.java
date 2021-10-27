@@ -35,6 +35,10 @@ public class Level extends AbstractSparrowEntity {
 	@JsonProperty
 	private List<String> parentIds;
 	
+	@Transient
+    @JsonProperty
+    private List<String> organizationIds;
+	
 	@ManyToMany(mappedBy = "levels")
 	private Set<Organization> organizations;
 	

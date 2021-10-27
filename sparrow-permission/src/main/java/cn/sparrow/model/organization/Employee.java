@@ -2,7 +2,9 @@ package cn.sparrow.model.organization;
 
 import java.util.List;
 import java.util.Set;
+
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -38,9 +40,13 @@ public class Employee extends AbstractSparrowEntity {
 	@JsonProperty
 	private List<String> parentIds;
 	
-	@ManyToOne
-	@JoinColumn(name = "organization_id")
+	@Column(name = "organization_id")
+	private String organizationId;
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "organization_id", insertable = false, updatable = false)
 	private Organization organization;
+	
 	@ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
 	@JoinTable(name = "spr_employee_organization_role", joinColumns = {
 			@JoinColumn(name = "employee_id") }, inverseJoinColumns = { @JoinColumn(name = "organization_id"),
