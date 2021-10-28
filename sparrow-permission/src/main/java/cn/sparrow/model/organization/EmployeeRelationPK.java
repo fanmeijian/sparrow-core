@@ -20,6 +20,7 @@ public class EmployeeRelationPK implements Serializable {
 
   @Column(name = "employee_id")
   private String employeeId;
+  @Column(name = "parent_id")
   private String parentId;
 
 }

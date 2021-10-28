@@ -39,6 +39,14 @@ public class OrganizationRoleRelation extends AbstractOperationLog{
       @JoinColumn(name = "role_id", referencedColumnName = "role_id", insertable = false,
           updatable = false)})
   private OrganizationRole organizationRole;
+  
+  @ManyToOne(fetch = FetchType.EAGER)
+  @JoinColumns({
+      @JoinColumn(name = "parent_organization_id", referencedColumnName = "organization_id",
+          insertable = false, updatable = false),
+      @JoinColumn(name = "parent_role_id", referencedColumnName = "role_id", insertable = false,
+          updatable = false)})
+  private OrganizationRole parentOrganizationRole;
 
   public OrganizationRoleRelation(OrganizationRoleRelationPK id) {
     this.id = id;

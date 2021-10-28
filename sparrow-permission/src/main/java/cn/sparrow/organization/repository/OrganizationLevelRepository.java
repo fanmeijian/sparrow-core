@@ -14,4 +14,6 @@ public interface OrganizationLevelRepository extends JpaRepository<OrganizationL
 
 	List<OrganizationLevel> findByIdOrganizationId(@NotBlank String organizationId);
 
+	long countByIdOrganizationId(String id);
+
 }

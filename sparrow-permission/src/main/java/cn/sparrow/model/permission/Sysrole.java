@@ -2,6 +2,7 @@ package cn.sparrow.model.permission;
 
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -15,7 +16,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 
 import cn.sparrow.model.common.AbstractOperationLog;
-import cn.sparrow.model.group.Group;
+import cn.sparrow.model.group.GroupSysrole;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -46,8 +47,8 @@ public class Sysrole extends AbstractOperationLog {
 	private Set<Menu> menus;
 	
 	@EqualsAndHashCode.Exclude
-	@ManyToMany(mappedBy = "sysroles")
-	private Set<Group> groups;
+	@OneToMany(targetEntity = GroupSysrole.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "sysrole")
+	private Set<GroupSysrole> groupSysroles;
 	
 	@EqualsAndHashCode.Exclude
 	@OneToMany(fetch = FetchType.LAZY)

@@ -23,4 +23,6 @@ public interface EmployeeRepository extends JpaRepository<Employee, String> {
 
 	List<Employee> findByOrganizationId(@NotBlank String organizationId, Pageable pageable);
 
+	long countByOrganizationId(String id);
+
 }

@@ -7,17 +7,16 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import cn.sparrow.model.common.AbstractSparrowEntity;
 import cn.sparrow.model.common.OrganizationTypeEnum;
-import cn.sparrow.model.group.Group;
+import cn.sparrow.model.group.GroupOrganization;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -44,22 +43,40 @@ public class Organization extends AbstractSparrowEntity {
 	@Transient
     @JsonProperty
     private boolean hasChildren;
-
-	@ManyToMany(targetEntity = Role.class, cascade = CascadeType.ALL)
-	@JoinTable(name = "spr_organization_role", joinColumns = {
-			@JoinColumn(name = "organization_id") }, inverseJoinColumns = { @JoinColumn(name = "role_id") })
-	private Set<Role> roles;
-
-	@ManyToMany(targetEntity = Level.class, cascade = CascadeType.ALL)
-	@JoinTable(name = "spr_organization_level", joinColumns = {
-			@JoinColumn(name = "organization_id") }, inverseJoinColumns = { @JoinColumn(name = "level_id") })
-	private Set<Level> levels;
 	
-	@ManyToMany(targetEntity = Group.class, cascade = CascadeType.ALL)
-	@JoinTable(name = "spr_organization_group", joinColumns = {
-			@JoinColumn(name = "organization_id") }, inverseJoinColumns = { @JoinColumn(name = "group_id") })
-	private Set<Group> groups;
+	@Transient
+    @JsonProperty
+    private long childCount;
 	
-	@ManyToMany(mappedBy = "containOrganizations")
-	private Set<Group> inGroups;
+	@Transient
+    @JsonProperty
+    private long levelCount;
+	
+	@Transient
+    @JsonProperty
+    private long groupCount;
+	
+	@Transient
+    @JsonProperty
+    private long roleCount;
+	
+	@Transient
+    @JsonProperty
+    private long employeeCount;
+	
+	@JsonIgnore
+	@OneToMany(targetEntity = OrganizationRole.class, cascade = CascadeType.ALL, mappedBy = "organization")
+	private Set<OrganizationRole> organizationRoles;
+	
+	@JsonIgnore
+	@OneToMany(targetEntity = OrganizationLevel.class, cascade = CascadeType.ALL, mappedBy = "organization")
+	private Set<OrganizationLevel> organizationLevels;
+	
+	@JsonIgnore
+	@OneToMany(targetEntity = OrganizationGroup.class, cascade = CascadeType.ALL, mappedBy = "organization")
+	private Set<OrganizationGroup> organizationGroups;
+	
+	@JsonIgnore
+	@OneToMany(targetEntity = GroupOrganization.class, cascade = CascadeType.ALL, mappedBy = "organization")
+	private Set<GroupOrganization> groupOrganizations;
 }

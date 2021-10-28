@@ -12,4 +12,6 @@ public interface OrganizationRoleRepository extends JpaRepository<OrganizationRo
 
   List<OrganizationRole> findByIdOrganizationId(@NotBlank String organizationId);
 
+	long countByIdOrganizationId(String id);
+
 }

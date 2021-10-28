@@ -9,16 +9,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import cn.sparrow.model.common.MyTree;
 import cn.sparrow.model.organization.Level;
-import cn.sparrow.model.organization.LevelRelation;
 import cn.sparrow.model.organization.LevelRelationPK;
-import cn.sparrow.model.organization.OrganizationRoleRelationPK;
 import cn.sparrow.model.organization.OrganizationLevel;
 import cn.sparrow.model.organization.OrganizationLevelPK;
 import cn.sparrow.model.organization.OrganizationLevelRelation;
-import cn.sparrow.model.organization.OrganizationLevelRelationPK;
-import cn.sparrow.model.organization.OrganizationRole;
-import cn.sparrow.model.organization.OrganizationRolePK;
-import cn.sparrow.model.organization.OrganizationRoleRelation;
 import cn.sparrow.organization.repository.LevelRelationRepository;
 import cn.sparrow.organization.repository.LevelRepository;
 import cn.sparrow.organization.repository.OrganizationLevelRelationRepository;
@@ -93,7 +87,11 @@ public class LevelService {
 		levelRepository.deleteByIdIn(ids);
 	}
 
-	public List<OrganizationLevelRelation> getChildrent(OrganizationLevelPK parentId) {
+	public List<OrganizationLevelRelation> getChildren(OrganizationLevelPK parentId) {
 		return organizationLevelRelationRepository.findByIdParentId(parentId);
+	}
+	
+	public List<OrganizationLevelRelation> getParents(OrganizationLevelPK id) {
+		return organizationLevelRelationRepository.findByIdId(id);
 	}
 }

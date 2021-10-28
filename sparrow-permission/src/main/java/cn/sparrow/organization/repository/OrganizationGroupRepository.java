@@ -8,4 +8,6 @@ import cn.sparrow.model.organization.OrganizationGroupPK;
 @RepositoryRestResource(exported = false)
 public interface OrganizationGroupRepository extends JpaRepository<OrganizationGroup, OrganizationGroupPK> {
 
+	long countByIdOrganizationId(String id);
+
 }

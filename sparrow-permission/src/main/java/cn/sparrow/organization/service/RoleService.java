@@ -23,100 +23,103 @@ import cn.sparrow.organization.repository.RoleRepository;
 @Service
 public class RoleService {
 
-  @Autowired
-  RoleRelationRepository roleRelationRepository;
-  @Autowired
-  RoleRepository roleRepository;
-  @Autowired
-  OrganizationRoleRepository organizationRoleRepository;
-  @Autowired
-  OrganizationRoleRelationRepository organizationRoleRelationRepository;
+	@Autowired
+	RoleRelationRepository roleRelationRepository;
+	@Autowired
+	RoleRepository roleRepository;
+	@Autowired
+	OrganizationRoleRepository organizationRoleRepository;
+	@Autowired
+	OrganizationRoleRelationRepository organizationRoleRelationRepository;
 
-  public List<OrganizationRoleRelation> getChildrent(@NotNull OrganizationRolePK parentId) {
-    return organizationRoleRelationRepository.findByIdParentId(parentId);
-  }
+	public List<OrganizationRoleRelation> getChildren(@NotNull OrganizationRolePK parentId) {
+		return organizationRoleRelationRepository.findByIdParentId(parentId);
+	}
 
-  public void addRelations(Set<RoleRelationPK> ids) {
-    ids.forEach(f -> {
-      roleRelationRepository.save(new RoleRelation(f));
-    });
-  }
+	public List<OrganizationRoleRelation> getParents(@NotNull OrganizationRolePK organizationRolePK) {
+		return organizationRoleRelationRepository.findByIdId(organizationRolePK);
+	}
 
-  public void delRelations(Set<RoleRelationPK> ids) {
-    ids.forEach(f -> {
-      roleRelationRepository.deleteById(f);
-    });
-  }
+	public void addRelations(Set<RoleRelationPK> ids) {
+		ids.forEach(f -> {
+			roleRelationRepository.save(new RoleRelation(f));
+		});
+	}
 
-  public void addRelations(List<OrganizationRoleRelationPK> ids) {
-    ids.forEach(f -> {
-      organizationRoleRelationRepository.save(new OrganizationRoleRelation(f));
-    });
-  }
+	public void delRelations(Set<RoleRelationPK> ids) {
+		ids.forEach(f -> {
+			roleRelationRepository.deleteById(f);
+		});
+	}
 
-  public void delRelations(List<OrganizationRoleRelationPK> ids) {
-    ids.forEach(f -> {
-      organizationRoleRelationRepository.deleteById(f);
-    });
-  }
+	public void addRelations(List<OrganizationRoleRelationPK> ids) {
+		ids.forEach(f -> {
+			organizationRoleRelationRepository.save(new OrganizationRoleRelation(f));
+		});
+	}
 
-  public MyTree<Role> getTree(String parentId) {
-    if (parentId == null) {
-      MyTree<Role> rootTree = new MyTree<Role>(null);
-      roleRepository.findByRoot(true).forEach(f -> {
-        MyTree<Role> myTree = new MyTree<Role>(f);
-        buildTree(myTree);
-        rootTree.getChildren().add(myTree);
-      });
+	public void delRelations(List<OrganizationRoleRelationPK> ids) {
+		ids.forEach(f -> {
+			organizationRoleRelationRepository.deleteById(f);
+		});
+	}
 
-      return rootTree;
-    } else {
-      MyTree<Role> myTree = new MyTree<Role>(roleRepository.findById(parentId).orElse(null));
-      buildTree(myTree);
-      return myTree;
-    }
-  }
+	public MyTree<Role> getTree(String parentId) {
+		if (parentId == null) {
+			MyTree<Role> rootTree = new MyTree<Role>(null);
+			roleRepository.findByRoot(true).forEach(f -> {
+				MyTree<Role> myTree = new MyTree<Role>(f);
+				buildTree(myTree);
+				rootTree.getChildren().add(myTree);
+			});
 
-  public void buildTree(MyTree<Role> myTree) {
-    roleRelationRepository.findByIdParentId(myTree.getMe() == null ? null : myTree.getMe().getId())
-        .forEach(f -> {
-          MyTree<Role> leaf = new MyTree<Role>(f.getRole());
-          // 防止死循环
-          if (roleRelationRepository
-              .findById(new RoleRelationPK(f.getId().getParentId(), f.getId().getRoleId()))
-              .orElse(null) == null)
-            buildTree(leaf);
-          myTree.getChildren().add(leaf);
-        });
-  }
+			return rootTree;
+		} else {
+			MyTree<Role> myTree = new MyTree<Role>(roleRepository.findById(parentId).orElse(null));
+			buildTree(myTree);
+			return myTree;
+		}
+	}
 
-  @Transactional
-  public Role save(Role role) {
-    Role savedRole = roleRepository.save(role);
+	public void buildTree(MyTree<Role> myTree) {
+		roleRelationRepository.findByIdParentId(myTree.getMe() == null ? null : myTree.getMe().getId()).forEach(f -> {
+			MyTree<Role> leaf = new MyTree<Role>(f.getRole());
+			// 防止死循环
+			if (roleRelationRepository.findById(new RoleRelationPK(f.getId().getParentId(), f.getId().getRoleId()))
+					.orElse(null) == null)
+				buildTree(leaf);
+			myTree.getChildren().add(leaf);
+		});
+	}
 
-    // 保存岗位所在的组织
-    if (role.getOrganizationIds() != null) {
+	@Transactional
+	public Role save(Role role) {
+		Role savedRole = roleRepository.save(role);
 
-      role.getOrganizationIds().forEach(f -> {
-        OrganizationRole organizationRole = organizationRoleRepository
-            .save(new OrganizationRole(new OrganizationRolePK(f, savedRole.getId())));
+		// 保存岗位所在的组织
+		if (role.getOrganizationIds() != null) {
 
-        // 保存岗位之间的关系,注意这里的岗位关系指的是组织岗位之间的关系，因为岗位独立于组织没有意义
-        if (role.getParentIds() != null) {
-          role.getParentIds().forEach(parentId -> {
-            organizationRoleRelationRepository.save(new OrganizationRoleRelation(
-                new OrganizationRoleRelationPK(organizationRole.getId(), parentId)));
-          });
-        }
-      });
-    }
+			role.getOrganizationIds().forEach(f -> {
+				OrganizationRole organizationRole = organizationRoleRepository
+						.save(new OrganizationRole(new OrganizationRolePK(f, savedRole.getId())));
 
-    return savedRole;
-  }
+				// 保存岗位之间的关系,注意这里的岗位关系指的是组织岗位之间的关系，因为岗位独立于组织没有意义
+				if (role.getParentIds() != null) {
+					role.getParentIds().forEach(parentId -> {
+						organizationRoleRelationRepository.save(new OrganizationRoleRelation(
+								new OrganizationRoleRelationPK(organizationRole.getId(), parentId)));
+					});
+				}
+			});
+		}
 
-  @Transactional
-  public void delBatch(String[] ids) {
-    roleRelationRepository.deleteByIdRoleIdInOrIdParentIdIn(ids, ids);
-    roleRepository.deleteByIdIn(ids);
-  }
+		return savedRole;
+	}
+
+	@Transactional
+	public void delBatch(String[] ids) {
+		roleRelationRepository.deleteByIdRoleIdInOrIdParentIdIn(ids, ids);
+		roleRepository.deleteByIdIn(ids);
+	}
+
 }

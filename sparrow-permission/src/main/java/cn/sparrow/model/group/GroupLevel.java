@@ -2,15 +2,21 @@ package cn.sparrow.model.group;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
 import org.springframework.data.domain.Persistable;
 
 import cn.sparrow.model.common.AbstractOperationLog;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "spr_group_level")
 public class GroupLevel extends AbstractOperationLog implements Persistable<GroupLevelPK> {
@@ -23,9 +29,9 @@ public class GroupLevel extends AbstractOperationLog implements Persistable<Grou
   private GroupLevelPK id;
   private String stat;
 
-  public GroupLevel() {
-
-  }
+  @ManyToOne(fetch = FetchType.EAGER)
+  @JoinColumn(name = "group_id", insertable = false, updatable = false)
+  private Group group;
 
   public GroupLevel(GroupLevelPK f) {
     this.id = f;

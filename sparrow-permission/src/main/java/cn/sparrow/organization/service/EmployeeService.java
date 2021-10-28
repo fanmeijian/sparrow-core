@@ -42,10 +42,8 @@ public class EmployeeService {
 		return r;
 	}
 
-	public void addRelations(Set<EmployeeRelationPK> ids) {
-		ids.forEach(f -> {
-			employeeRelationRepository.save(new EmployeeRelation(f));
-		});
+	public void addRelations(Set<EmployeeRelation> ids) {
+		employeeRelationRepository.saveAll(ids);
 	}
 
 	public void delRelations(Set<EmployeeRelationPK> ids) {
@@ -109,4 +107,21 @@ public class EmployeeService {
 		  employeeRelationRepository.deleteByIdEmployeeIdInOrIdParentIdIn(ids,ids);
 		  employeeRepository.deleteByIdIn(ids);
 	  }
+
+	public List<EmployeeRelation> getChildren(String parentId) {
+		List<EmployeeRelation> employeeRelation = employeeRelationRepository.findByIdParentId(parentId);
+		employeeRelation.forEach(f->{
+			f.getEmployee().setChildCount(this.getChildCount(f.getEmployee().getId()));
+		});
+		return employeeRelation;
+	}
+	
+	public long getChildCount(String parentId) {
+		return employeeRelationRepository.countByIdParentId(parentId);
+	}
+
+	public List<EmployeeRelation> getParents(String employeeId) {
+		return employeeRelationRepository.findByIdEmployeeId(employeeId);
+	}
+	
 }

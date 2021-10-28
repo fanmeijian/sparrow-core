@@ -8,8 +8,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -44,18 +42,19 @@ public class Employee extends AbstractSparrowEntity {
 	@Column(name = "organization_id")
 	private String organizationId;
 	
+	@Transient
+	@JsonProperty
+	private long childCount;
+	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "organization_id", insertable = false, updatable = false)
 	private Organization organization;
 	
-	@ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
-	@JoinTable(name = "spr_employee_organization_role", joinColumns = {
-			@JoinColumn(name = "employee_id") }, inverseJoinColumns = { @JoinColumn(name = "organization_id"),
-					@JoinColumn(name = "role_id") })
-	private Set<OrganizationRole> organizationRoles;
-
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "employee",fetch = FetchType.EAGER)
-	private List<EmployeeOrganizationLevel> employeeOrganizationLevels;
+	private Set<EmployeeOrganizationRole> employeeOrganizationRoles;
+	
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "employee",fetch = FetchType.EAGER)
+	private Set<EmployeeOrganizationLevel> employeeOrganizationLevels;
 
 	private String username;
 

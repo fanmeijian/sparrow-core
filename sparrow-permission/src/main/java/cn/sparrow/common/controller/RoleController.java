@@ -34,7 +34,12 @@ public class RoleController {
 	
 	@GetMapping("/roles/getChildren")
 	public List<OrganizationRoleRelation> getChildren(@NotNull @RequestParam("organizationId") final String organizationId,@NotNull @RequestParam("roleId") final String roleId){
-	  return roleService.getChildrent(new OrganizationRolePK(organizationId, roleId));
+	  return roleService.getChildren(new OrganizationRolePK(organizationId, roleId));
+	}
+	
+	@GetMapping("/roles/getParents")
+	public List<OrganizationRoleRelation> getParents(@NotNull @RequestParam("organizationId") final String organizationId,@NotNull @RequestParam("roleId") final String roleId){
+	  return roleService.getParents(new OrganizationRolePK(organizationId, roleId));
 	}
 
 	@GetMapping("/roles/getModelName")

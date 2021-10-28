@@ -12,4 +12,6 @@ public interface OrganizationLevelRelationRepository extends JpaRepository<Organ
 
 	List<OrganizationLevelRelation> findByIdParentId(OrganizationLevelPK parentId);
 
+	List<OrganizationLevelRelation> findByIdId(OrganizationLevelPK id);
+
 }

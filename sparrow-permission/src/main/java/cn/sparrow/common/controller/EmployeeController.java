@@ -21,6 +21,7 @@ import cn.sparrow.model.organization.EmployeeOrganizationLevel;
 import cn.sparrow.model.organization.EmployeeOrganizationLevelPK;
 import cn.sparrow.model.organization.EmployeeOrganizationRole;
 import cn.sparrow.model.organization.EmployeeOrganizationRolePK;
+import cn.sparrow.model.organization.EmployeeRelation;
 import cn.sparrow.model.organization.EmployeeRelationPK;
 import cn.sparrow.model.organization.Role;
 import cn.sparrow.organization.service.EmployeeService;
@@ -34,70 +35,79 @@ import cn.sparrow.organization.service.OrganizationService;
 
 @RestController
 public class EmployeeController {
-  
-  @Autowired OrganizationService organizationService;
-  @Autowired EmployeeService employeeService;
-  
-  
-  @PostMapping("/employees")
+
+	@Autowired
+	OrganizationService organizationService;
+	@Autowired
+	EmployeeService employeeService;
+
+	@PostMapping("/employees")
 	public Employee save(@NotNull @RequestBody Employee employee) {
 		return employeeService.save(employee);
 	}
 	
+	@GetMapping("/employees/getChildren")
+	public List<EmployeeRelation> getChildren(@NotNull @RequestParam("parentId") String parentId){
+		return employeeService.getChildren(parentId);
+	}
+	
+	@GetMapping("/employees/getParents")
+	public List<EmployeeRelation> getParents(@NotNull @RequestParam("employeeId") String employeeId){
+		return employeeService.getParents(employeeId);
+	}
+
 	@GetMapping("/employees/getModelName")
 	public String getModelName() {
-		return "{\"modelName\":\"" +Role.class.getName() + "\"}";
+		return "{\"modelName\":\"" + Role.class.getName() + "\"}";
 	}
-  
-  @GetMapping("/employees/getTreeByParentId")
-  public MyTree<Employee> tree(@Nullable @RequestParam("parentId") String parentId){
+
+	@GetMapping("/employees/getTreeByParentId")
+	public MyTree<Employee> tree(@Nullable @RequestParam("parentId") String parentId) {
 		return employeeService.getTree(parentId == null || parentId.isBlank() ? null : parentId);
-  }
-  
-  @PostMapping("/employees/batch")
-  public void add(@NotNull @RequestBody List<Employee> employees) {
-  }
-  
-  @PatchMapping("/employees/batch")
-  public void update(@NotNull @RequestBody List<Employee> employees) {
-    
-  }
-  
-  @DeleteMapping("/employees/batch")
-  public void delete(@NotNull @RequestBody String[] ids) {
-	  employeeService.delBatch(ids);
-  }
-  
-  @PostMapping("/employees/roles/batch")
-  public void addRoles(@NotNull @RequestBody Set<EmployeeOrganizationRole> ids) {
-    employeeService.addRoles(ids);
-  }
-  
-  @DeleteMapping("/employees/roles/batch")
-  public void delRoles(@NotNull @RequestBody Set<EmployeeOrganizationRolePK> ids) {
-    employeeService.delRoles(ids);
-  }
-  
+	}
 
-  @PostMapping("/employees/levels/batch")
-  public void addLevels(@NotNull @RequestBody List<EmployeeOrganizationLevel> ids) {
-    employeeService.addLevels(ids);
-  }
-  
-  @DeleteMapping("/employees/levels/batch")
-  public void delLevels(@NotNull @RequestBody Set<EmployeeOrganizationLevelPK> ids) {
-    employeeService.delLevels(ids);
-  }
-  
+	@PostMapping("/employees/batch")
+	public void add(@NotNull @RequestBody List<Employee> employees) {
+	}
 
-  @PostMapping("/employees/relations/batch")
-  public void addRelations(@NotNull @RequestBody Set<EmployeeRelationPK> ids) {
-    employeeService.addRelations(ids);
-  }
-  
-  @DeleteMapping("/employees/relations/batch")
-  public void delRelations(@NotNull @RequestBody Set<EmployeeRelationPK> ids) {
-    employeeService.delRelations(ids);
-  }
-  
+	@PatchMapping("/employees/batch")
+	public void update(@NotNull @RequestBody List<Employee> employees) {
+
+	}
+
+	@DeleteMapping("/employees/batch")
+	public void delete(@NotNull @RequestBody String[] ids) {
+		employeeService.delBatch(ids);
+	}
+
+	@PostMapping("/employees/roles/batch")
+	public void addRoles(@NotNull @RequestBody Set<EmployeeOrganizationRole> ids) {
+		employeeService.addRoles(ids);
+	}
+
+	@DeleteMapping("/employees/roles/batch")
+	public void delRoles(@NotNull @RequestBody Set<EmployeeOrganizationRolePK> ids) {
+		employeeService.delRoles(ids);
+	}
+
+	@PostMapping("/employees/levels/batch")
+	public void addLevels(@NotNull @RequestBody List<EmployeeOrganizationLevel> ids) {
+		employeeService.addLevels(ids);
+	}
+
+	@DeleteMapping("/employees/levels/batch")
+	public void delLevels(@NotNull @RequestBody Set<EmployeeOrganizationLevelPK> ids) {
+		employeeService.delLevels(ids);
+	}
+
+	@PostMapping("/employees/relations/batch")
+	public void addRelations(@NotNull @RequestBody Set<EmployeeRelation> ids) {
+		employeeService.addRelations(ids);
+	}
+
+	@DeleteMapping("/employees/relations/batch")
+	public void delRelations(@NotNull @RequestBody Set<EmployeeRelationPK> ids) {
+		employeeService.delRelations(ids);
+	}
+
 }

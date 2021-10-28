@@ -2,6 +2,7 @@ package cn.sparrow.common.controller;
 
 import java.util.List;
 import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -11,14 +12,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
 import com.sun.istack.NotNull;
+
 import cn.sparrow.model.common.MyTree;
 import cn.sparrow.model.organization.Level;
 import cn.sparrow.model.organization.LevelRelationPK;
 import cn.sparrow.model.organization.OrganizationLevelPK;
 import cn.sparrow.model.organization.OrganizationLevelRelation;
-import cn.sparrow.model.organization.OrganizationRolePK;
-import cn.sparrow.model.organization.OrganizationRoleRelation;
 import cn.sparrow.model.organization.Role;
 import cn.sparrow.organization.repository.LevelRepository;
 import cn.sparrow.organization.service.LevelService;
@@ -37,8 +38,13 @@ public class LevelController {
 	}
 	
 	@GetMapping("/levels/getChildren")
-	public List<OrganizationLevelRelation> getChildren(@NotNull @RequestParam("organizationId") final String organizationId,@NotNull @RequestParam("roleId") final String roleId){
-	  return levelService.getChildrent(new OrganizationLevelPK(organizationId, roleId));
+	public List<OrganizationLevelRelation> getChildren(@NotNull @RequestParam("organizationId") final String organizationId,@NotNull @RequestParam("positionLevelId") final String positionLevelId){
+	  return levelService.getChildren(new OrganizationLevelPK(organizationId, positionLevelId));
+	}
+	
+	@GetMapping("/levels/getParents")
+	public List<OrganizationLevelRelation> getParents(@NotNull @RequestParam("organizationId") final String organizationId,@NotNull @RequestParam("positionLevelId") final String positionLevelId){
+	  return levelService.getParents(new OrganizationLevelPK(organizationId, positionLevelId));
 	}
 
 	@GetMapping("/levels/getModelName")

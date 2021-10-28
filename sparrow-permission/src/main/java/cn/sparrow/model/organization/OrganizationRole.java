@@ -7,8 +7,9 @@ import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToOne;
+import javax.persistence.JoinColumns;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -30,35 +31,55 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "spr_organization_role")
 @EntityListeners(AuditingEntityListener.class)
-public class OrganizationRole extends AbstractOperationLog
-    implements Persistable<OrganizationRolePK> {
+public class OrganizationRole extends AbstractOperationLog implements Persistable<OrganizationRolePK> {
 
-  private static final long serialVersionUID = 1L;
-  @EmbeddedId
-  private OrganizationRolePK id;
-  private String stat;
-  
-  @Transient
-  @JsonProperty
-  private boolean hasChildren;
+	private static final long serialVersionUID = 1L;
+	@EmbeddedId
+	private OrganizationRolePK id;
+	private String stat;
 
-  @Exclude
-  @JsonIgnore
-  @ManyToMany(mappedBy = "organizationRoles",fetch = FetchType.LAZY)
-  private Set<Employee> employees;
-  
-  @Exclude
-  @OneToOne(fetch = FetchType.EAGER)
-  @JoinColumn(name = "role_id",insertable = false, updatable = false)
-  private Role role;
-  
-  public OrganizationRole(OrganizationRolePK f) {
-    this.id = f;
-  }
+	@Transient
+	@JsonProperty
+	private boolean hasChildren;
+	
+	@Transient
+	@JsonProperty
+	private long childCount;
 
-  @Override
-  public boolean isNew() {
-    return true;
-  }
+	@Exclude
+	@OneToMany(fetch = FetchType.LAZY)
+	@JoinColumns({ @JoinColumn(name = "organization_id", referencedColumnName = "organization_id"),
+			@JoinColumn(name = "role_id", referencedColumnName = "role_id") })
+	private Set<EmployeeOrganizationRole> employeeOrganizationRoles;
+	
+	@Transient
+	@JsonProperty
+	@Exclude
+	private Set<OrganizationRelation> reportRoles;
+	
+	@Transient
+	@JsonProperty
+	@Exclude
+	private Set<OrganizationRelation> reportByRoles;
+
+	@Exclude
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "role_id", insertable = false, updatable = false)
+	private Role role;
+	
+	@JsonIgnore
+	@Exclude
+	@ManyToOne
+	@JoinColumn(name = "organization_id", insertable = false, updatable = false)
+	private Organization organization;
+
+	public OrganizationRole(OrganizationRolePK f) {
+		this.id = f;
+	}
+
+	@Override
+	public boolean isNew() {
+		return true;
+	}
 
 }
