@@ -55,14 +55,16 @@ public class Employee extends AbstractSparrowEntity {
 	@JoinColumn(name = "organization_id", insertable = false, updatable = false)
 	private Organization organization;
 	
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "employee",fetch = FetchType.EAGER)
+	@JsonIgnore
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "employee",fetch = FetchType.LAZY)
 	private Set<EmployeeOrganizationRole> employeeOrganizationRoles;
 	
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "employee",fetch = FetchType.EAGER)
+	@JsonIgnore
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "employee",fetch = FetchType.LAZY)
 	private Set<EmployeeOrganizationLevel> employeeOrganizationLevels;
 	
 	@JsonIgnore
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "employee", fetch = FetchType.EAGER)
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "employee", fetch = FetchType.LAZY)
 	private Set<GroupEmployee> groupEmployees;
 
 }

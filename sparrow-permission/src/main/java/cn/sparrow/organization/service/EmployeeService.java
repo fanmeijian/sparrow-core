@@ -123,5 +123,13 @@ public class EmployeeService {
 	public List<EmployeeRelation> getParents(String employeeId) {
 		return employeeRelationRepository.findByIdEmployeeId(employeeId);
 	}
+
+	public List<EmployeeOrganizationLevel> getLevels(String employeeId) {
+		return employeeOrganizationLevelRepository.findByIdEmployeeId(employeeId);
+	}
+
+	public List<EmployeeOrganizationRole> getRoles(String employeeId) {
+		return employeeOrganizationRoleRepository.findByIdEmployeeId(employeeId);
+	}
 	
 }

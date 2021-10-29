@@ -13,4 +13,6 @@ public interface EmployeeOrganizationLevelRepository extends JpaRepository<Emplo
 
 	List<EmployeeOrganizationLevel> findByIdOrganizationLevelId(OrganizationLevelPK organizationLevelId);
 
+	List<EmployeeOrganizationLevel> findByIdEmployeeId(String employeeId);
+
 }

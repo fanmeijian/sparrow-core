@@ -35,7 +35,7 @@ public class EmployeeOrganizationLevel extends AbstractOperationLog
 	private EmployeeOrganizationLevelPK id;
 	private String stat;
 
-	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumns({
 			@JoinColumn(name = "organization_id", referencedColumnName = "organization_id", insertable = false, updatable = false),
 			@JoinColumn(name = "level_id", referencedColumnName = "level_id", insertable = false, updatable = false) })

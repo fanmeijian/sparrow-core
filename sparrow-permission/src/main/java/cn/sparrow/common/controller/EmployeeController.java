@@ -55,6 +55,16 @@ public class EmployeeController {
 	public List<EmployeeRelation> getParents(@NotNull @RequestParam("employeeId") String employeeId){
 		return employeeService.getParents(employeeId);
 	}
+	
+	@GetMapping("/employees/getLevels")
+	public List<EmployeeOrganizationLevel> getLevels(@NotNull @RequestParam("employeeId") String employeeId){
+		return employeeService.getLevels(employeeId);
+	}
+	
+	@GetMapping("/employees/getRoles")
+	public List<EmployeeOrganizationRole> getRoles(@NotNull @RequestParam("employeeId") String employeeId){
+		return employeeService.getRoles(employeeId);
+	}
 
 	@GetMapping("/employees/getModelName")
 	public String getModelName() {

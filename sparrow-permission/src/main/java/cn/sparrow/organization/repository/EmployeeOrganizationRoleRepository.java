@@ -12,4 +12,6 @@ public interface EmployeeOrganizationRoleRepository extends JpaRepository<Employ
 
 	List<EmployeeOrganizationRole> findByIdOrganizationRoleId(OrganizationRolePK organizationRoleId);
 
+	List<EmployeeOrganizationRole> findByIdEmployeeId(String employeeId);
+
 }
