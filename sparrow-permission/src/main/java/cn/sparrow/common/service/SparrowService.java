@@ -9,8 +9,10 @@ import javax.sql.DataSource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
@@ -56,7 +58,7 @@ public class SparrowService {
 
 	}
 
-	public void initSysrole() {
+	public void initSysrole() {		
 		jdbcTemplate.execute(
 				"insert into spr_sysrole(id, name, code,  created_date,created_by, modified_date, modified_by,is_system) values('"
 						+ sysroleId + "','超级管理员','SYSADMIN',now(),'SparrowSystem',now(),'SparrowSystem',true);");
@@ -71,6 +73,8 @@ public class SparrowService {
 				"insert into spr_user_sysrole(username, sysrole_id, created_date,created_by, modified_date, modified_by) values('ROOT','"
 						+ sysroleId + "',now(),'SparrowSystem',now(),'SparrowSystem');");
 		logger.info("Grant sysrole SYSADMIN to user ROOT");
+		
+		
 	}
 
 	public void initUrl() {

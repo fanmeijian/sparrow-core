@@ -18,5 +18,6 @@ public class GroupRelationPK implements Serializable{
   private static final long serialVersionUID = 1L;
   @Column(name = "group_id")
   private String groupId;
+  @Column(name = "parent_id")
   private String parentId;
 }

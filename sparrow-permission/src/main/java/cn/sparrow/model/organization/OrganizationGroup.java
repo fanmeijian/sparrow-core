@@ -5,14 +5,14 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
 import org.springframework.data.domain.Persistable;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import cn.sparrow.model.common.AbstractOperationLog;
+import cn.sparrow.model.group.Group;
+import lombok.EqualsAndHashCode.Exclude;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.EqualsAndHashCode.Exclude;
 
 @Getter
 @Setter
@@ -24,11 +24,16 @@ public class OrganizationGroup extends AbstractOperationLog implements Persistab
 	private OrganizationGroupPK id;
 	private String stat;
 
-	@JsonIgnore
 	@Exclude
 	@ManyToOne
 	@JoinColumn(name = "organization_id", insertable = false, updatable = false)
 	private Organization organization;
+	
+	@Exclude
+	@ManyToOne
+	@JoinColumn(name = "group_id", insertable = false, updatable = false)
+	private Group group;
+	
 
 	public OrganizationGroup() {
 

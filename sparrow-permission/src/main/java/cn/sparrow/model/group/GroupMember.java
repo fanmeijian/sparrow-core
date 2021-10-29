@@ -2,11 +2,14 @@ package cn.sparrow.model.group;
 
 import java.util.List;
 
-import cn.sparrow.model.common.GroupTypeEnum;
 import lombok.Data;
 
 @Data
 public class GroupMember {
-	private GroupTypeEnum groupType;
-	private List<?> members;
+	private List<GroupRelation> groupRelations;
+	private List<GroupOrganization> groupOrganizations;
+	private List<GroupRole> groupRoles;
+	private List<GroupLevel> groupLevels;
+	private List<GroupSysrole> groupSysroles;
+	private List<GroupEmployee> groupEmployees;
 }

@@ -13,14 +13,18 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import cn.sparrow.model.common.AbstractSparrowEntity;
+import cn.sparrow.model.group.GroupEmployee;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "spr_employee")
 public class Employee extends AbstractSparrowEntity {
@@ -33,6 +37,7 @@ public class Employee extends AbstractSparrowEntity {
 	private String name;
 	private String code;
 	private boolean root;
+	private String username;
 
 	// use for create relation at batch
 	@Transient
@@ -55,11 +60,9 @@ public class Employee extends AbstractSparrowEntity {
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "employee",fetch = FetchType.EAGER)
 	private Set<EmployeeOrganizationLevel> employeeOrganizationLevels;
-
-	private String username;
-
-	public Employee() {
-
-	}
+	
+	@JsonIgnore
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "employee", fetch = FetchType.EAGER)
+	private Set<GroupEmployee> groupEmployees;
 
 }

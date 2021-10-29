@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import cn.sparrow.common.service.GroupService;
 import cn.sparrow.model.common.MyTree;
 import cn.sparrow.model.organization.Employee;
 import cn.sparrow.model.organization.Organization;
@@ -47,8 +48,11 @@ public class OrganizationService {
 	@Autowired
 	LevelService levelService;
 	@Autowired
+	GroupService groupService;
+	@Autowired
 	EmployeeRepository employeeRepository;
-	@Autowired EmployeeService employeeService;
+	@Autowired
+	EmployeeService employeeService;
 
 	public Organization add(Organization organization) {
 		Organization org = organizationRepository.save(organization);
@@ -59,6 +63,10 @@ public class OrganizationService {
 			});
 		}
 		return org;
+	}
+
+	public List<OrganizationGroup> getOrganizationGroups(@NotBlank String organizationId) {
+		return organizationGroupRepository.findByIdOrganizationId(organizationId);
 	}
 
 	public List<OrganizationRole> getOrganizationRoles(@NotBlank String organizationId) {
@@ -79,34 +87,35 @@ public class OrganizationService {
 
 	public List<Employee> getEmployees(@NotBlank String organizationId, Pageable pageable) {
 		List<Employee> employees = employeeRepository.findByOrganizationId(organizationId, pageable);
-		employees.forEach(f->{
+		employees.forEach(f -> {
 			f.setChildCount(employeeService.getChildCount(f.getId()));
 		});
 		return employees;
 	}
 
 	public Set<OrganizationRelation> getChildren(String parentId) {
-    Set<OrganizationRelation> organizationRelations = new HashSet<OrganizationRelation>();
-    if (parentId == null || parentId.isBlank()) {
+		Set<OrganizationRelation> organizationRelations = new HashSet<OrganizationRelation>();
+		if (parentId == null || parentId.isBlank()) {
 
-      organizationRepository.findByRoot(true).forEach(f -> {
-        organizationRelations.add(new OrganizationRelation(f));
-      });
-    } else
-      organizationRelations.addAll(organizationRelationRepository.findByIdParentId(parentId));
-    organizationRelations.forEach(f -> {
-    	long childCount = organizationRelationRepository.countByIdParentId(f.getOrganization().getId());
-      f.getOrganization().setHasChildren(
-    		  childCount > 0 ? true
-              : false);
-      f.getOrganization().setChildCount(childCount);
-      f.getOrganization().setLevelCount(organizationRoleRepository.countByIdOrganizationId(f.getOrganization().getId()));
-      f.getOrganization().setRoleCount(organizationLevelRepository.countByIdOrganizationId(f.getOrganization().getId()));
-      f.getOrganization().setGroupCount(organizationGroupRepository.countByIdOrganizationId(f.getOrganization().getId()));
-      f.getOrganization().setEmployeeCount(employeeRepository.countByOrganizationId(f.getOrganization().getId()));
-    });
-    return organizationRelations;
-  }
+			organizationRepository.findByRoot(true).forEach(f -> {
+				organizationRelations.add(new OrganizationRelation(f));
+			});
+		} else
+			organizationRelations.addAll(organizationRelationRepository.findByIdParentId(parentId));
+		organizationRelations.forEach(f -> {
+			long childCount = organizationRelationRepository.countByIdParentId(f.getOrganization().getId());
+			f.getOrganization().setHasChildren(childCount > 0 ? true : false);
+			f.getOrganization().setChildCount(childCount);
+			f.getOrganization()
+					.setLevelCount(organizationRoleRepository.countByIdOrganizationId(f.getOrganization().getId()));
+			f.getOrganization()
+					.setRoleCount(organizationLevelRepository.countByIdOrganizationId(f.getOrganization().getId()));
+			f.getOrganization()
+					.setGroupCount(organizationGroupRepository.countByIdOrganizationId(f.getOrganization().getId()));
+			f.getOrganization().setEmployeeCount(employeeRepository.countByOrganizationId(f.getOrganization().getId()));
+		});
+		return organizationRelations;
+	}
 
 	@Transactional
 	public void delBatch(String[] ids) {

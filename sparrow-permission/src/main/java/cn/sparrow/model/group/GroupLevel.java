@@ -10,6 +10,7 @@ import javax.persistence.Table;
 import org.springframework.data.domain.Persistable;
 
 import cn.sparrow.model.common.AbstractOperationLog;
+import cn.sparrow.model.organization.Level;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -32,6 +33,10 @@ public class GroupLevel extends AbstractOperationLog implements Persistable<Grou
   @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "group_id", insertable = false, updatable = false)
   private Group group;
+  
+  @ManyToOne(fetch = FetchType.EAGER)
+  @JoinColumn(name = "level_id", insertable = false, updatable = false)
+  private Level level;
 
   public GroupLevel(GroupLevelPK f) {
     this.id = f;

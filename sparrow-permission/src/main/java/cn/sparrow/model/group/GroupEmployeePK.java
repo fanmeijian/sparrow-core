@@ -1,4 +1,4 @@
-package cn.sparrow.model.organization;
+package cn.sparrow.model.group;
 
 import java.io.Serializable;
 
@@ -10,14 +10,18 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Embeddable
-public class OrganizationGroupPK implements Serializable{
-	
+public class GroupEmployeePK implements Serializable {
+
+	/**
+	 * 
+	 */
 	private static final long serialVersionUID = 1L;
-	@Column(name = "organization_id")
-	private String organizationId;
 	@Column(name = "group_id")
 	private String groupId;
+	@Column(name = "employee_id")
+	private String employeeId;
+	
 }

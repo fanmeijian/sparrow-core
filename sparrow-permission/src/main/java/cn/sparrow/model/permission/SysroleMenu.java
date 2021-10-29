@@ -2,6 +2,7 @@ package cn.sparrow.model.permission;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
@@ -20,17 +21,23 @@ import lombok.NoArgsConstructor;
 @Table(name="spr_sysrole_menu")
 @NamedQuery(name="SysroleMenu.findAll", query="SELECT s FROM SysroleMenu s")
 public class SysroleMenu extends AbstractOperationLog {
-	public SysroleMenu(SysroleMenuPK sysroleMenuPK) {
-		this.id = sysroleMenuPK;
-	}
+	
 
 	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId
 	private SysroleMenuPK id;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "menu_id", insertable = false, updatable = false)
 	private Menu menu;
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "sysrole_id", insertable = false, updatable = false)
+	private Sysrole sysrole;
+	
+	public SysroleMenu(SysroleMenuPK sysroleMenuPK) {
+		this.id = sysroleMenuPK;
+	}
 
 }

@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import cn.sparrow.model.common.MyTree;
 import cn.sparrow.model.organization.Employee;
 import cn.sparrow.model.organization.Organization;
+import cn.sparrow.model.organization.OrganizationGroup;
 import cn.sparrow.model.organization.OrganizationGroupPK;
 import cn.sparrow.model.organization.OrganizationLevel;
 import cn.sparrow.model.organization.OrganizationLevelPK;
@@ -55,6 +56,11 @@ public class OrganizationController {
   @GetMapping("/organizations/getLevels")
   public List<OrganizationLevel> getLevels(@NotBlank @RequestParam("organizationId") final String organizationId){
     return organizationService.getOrganizationLevels(organizationId);
+  }
+  
+  @GetMapping("/organizations/getGroups")
+  public List<OrganizationGroup> getGroups(@NotBlank @RequestParam("organizationId") final String organizationId){
+    return organizationService.getOrganizationGroups(organizationId);
   }
   
   @GetMapping("/organizations/getEmployees")

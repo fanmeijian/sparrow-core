@@ -8,11 +8,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import cn.sparrow.model.common.MyTree;
+import cn.sparrow.model.organization.EmployeeOrganizationLevel;
 import cn.sparrow.model.organization.Level;
 import cn.sparrow.model.organization.LevelRelationPK;
 import cn.sparrow.model.organization.OrganizationLevel;
 import cn.sparrow.model.organization.OrganizationLevelPK;
 import cn.sparrow.model.organization.OrganizationLevelRelation;
+import cn.sparrow.organization.repository.EmployeeOrganizationLevelRepository;
 import cn.sparrow.organization.repository.LevelRelationRepository;
 import cn.sparrow.organization.repository.LevelRepository;
 import cn.sparrow.organization.repository.OrganizationLevelRelationRepository;
@@ -29,7 +31,12 @@ public class LevelService {
 	OrganizationLevelRelationRepository organizationLevelRelationRepository;
 	@Autowired
 	OrganizationLevelRepository organizationLevelRepository;
+	@Autowired EmployeeOrganizationLevelRepository employeeOrganizationLevelRepository;
 
+	public List<EmployeeOrganizationLevel> getEmployees(OrganizationLevelPK organizationLevelId) {
+		return employeeOrganizationLevelRepository.findByIdOrganizationLevelId(organizationLevelId);
+	}
+	
 	@Transactional
 	public Level save(Level lvel) {
 		Level savedLevel = levelRepository.save(lvel);

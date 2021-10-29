@@ -3,17 +3,17 @@ package cn.sparrow.model.permission;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import cn.sparrow.model.common.AbstractOperationLog;
 import cn.sparrow.model.group.GroupSysrole;
@@ -37,29 +37,28 @@ public class Sysrole extends AbstractOperationLog {
 	protected String id;
 	
 	private String name;
+	@Column(unique = true)
 	private String code;
 	private boolean isSystem;
 
 	@EqualsAndHashCode.Exclude
-	@ManyToMany
-	@JoinTable(name = "spr_sysrole_menu", joinColumns = { @JoinColumn(name = "SYSROLE_ID") }, inverseJoinColumns = {
-			@JoinColumn(name = "MENU_ID") })
-	private Set<Menu> menus;
+	@JsonIgnore
+	@OneToMany(fetch = FetchType.LAZY, targetEntity = SysroleMenu.class, cascade = CascadeType.ALL, mappedBy = "sysrole")
+	private Set<SysroleMenu> sysroleMenus;
 	
 	@EqualsAndHashCode.Exclude
+	@JsonIgnore
 	@OneToMany(targetEntity = GroupSysrole.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "sysrole")
 	private Set<GroupSysrole> groupSysroles;
 	
 	@EqualsAndHashCode.Exclude
-	@OneToMany(fetch = FetchType.LAZY)
-	private Set<SparrowUrl> urls;
+	@JsonIgnore
+	@OneToMany(targetEntity = SysroleUrlPermission.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "sysrole")
+	private Set<SysroleUrlPermission> sysroleUrlPermissions;
 
 	public Sysrole(String name, String code) {
 		super();
 		this.name = name;
 		this.code = code;
 	}
-	
-	
-
 }

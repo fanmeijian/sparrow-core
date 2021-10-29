@@ -2,6 +2,9 @@ package cn.sparrow.common.controller;
 
 import java.util.List;
 import java.util.Set;
+
+import javax.validation.constraints.NotBlank;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -17,21 +20,43 @@ import cn.sparrow.group.repository.GroupRepository;
 import cn.sparrow.model.common.MyTree;
 import cn.sparrow.model.group.Group;
 import cn.sparrow.model.group.GroupLevelPK;
+import cn.sparrow.model.group.GroupMember;
 import cn.sparrow.model.group.GroupOrganizationPK;
+import cn.sparrow.model.group.GroupRelation;
 import cn.sparrow.model.group.GroupRelationPK;
 import cn.sparrow.model.group.GroupRolePK;
 import cn.sparrow.model.group.GroupSysrolePK;
 import cn.sparrow.model.group.GroupUserPK;
+import cn.sparrow.model.organization.Employee;
 
 @RestController
 public class GroupController {
   @Autowired GroupService groupService;
   @Autowired GroupRepository groupRepository;
   
+  @PostMapping("/groups/addMembers")
+  public void addMembers(@NotNull @RequestBody GroupMember groupMember) {
+    groupService.saveGroupMember(groupMember);
+  }
+  
+  @GetMapping("/groups/getGroupMember")
+  public GroupMember getGroupMember(@NotBlank @RequestParam("groupId") final String groupId) {
+	  return groupService.getGroupMember(groupId);
+  }
+  
+  @GetMapping("/groups/getFinalEmployees")
+  public List<Employee> getFinalEmployees(@NotBlank @RequestParam("groupId") final String groupId) {
+	  return groupService.getFinalEmployees(groupId);
+  }
   
   @PostMapping("/groups/batch")
   public void add(@NotNull @RequestBody final List<Group> groups) {
     groupRepository.saveAll(groups);
+  }
+  
+  @PostMapping("/groups")
+  public Group save(@NotNull @RequestBody final Group group) {
+	 return groupService.save(group);
   }
 
   @PatchMapping("/groups/batch")
@@ -44,8 +69,10 @@ public class GroupController {
     groupRepository.deleteByIdIn(ids);
   }
   
+
+  
   @PostMapping("/groups/relations/batch")
-  public void addRelations(@NotNull @RequestBody Set<GroupRelationPK> ids) {
+  public void addRelations(@NotNull @RequestBody Set<GroupRelation> ids) {
     groupService.addRelations(ids);
   }
   

@@ -10,6 +10,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import cn.sparrow.model.common.AbstractSparrowEntity;
@@ -41,10 +42,12 @@ public class Level extends AbstractSparrowEntity {
     @JsonProperty
     private List<String> organizationIds;
 	
+	@JsonIgnore
 	@OneToMany(targetEntity = OrganizationLevel.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Set<OrganizationLevel> organizationLevels;
 	
-	@OneToMany(fetch = FetchType.EAGER)
+	@JsonIgnore
+	@OneToMany(targetEntity = GroupLevel.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Set<GroupLevel> groupLevels;
 
 }

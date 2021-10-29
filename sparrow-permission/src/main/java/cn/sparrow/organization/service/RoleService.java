@@ -2,19 +2,23 @@ package cn.sparrow.organization.service;
 
 import java.util.List;
 import java.util.Set;
+
 import javax.validation.constraints.NotNull;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import cn.sparrow.model.common.MyTree;
-import cn.sparrow.model.organization.OrganizationRoleRelationPK;
+import cn.sparrow.model.organization.EmployeeOrganizationRole;
 import cn.sparrow.model.organization.OrganizationRole;
 import cn.sparrow.model.organization.OrganizationRolePK;
 import cn.sparrow.model.organization.OrganizationRoleRelation;
+import cn.sparrow.model.organization.OrganizationRoleRelationPK;
 import cn.sparrow.model.organization.Role;
 import cn.sparrow.model.organization.RoleRelation;
 import cn.sparrow.model.organization.RoleRelationPK;
+import cn.sparrow.organization.repository.EmployeeOrganizationRoleRepository;
 import cn.sparrow.organization.repository.OrganizationRoleRelationRepository;
 import cn.sparrow.organization.repository.OrganizationRoleRepository;
 import cn.sparrow.organization.repository.RoleRelationRepository;
@@ -27,11 +31,16 @@ public class RoleService {
 	RoleRelationRepository roleRelationRepository;
 	@Autowired
 	RoleRepository roleRepository;
+	@Autowired EmployeeOrganizationRoleRepository employeeOrganizationRoleRepository;
 	@Autowired
 	OrganizationRoleRepository organizationRoleRepository;
 	@Autowired
 	OrganizationRoleRelationRepository organizationRoleRelationRepository;
 
+	public List<EmployeeOrganizationRole> getEmployees(OrganizationRolePK organizationRoleId){
+		return employeeOrganizationRoleRepository.findByIdOrganizationRoleId(organizationRoleId);
+	}
+	
 	public List<OrganizationRoleRelation> getChildren(@NotNull OrganizationRolePK parentId) {
 		return organizationRoleRelationRepository.findByIdParentId(parentId);
 	}
