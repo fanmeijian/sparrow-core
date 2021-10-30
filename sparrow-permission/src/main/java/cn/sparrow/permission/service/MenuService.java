@@ -1,6 +1,7 @@
 package cn.sparrow.permission.service;
 
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -162,6 +163,17 @@ public class MenuService {
 		if(menuPermission.getSysroleMenuPKs()!=null) {
 			sysroleMenuRepository.deleteByIdIn(menuPermission.getSysroleMenuPKs());
 		}
+	}
+
+	public void setPosition(Menu menu) {
+		LinkedList<Menu> linkedList = new LinkedList<Menu>();
+		
+		Menu m = menuRepository.getOne(menu.getId());
+		
+		if(menu.getPreviouNodeId()==null) {
+			menuRepository.getOne
+		}
+		
 	}
 
 }

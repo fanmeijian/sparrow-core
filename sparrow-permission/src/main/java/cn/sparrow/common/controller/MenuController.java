@@ -32,6 +32,11 @@ public class MenuController {
 		return "{\"modelName\":\"" + Menu.class.getName() + "\"}";
 	}
 	
+	@PostMapping("/menus/setPosition")
+	public void setPosition(Menu menu) {
+		menuService.setPosition(menu);
+	}
+	
 	@GetMapping("/menus/getTreeByParentId")
 	public MyTree<Menu> getTreeByParentId(@Nullable @Param("parentId") String parentId) {
 		return menuService.getTreeByParentId(parentId);
