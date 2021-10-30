@@ -175,57 +175,57 @@ public class SparrowService {
 			menuList.add(UUID.randomUUID().toString().replaceAll("-", ""));
 		}
 		jdbcTemplate.execute(
-				"insert into spr_menu(id, name, parent_id, sort, url, created_date, modified_by, modified_date,created_by,is_system) values('"
-						+ menuList.get(0) + "','权限管理',null,0,'/#',now(),'SparrowSystem',now(),'SparrowSystem',true);");
+				"insert into spr_menu(id, name, parent_id, previous_node_id, next_node_id, url, created_date, modified_by, modified_date,created_by,is_system) values('"
+						+ menuList.get(0) + "','权限管理',null,null,null,'/#',now(),'SparrowSystem',now(),'SparrowSystem',true);");
 		jdbcTemplate.execute(
-				"insert into spr_menu(id, name, parent_id, sort, url, created_date, modified_by, modified_date,created_by,is_system) values('"
-						+ menuList.get(1) + "','角色管理','" + menuList.get(0) + "',0,'/page/sysrole',now(),'SparrowSystem',now(),'SparrowSystem',true);");
+				"insert into spr_menu(id, name, parent_id, previous_node_id, next_node_id, url, created_date, modified_by, modified_date,created_by,is_system) values('"
+						+ menuList.get(1) + "','角色管理','" + menuList.get(0) + "',null,'"+ menuList.get(2) +"','/page/sysrole',now(),'SparrowSystem',now(),'SparrowSystem',true);");
 		jdbcTemplate.execute(
-				"insert into spr_menu(id, name, parent_id, sort, url, created_date, modified_by, modified_date,created_by,is_system) values('"
-						+ menuList.get(2) + "','URL资源管理','" + menuList.get(0) + "',0,'/page/url',now(),'SparrowSystem',now(),'SparrowSystem',true);");
+				"insert into spr_menu(id, name, parent_id, previous_node_id, next_node_id, url, created_date, modified_by, modified_date,created_by,is_system) values('"
+						+ menuList.get(2) + "','URL资源管理','" + menuList.get(0) + "','"+ menuList.get(1) +"','"+ menuList.get(3) +"','/page/url',now(),'SparrowSystem',now(),'SparrowSystem',true);");
 		jdbcTemplate.execute(
-				"insert into spr_menu(id, name, parent_id, sort, url, created_date, modified_by, modified_date,created_by,is_system) values('"
-						+ menuList.get(3) + "','菜单管理','" + menuList.get(0) + "',0,'/page/menu',now(),'SparrowSystem',now(),'SparrowSystem',true);");
+				"insert into spr_menu(id, name, parent_id, previous_node_id, next_node_id, url, created_date, modified_by, modified_date,created_by,is_system) values('"
+						+ menuList.get(3) + "','菜单管理','" + menuList.get(0) + "','"+ menuList.get(2) +"','"+ menuList.get(4) +"','/page/menu',now(),'SparrowSystem',now(),'SparrowSystem',true);");
 		jdbcTemplate.execute(
-				"insert into spr_menu(id, name, parent_id, sort, url, created_date, modified_by, modified_date,created_by,is_system) values('"
-						+ menuList.get(4) + "','模型管理','" + menuList.get(0) + "',0,'/page/model',now(),'SparrowSystem',now(),'SparrowSystem',true);");
+				"insert into spr_menu(id, name, parent_id, previous_node_id, next_node_id, url, created_date, modified_by, modified_date,created_by,is_system) values('"
+						+ menuList.get(4) + "','模型管理','" + menuList.get(0) + "','"+ menuList.get(3) +"','"+ menuList.get(5) +"','/page/model',now(),'SparrowSystem',now(),'SparrowSystem',true);");
 		jdbcTemplate.execute(
-				"insert into spr_menu(id, name, parent_id, sort, url, created_date, modified_by, modified_date,created_by,is_system) values('"
-						+ menuList.get(5) + "','模型属性管理','" + menuList.get(0) + "',0,'/page/modelAttribute',now(),'SparrowSystem',now(),'SparrowSystem',true);");
-		jdbcTemplate.execute(
-				"insert into spr_menu(id, name, parent_id, sort, url, created_date, modified_by, modified_date,created_by,is_system) values('"
-						+ menuList.get(6) + "','数据权限管理','" + menuList.get(0) + "',0,'/page/dataPermission',now(),'SparrowSystem',now(),'SparrowSystem',true);");
-		jdbcTemplate.execute(
-				"insert into spr_menu(id, name, parent_id, sort, url, created_date, modified_by, modified_date,created_by,is_system) values('"
-						+ menuList.get(7) + "','文件权限管理','" + menuList.get(0) + "',0,'/page/dataPermission',now(),'SparrowSystem',now(),'SparrowSystem',true);");
-
-		jdbcTemplate.execute(
-				"insert into spr_menu(id, name, parent_id, sort, url, created_date, modified_by, modified_date,created_by,is_system) values('"
-						+ menuList.get(8) + "','组织管理',null,0,'/#',now(),'SparrowSystem',now(),'SparrowSystem',true);");
-		jdbcTemplate.execute(
-				"insert into spr_menu(id, name, parent_id, sort, url, created_date, modified_by, modified_date,created_by,is_system) values('"
-						+ menuList.get(9) + "','机构部门管理','" + menuList.get(8) + "',0,'/page/organization',now(),'SparrowSystem',now(),'SparrowSystem',true);");
-		jdbcTemplate.execute(
-				"insert into spr_menu(id, name, parent_id, sort, url, created_date, modified_by, modified_date,created_by,is_system) values('"
-						+ menuList.get(10) + "','岗位管理','" + menuList.get(8) + "',0,'/page/role',now(),'SparrowSystem',now(),'SparrowSystem',true);");
-		jdbcTemplate.execute(
-				"insert into spr_menu(id, name, parent_id, sort, url, created_date, modified_by, modified_date,created_by,is_system) values('"
-						+ menuList.get(11) + "','级别管理','" + menuList.get(8) + "',0,'/page/level',now(),'SparrowSystem',now(),'SparrowSystem',true);");
-		jdbcTemplate.execute(
-				"insert into spr_menu(id, name, parent_id, sort, url, created_date, modified_by, modified_date,created_by,is_system) values('"
-						+ menuList.get(12) + "','群组管理','" + menuList.get(8)
-						+ "',0,'/page/group',now(),'SparrowSystem',now(),'SparrowSystem',true);");
-		jdbcTemplate.execute(
-				"insert into spr_menu(id, name, parent_id, sort, url, created_date, modified_by, modified_date,created_by,is_system) values('"
-						+ menuList.get(13) + "','审计日志',null,0,'/#',now(),'SparrowSystem',now(),'SparrowSystem',true);");
-		jdbcTemplate.execute(
-				"insert into spr_menu(id, name, parent_id, sort, url, created_date, modified_by, modified_date,created_by,is_system) values('"
-						+ menuList.get(14) + "','登陆日志','" + menuList.get(13)
-						+ "',0,'/page/loginLog',now(),'SparrowSystem',now(),'SparrowSystem',true);");
-		jdbcTemplate.execute(
-				"insert into spr_menu(id, name, parent_id, sort, url, created_date, modified_by, modified_date,created_by,is_system) values('"
-						+ menuList.get(15) + "','操作日志','" + menuList.get(13)
-						+ "',0,'/page/operationLog',now(),'SparrowSystem',now(),'SparrowSystem',true);");
+				"insert into spr_menu(id, name, parent_id, previous_node_id, next_node_id, url, created_date, modified_by, modified_date,created_by,is_system) values('"
+						+ menuList.get(5) + "','模型属性管理','" + menuList.get(0) + "','"+ menuList.get(4) +"',null,'/page/modelAttribute',now(),'SparrowSystem',now(),'SparrowSystem',true);");
+//		jdbcTemplate.execute(
+//				"insert into spr_menu(id, name, parent_id, sort, url, created_date, modified_by, modified_date,created_by,is_system) values('"
+//						+ menuList.get(6) + "','数据权限管理','" + menuList.get(0) + "',0,'/page/dataPermission',now(),'SparrowSystem',now(),'SparrowSystem',true);");
+//		jdbcTemplate.execute(
+//				"insert into spr_menu(id, name, parent_id, sort, url, created_date, modified_by, modified_date,created_by,is_system) values('"
+//						+ menuList.get(7) + "','文件权限管理','" + menuList.get(0) + "',0,'/page/dataPermission',now(),'SparrowSystem',now(),'SparrowSystem',true);");
+//
+//		jdbcTemplate.execute(
+//				"insert into spr_menu(id, name, parent_id, sort, url, created_date, modified_by, modified_date,created_by,is_system) values('"
+//						+ menuList.get(8) + "','组织管理',null,0,'/#',now(),'SparrowSystem',now(),'SparrowSystem',true);");
+//		jdbcTemplate.execute(
+//				"insert into spr_menu(id, name, parent_id, sort, url, created_date, modified_by, modified_date,created_by,is_system) values('"
+//						+ menuList.get(9) + "','机构部门管理','" + menuList.get(8) + "',0,'/page/organization',now(),'SparrowSystem',now(),'SparrowSystem',true);");
+//		jdbcTemplate.execute(
+//				"insert into spr_menu(id, name, parent_id, sort, url, created_date, modified_by, modified_date,created_by,is_system) values('"
+//						+ menuList.get(10) + "','岗位管理','" + menuList.get(8) + "',0,'/page/role',now(),'SparrowSystem',now(),'SparrowSystem',true);");
+//		jdbcTemplate.execute(
+//				"insert into spr_menu(id, name, parent_id, sort, url, created_date, modified_by, modified_date,created_by,is_system) values('"
+//						+ menuList.get(11) + "','级别管理','" + menuList.get(8) + "',0,'/page/level',now(),'SparrowSystem',now(),'SparrowSystem',true);");
+//		jdbcTemplate.execute(
+//				"insert into spr_menu(id, name, parent_id, sort, url, created_date, modified_by, modified_date,created_by,is_system) values('"
+//						+ menuList.get(12) + "','群组管理','" + menuList.get(8)
+//						+ "',0,'/page/group',now(),'SparrowSystem',now(),'SparrowSystem',true);");
+//		jdbcTemplate.execute(
+//				"insert into spr_menu(id, name, parent_id, sort, url, created_date, modified_by, modified_date,created_by,is_system) values('"
+//						+ menuList.get(13) + "','审计日志',null,0,'/#',now(),'SparrowSystem',now(),'SparrowSystem',true);");
+//		jdbcTemplate.execute(
+//				"insert into spr_menu(id, name, parent_id, sort, url, created_date, modified_by, modified_date,created_by,is_system) values('"
+//						+ menuList.get(14) + "','登陆日志','" + menuList.get(13)
+//						+ "',0,'/page/loginLog',now(),'SparrowSystem',now(),'SparrowSystem',true);");
+//		jdbcTemplate.execute(
+//				"insert into spr_menu(id, name, parent_id, sort, url, created_date, modified_by, modified_date,created_by,is_system) values('"
+//						+ menuList.get(15) + "','操作日志','" + menuList.get(13)
+//						+ "',0,'/page/operationLog',now(),'SparrowSystem',now(),'SparrowSystem',true);");
 
 		logger.info("Init menu finished");
 	}

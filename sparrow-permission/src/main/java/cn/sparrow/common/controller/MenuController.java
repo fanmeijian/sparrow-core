@@ -33,7 +33,7 @@ public class MenuController {
 	}
 	
 	@PostMapping("/menus/setPosition")
-	public void setPosition(Menu menu) {
+	public void setPosition(@RequestBody Menu menu) {
 		menuService.setPosition(menu);
 	}
 	

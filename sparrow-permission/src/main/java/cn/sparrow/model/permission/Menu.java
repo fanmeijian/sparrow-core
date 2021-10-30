@@ -42,20 +42,20 @@ public class Menu extends AbstractOperationLog implements Serializable {
   private String parentId;
   private String url;
   private boolean isSystem;
-  @Column(name = "previou_node_id")
-  private String previouNodeId;
+  @Column(name = "previous_node_id")
+  private String previousNodeId;
   @Column(name = "next_node_id")
   private String nextNodeId;
 
-  @JsonIgnore
-  @OneToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "previou_node_id")
-  private Menu previousNode;
-  
-  @JsonIgnore
-  @OneToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "next_node_id")
-  private Menu nextNode;
+//  @JsonIgnore
+//  @OneToOne(fetch = FetchType.LAZY)
+//  @JoinColumn(name = "previou_node_id", insertable = false, updatable = false)
+//  private Menu previousNode;
+//  
+//  @JsonIgnore
+//  @OneToOne(fetch = FetchType.LAZY)
+//  @JoinColumn(name = "next_node_id", insertable = false, updatable = false)
+//  private Menu nextNode;
   
   // @JsonIgnore
 //  @ManyToOne

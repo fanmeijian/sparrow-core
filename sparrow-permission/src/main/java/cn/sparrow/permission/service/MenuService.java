@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import cn.sparrow.common.repository.UserMenuRepository;
+import cn.sparrow.model.common.ISparrowSortedService;
 import cn.sparrow.model.common.MyTree;
 import cn.sparrow.model.permission.Menu;
 import cn.sparrow.model.permission.MenuPermission;
@@ -31,6 +32,8 @@ public class MenuService {
 	
 	@Autowired
 	SysroleMenuRepository sysroleMenuRepository;
+	
+	@Autowired ISparrowSortedService<Menu, String> sparrowSortedService;
 
 	public MyTree<Menu> getTreeByParentId(String parentId) {
 		Menu menu = menuRepository.findById(parentId).orElse(null);
@@ -166,14 +169,7 @@ public class MenuService {
 	}
 
 	public void setPosition(Menu menu) {
-		LinkedList<Menu> linkedList = new LinkedList<Menu>();
-		
-		Menu m = menuRepository.getOne(menu.getId());
-		
-		if(menu.getPreviouNodeId()==null) {
-			menuRepository.getOne
-		}
-		
+	  sparrowSortedService.saveSort(menuRepository, menu);
 	}
 
 }
