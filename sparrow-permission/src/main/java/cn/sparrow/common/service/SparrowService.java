@@ -45,15 +45,15 @@ public class SparrowService {
 		this.appContext = appContext;
 		 ds = appContext.getBean(DataSource.class);
 		 jdbcTemplate = appContext.getBean(JdbcTemplate.class);
-//		initSysrole();
-//		initMenu();
-//		initUrl();
-//		initUrlPermission();
+		initSysrole();
+		initMenu();
+		initUrl();
+		initUrlPermission();
 //		urlPermissionService.init();
 //		logger.info("finish url init.");
 //		sysroleService.init();
 //		logger.info("finish sysrole init.");
-//		modelService.init();
+		modelService.init();
 		logger.info("finish model init.");
 
 	}
@@ -196,7 +196,8 @@ public class SparrowService {
 		jdbcTemplate.execute("insert into spr_menu(id, name, parent_id, url, created_date, modified_by, modified_date,created_by,is_system) values('"+ menuList.get(19) + "','审计日志','"+ menuList.get(15) + "','/log',now(),'SparrowSystem',now(),'SparrowSystem',true);");
 		logger.info("Init menu finished");
 		jdbcTemplate.execute("insert into spr_sysrole_menu(sysrole_id, menu_id) values('"+sysroleId+"','"+menuList.get(0)+"')");
-	    jdbcTemplate.execute("insert into spr_user_menu(username, menu_id) values('ROOT','"+menuList.get(0)+"')");
+		jdbcTemplate.execute("insert into spr_sysrole_menu(sysrole_id, menu_id) values('"+sysroleId+"','"+menuList.get(6)+"')");
+		jdbcTemplate.execute("insert into spr_sysrole_menu(sysrole_id, menu_id) values('"+sysroleId+"','"+menuList.get(15)+"')");
 
 	}
 

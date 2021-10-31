@@ -4,10 +4,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import javax.transaction.Transactional;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 
@@ -48,6 +50,10 @@ public class SysroleService {
   
   public void delMenus(String sysroleId, List<String> menuIds) {
 	  sysroleMenuRepository.deleteByIdSysroleIdAndIdMenuIdIn(sysroleId, menuIds);
+  }
+  
+  public List<UserSysrole> getUserSysroles(@NotBlank String username){
+	  return userSysroleRepository.findByIdUsername(username, Pageable.unpaged()).toList();
   }
   
   public void addMenus(String sysroleId, List<String> menuIds) {

@@ -8,6 +8,7 @@ import javax.validation.constraints.NotNull;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -51,7 +52,7 @@ public class MenuController {
 	public MyTree<Menu> getTreeBySysroleId(@NotNull @Param("sysroleId") String sysroleId) {
 		return menuService.getTreeBySysroleId(sysroleId);
 	}
-	
+		
 	@GetMapping("/menus/getMyTree")
 	public MyTree<Menu> getMyTree(Principal principal) {
 		return menuService.getTreeByUsername(principal.getName());

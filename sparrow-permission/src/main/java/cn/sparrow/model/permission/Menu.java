@@ -13,14 +13,16 @@ import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import cn.sparrow.model.common.AbstractOperationLog;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
 @Entity
+@NoArgsConstructor
 @Table(name = "spr_menu")
 @EntityListeners(AuditingEntityListener.class)
-public class Menu extends AbstractOperationLog implements Serializable, Comparable<Menu> {
+public class Menu extends AbstractOperationLog implements Serializable {
   private static final long serialVersionUID = 1L;
 
   @Id
@@ -58,14 +60,9 @@ public class Menu extends AbstractOperationLog implements Serializable, Comparab
   @OneToMany(mappedBy = "menu")
   private Set<UserMenu> userMenus;
 
-  @Override
-  public int compareTo(Menu o) {
-    if (this.id.equals(o.getPreviousNodeId()))
-      return 1;
-    else if (this.id.equals(o.getNextNodeId()))
-      return -1;
-    else
-      return 0;
+  public Menu(String id, String parentId) {
+	  this.id = id;
+	  this.parentId = parentId;
   }
 
   // @JsonBackReference
