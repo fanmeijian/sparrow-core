@@ -1,5 +1,6 @@
 package cn.sparrow.permission.service;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -49,6 +50,9 @@ public class MenuService {
 
 	public void buildTree(MyTree<Menu> menuTree) {
 		List<Menu> menus = menuRepository.findByParentId(menuTree.getMe().getId());
+		// sort the menus
+        sparrowSortedService.sort(menus);
+        
 		for (Menu menu : menus) {
 			MyTree<Menu> leaf = new MyTree<Menu>(menu);
 			menuTree.getChildren().add(leaf);
@@ -90,6 +94,10 @@ public class MenuService {
 
 		// 构建用户的菜单树
 		List<Menu> menus = menuRepository.findByParentId(menuTree.getMe().getId());
+		
+		// sort the menus
+		sparrowSortedService.sort(menus);
+		
 		for (Menu menu : menus) {
 			MyTree<Menu> leaf = new MyTree<Menu>(menu);
 			if (menusSet.stream().anyMatch(p -> p.equals(menu)))
