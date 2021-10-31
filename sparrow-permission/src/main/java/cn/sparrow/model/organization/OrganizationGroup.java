@@ -10,12 +10,12 @@ import org.springframework.data.domain.Persistable;
 
 import cn.sparrow.model.common.AbstractOperationLog;
 import cn.sparrow.model.group.Group;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.EqualsAndHashCode.Exclude;
-import lombok.Getter;
-import lombok.Setter;
 
-@Getter
-@Setter
+@Data
+@EqualsAndHashCode(callSuper = false)
 @Entity
 @Table(name = "spr_organization_group")
 public class OrganizationGroup extends AbstractOperationLog implements Persistable<OrganizationGroupPK> {

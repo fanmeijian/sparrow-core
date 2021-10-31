@@ -5,17 +5,19 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
 import org.springframework.data.domain.Persistable;
 
 import cn.sparrow.model.common.AbstractOperationLog;
 import cn.sparrow.model.organization.Organization;
-import lombok.Getter;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.EqualsAndHashCode.Exclude;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 
-@Getter
-@Setter
+@Data
+@EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor
 @Entity
 @Table(name = "spr_group_organization")
@@ -26,10 +28,12 @@ public class GroupOrganization extends AbstractOperationLog
   @EmbeddedId
   private GroupOrganizationPK id;
 
+  @Exclude
   @ManyToOne
   @JoinColumn(name = "group_id", insertable = false, updatable = false)
   private Group group;
   
+  @Exclude
   @ManyToOne
   @JoinColumn(name = "organization_id", insertable = false, updatable = false)
   private Organization organization;

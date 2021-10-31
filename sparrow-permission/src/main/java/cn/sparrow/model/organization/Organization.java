@@ -7,6 +7,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -65,18 +66,18 @@ public class Organization extends AbstractSparrowEntity {
     private long employeeCount;
 	
 	@JsonIgnore
-	@OneToMany(targetEntity = OrganizationRole.class, cascade = CascadeType.ALL, mappedBy = "organization")
+	@OneToMany(targetEntity = OrganizationRole.class, cascade = CascadeType.ALL, mappedBy = "organization",fetch = FetchType.LAZY)
 	private Set<OrganizationRole> organizationRoles;
 	
 	@JsonIgnore
-	@OneToMany(targetEntity = OrganizationLevel.class, cascade = CascadeType.ALL, mappedBy = "organization")
+	@OneToMany(targetEntity = OrganizationLevel.class, cascade = CascadeType.ALL, mappedBy = "organization",fetch = FetchType.LAZY)
 	private Set<OrganizationLevel> organizationLevels;
 	
 	@JsonIgnore
-	@OneToMany(targetEntity = OrganizationGroup.class, cascade = CascadeType.ALL, mappedBy = "organization")
+	@OneToMany(targetEntity = OrganizationGroup.class, cascade = CascadeType.ALL, mappedBy = "organization",fetch = FetchType.LAZY)
 	private Set<OrganizationGroup> organizationGroups;
 	
 	@JsonIgnore
-	@OneToMany(targetEntity = GroupOrganization.class, cascade = CascadeType.ALL, mappedBy = "organization")
+	@OneToMany(targetEntity = GroupOrganization.class, cascade = CascadeType.ALL, mappedBy = "organization",fetch = FetchType.LAZY)
 	private Set<GroupOrganization> groupOrganizations;
 }
