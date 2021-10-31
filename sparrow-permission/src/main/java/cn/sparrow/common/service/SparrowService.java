@@ -46,7 +46,7 @@ public class SparrowService {
 		 ds = appContext.getBean(DataSource.class);
 		 jdbcTemplate = appContext.getBean(JdbcTemplate.class);
 		initSysrole();
-		initMenu();
+//		initMenu();
 		initUrl();
 		initUrlPermission();
 //		urlPermissionService.init();
