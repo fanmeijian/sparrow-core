@@ -107,9 +107,9 @@ public class OrganizationService {
 			f.getOrganization().setHasChildren(childCount > 0 ? true : false);
 			f.getOrganization().setChildCount(childCount);
 			f.getOrganization()
-					.setLevelCount(organizationRoleRepository.countByIdOrganizationId(f.getOrganization().getId()));
+					.setRoleCount(organizationRoleRepository.countByIdOrganizationId(f.getOrganization().getId()));
 			f.getOrganization()
-					.setRoleCount(organizationLevelRepository.countByIdOrganizationId(f.getOrganization().getId()));
+					.setLevelCount(organizationLevelRepository.countByIdOrganizationId(f.getOrganization().getId()));
 			f.getOrganization()
 					.setGroupCount(organizationGroupRepository.countByIdOrganizationId(f.getOrganization().getId()));
 			f.getOrganization().setEmployeeCount(employeeRepository.countByOrganizationId(f.getOrganization().getId()));

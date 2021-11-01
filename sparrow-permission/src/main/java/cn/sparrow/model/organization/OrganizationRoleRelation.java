@@ -17,7 +17,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
 @NoArgsConstructor
 @Entity
 @Table(name = "spr_organization_role_relation")
@@ -29,6 +29,7 @@ public class OrganizationRoleRelation extends AbstractOperationLog{
    */
   private static final long serialVersionUID = 1L;
 
+  @EqualsAndHashCode.Include
   @EmbeddedId
   private OrganizationRoleRelationPK id;
 

@@ -27,12 +27,13 @@ import lombok.NoArgsConstructor;
 @EntityListeners({ ReadPermissionListener.class, AuditLogListener.class, AuditingEntityListener.class })
 @MappedSuperclass
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
 @AllArgsConstructor
 @NoArgsConstructor
 public abstract class AbstractSparrowEntity extends AbstractOperationLog implements Serializable {
 	private static final long serialVersionUID = 1L;
 
+	@EqualsAndHashCode.Include
 	@Id
 	@GenericGenerator(name = "id-generator", strategy = "uuid")
 	@GeneratedValue(generator = "id-generator")

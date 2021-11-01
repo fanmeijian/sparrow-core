@@ -1,6 +1,5 @@
 package cn.sparrow.model.organization;
 
-import javax.persistence.CascadeType;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
@@ -16,11 +15,11 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import cn.sparrow.model.common.AbstractOperationLog;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
-@Getter
-@Setter
+@Data
+@EqualsAndHashCode(callSuper = false,onlyExplicitlyIncluded = true)
 @Entity
 @Table(name = "spr_employee_organization_level")
 @EntityListeners(AuditingEntityListener.class)
@@ -31,6 +30,7 @@ public class EmployeeOrganizationLevel extends AbstractOperationLog
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	@EqualsAndHashCode.Include
 	@EmbeddedId
 	private EmployeeOrganizationLevelPK id;
 	private String stat;

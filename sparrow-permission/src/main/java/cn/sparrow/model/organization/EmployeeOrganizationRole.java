@@ -17,10 +17,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import cn.sparrow.model.common.AbstractOperationLog;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.EqualsAndHashCode.Exclude;
+import lombok.NoArgsConstructor;
 
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
+@NoArgsConstructor
 @Entity
 @Table(name = "spr_employee_organization_role")
 @EntityListeners(AuditingEntityListener.class)
@@ -30,26 +31,21 @@ public class EmployeeOrganizationRole extends AbstractOperationLog implements Pe
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	@EqualsAndHashCode.Include
 	@EmbeddedId
 	private EmployeeOrganizationRolePK id;
 	private String stat;
 
-	@Exclude
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumns({
 			@JoinColumn(name = "organization_id", referencedColumnName = "organization_id", insertable = false, updatable = false),
 			@JoinColumn(name = "role_id", referencedColumnName = "role_id", insertable = false, updatable = false) })
 	private OrganizationRole organizationRole;
 
-	@Exclude
 	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "employee_id", insertable = false, updatable = false)
 	private Employee employee;
-
-	public EmployeeOrganizationRole() {
-
-	}
 
 	public EmployeeOrganizationRole(EmployeeOrganizationRolePK f) {
 		this.id = f;

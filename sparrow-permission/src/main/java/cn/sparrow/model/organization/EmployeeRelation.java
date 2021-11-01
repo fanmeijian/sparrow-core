@@ -13,11 +13,10 @@ import cn.sparrow.model.common.AbstractOperationLog;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.EqualsAndHashCode.Exclude;
 import lombok.NoArgsConstructor;
 
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -30,15 +29,14 @@ public class EmployeeRelation extends AbstractOperationLog {
 	 */
 	private static final long serialVersionUID = 1L;
 
+	@EqualsAndHashCode.Include
 	@EmbeddedId
 	private EmployeeRelationPK id;
 
-	@Exclude
 	@ManyToOne
 	@JoinColumn(name = "employee_id", insertable = false, updatable = false)
 	private Employee employee;
 	
-	@Exclude
 	@ManyToOne
 	@JoinColumn(name = "parent_id	", insertable = false, updatable = false)
 	private Employee parent;

@@ -41,6 +41,7 @@ public class MenuService {
 		Menu menu = menuRepository.findById(parentId).orElse(new Menu(null, null));
 		SparrowSortableTree<Menu, String> menuTree = new SparrowSortableTree<Menu, String>(menu, menu.getId(),menu.getNextNodeId(), menu.getNextNodeId());
 		buildTree(menuTree);
+		sparrowSortedService.sort(menuTree);
 		return menuTree;
 	}
 

@@ -22,11 +22,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import cn.sparrow.model.common.AbstractOperationLog;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.EqualsAndHashCode.Exclude;
 import lombok.NoArgsConstructor;
 
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
 @NoArgsConstructor
 @Entity
 @Table(name = "spr_organization_role")
@@ -34,6 +33,7 @@ import lombok.NoArgsConstructor;
 public class OrganizationRole extends AbstractOperationLog implements Persistable<OrganizationRolePK> {
 
 	private static final long serialVersionUID = 1L;
+	@EqualsAndHashCode.Include
 	@EmbeddedId
 	private OrganizationRolePK id;
 	private String stat;
@@ -46,7 +46,6 @@ public class OrganizationRole extends AbstractOperationLog implements Persistabl
 	@JsonProperty
 	private long childCount;
 
-	@Exclude
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumns({ @JoinColumn(name = "organization_id", referencedColumnName = "organization_id"),
 			@JoinColumn(name = "role_id", referencedColumnName = "role_id") })
@@ -54,21 +53,17 @@ public class OrganizationRole extends AbstractOperationLog implements Persistabl
 	
 	@Transient
 	@JsonProperty
-	@Exclude
 	private Set<OrganizationRelation> reportRoles;
 	
 	@Transient
 	@JsonProperty
-	@Exclude
 	private Set<OrganizationRelation> reportByRoles;
 
-	@Exclude
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "role_id", insertable = false, updatable = false)
 	private Role role;
 	
 	@JsonIgnore
-	@Exclude
 	@ManyToOne
 	@JoinColumn(name = "organization_id", insertable = false, updatable = false)
 	private Organization organization;

@@ -2,38 +2,52 @@ package cn.sparrow.model.organization;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import cn.sparrow.model.common.AbstractOperationLog;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Data
+@EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "spr_organization_relation")
-public class OrganizationRelation {
+@EntityListeners(AuditingEntityListener.class)
+public class OrganizationRelation extends AbstractOperationLog {
 
-  @EmbeddedId
-  private OrganizationRelationPK id;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
-  @ManyToOne(fetch = FetchType.EAGER)
-  @JoinColumn(name = "organization_id", insertable = false, updatable = false)
-  private Organization organization;
+	@EqualsAndHashCode.Include
+	@EmbeddedId
+	private OrganizationRelationPK id;
 
-  @ManyToOne
-  @JoinColumn(name = "parent_id", insertable = false, updatable = false)
-  private Organization parent;
-  
-  public OrganizationRelation(OrganizationRelationPK id) {
-    this.id = id;
-  }
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "organization_id", insertable = false, updatable = false)
+	private Organization organization;
 
-  public OrganizationRelation(Organization f) {
-    this.organization = f;
-  }
+	@ManyToOne
+	@JoinColumn(name = "parent_id", insertable = false, updatable = false)
+	private Organization parent;
+
+	public OrganizationRelation(OrganizationRelationPK id) {
+		this.id = id;
+	}
+
+	public OrganizationRelation(Organization f) {
+		this.organization = f;
+	}
 
 }
