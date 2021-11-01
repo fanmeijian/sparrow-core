@@ -1,13 +1,13 @@
 package cn.sparrow.common.service;
 
 import java.util.Set;
-import cn.sparrow.model.common.SparrowTree;
+import cn.sparrow.model.common.MyTree;
 
 public interface ITree<T> {
 
-  public SparrowTree<T> tree(String parentId);
+  public MyTree<T> tree(String parentId);
   
-  public void buildTree(SparrowTree<T> tree);
+  public void buildTree(MyTree<T> tree);
 //  
 //  public void buildParents(ID parentId, Set<T> target);
 //  

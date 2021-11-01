@@ -1,11 +1,8 @@
 package cn.sparrow.common.controller;
 
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.lang.Nullable;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,9 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.sun.istack.NotNull;
 
-import cn.sparrow.model.common.MyTree;
 import cn.sparrow.model.organization.Level;
-import cn.sparrow.model.organization.LevelRelationPK;
 import cn.sparrow.model.organization.OrganizationLevelPK;
 import cn.sparrow.model.organization.OrganizationLevelRelation;
 import cn.sparrow.model.organization.Role;
@@ -62,23 +57,9 @@ public class LevelController {
 		levelRepository.saveAll(levels);
 	}
 
-	@DeleteMapping("/levels/batch")
-	public void delete(@NotNull @RequestBody final String[] ids) {
-		levelService.delBatch(ids);
-	}
 
 	@PostMapping("/levels/relations/batch")
 	public void addRelations(@NotNull @RequestBody List<OrganizationLevelRelation> organizationLevelRelations) {
 		levelService.addRelations(organizationLevelRelations);
-	}
-
-	@DeleteMapping("/levels/relations/batch")
-	public void delRelations(@NotNull @RequestBody Set<LevelRelationPK> ids) {
-		levelService.delRelations(ids);
-	}
-
-	@GetMapping("/levels/getTreeByParentId")
-	public MyTree<Level> tree(@Nullable @RequestParam("parentId") String parentId) {
-		return levelService.getTree(parentId == null || parentId.isBlank() ? null : parentId);
 	}
 }
