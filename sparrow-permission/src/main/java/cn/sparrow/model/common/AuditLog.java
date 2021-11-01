@@ -32,6 +32,7 @@ public class AuditLog {
 
 	private String modelName;
 
+	@Column(length = 2000)
 	private String objectId;
 
 	@Column(length = 1)

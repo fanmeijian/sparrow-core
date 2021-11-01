@@ -14,5 +14,5 @@ public interface OrganizationRepository extends JpaRepository<Organization, Stri
   @Transactional
   void deleteByIdIn(String[] ids);
 
-  List<Organization> findByRoot(boolean b);
+  List<Organization> findByIsRoot(boolean b);
 }

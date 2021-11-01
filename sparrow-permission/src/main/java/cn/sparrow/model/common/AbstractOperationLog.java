@@ -4,19 +4,21 @@ import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
+import javax.persistence.EntityListeners;
 import javax.persistence.MappedSuperclass;
 
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
-
+import cn.sparrow.permission.listener.AuditLogListener;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
 @MappedSuperclass
+@EntityListeners( AuditLogListener.class)
 public abstract class AbstractOperationLog implements Serializable {
 	private static final long serialVersionUID = 1L;
 	

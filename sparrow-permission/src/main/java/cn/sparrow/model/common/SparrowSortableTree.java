@@ -61,4 +61,12 @@ public class SparrowSortableTree<T, ID> extends SparrowTree<T, ID> {
 	public void setChildren(List<SparrowSortableTree<T, ID>> sortableChildren) {
 		super.setChildren(sortableChildren);
 	}
+	
+	public ID getKey() {
+	  return super.getId();
+	}
+	
+	public String getTitle() {
+	  return super.getName();
+	}
 }

@@ -23,61 +23,68 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = true, onlyExplicitlyIncluded = true)
 @NoArgsConstructor
 @Entity
 @Table(name = "spr_organization")
 public class Organization extends AbstractSparrowEntity {
 
-	private static final long serialVersionUID = 1L;
-	private String code;
-	private String name;
-	private String stat;
-	private boolean root;
-	// use for create relation at batch
-	@Transient
-	@JsonProperty
-	private List<String> parentIds;
-	@Enumerated(EnumType.STRING)
-	private OrganizationTypeEnum type; // 公司还是部门
-	
-	@Transient
-    @JsonProperty
-    private boolean hasChildren;
-	
-	@Transient
-    @JsonProperty
-    private long childCount;
-	
-	@Transient
-    @JsonProperty
-    private long levelCount;
-	
-	@Transient
-    @JsonProperty
-    private long groupCount;
-	
-	@Transient
-    @JsonProperty
-    private long roleCount;
-	
-	@Transient
-    @JsonProperty
-    private long employeeCount;
-	
-	@JsonIgnore
-	@OneToMany(targetEntity = OrganizationRole.class, cascade = CascadeType.ALL, mappedBy = "organization",fetch = FetchType.LAZY)
-	private Set<OrganizationRole> organizationRoles;
-	
-	@JsonIgnore
-	@OneToMany(targetEntity = OrganizationLevel.class, cascade = CascadeType.ALL, mappedBy = "organization",fetch = FetchType.LAZY)
-	private Set<OrganizationLevel> organizationLevels;
-	
-	@JsonIgnore
-	@OneToMany(targetEntity = OrganizationGroup.class, cascade = CascadeType.ALL, mappedBy = "organization",fetch = FetchType.LAZY)
-	private Set<OrganizationGroup> organizationGroups;
-	
-	@JsonIgnore
-	@OneToMany(targetEntity = GroupOrganization.class, cascade = CascadeType.ALL, mappedBy = "organization",fetch = FetchType.LAZY)
-	private Set<GroupOrganization> groupOrganizations;
+  /**
+  * 
+  */
+  private static final long serialVersionUID = 8581950429388182649L;
+  private String code;
+  private String name;
+  private String stat;
+  private boolean isRoot;
+  // use for create relation at batch
+  @Transient
+  @JsonProperty
+  private List<String> parentIds;
+  @Enumerated(EnumType.STRING)
+  private OrganizationTypeEnum type; // 公司还是部门
+
+  @Transient
+  @JsonProperty
+  private boolean hasChildren;
+
+  @Transient
+  @JsonProperty
+  private long childCount;
+
+  @Transient
+  @JsonProperty
+  private long levelCount;
+
+  @Transient
+  @JsonProperty
+  private long groupCount;
+
+  @Transient
+  @JsonProperty
+  private long roleCount;
+
+  @Transient
+  @JsonProperty
+  private long employeeCount;
+
+  @JsonIgnore
+  @OneToMany(targetEntity = OrganizationRole.class, cascade = CascadeType.ALL,
+      mappedBy = "organization", fetch = FetchType.LAZY)
+  private Set<OrganizationRole> organizationRoles;
+
+  @JsonIgnore
+  @OneToMany(targetEntity = OrganizationLevel.class, cascade = CascadeType.ALL,
+      mappedBy = "organization", fetch = FetchType.LAZY)
+  private Set<OrganizationLevel> organizationLevels;
+
+  @JsonIgnore
+  @OneToMany(targetEntity = OrganizationGroup.class, cascade = CascadeType.ALL,
+      mappedBy = "organization", fetch = FetchType.LAZY)
+  private Set<OrganizationGroup> organizationGroups;
+
+  @JsonIgnore
+  @OneToMany(targetEntity = GroupOrganization.class, cascade = CascadeType.ALL,
+      mappedBy = "organization", fetch = FetchType.LAZY)
+  private Set<GroupOrganization> groupOrganizations;
 }

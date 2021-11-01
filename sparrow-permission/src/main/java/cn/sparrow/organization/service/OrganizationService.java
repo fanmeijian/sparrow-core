@@ -97,7 +97,7 @@ public class OrganizationService {
 		Set<OrganizationRelation> organizationRelations = new HashSet<OrganizationRelation>();
 		if (parentId == null || parentId.isBlank()) {
 
-			organizationRepository.findByRoot(true).forEach(f -> {
+			organizationRepository.findByIsRoot(true).forEach(f -> {
 				organizationRelations.add(new OrganizationRelation(f));
 			});
 		} else
@@ -175,7 +175,7 @@ public class OrganizationService {
 
 		if (parentId == null) {
 			MyTree<Organization> rootTree = new MyTree<Organization>(null);
-			organizationRepository.findByRoot(true).forEach(f -> {
+			organizationRepository.findByIsRoot(true).forEach(f -> {
 				MyTree<Organization> myTree = new MyTree<Organization>(f);
 				buildTree(myTree);
 				rootTree.getChildren().add(myTree);

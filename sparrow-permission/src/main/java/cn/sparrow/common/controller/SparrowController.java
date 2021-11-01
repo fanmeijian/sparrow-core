@@ -18,6 +18,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.Param;
+import org.springframework.util.SerializationUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -84,12 +85,7 @@ public class SparrowController {
 	public Page<AuditLog> getAuditLog(Pageable pageable){
 		Page<AuditLog> audits= auditLogRepository.findAll(pageable);
 		audits.forEach(f->{
-			try {
-				f.setSourceObject(marsh.unmarshal(f.getObjectBytearray(), null));
-			} catch (IgniteCheckedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			f.setSourceObject(SerializationUtils.deserialize(f.getObjectBytearray()));
 		});
 		return audits;
 	}
