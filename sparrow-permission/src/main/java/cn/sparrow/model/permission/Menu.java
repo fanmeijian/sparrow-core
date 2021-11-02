@@ -5,14 +5,10 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import cn.sparrow.model.common.AbstractOperationLog;
-import cn.sparrow.model.common.AbstractSparrowSortableEntity;
+import cn.sparrow.model.common.AbstractSparrowUuidEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -23,13 +19,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @Table(name = "spr_menu")
 @EntityListeners(AuditingEntityListener.class)
-public class Menu extends AbstractSparrowSortableEntity<String> implements Serializable {
+public class Menu extends AbstractSparrowUuidEntity implements Serializable {
   private static final long serialVersionUID = 1L;
-
-  @Id
-  @GenericGenerator(name = "id-generator", strategy = "uuid")
-  @GeneratedValue(generator = "id-generator")
-  private String id;
 
   @Column(unique = true)
   private String code;
@@ -37,10 +28,8 @@ public class Menu extends AbstractSparrowSortableEntity<String> implements Seria
   private String parentId;
   private String url;
   private boolean isSystem;
-//  @Column(name = "previous_node_id")
-//  private String previousNodeId;
-//  @Column(name = "next_node_id")
-//  private String nextNodeId;
+  private String previousNodeId;
+  private String nextNodeId;
   private String icon;
 
   // @JsonIgnore

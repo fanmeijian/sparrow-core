@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
-import cn.sparrow.model.common.AbstractSparrowEntity;
+import cn.sparrow.model.common.AbstractSparrowUuidEntity;
 import cn.sparrow.model.common.PermissionEnum;
 import cn.sparrow.model.common.PermissionTypeEnum;
 import cn.sparrow.model.permission.AbstractDataPermissionPK;
@@ -24,13 +24,13 @@ public class ModelDeleterPermissionValidator implements Validator {
 
 	@Override
 	public boolean supports(Class<?> clazz) {
-		return (AbstractSparrowEntity.class.isAssignableFrom(clazz));
+		return (AbstractSparrowUuidEntity.class.isAssignableFrom(clazz));
 	}
 
 	@Override
 	public void validate(Object target, Errors errors) {
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		AbstractSparrowEntity sparrowEntity = (AbstractSparrowEntity) target;
+		AbstractSparrowUuidEntity sparrowEntity = (AbstractSparrowUuidEntity) target;
 		// 检查是否有新建权限
 		if (modelPermissionService.hasPermission(new AbstractModelPermissionPK(target.getClass().getName(),
 				PermissionEnum.DELETER, PermissionTypeEnum.DENY), username)) {
@@ -47,14 +47,14 @@ public class ModelDeleterPermissionValidator implements Validator {
 		if (dataPermissionService.hasPermission(new AbstractDataPermissionPK(target.getClass().getName(),
 				PermissionEnum.DELETER, PermissionTypeEnum.DENY, sparrowEntity.getId()), username)) {
 			errors.reject("SPR_DT_D_DN-40",
-					"数据拒绝删除权限" + target.getClass().getName() + ((AbstractSparrowEntity) target).getId() + username);
+					"数据拒绝删除权限" + target.getClass().getName() + ((AbstractSparrowUuidEntity) target).getId() + username);
 		}
 
 		// 2.本条数据的的编辑权限
 		if (!dataPermissionService.hasPermission(new AbstractDataPermissionPK(target.getClass().getName(),
 				PermissionEnum.DELETER, PermissionTypeEnum.ALLOW, sparrowEntity.getId()), username)) {
 			errors.reject("SPR_DT_D-40",
-					"无本条数据删除权限" + target.getClass().getName() + ((AbstractSparrowEntity) target).getId() + username);
+					"无本条数据删除权限" + target.getClass().getName() + ((AbstractSparrowUuidEntity) target).getId() + username);
 		}
 
 		// 触发验证失败

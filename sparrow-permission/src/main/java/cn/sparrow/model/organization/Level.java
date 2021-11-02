@@ -13,7 +13,7 @@ import javax.persistence.Transient;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import cn.sparrow.model.common.AbstractSparrowEntity;
+import cn.sparrow.model.common.AbstractSparrowUuidEntity;
 import cn.sparrow.model.group.GroupLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,7 +25,7 @@ import lombok.Setter;
 @Entity
 @NoArgsConstructor
 @Table(name = "spr_level")
-public class Level extends AbstractSparrowEntity {
+public class Level extends AbstractSparrowUuidEntity {
 
 	private static final long serialVersionUID = 1L;
 	private String code;

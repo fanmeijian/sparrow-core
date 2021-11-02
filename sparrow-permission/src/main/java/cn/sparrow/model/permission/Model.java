@@ -18,12 +18,13 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import cn.sparrow.model.app.SparrowApp;
 import cn.sparrow.model.common.AbstractOperationLog;
+import cn.sparrow.permission.listener.AuditLogListener;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-@EntityListeners({AuditingEntityListener.class})
+@EntityListeners({AuditLogListener.class})
 @Data
 @EqualsAndHashCode(callSuper = false)
 @AllArgsConstructor

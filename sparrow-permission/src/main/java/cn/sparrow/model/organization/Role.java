@@ -12,7 +12,7 @@ import javax.persistence.Transient;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import cn.sparrow.model.common.AbstractSparrowEntity;
+import cn.sparrow.model.common.AbstractSparrowUuidEntity;
 import cn.sparrow.model.group.GroupRole;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,7 +23,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Entity
 @Table(name = "spr_role")
-public class Role extends AbstractSparrowEntity {
+public class Role extends AbstractSparrowUuidEntity {
 
 	/**
 	 * 

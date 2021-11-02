@@ -16,7 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
-import cn.sparrow.model.common.AbstractSparrowEntity;
+import cn.sparrow.model.common.AbstractSparrowUuidEntity;
 import cn.sparrow.model.common.PermissionEnum;
 import cn.sparrow.model.common.PermissionTypeEnum;
 import cn.sparrow.model.permission.AbstractDataPermissionPK;
@@ -112,7 +112,7 @@ public final class ReadPermissionListener {
 
 	// 读取单据权限检查
 	@PostLoad
-	public void postLoad(AbstractSparrowEntity abstractEntity) {
+	public void postLoad(AbstractSparrowUuidEntity abstractEntity) {
 //
 		String username = SecurityContextHolder.getContext().getAuthentication() == null ? ""
 				: SecurityContextHolder.getContext().getAuthentication().getName();

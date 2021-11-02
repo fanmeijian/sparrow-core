@@ -7,14 +7,12 @@ import javax.persistence.EntityListeners;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.data.rest.core.annotation.RestResource;
-
 import cn.sparrow.model.common.AbstractOperationLog;
+import cn.sparrow.permission.listener.AuditLogListener;
 import lombok.Data;
 
-@EntityListeners({  AuditingEntityListener.class })
+@EntityListeners({  AuditLogListener.class })
 @Data
 @Entity
 @Table(name = "spr_model_attribute")

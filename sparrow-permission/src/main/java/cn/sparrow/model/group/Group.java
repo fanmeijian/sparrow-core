@@ -14,7 +14,7 @@ import javax.persistence.Transient;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import cn.sparrow.model.common.AbstractSparrowEntity;
+import cn.sparrow.model.common.AbstractSparrowUuidEntity;
 import cn.sparrow.model.common.GroupTypeEnum;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,7 +25,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Entity
 @Table(name = "spr_group")
-public class Group extends AbstractSparrowEntity {
+public class Group extends AbstractSparrowUuidEntity {
 
 	/**
 	 * 

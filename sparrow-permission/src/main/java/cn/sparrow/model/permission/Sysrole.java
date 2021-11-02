@@ -5,6 +5,7 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -12,11 +13,13 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
-
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import cn.sparrow.model.common.AbstractOperationLog;
 import cn.sparrow.model.group.GroupSysrole;
+import cn.sparrow.permission.listener.AuditLogListener;
+import cn.sparrow.permission.listener.ReadPermissionListener;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -28,6 +31,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Table(name = "spr_sysrole")
+@EntityListeners( AuditLogListener.class)
 public class Sysrole extends AbstractOperationLog {
 	private static final long serialVersionUID = 1L;
 

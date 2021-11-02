@@ -22,7 +22,7 @@ import org.springframework.util.ReflectionUtils;
 import org.springframework.util.SerializationUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import cn.sparrow.model.common.AbstractSparrowEntity;
+import cn.sparrow.model.common.AbstractSparrowUuidEntity;
 import cn.sparrow.model.common.AuditLog;
 
 @Component
@@ -41,12 +41,12 @@ public final class AuditLogListener {
   }
 
   @PostUpdate
-  private void beforeUpdate(AbstractSparrowEntity sparrowEntity) {
+  private void beforeUpdate(Object sparrowEntity) {
     saveAuditLog(sparrowEntity, "U");
   }
 
   @PreRemove
-  private void beforeRemove(AbstractSparrowEntity sparrowEntity) {
+  private void beforeRemove(Object sparrowEntity) {
     saveAuditLog(sparrowEntity, "D");
   }
 

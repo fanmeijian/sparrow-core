@@ -24,7 +24,7 @@ import org.springframework.http.HttpMethod;
 
 import cn.sparrow.model.app.SparrowApp;
 import cn.sparrow.model.common.AbstractOperationLog;
-import cn.sparrow.model.common.AbstractSparrowEntity;
+import cn.sparrow.model.common.AbstractSparrowUuidEntity;
 import cn.sparrow.model.common.UrlPermissionEnum;
 import cn.sparrow.permission.listener.AuditLogListener;
 import lombok.AllArgsConstructor;

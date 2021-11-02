@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
-import cn.sparrow.model.common.AbstractSparrowEntity;
+import cn.sparrow.model.common.AbstractSparrowUuidEntity;
 import cn.sparrow.model.common.PermissionEnum;
 import cn.sparrow.model.common.PermissionTypeEnum;
 import cn.sparrow.model.permission.AbstractModelPermissionPK;
@@ -21,7 +21,7 @@ public class ModelAuthorPermissionValidator implements Validator {
 
 	@Override
 	public boolean supports(Class<?> clazz) {
-		return (AbstractSparrowEntity.class.isAssignableFrom(clazz));
+		return (AbstractSparrowUuidEntity.class.isAssignableFrom(clazz));
 	}
 
 	@Override
