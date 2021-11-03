@@ -26,6 +26,9 @@ public class MenuController {
   @Autowired
   MenuRepository menuRepository;
 
+  // @Resource
+  // private RepositoryEntityLinks entityLinks;
+
   @GetMapping("/menus/getModelName")
   public String getModelName() {
     return "{\"modelName\":\"" + Menu.class.getName() + "\"}";
@@ -56,6 +59,15 @@ public class MenuController {
   public SparrowTree<Menu, String> getMyTree(Principal principal) {
     return menuService.getTreeByUsername(principal.getName());
   }
+
+
+  // for repository resource controller
+  // @GetMapping("/menus/getMyTree")
+  // public ResponseEntity<?> getMyTree(Principal principal) {
+  // EntityModel<SparrowTree<Menu, String>> resource = new
+  // EntityModel<>(menuService.getTreeByUsername(principal.getName()));
+  // return ResponseEntity.ok(resource);
+  // }
 
   @PostMapping("/menus")
   public void save(@NotNull @RequestBody final Menu menu) {

@@ -9,6 +9,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import cn.sparrow.model.common.AbstractSparrowUuidEntity;
+import cn.sparrow.permission.listener.AuthorPermissionListener;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,7 +19,7 @@ import lombok.Setter;
 @Entity
 @NoArgsConstructor
 @Table(name = "spr_menu")
-@EntityListeners(AuditingEntityListener.class)
+@EntityListeners({AuditingEntityListener.class, AuthorPermissionListener.class})
 public class Menu extends AbstractSparrowUuidEntity implements Serializable {
   private static final long serialVersionUID = 1L;
 

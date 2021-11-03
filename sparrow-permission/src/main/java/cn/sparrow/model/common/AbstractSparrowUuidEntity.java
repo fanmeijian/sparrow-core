@@ -23,8 +23,4 @@ public abstract class AbstractSparrowUuidEntity extends AbstractSparrowEntity im
 	@GenericGenerator(name = "id-generator", strategy = "uuid")
 	@GeneratedValue(generator = "id-generator")
 	protected String id;
-	
-//	@Transient
-//	private Model model;
-	
 }

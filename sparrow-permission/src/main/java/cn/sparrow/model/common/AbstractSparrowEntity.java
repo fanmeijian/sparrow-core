@@ -9,13 +9,19 @@ import javax.validation.constraints.Size;
 import org.hibernate.envers.NotAudited;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import cn.sparrow.model.permission.Model;
 import cn.sparrow.permission.listener.AuditLogListener;
+import cn.sparrow.permission.listener.AuthorPermissionListener;
+import cn.sparrow.permission.listener.DeleterPermissionListener;
+import cn.sparrow.permission.listener.EditorPermissionListener;
 import cn.sparrow.permission.listener.ReadPermissionListener;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @MappedSuperclass
-@EntityListeners({ ReadPermissionListener.class, AuditLogListener.class, AuditingEntityListener.class })
+@EntityListeners({ReadPermissionListener.class, AuditLogListener.class,
+    AuditingEntityListener.class, AuthorPermissionListener.class, EditorPermissionListener.class,
+    DeleterPermissionListener.class})
 @Data
 @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
 public class AbstractSparrowEntity extends AbstractOperationLog {
@@ -27,9 +33,14 @@ public class AbstractSparrowEntity extends AbstractOperationLog {
   @Transient
   @JsonProperty
   protected String modelName = this.getClass().getName();
-  
+
+  @Transient
+  private Model model;
+
   @Transient
   @Size(max = 0)
   @NotAudited
   private List<String> errorMessage = new ArrayList<String>();
+
+
 }
