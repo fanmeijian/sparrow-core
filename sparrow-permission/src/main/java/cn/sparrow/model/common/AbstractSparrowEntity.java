@@ -40,6 +40,7 @@ public class AbstractSparrowEntity extends AbstractOperationLog {
   @Transient
   @Size(max = 0)
   @NotAudited
+  @JsonProperty
   private List<String> errorMessage = new ArrayList<String>();
 
 

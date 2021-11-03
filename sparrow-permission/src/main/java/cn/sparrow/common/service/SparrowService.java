@@ -45,15 +45,12 @@ public class SparrowService {
 		this.appContext = appContext;
 		 ds = appContext.getBean(DataSource.class);
 		 jdbcTemplate = appContext.getBean(JdbcTemplate.class);
-		initSysrole();
-		initMenu();
-		initUrl();
-		initUrlPermission();
-//		urlPermissionService.init();
-//		logger.info("finish url init.");
-//		sysroleService.init();
-//		logger.info("finish sysrole init.");
-		modelService.init();
+//		initSysrole();
+//		initMenu();
+//		initUrl();
+//		initUrlPermission();
+
+//		modelService.init();
 		logger.info("finish model init.");
 
 	}

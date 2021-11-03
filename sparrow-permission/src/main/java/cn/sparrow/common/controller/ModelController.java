@@ -17,7 +17,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import cn.sparrow.model.permission.Model;
 import cn.sparrow.model.permission.ModelPermission;
+import cn.sparrow.model.permission.SysroleModelPermission;
 import cn.sparrow.permission.repository.ModelRepository;
+import cn.sparrow.permission.repository.SysroleModelPermissionRepository;
 import cn.sparrow.permission.service.ModelService;
 
 @RestController
@@ -25,11 +27,17 @@ public class ModelController {
 
 	@Autowired ModelService modelService;
 	@Autowired ModelRepository modelRepository;
+	@Autowired SysroleModelPermissionRepository sysroleModelPermissionRepository;
 	
 	@GetMapping("/models")
 	public Page<Model> models(@Nullable Pageable pageable) {
 		return modelRepository.findAll(pageable);
 	}
+	
+	@GetMapping("/models/sysroleModelPermissions")
+    public Page<SysroleModelPermission> sysroleModelPermissions(@Nullable Pageable pageable) {
+        return sysroleModelPermissionRepository.findAll(pageable);
+    }
 	
 	@PostMapping("/models")
 	public void save(@NotNull @RequestBody final Model model) {
