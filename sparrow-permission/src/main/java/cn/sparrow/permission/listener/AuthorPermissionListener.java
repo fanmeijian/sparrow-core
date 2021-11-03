@@ -8,16 +8,16 @@ import org.springframework.stereotype.Component;
 import cn.sparrow.model.common.AbstractSparrowEntity;
 import cn.sparrow.model.common.PermissionEnum;
 import cn.sparrow.model.common.PermissionTypeEnum;
-import cn.sparrow.model.permission.AbstractModelPermissionPK;
+import cn.sparrow.model.permission.ModelPermissionPK;
 import cn.sparrow.permission.service.IPermission;
 
 @Component
 public final class AuthorPermissionListener {
 
-  private static IPermission<AbstractModelPermissionPK> modelPermissionService;
+  private static IPermission<ModelPermissionPK> modelPermissionService;
 
   @Autowired
-  public void setModelIPermission(IPermission<AbstractModelPermissionPK> modelPermissionService) {
+  public void setModelIPermission(IPermission<ModelPermissionPK> modelPermissionService) {
     AuthorPermissionListener.modelPermissionService = modelPermissionService;
   }
 
@@ -29,7 +29,7 @@ public final class AuthorPermissionListener {
     // 检查是否有新建权限
     // 用户是否在拒绝权限列表
     if (modelPermissionService
-        .hasPermission(new AbstractModelPermissionPK(abstractEntity.getClass().getName(),
+        .hasPermission(new ModelPermissionPK(abstractEntity.getClass().getName(),
             PermissionEnum.AUTHOR, PermissionTypeEnum.DENY), username)) {
       throw new RepositoryConstraintViolationException(
           RepositoryErrorFactory.getErros(abstractEntity, "SPR_MD_C_DN-40",
@@ -38,7 +38,7 @@ public final class AuthorPermissionListener {
 
     // 1.先检查模型的作者权限
     if (!modelPermissionService
-        .hasPermission(new AbstractModelPermissionPK(abstractEntity.getClass().getName(),
+        .hasPermission(new ModelPermissionPK(abstractEntity.getClass().getName(),
             PermissionEnum.AUTHOR, PermissionTypeEnum.ALLOW), username)) {
       throw new RepositoryConstraintViolationException(
           RepositoryErrorFactory.getErros(abstractEntity, "SPR_MD_C-40",

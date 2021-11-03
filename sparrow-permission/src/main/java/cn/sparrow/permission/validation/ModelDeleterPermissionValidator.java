@@ -10,7 +10,7 @@ import cn.sparrow.model.common.AbstractSparrowUuidEntity;
 import cn.sparrow.model.common.PermissionEnum;
 import cn.sparrow.model.common.PermissionTypeEnum;
 import cn.sparrow.model.permission.AbstractDataPermissionPK;
-import cn.sparrow.model.permission.AbstractModelPermissionPK;
+import cn.sparrow.model.permission.ModelPermissionPK;
 import cn.sparrow.permission.service.IPermission;
 
 // 这个是再repository的校验级别，不是jpa的
@@ -18,7 +18,7 @@ import cn.sparrow.permission.service.IPermission;
 public class ModelDeleterPermissionValidator implements Validator {
 
 	@Autowired
-	IPermission<AbstractModelPermissionPK> modelPermissionService;
+	IPermission<ModelPermissionPK> modelPermissionService;
 	@Autowired
 	IPermission<AbstractDataPermissionPK> dataPermissionService;
 
@@ -32,13 +32,13 @@ public class ModelDeleterPermissionValidator implements Validator {
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
 		AbstractSparrowUuidEntity sparrowEntity = (AbstractSparrowUuidEntity) target;
 		// 检查是否有新建权限
-		if (modelPermissionService.hasPermission(new AbstractModelPermissionPK(target.getClass().getName(),
+		if (modelPermissionService.hasPermission(new ModelPermissionPK(target.getClass().getName(),
 				PermissionEnum.DELETER, PermissionTypeEnum.DENY), username)) {
 			errors.reject("SPR_MD_D_DN-40", "模型拒绝删除权限" + target.getClass().getName() + username);
 		}
 
 		// 1.先检查模型的作者权限
-		if (!modelPermissionService.hasPermission(new AbstractModelPermissionPK(target.getClass().getName(),
+		if (!modelPermissionService.hasPermission(new ModelPermissionPK(target.getClass().getName(),
 				PermissionEnum.DELETER, PermissionTypeEnum.ALLOW), username)) {
 			errors.reject("SPR_MD_D-40", "无模型删除权限" + target.getClass().getName() + username);
 		}

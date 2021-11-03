@@ -8,23 +8,23 @@ import org.springframework.stereotype.Service;
 import cn.sparrow.model.common.PermissionEnum;
 import cn.sparrow.model.common.PermissionTargetEnum;
 import cn.sparrow.model.common.PermissionTypeEnum;
-import cn.sparrow.model.permission.AbstractModelPermissionPK;
+import cn.sparrow.model.permission.ModelPermissionPK;
 import cn.sparrow.model.permission.SysroleModelPermissionPK;
 import cn.sparrow.model.permission.UserModelPermissionPK;
 import cn.sparrow.model.permission.UserSysrole;
 
 @Service
-public class ModelPermissionService extends AbstractPermissionService<AbstractModelPermissionPK> {
+public class ModelPermissionService extends AbstractPermissionService<ModelPermissionPK> {
 
 	private static Logger logger = LoggerFactory.getLogger(ModelPermissionService.class);
 
 	@Override
-	public boolean hasPermission(AbstractModelPermissionPK target, String username) {
+	public boolean hasPermission(ModelPermissionPK target, String username) {
 		// 检查拒绝所有权限
 		if (target.getPermissionType().equals(PermissionTypeEnum.DENY)) {
 			// 用户权限
 			if (isConfigPermission(
-					new AbstractModelPermissionPK(target.getModelName(), PermissionEnum.ALL, PermissionTypeEnum.DENY),
+					new ModelPermissionPK(target.getModelName(), PermissionEnum.ALL, PermissionTypeEnum.DENY),
 					PermissionTargetEnum.USER)) {
 				if ((userModelPermissionRepository.findById(new UserModelPermissionPK(target.getModelName(),
 						PermissionEnum.ALL, PermissionTypeEnum.DENY, username)).orElse(null)) != null) {
@@ -35,7 +35,7 @@ public class ModelPermissionService extends AbstractPermissionService<AbstractMo
 			}
 
 			// 检查拒绝所有子操作权限
-			if (isConfigPermission(new AbstractModelPermissionPK(target.getModelName(), target.getPermission(),
+			if (isConfigPermission(new ModelPermissionPK(target.getModelName(), target.getPermission(),
 					PermissionTypeEnum.DENY),PermissionTargetEnum.USER)) {
 				if ((userModelPermissionRepository
 						.findById(new UserModelPermissionPK(target.getModelName(),
@@ -48,7 +48,7 @@ public class ModelPermissionService extends AbstractPermissionService<AbstractMo
 			}
 
 			// 检查拒绝本条权限
-			if (isConfigPermission(new AbstractModelPermissionPK(target.getModelName(), target.getPermission(),
+			if (isConfigPermission(new ModelPermissionPK(target.getModelName(), target.getPermission(),
 					PermissionTypeEnum.DENY),PermissionTargetEnum.USER)) {
 				if ((userModelPermissionRepository.findById(new UserModelPermissionPK(target.getModelName(),
 						target.getPermission(), PermissionTypeEnum.DENY, username)).orElse(null)) != null) {
@@ -60,7 +60,7 @@ public class ModelPermissionService extends AbstractPermissionService<AbstractMo
 
 			// 角色权限
 			for (UserSysrole userSysrole : userSysroleRepository.findByIdUsername(username)) {
-				if (isConfigPermission(new AbstractModelPermissionPK(target.getModelName(), PermissionEnum.ALL,
+				if (isConfigPermission(new ModelPermissionPK(target.getModelName(), PermissionEnum.ALL,
 						PermissionTypeEnum.DENY), PermissionTargetEnum.SYSROLE)) {
 					if (sysroleModelPermissionRepository
 							.findById(new SysroleModelPermissionPK(target.getModelName(), PermissionEnum.ALL,
@@ -72,7 +72,7 @@ public class ModelPermissionService extends AbstractPermissionService<AbstractMo
 					}
 				}
 
-				if (isConfigPermission(new AbstractModelPermissionPK(target.getModelName(), target.getPermission(),
+				if (isConfigPermission(new ModelPermissionPK(target.getModelName(), target.getPermission(),
 						PermissionTypeEnum.DENY), PermissionTargetEnum.SYSROLE)) {
 					if ((sysroleModelPermissionRepository.findById(new SysroleModelPermissionPK(target.getModelName(),
 							PermissionEnum.resolveAll(target.getPermission()), PermissionTypeEnum.DENY,
@@ -83,7 +83,7 @@ public class ModelPermissionService extends AbstractPermissionService<AbstractMo
 					}
 				}
 
-				if (isConfigPermission(new AbstractModelPermissionPK(target.getModelName(), target.getPermission(),
+				if (isConfigPermission(new ModelPermissionPK(target.getModelName(), target.getPermission(),
 						PermissionTypeEnum.DENY), PermissionTargetEnum.SYSROLE)) {
 					if ((sysroleModelPermissionRepository
 							.findById(new SysroleModelPermissionPK(target.getModelName(), target.getPermission(),
@@ -136,7 +136,7 @@ public class ModelPermissionService extends AbstractPermissionService<AbstractMo
 	}
 
 	@Override
-	public boolean isConfigPermission(AbstractModelPermissionPK target, PermissionTargetEnum permissionTarget) {
+	public boolean isConfigPermission(ModelPermissionPK target, PermissionTargetEnum permissionTarget) {
 		switch (permissionTarget) {
 		case USER:
 			if (userModelPermissionRepository.countByIdModelNameAndIdPermissionAndIdPermissionType(
@@ -167,28 +167,28 @@ public class ModelPermissionService extends AbstractPermissionService<AbstractMo
 	}
 
   @Override
-  public boolean addPermission(AbstractModelPermissionPK target,
+  public boolean addPermission(ModelPermissionPK target,
       PermissionTargetEnum permissionTarget) {
     // TODO Auto-generated method stub
     return false;
   }
 
   @Override
-  public boolean addPermissions(Set<AbstractModelPermissionPK> targets,
+  public boolean addPermissions(Set<ModelPermissionPK> targets,
       PermissionTargetEnum permissionTarget) {
     // TODO Auto-generated method stub
     return false;
   }
 
   @Override
-  public boolean delPermssion(AbstractModelPermissionPK target,
+  public boolean delPermssion(ModelPermissionPK target,
       PermissionTargetEnum permissionTarget) {
     // TODO Auto-generated method stub
     return false;
   }
 
   @Override
-  public boolean delPermssions(AbstractModelPermissionPK target,
+  public boolean delPermssions(ModelPermissionPK target,
       PermissionTargetEnum permissionTarget) {
     // TODO Auto-generated method stub
     return false;

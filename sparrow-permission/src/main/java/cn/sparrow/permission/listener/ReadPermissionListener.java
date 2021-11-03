@@ -20,7 +20,7 @@ import cn.sparrow.model.common.AbstractSparrowUuidEntity;
 import cn.sparrow.model.common.PermissionEnum;
 import cn.sparrow.model.common.PermissionTypeEnum;
 import cn.sparrow.model.permission.AbstractDataPermissionPK;
-import cn.sparrow.model.permission.AbstractModelPermissionPK;
+import cn.sparrow.model.permission.ModelPermissionPK;
 import cn.sparrow.permission.repository.ModelRepository;
 import cn.sparrow.permission.service.IPermission;
 
@@ -29,11 +29,11 @@ import cn.sparrow.permission.service.IPermission;
 public final class ReadPermissionListener {
 	private static Logger logger = LoggerFactory.getLogger(ReadPermissionListener.class);
 	private static IPermission<AbstractDataPermissionPK> dataPermissionService;
-	private static IPermission<AbstractModelPermissionPK> modelPermissionService;
+	private static IPermission<ModelPermissionPK> modelPermissionService;
 //	private static ModelRepository modelRepository;
 
 	@Autowired
-	public void setModelIPermission(IPermission<AbstractModelPermissionPK> modelPermissionService) {
+	public void setModelIPermission(IPermission<ModelPermissionPK> modelPermissionService) {
 		ReadPermissionListener.modelPermissionService = modelPermissionService;
 	}
 
@@ -123,7 +123,7 @@ public final class ReadPermissionListener {
 		// 1.模型读者拒绝权限检查
 //    if (permissionService.hasDenyReaderPermission(new Model(abstractEntity.getClass().getName()),
 //        username)) {
-		if (modelPermissionService.hasPermission(new AbstractModelPermissionPK(abstractEntity.getClass().getName(),
+		if (modelPermissionService.hasPermission(new ModelPermissionPK(abstractEntity.getClass().getName(),
 				PermissionEnum.READER, PermissionTypeEnum.DENY), username)) {
 			String id = abstractEntity.getId();
 			emptyData(abstractEntity);
@@ -134,7 +134,7 @@ public final class ReadPermissionListener {
 		// 2.模型读者权限检查
 //    if (!permissionService.hasReaderPermission(new Model(abstractEntity.getClass().getName()),
 //        username)) {
-		if (!modelPermissionService.hasPermission(new AbstractModelPermissionPK(abstractEntity.getClass().getName(),
+		if (!modelPermissionService.hasPermission(new ModelPermissionPK(abstractEntity.getClass().getName(),
 				PermissionEnum.READER, PermissionTypeEnum.ALLOW), username)) {
 			String id = abstractEntity.getId();
 			emptyData(abstractEntity);

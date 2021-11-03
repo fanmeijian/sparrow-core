@@ -2,11 +2,6 @@ package cn.sparrow.model.permission;
 
 import java.io.Serializable;
 
-import javax.persistence.Column;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.MappedSuperclass;
-
 import cn.sparrow.model.common.PermissionEnum;
 import cn.sparrow.model.common.PermissionTypeEnum;
 import lombok.AllArgsConstructor;
@@ -18,21 +13,14 @@ import lombok.NoArgsConstructor;
  *
  */
 @Data
-@MappedSuperclass
 @AllArgsConstructor
 @NoArgsConstructor
-public abstract class AbstractModelPermissionPK implements Serializable {
+public class ModelPermissionPK implements Serializable {
 
 	
 	private static final long serialVersionUID = 1L;
-	
-	@Column(name = "model_name")
 	protected String modelName;
-	@Enumerated(EnumType.STRING)
-	@Column(length = 10)
 	protected PermissionEnum permission;
-	@Enumerated(EnumType.STRING)
-	@Column(length = 10)
 	protected PermissionTypeEnum permissionType;
    
 }
