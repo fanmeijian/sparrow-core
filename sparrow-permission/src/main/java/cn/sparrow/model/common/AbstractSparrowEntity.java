@@ -24,7 +24,7 @@ import lombok.EqualsAndHashCode;
     DeleterPermissionListener.class})
 @Data
 @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
-public class AbstractSparrowEntity extends AbstractOperationLog {
+public abstract class AbstractSparrowEntity extends AbstractOperationLog {
   /**
    * 
    */

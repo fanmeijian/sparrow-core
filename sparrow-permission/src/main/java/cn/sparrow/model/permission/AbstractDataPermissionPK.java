@@ -1,6 +1,8 @@
 package cn.sparrow.model.permission;
 
 import java.io.Serializable;
+
+import javax.persistence.Column;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.MappedSuperclass;
@@ -25,6 +27,7 @@ public class AbstractDataPermissionPK extends AbstractModelPermissionPK implemen
 
 	private static final long serialVersionUID = 1L;
 	protected String dataId;
+	@Column(length = 10)
 	@Enumerated(EnumType.STRING)
 	protected DataPermissionScopeEnum scope = DataPermissionScopeEnum.SELF_ONLY;
 

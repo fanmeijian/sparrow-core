@@ -46,6 +46,7 @@ public class OrganizationRole extends AbstractOperationLog implements Persistabl
 	@JsonProperty
 	private long childCount;
 
+	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumns({ @JoinColumn(name = "organization_id", referencedColumnName = "organization_id"),
 			@JoinColumn(name = "role_id", referencedColumnName = "role_id") })

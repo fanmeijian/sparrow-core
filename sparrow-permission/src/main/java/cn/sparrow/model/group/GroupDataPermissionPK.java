@@ -1,6 +1,8 @@
 package cn.sparrow.model.group;
 
 import java.io.Serializable;
+
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
 import cn.sparrow.model.permission.AbstractDataPermissionPK;
@@ -20,6 +22,7 @@ public class GroupDataPermissionPK extends AbstractDataPermissionPK implements S
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	@Column(length = 32)
 	private String groupId;
 	
 }

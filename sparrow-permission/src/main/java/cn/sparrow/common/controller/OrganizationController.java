@@ -44,7 +44,7 @@ public class OrganizationController {
   }
   
   @GetMapping("/organizations/getChildren")
-  public Set<OrganizationRelation> getChildren(@NotNull @RequestParam("parentId") final String organizationId){
+  public List<OrganizationRelation> getChildren(@NotNull @RequestParam("parentId") final String organizationId){
     return organizationService.getChildren(organizationId);
   }
   

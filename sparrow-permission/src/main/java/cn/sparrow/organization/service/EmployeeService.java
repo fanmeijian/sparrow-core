@@ -32,6 +32,13 @@ public class EmployeeService {
 	@Autowired
 	EmployeeOrganizationLevelRepository employeeOrganizationLevelRepository;
 
+	@Transactional
+	public void saveMasterOrganization(String employeeId, String organizationId) {
+		Employee employee = employeeRepository.getOne(employeeId);
+		employee.setOrganizationId(organizationId);
+		employeeRepository.save(employee);
+	}
+	
 	public Employee save(Employee employee) {
 		Employee r = employeeRepository.save(employee);
 		if(employee.getParentIds()!=null) {

@@ -1,5 +1,6 @@
 package cn.sparrow.organization.service;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -93,8 +94,8 @@ public class OrganizationService {
 		return employees;
 	}
 
-	public Set<OrganizationRelation> getChildren(String parentId) {
-		Set<OrganizationRelation> organizationRelations = new HashSet<OrganizationRelation>();
+	public List<OrganizationRelation> getChildren(String parentId) {
+		List<OrganizationRelation> organizationRelations = new ArrayList<OrganizationRelation>();
 		if (parentId == null || parentId.isBlank()) {
 
 			organizationRepository.findByIsRoot(true).forEach(f -> {

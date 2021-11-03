@@ -47,6 +47,7 @@ public class OrganizationLevel extends AbstractOperationLog implements Persistab
 	private boolean hasChildren;
 
 	@Exclude
+	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
 	@JoinColumns({ @JoinColumn(name = "organization_id", referencedColumnName = "organization_id"),
 			@JoinColumn(name = "level_id", referencedColumnName = "level_id") })
