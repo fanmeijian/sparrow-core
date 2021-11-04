@@ -27,27 +27,29 @@ import lombok.Setter;
 @Table(name = "spr_position_level")
 public class PositionLevel extends AbstractSparrowUuidEntity {
 
-	private static final long serialVersionUID = 1L;
-	private String code;
-	private String name;
-	private String stat;
-	private boolean root;
+  private static final long serialVersionUID = 1L;
+  private String code;
+  private String name;
+  private String stat;
+  private boolean root;
 
-	// use for create relation at batch
-	@Transient
-	@JsonProperty
-	private List<String> parentIds;
-	
-	@Transient
-    @JsonProperty
-    private List<String> organizationIds;
-	
-	@JsonIgnore
-	@OneToMany(targetEntity = OrganizationPositionLevel.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private Set<OrganizationPositionLevel> organizationPositionLevels;
-	
-	@JsonIgnore
-	@OneToMany(targetEntity = GroupPositionLevel.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private Set<GroupPositionLevel> groupLevels;
+  // use for create relation at batch
+  @Transient
+  @JsonProperty
+  private List<String> parentIds;
+
+  @Transient
+  @JsonProperty
+  private List<String> organizationIds;
+
+  @JsonIgnore
+  @OneToMany(targetEntity = OrganizationPositionLevel.class, cascade = CascadeType.ALL,
+      fetch = FetchType.LAZY, mappedBy = "positionLevel")
+  private Set<OrganizationPositionLevel> organizationPositionLevels;
+
+  @JsonIgnore
+  @OneToMany(targetEntity = GroupPositionLevel.class, cascade = CascadeType.ALL,
+      fetch = FetchType.LAZY, mappedBy = "positionLevel")
+  private Set<GroupPositionLevel> groupLevels;
 
 }

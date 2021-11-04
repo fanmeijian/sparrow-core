@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class DataPermissionToken {
 	private Object dataId;
+	private String modelName;
 	private List<PermissionExpression> permissionExpressions;
 	private Map<ModelAttributePK, ModelAttributePermissionToken> modelAttributePermissionTokens;
 }

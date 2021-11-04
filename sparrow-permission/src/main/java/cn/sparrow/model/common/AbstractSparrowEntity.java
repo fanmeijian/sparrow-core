@@ -3,13 +3,16 @@ package cn.sparrow.model.common;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityListeners;
+import javax.persistence.JoinColumn;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 import javax.validation.constraints.Size;
 import org.hibernate.envers.NotAudited;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import cn.sparrow.model.permission.Model;
+import cn.sparrow.model.permission.PermissionToken;
 import cn.sparrow.permission.listener.AuditLogListener;
 import cn.sparrow.permission.listener.AuthorPermissionListener;
 import cn.sparrow.permission.listener.DeleterPermissionListener;
@@ -36,12 +39,18 @@ public abstract class AbstractSparrowEntity extends AbstractOperationLog {
 
   @Transient
   private Model model;
+  
+  @OneToOne
+  @JoinColumn(name = "data_permission_token_id")
+  protected PermissionToken permissionToken;
+  
 
   @Transient
   @Size(max = 0)
   @NotAudited
   @JsonProperty
   private List<String> errorMessage = new ArrayList<String>();
+  
 
 
 }
