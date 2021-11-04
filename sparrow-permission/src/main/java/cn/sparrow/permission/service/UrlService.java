@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import cn.sparrow.model.permission.SparrowUrl;
 import cn.sparrow.model.permission.SysroleUrlPermission;
 import cn.sparrow.model.permission.SysroleUrlPermissionPK;
+import cn.sparrow.model.permission.token.ApiPermissionToken;
 import cn.sparrow.permission.repository.SysroleUrlPermissionRepository;
 import cn.sparrow.permission.repository.UrlRepository;
 
@@ -59,5 +60,7 @@ public class UrlService {
 	public void delPermissions(List<SysroleUrlPermissionPK> sysroleUrlPermissionPKs) {
 		sysroleUrlPermissionRepository.deleteByIdIn(sysroleUrlPermissionPKs);
 	}
+	
+	@Autowired PermissionService<ApiPermissionToken> permissionService;
 
 }
