@@ -19,8 +19,8 @@ import cn.sparrow.group.repository.GroupSysroleRepository;
 import cn.sparrow.group.repository.GroupUserRepository;
 import cn.sparrow.model.common.MyTree;
 import cn.sparrow.model.group.Group;
-import cn.sparrow.model.group.GroupLevel;
-import cn.sparrow.model.group.GroupLevelPK;
+import cn.sparrow.model.group.GroupPositionLevel;
+import cn.sparrow.model.group.GroupPositionLevelPK;
 import cn.sparrow.model.group.GroupMember;
 import cn.sparrow.model.group.GroupOrganization;
 import cn.sparrow.model.group.GroupOrganizationPK;
@@ -103,15 +103,15 @@ public class GroupService {
 		});
 	}
 
-	public void addLevels(Set<GroupLevelPK> ids) {
+	public void addLevels(Set<GroupPositionLevelPK> ids) {
 		ids.forEach(f -> {
-			groupLevelRepository.save(new GroupLevel(f));
+			groupLevelRepository.save(new GroupPositionLevel(f));
 		});
 	}
 
-	public void delLevels(Set<GroupLevelPK> ids) {
+	public void delLevels(Set<GroupPositionLevelPK> ids) {
 		ids.forEach(f -> {
-			groupLevelRepository.delete(new GroupLevel(f));
+			groupLevelRepository.delete(new GroupPositionLevel(f));
 		});
 	}
 

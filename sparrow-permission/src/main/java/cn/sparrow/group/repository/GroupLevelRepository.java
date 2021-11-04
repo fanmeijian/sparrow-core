@@ -7,12 +7,12 @@ import javax.validation.constraints.NotBlank;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
-import cn.sparrow.model.group.GroupLevel;
-import cn.sparrow.model.group.GroupLevelPK;
+import cn.sparrow.model.group.GroupPositionLevel;
+import cn.sparrow.model.group.GroupPositionLevelPK;
 
 @RepositoryRestResource(exported = false)
-public interface GroupLevelRepository extends JpaRepository<GroupLevel, GroupLevelPK> {
+public interface GroupLevelRepository extends JpaRepository<GroupPositionLevel, GroupPositionLevelPK> {
 
-	List<GroupLevel> findByIdGroupId(@NotBlank String groupId);
+	List<GroupPositionLevel> findByIdGroupId(@NotBlank String groupId);
 
 }

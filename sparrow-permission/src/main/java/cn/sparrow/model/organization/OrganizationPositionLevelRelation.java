@@ -21,9 +21,9 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor
 @Entity
-@Table(name = "spr_organization_level_relation")
+@Table(name = "spr_organization_position_level_relation")
 @EntityListeners(AuditingEntityListener.class)
-public class OrganizationLevelRelation extends AbstractOperationLog {
+public class OrganizationPositionLevelRelation extends AbstractOperationLog {
 
 	/**
 	 * 
@@ -31,23 +31,23 @@ public class OrganizationLevelRelation extends AbstractOperationLog {
 	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId
-	private OrganizationLevelRelationPK id;
+	private OrganizationPositionLevelRelationPK id;
 
 	@Exclude
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumns({
 			@JoinColumn(name = "organization_id", referencedColumnName = "organization_id", insertable = false, updatable = false),
-			@JoinColumn(name = "level_id", referencedColumnName = "level_id", insertable = false, updatable = false) })
-	private OrganizationLevel organizationLevel;
+			@JoinColumn(name = "position_level_id", referencedColumnName = "position_level_id", insertable = false, updatable = false) })
+	private OrganizationPositionLevel organizationLevel;
 
 	@Exclude
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumns({
 			@JoinColumn(name = "parent_organization_id", referencedColumnName = "organization_id", insertable = false, updatable = false),
-			@JoinColumn(name = "parent_level_id", referencedColumnName = "level_id", insertable = false, updatable = false) })
-	private OrganizationLevel parentOrganizationLevel;
+			@JoinColumn(name = "parent_position_level_id", referencedColumnName = "position_level_id", insertable = false, updatable = false) })
+	private OrganizationPositionLevel parentOrganizationLevel;
 
-	public OrganizationLevelRelation(OrganizationLevelRelationPK id) {
+	public OrganizationPositionLevelRelation(OrganizationPositionLevelRelationPK id) {
 		this.id = id;
 	}
 }

@@ -20,7 +20,7 @@ public class EmployeeOrganizationLevelPK implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private OrganizationLevelPK organizationLevelId;
+	private OrganizationPositionLevelPK organizationLevelId;
 	@Column(name = "employee_id")
 	private String employeeId;
 	

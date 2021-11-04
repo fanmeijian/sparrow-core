@@ -12,16 +12,16 @@ import lombok.NoArgsConstructor;
 @Embeddable
 @Data
 @NoArgsConstructor
-public class OrganizationLevelPK implements Serializable{
+public class OrganizationPositionLevelPK implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	@Column(name = "organization_id")
 	private String organizationId;
-	@Column(name = "level_id")
+	@Column(name = "position_level_id")
 	private String positionLevelId;
 	
 	
-	public OrganizationLevelPK(String organizationId, String levelId) {
+	public OrganizationPositionLevelPK(String organizationId, String levelId) {
 		this.organizationId = organizationId;
 		this.positionLevelId = levelId;
 	}

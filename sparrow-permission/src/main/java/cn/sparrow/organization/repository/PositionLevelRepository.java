@@ -9,7 +9,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 @Tag(name = "level-controller")
 @RepositoryRestResource(exported = false)
-public interface LevelRepository extends JpaRepository<PositionLevel, String> {
+public interface PositionLevelRepository extends JpaRepository<PositionLevel, String> {
 
 	@Transactional
 	void deleteByIdIn(String[] ids);

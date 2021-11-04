@@ -19,7 +19,7 @@ import cn.sparrow.common.service.GroupService;
 import cn.sparrow.group.repository.GroupRepository;
 import cn.sparrow.model.common.MyTree;
 import cn.sparrow.model.group.Group;
-import cn.sparrow.model.group.GroupLevelPK;
+import cn.sparrow.model.group.GroupPositionLevelPK;
 import cn.sparrow.model.group.GroupMember;
 import cn.sparrow.model.group.GroupOrganizationPK;
 import cn.sparrow.model.group.GroupRelation;
@@ -102,12 +102,12 @@ public class GroupController {
   }
   
   @PostMapping("/groups/levels/batch")
-  public void addLevels(@NotNull @RequestBody Set<GroupLevelPK> ids) {
+  public void addLevels(@NotNull @RequestBody Set<GroupPositionLevelPK> ids) {
     groupService.addLevels(ids);
   }
   
   @DeleteMapping("/groups/levels/batch")
-  public void delLevels(@NotNull @RequestBody Set<GroupLevelPK> ids) {
+  public void delLevels(@NotNull @RequestBody Set<GroupPositionLevelPK> ids) {
     groupService.delLevels(ids);
   }
   

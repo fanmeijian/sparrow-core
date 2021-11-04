@@ -14,17 +14,17 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Embeddable
-public class OrganizationLevelRelationPK implements Serializable {
+public class OrganizationPositionLevelRelationPK implements Serializable {
   /**
    * 
    */
   private static final long serialVersionUID = 1L;
   @Embedded
-  private OrganizationLevelPK id;
+  private OrganizationPositionLevelPK id;
 
   @Embedded
   @AttributeOverrides({
       @AttributeOverride(name = "organizationId", column = @Column(name = "parent_organization_id")),
-      @AttributeOverride(name = "positionLevelId", column = @Column(name = "parent_level_id"))})
-  private OrganizationLevelPK parentId;
+      @AttributeOverride(name = "positionLevelId", column = @Column(name = "parent_position_level_id"))})
+  private OrganizationPositionLevelPK parentId;
 }

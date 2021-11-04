@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import cn.sparrow.model.common.AbstractSparrowUuidEntity;
-import cn.sparrow.model.group.GroupLevel;
+import cn.sparrow.model.group.GroupPositionLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -43,11 +43,11 @@ public class PositionLevel extends AbstractSparrowUuidEntity {
     private List<String> organizationIds;
 	
 	@JsonIgnore
-	@OneToMany(targetEntity = OrganizationLevel.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private Set<OrganizationLevel> organizationLevels;
+	@OneToMany(targetEntity = OrganizationPositionLevel.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private Set<OrganizationPositionLevel> organizationPositionLevels;
 	
 	@JsonIgnore
-	@OneToMany(targetEntity = GroupLevel.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private Set<GroupLevel> groupLevels;
+	@OneToMany(targetEntity = GroupPositionLevel.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private Set<GroupPositionLevel> groupLevels;
 
 }

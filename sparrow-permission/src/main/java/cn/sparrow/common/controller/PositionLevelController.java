@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.sun.istack.NotNull;
 
 import cn.sparrow.model.organization.PositionLevel;
-import cn.sparrow.model.organization.OrganizationLevelPK;
-import cn.sparrow.model.organization.OrganizationLevelRelation;
+import cn.sparrow.model.organization.OrganizationPositionLevelPK;
+import cn.sparrow.model.organization.OrganizationPositionLevelRelation;
 import cn.sparrow.model.organization.Role;
-import cn.sparrow.organization.repository.LevelRepository;
+import cn.sparrow.organization.repository.PositionLevelRepository;
 import cn.sparrow.organization.service.LevelService;
 
 @RestController
@@ -25,7 +25,7 @@ public class PositionLevelController {
 	@Autowired
 	LevelService levelService;
 	@Autowired
-	LevelRepository levelRepository;
+	PositionLevelRepository levelRepository;
 
 	@PostMapping("/levels")
 	public PositionLevel save(@NotNull @RequestBody PositionLevel level) {
@@ -33,13 +33,13 @@ public class PositionLevelController {
 	}
 	
 	@GetMapping("/levels/getChildren")
-	public List<OrganizationLevelRelation> getChildren(@NotNull @RequestParam("organizationId") final String organizationId,@NotNull @RequestParam("positionLevelId") final String positionLevelId){
-	  return levelService.getChildren(new OrganizationLevelPK(organizationId, positionLevelId));
+	public List<OrganizationPositionLevelRelation> getChildren(@NotNull @RequestParam("organizationId") final String organizationId,@NotNull @RequestParam("positionLevelId") final String positionLevelId){
+	  return levelService.getChildren(new OrganizationPositionLevelPK(organizationId, positionLevelId));
 	}
 	
 	@GetMapping("/levels/getParents")
-	public List<OrganizationLevelRelation> getParents(@NotNull @RequestParam("organizationId") final String organizationId,@NotNull @RequestParam("positionLevelId") final String positionLevelId){
-	  return levelService.getParents(new OrganizationLevelPK(organizationId, positionLevelId));
+	public List<OrganizationPositionLevelRelation> getParents(@NotNull @RequestParam("organizationId") final String organizationId,@NotNull @RequestParam("positionLevelId") final String positionLevelId){
+	  return levelService.getParents(new OrganizationPositionLevelPK(organizationId, positionLevelId));
 	}
 
 	@GetMapping("/levels/getModelName")
@@ -59,7 +59,7 @@ public class PositionLevelController {
 
 
 	@PostMapping("/levels/relations/batch")
-	public void addRelations(@NotNull @RequestBody List<OrganizationLevelRelation> organizationLevelRelations) {
+	public void addRelations(@NotNull @RequestBody List<OrganizationPositionLevelRelation> organizationLevelRelations) {
 		levelService.addRelations(organizationLevelRelations);
 	}
 }

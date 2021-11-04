@@ -22,8 +22,8 @@ import cn.sparrow.model.organization.Employee;
 import cn.sparrow.model.organization.Organization;
 import cn.sparrow.model.organization.OrganizationGroup;
 import cn.sparrow.model.organization.OrganizationGroupPK;
-import cn.sparrow.model.organization.OrganizationLevel;
-import cn.sparrow.model.organization.OrganizationLevelPK;
+import cn.sparrow.model.organization.OrganizationPositionLevel;
+import cn.sparrow.model.organization.OrganizationPositionLevelPK;
 import cn.sparrow.model.organization.OrganizationRelation;
 import cn.sparrow.model.organization.OrganizationRelationPK;
 import cn.sparrow.model.organization.OrganizationRole;
@@ -54,7 +54,7 @@ public class OrganizationController {
   }
   
   @GetMapping("/organizations/getLevels")
-  public List<OrganizationLevel> getLevels(@NotBlank @RequestParam("organizationId") final String organizationId){
+  public List<OrganizationPositionLevel> getLevels(@NotBlank @RequestParam("organizationId") final String organizationId){
     return organizationService.getOrganizationLevels(organizationId);
   }
   
@@ -110,12 +110,12 @@ public class OrganizationController {
   }
   
   @PostMapping("/organizations/levels/batch")
-  public void addLevels(@NotNull @RequestBody Set<OrganizationLevelPK> ids) {
+  public void addLevels(@NotNull @RequestBody Set<OrganizationPositionLevelPK> ids) {
     organizationService.addLevels(ids);
   }
   
   @DeleteMapping("/organizations/levels/batch")
-  public void delLevels(@NotNull @RequestBody Set<OrganizationLevelPK> ids) {
+  public void delLevels(@NotNull @RequestBody Set<OrganizationPositionLevelPK> ids) {
     organizationService.delLevels(ids);
   }
   

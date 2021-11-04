@@ -56,8 +56,8 @@ public class Group extends AbstractSparrowUuidEntity {
 	private Set<GroupRole> groupRoles;
 
 	@JsonIgnore
-	@OneToMany(targetEntity = GroupLevel.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "group")
-	private Set<GroupLevel> groupLevels;
+	@OneToMany(targetEntity = GroupPositionLevel.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "group")
+	private Set<GroupPositionLevel> groupLevels;
 
 	@JsonIgnore
 	@OneToMany(targetEntity = GroupSysrole.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "group")

@@ -74,9 +74,9 @@ public class Organization extends AbstractSparrowUuidEntity {
   private Set<OrganizationRole> organizationRoles;
 
   @JsonIgnore
-  @OneToMany(targetEntity = OrganizationLevel.class, cascade = CascadeType.ALL,
+  @OneToMany(targetEntity = OrganizationPositionLevel.class, cascade = CascadeType.ALL,
       mappedBy = "organization", fetch = FetchType.LAZY)
-  private Set<OrganizationLevel> organizationLevels;
+  private Set<OrganizationPositionLevel> organizationLevels;
 
   @JsonIgnore
   @OneToMany(targetEntity = OrganizationGroup.class, cascade = CascadeType.ALL,

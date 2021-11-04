@@ -8,11 +8,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import cn.sparrow.model.organization.EmployeeOrganizationLevel;
 import cn.sparrow.model.organization.PositionLevel;
-import cn.sparrow.model.organization.OrganizationLevel;
-import cn.sparrow.model.organization.OrganizationLevelPK;
-import cn.sparrow.model.organization.OrganizationLevelRelation;
+import cn.sparrow.model.organization.OrganizationPositionLevel;
+import cn.sparrow.model.organization.OrganizationPositionLevelPK;
+import cn.sparrow.model.organization.OrganizationPositionLevelRelation;
 import cn.sparrow.organization.repository.EmployeeOrganizationLevelRepository;
-import cn.sparrow.organization.repository.LevelRepository;
+import cn.sparrow.organization.repository.PositionLevelRepository;
 import cn.sparrow.organization.repository.OrganizationLevelRelationRepository;
 import cn.sparrow.organization.repository.OrganizationLevelRepository;
 
@@ -20,14 +20,14 @@ import cn.sparrow.organization.repository.OrganizationLevelRepository;
 public class LevelService {
 
 	@Autowired
-	LevelRepository levelRepository;
+	PositionLevelRepository levelRepository;
 	@Autowired
 	OrganizationLevelRelationRepository organizationLevelRelationRepository;
 	@Autowired
 	OrganizationLevelRepository organizationLevelRepository;
 	@Autowired EmployeeOrganizationLevelRepository employeeOrganizationLevelRepository;
 
-	public List<EmployeeOrganizationLevel> getEmployees(OrganizationLevelPK organizationLevelId) {
+	public List<EmployeeOrganizationLevel> getEmployees(OrganizationPositionLevelPK organizationLevelId) {
 		return employeeOrganizationLevelRepository.findByIdOrganizationLevelId(organizationLevelId);
 	}
 	
@@ -37,13 +37,13 @@ public class LevelService {
 		// 保存岗位所在的组织
 		if (lvel.getOrganizationIds() != null) {
 			lvel.getOrganizationIds().forEach(f -> {
-				organizationLevelRepository.save(new OrganizationLevel(new OrganizationLevelPK(f, savedLevel.getId())));
+				organizationLevelRepository.save(new OrganizationPositionLevel(new OrganizationPositionLevelPK(f, savedLevel.getId())));
 			});
 		}
 		return savedLevel;
 	}
 
-	public void addRelations(List<OrganizationLevelRelation> organizationLevelRelations) {
+	public void addRelations(List<OrganizationPositionLevelRelation> organizationLevelRelations) {
 		organizationLevelRelationRepository.saveAll(organizationLevelRelations);
 
 	}
@@ -53,11 +53,11 @@ public class LevelService {
 		levelRepository.deleteByIdIn(ids);
 	}
 
-	public List<OrganizationLevelRelation> getChildren(OrganizationLevelPK parentId) {
+	public List<OrganizationPositionLevelRelation> getChildren(OrganizationPositionLevelPK parentId) {
 		return organizationLevelRelationRepository.findByIdParentId(parentId);
 	}
 	
-	public List<OrganizationLevelRelation> getParents(OrganizationLevelPK id) {
+	public List<OrganizationPositionLevelRelation> getParents(OrganizationPositionLevelPK id) {
 		return organizationLevelRelationRepository.findByIdId(id);
 	}
 }

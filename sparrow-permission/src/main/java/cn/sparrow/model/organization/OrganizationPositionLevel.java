@@ -30,16 +30,16 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor
 @Entity
-@Table(name = "spr_organization_level")
+@Table(name = "spr_organization_position_level")
 @EntityListeners(AuditingEntityListener.class)
-public class OrganizationLevel extends AbstractOperationLog implements Persistable<OrganizationLevelPK> {
+public class OrganizationPositionLevel extends AbstractOperationLog implements Persistable<OrganizationPositionLevelPK> {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	@EmbeddedId
-	private OrganizationLevelPK id;
+	private OrganizationPositionLevelPK id;
 	private String stat;
 
 	@Transient
@@ -50,13 +50,13 @@ public class OrganizationLevel extends AbstractOperationLog implements Persistab
 	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
 	@JoinColumns({ @JoinColumn(name = "organization_id", referencedColumnName = "organization_id"),
-			@JoinColumn(name = "level_id", referencedColumnName = "level_id") })
+			@JoinColumn(name = "position_level_id", referencedColumnName = "position_level_id") })
 	private List<EmployeeOrganizationLevel> employeeOrganizationLevels;
 
 	@Exclude
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "level_id", insertable = false, updatable = false)
-	private PositionLevel level;
+	@JoinColumn(name = "position_level_id", insertable = false, updatable = false)
+	private PositionLevel positionLevel;
 
 	@JsonIgnore
 	@Exclude
@@ -64,7 +64,7 @@ public class OrganizationLevel extends AbstractOperationLog implements Persistab
 	@JoinColumn(name = "organization_id", insertable = false, updatable = false)
 	private Organization organization;
 
-	public OrganizationLevel(OrganizationLevelPK f) {
+	public OrganizationPositionLevel(OrganizationPositionLevelPK f) {
 		this.id = f;
 	}
 

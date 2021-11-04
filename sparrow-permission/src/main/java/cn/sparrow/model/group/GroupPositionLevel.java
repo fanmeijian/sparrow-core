@@ -19,15 +19,15 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "spr_group_level")
-public class GroupLevel extends AbstractOperationLog implements Persistable<GroupLevelPK> {
+@Table(name = "spr_group_position_level")
+public class GroupPositionLevel extends AbstractOperationLog implements Persistable<GroupPositionLevelPK> {
 
   /**
    * 
    */
   private static final long serialVersionUID = 1L;
   @EmbeddedId
-  private GroupLevelPK id;
+  private GroupPositionLevelPK id;
   private String stat;
 
   @ManyToOne(fetch = FetchType.EAGER)
@@ -35,10 +35,10 @@ public class GroupLevel extends AbstractOperationLog implements Persistable<Grou
   private Group group;
   
   @ManyToOne(fetch = FetchType.EAGER)
-  @JoinColumn(name = "level_id", insertable = false, updatable = false)
-  private PositionLevel level;
+  @JoinColumn(name = "position_level_id", insertable = false, updatable = false)
+  private PositionLevel positionLevel;
 
-  public GroupLevel(GroupLevelPK f) {
+  public GroupPositionLevel(GroupPositionLevelPK f) {
     this.id = f;
   }
 

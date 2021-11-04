@@ -18,8 +18,8 @@ import cn.sparrow.model.organization.Employee;
 import cn.sparrow.model.organization.Organization;
 import cn.sparrow.model.organization.OrganizationGroup;
 import cn.sparrow.model.organization.OrganizationGroupPK;
-import cn.sparrow.model.organization.OrganizationLevel;
-import cn.sparrow.model.organization.OrganizationLevelPK;
+import cn.sparrow.model.organization.OrganizationPositionLevel;
+import cn.sparrow.model.organization.OrganizationPositionLevelPK;
 import cn.sparrow.model.organization.OrganizationRelation;
 import cn.sparrow.model.organization.OrganizationRelationPK;
 import cn.sparrow.model.organization.OrganizationRole;
@@ -78,8 +78,8 @@ public class OrganizationService {
 		return roles;
 	}
 
-	public List<OrganizationLevel> getOrganizationLevels(@NotBlank String organizationId) {
-		List<OrganizationLevel> roles = organizationLevelRepository.findByIdOrganizationId(organizationId);
+	public List<OrganizationPositionLevel> getOrganizationLevels(@NotBlank String organizationId) {
+		List<OrganizationPositionLevel> roles = organizationLevelRepository.findByIdOrganizationId(organizationId);
 		roles.forEach(f -> {
 			f.setHasChildren(levelService.getChildren(f.getId()).size() > 0 ? true : false);
 		});
@@ -148,15 +148,15 @@ public class OrganizationService {
 		});
 	}
 
-	public void addLevels(Set<OrganizationLevelPK> ids) {
+	public void addLevels(Set<OrganizationPositionLevelPK> ids) {
 		ids.forEach(f -> {
-			organizationLevelRepository.saveAndFlush(new OrganizationLevel(f));
+			organizationLevelRepository.saveAndFlush(new OrganizationPositionLevel(f));
 		});
 	}
 
-	public void delLevels(Set<OrganizationLevelPK> ids) {
+	public void delLevels(Set<OrganizationPositionLevelPK> ids) {
 		ids.forEach(f -> {
-			organizationLevelRepository.delete(new OrganizationLevel(f));
+			organizationLevelRepository.delete(new OrganizationPositionLevel(f));
 		});
 	}
 

@@ -4,14 +4,14 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import cn.sparrow.model.organization.OrganizationLevelPK;
-import cn.sparrow.model.organization.OrganizationLevelRelation;
-import cn.sparrow.model.organization.OrganizationLevelRelationPK;
+import cn.sparrow.model.organization.OrganizationPositionLevelPK;
+import cn.sparrow.model.organization.OrganizationPositionLevelRelation;
+import cn.sparrow.model.organization.OrganizationPositionLevelRelationPK;
 
-public interface OrganizationLevelRelationRepository extends JpaRepository<OrganizationLevelRelation,OrganizationLevelRelationPK> {
+public interface OrganizationLevelRelationRepository extends JpaRepository<OrganizationPositionLevelRelation,OrganizationPositionLevelRelationPK> {
 
-	List<OrganizationLevelRelation> findByIdParentId(OrganizationLevelPK parentId);
+	List<OrganizationPositionLevelRelation> findByIdParentId(OrganizationPositionLevelPK parentId);
 
-	List<OrganizationLevelRelation> findByIdId(OrganizationLevelPK id);
+	List<OrganizationPositionLevelRelation> findByIdId(OrganizationPositionLevelPK id);
 
 }

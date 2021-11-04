@@ -21,7 +21,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = false,onlyExplicitlyIncluded = true)
 @Entity
-@Table(name = "spr_employee_organization_level")
+@Table(name = "spr_employee_organization_position_level")
 @EntityListeners(AuditingEntityListener.class)
 public class EmployeeOrganizationLevel extends AbstractOperationLog
 		implements Persistable<EmployeeOrganizationLevelPK> {
@@ -38,8 +38,8 @@ public class EmployeeOrganizationLevel extends AbstractOperationLog
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumns({
 			@JoinColumn(name = "organization_id", referencedColumnName = "organization_id", insertable = false, updatable = false),
-			@JoinColumn(name = "level_id", referencedColumnName = "level_id", insertable = false, updatable = false) })
-	private OrganizationLevel organizationLevel;
+			@JoinColumn(name = "position_level_id", referencedColumnName = "position_level_id", insertable = false, updatable = false) })
+	private OrganizationPositionLevel organizationLevel;
 
 	@JsonIgnore
 	@ManyToOne
