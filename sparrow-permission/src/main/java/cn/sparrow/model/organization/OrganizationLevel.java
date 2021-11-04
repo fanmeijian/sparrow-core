@@ -56,7 +56,7 @@ public class OrganizationLevel extends AbstractOperationLog implements Persistab
 	@Exclude
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "level_id", insertable = false, updatable = false)
-	private Level level;
+	private PositionLevel level;
 
 	@JsonIgnore
 	@Exclude

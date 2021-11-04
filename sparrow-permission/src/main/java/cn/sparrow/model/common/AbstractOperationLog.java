@@ -10,13 +10,15 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import cn.sparrow.permission.listener.AuditLogListener;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
 @MappedSuperclass
-@EntityListeners( AuditingEntityListener.class)
+@EntityListeners( {AuditingEntityListener.class, AuditLogListener.class})
 public abstract class AbstractOperationLog implements Serializable {
 	private static final long serialVersionUID = 1L;
 	

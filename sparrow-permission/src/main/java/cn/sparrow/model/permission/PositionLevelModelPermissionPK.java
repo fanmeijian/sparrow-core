@@ -12,13 +12,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Embeddable
-public class LevelModelPermissionPK extends AbstractModelPermissionPK implements Serializable {
+public abstract class PositionLevelModelPermissionPK extends AbstractModelPermissionPK implements Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private String positionLevelId;
+	protected String positionLevelId;
 
 }

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import cn.sparrow.model.organization.EmployeeOrganizationLevel;
-import cn.sparrow.model.organization.Level;
+import cn.sparrow.model.organization.PositionLevel;
 import cn.sparrow.model.organization.OrganizationLevel;
 import cn.sparrow.model.organization.OrganizationLevelPK;
 import cn.sparrow.model.organization.OrganizationLevelRelation;
@@ -32,8 +32,8 @@ public class LevelService {
 	}
 	
 	@Transactional
-	public Level save(Level lvel) {
-		Level savedLevel = levelRepository.save(lvel);
+	public PositionLevel save(PositionLevel lvel) {
+		PositionLevel savedLevel = levelRepository.save(lvel);
 		// 保存岗位所在的组织
 		if (lvel.getOrganizationIds() != null) {
 			lvel.getOrganizationIds().forEach(f -> {

@@ -20,12 +20,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "spr_level_model_permission")
+@Table(name = "spr_position_level_model_permission")
 
-public class LevelModelPermission extends AbstractOperationLog implements Serializable {
+public class PositionLevelModelPermission extends AbstractOperationLog implements Serializable {
 
 	@EmbeddedId
-	private LevelModelPermissionPK id;
+	protected PositionLevelModelPermissionPK id;
 	private static final long serialVersionUID = 1L;
 
 }

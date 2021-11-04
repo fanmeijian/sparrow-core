@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.sun.istack.NotNull;
 
-import cn.sparrow.model.organization.Level;
+import cn.sparrow.model.organization.PositionLevel;
 import cn.sparrow.model.organization.OrganizationLevelPK;
 import cn.sparrow.model.organization.OrganizationLevelRelation;
 import cn.sparrow.model.organization.Role;
@@ -20,7 +20,7 @@ import cn.sparrow.organization.repository.LevelRepository;
 import cn.sparrow.organization.service.LevelService;
 
 @RestController
-public class LevelController {
+public class PositionLevelController {
 
 	@Autowired
 	LevelService levelService;
@@ -28,7 +28,7 @@ public class LevelController {
 	LevelRepository levelRepository;
 
 	@PostMapping("/levels")
-	public Level save(@NotNull @RequestBody Level level) {
+	public PositionLevel save(@NotNull @RequestBody PositionLevel level) {
 		return levelService.save(level);
 	}
 	
@@ -48,12 +48,12 @@ public class LevelController {
 	}
 
 	@PostMapping("/levels/batch")
-	public void add(@NotNull @RequestBody final List<Level> levels) {
+	public void add(@NotNull @RequestBody final List<PositionLevel> levels) {
 		levelRepository.saveAll(levels);
 	}
 
 	@PatchMapping("/levels/batch")
-	public void update(@NotNull @RequestBody final List<Level> levels) {
+	public void update(@NotNull @RequestBody final List<PositionLevel> levels) {
 		levelRepository.saveAll(levels);
 	}
 

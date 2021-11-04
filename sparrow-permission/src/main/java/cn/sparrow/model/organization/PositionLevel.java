@@ -24,8 +24,8 @@ import lombok.Setter;
 @Setter
 @Entity
 @NoArgsConstructor
-@Table(name = "spr_level")
-public class Level extends AbstractSparrowUuidEntity {
+@Table(name = "spr_position_level")
+public class PositionLevel extends AbstractSparrowUuidEntity {
 
 	private static final long serialVersionUID = 1L;
 	private String code;
