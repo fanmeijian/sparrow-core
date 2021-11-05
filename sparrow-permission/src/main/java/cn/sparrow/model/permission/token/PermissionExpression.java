@@ -1,5 +1,6 @@
 package cn.sparrow.model.permission.token;
 
+import java.io.Serializable;
 import java.util.List;
 import cn.sparrow.model.common.PermissionEnum;
 import cn.sparrow.model.common.PermissionExpressionEnum;
@@ -12,7 +13,11 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PermissionExpression<T, ID> {
+public class PermissionExpression<T, ID> implements Serializable{
+  /**
+   * 
+   */
+  private static final long serialVersionUID = 1L;
   private PermissionTypeEnum permissionType;
   private PermissionExpressionEnum expression;
   private PermissionEnum permission;

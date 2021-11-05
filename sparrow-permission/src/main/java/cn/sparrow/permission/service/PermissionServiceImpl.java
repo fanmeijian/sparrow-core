@@ -1,5 +1,6 @@
 package cn.sparrow.permission.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import cn.sparrow.model.common.PermissionEnum;
 import cn.sparrow.model.group.Group;
@@ -10,16 +11,24 @@ import cn.sparrow.model.organization.OrganizationPositionLevel;
 import cn.sparrow.model.organization.OrganizationPositionLevelPK;
 import cn.sparrow.model.organization.OrganizationRole;
 import cn.sparrow.model.organization.OrganizationRolePK;
+import cn.sparrow.model.permission.PermissionToken;
 import cn.sparrow.model.permission.Sysrole;
 import cn.sparrow.model.permission.User;
-import cn.sparrow.model.permission.token.ApiPermissionToken;
 import cn.sparrow.model.permission.token.PermissionExpression;
 
 @Service
-public class ApiPermissionService extends AbstractPermissionServiceV2<ApiPermissionToken> {
+public class PermissionServiceImpl implements PermissionService<PermissionToken> {
   
+  @Autowired PermissionCheckService<Employee, String> employeeCheckService;
+  @Autowired PermissionCheckService<User, String> userCheckService;
+  @Autowired PermissionCheckService<Sysrole, String> sysroleCheckService;
+  @Autowired PermissionCheckService<Group, String> groupCheckService;
+  @Autowired PermissionCheckService<Organization, String> organizationCheckService;
+  @Autowired PermissionCheckService<OrganizationRole, OrganizationRolePK> roleCheckService;
+  @Autowired PermissionCheckService<OrganizationPositionLevel, OrganizationPositionLevelPK> positionLevelCheckService;
+
   @Override
-  public boolean hasPermission(EmployeeToken employeeToken, ApiPermissionToken permissionToken,
+  public boolean hasPermission(EmployeeToken employeeToken, PermissionToken permissionToken,
       PermissionEnum permission) {
 
     for (PermissionExpression<Employee, String> permissionExpression : permissionToken
@@ -86,5 +95,9 @@ public class ApiPermissionService extends AbstractPermissionServiceV2<ApiPermiss
     return false;
   }
 
-
+  @Override
+  public boolean hasPermission(String employeeId, String tokenId, PermissionEnum permission) {
+    // TODO Auto-generated method stub
+    return false;
+  }
 }

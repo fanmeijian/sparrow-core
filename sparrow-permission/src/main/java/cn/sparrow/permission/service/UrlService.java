@@ -61,6 +61,4 @@ public class UrlService {
 		sysroleUrlPermissionRepository.deleteByIdIn(sysroleUrlPermissionPKs);
 	}
 	
-	@Autowired PermissionService<ApiPermissionToken> permissionService;
-
 }

@@ -12,7 +12,7 @@ import org.hibernate.envers.NotAudited;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import cn.sparrow.model.permission.Model;
-import cn.sparrow.model.permission.PermissionToken;
+import cn.sparrow.model.permission.SparrowPermissionToken;
 import cn.sparrow.permission.listener.AuditLogListener;
 import cn.sparrow.permission.listener.AuthorPermissionListener;
 import cn.sparrow.permission.listener.DeleterPermissionListener;
@@ -42,7 +42,7 @@ public abstract class AbstractSparrowEntity extends AbstractOperationLog {
   
   @OneToOne
   @JoinColumn(name = "data_permission_token_id")
-  protected PermissionToken permissionToken;
+  protected SparrowPermissionToken sparrowPermissionToken;
   
 
   @Transient

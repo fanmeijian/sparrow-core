@@ -6,7 +6,7 @@ import cn.sparrow.model.organization.Organization;
 import cn.sparrow.model.permission.token.PermissionExpression;
 
 @Service
-public class OrganizationPermissionCheckService implements PermissionCheckService<Organization, String> {
+public class PermissionCheckOrganizationServiceImpl implements PermissionCheckService<Organization, String> {
 
   @Override
   public boolean checkPermission(String id, PermissionExpression<?, ?> permissionExpression,

@@ -2,18 +2,20 @@ package cn.sparrow.permission.service;
 
 import org.springframework.stereotype.Service;
 import cn.sparrow.model.common.PermissionEnum;
-import cn.sparrow.model.organization.OrganizationPositionLevel;
-import cn.sparrow.model.organization.OrganizationPositionLevelPK;
+import cn.sparrow.model.organization.OrganizationRole;
+import cn.sparrow.model.organization.OrganizationRolePK;
 import cn.sparrow.model.permission.token.PermissionExpression;
 
 @Service
-public class PositionLevelPermissionCheckService implements PermissionCheckService<OrganizationPositionLevel, OrganizationPositionLevelPK> {
+public class PermissionCheckRoleServiceImpl implements PermissionCheckService<OrganizationRole, OrganizationRolePK> {
 
   @Override
-  public boolean checkPermission(OrganizationPositionLevelPK id,
+  public boolean checkPermission(OrganizationRolePK id,
       PermissionExpression<?, ?> permissionExpression, PermissionEnum permission) {
     // TODO Auto-generated method stub
     return false;
   }
+
+
 
 }
