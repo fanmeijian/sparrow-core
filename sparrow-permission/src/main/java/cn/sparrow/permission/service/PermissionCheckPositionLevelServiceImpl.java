@@ -11,7 +11,7 @@ public class PermissionCheckPositionLevelServiceImpl implements PermissionCheckS
 
   @Override
   public boolean checkPermission(OrganizationPositionLevelPK id,
-      PermissionExpression<?, ?> permissionExpression, PermissionEnum permission) {
+      PermissionExpression<OrganizationPositionLevel, OrganizationPositionLevelPK> permissionExpression, PermissionEnum permission) {
     // TODO Auto-generated method stub
     return false;
   }

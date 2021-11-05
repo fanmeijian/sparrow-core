@@ -9,8 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import cn.sparrow.common.repository.UserMenuRepository;
-import cn.sparrow.common.service.ISparrowSortService;
-import cn.sparrow.common.service.ISparrowTreeService;
+import cn.sparrow.common.service.SortService;
+import cn.sparrow.common.service.TreeService;
 import cn.sparrow.model.common.SparrowTree;
 import cn.sparrow.model.permission.Menu;
 import cn.sparrow.model.permission.MenuPermission;
@@ -33,9 +33,9 @@ public class MenuService {
 	SysroleMenuRepository sysroleMenuRepository;
 
 	@Autowired
-	ISparrowSortService<Menu, String> sparrowSortedService;
+	SortService<Menu, String> sparrowSortedService;
 	
-	@Autowired ISparrowTreeService<Menu, String> sparrowTreeService;
+	@Autowired TreeService<Menu, String> sparrowTreeService;
 
 	@Autowired
 	SysroleService sysroleService;

@@ -11,7 +11,7 @@ public class PermissionCheckRoleServiceImpl implements PermissionCheckService<Or
 
   @Override
   public boolean checkPermission(OrganizationRolePK id,
-      PermissionExpression<?, ?> permissionExpression, PermissionEnum permission) {
+      PermissionExpression<OrganizationRole, OrganizationRolePK> permissionExpression, PermissionEnum permission) {
     // TODO Auto-generated method stub
     return false;
   }

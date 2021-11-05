@@ -9,7 +9,7 @@ import cn.sparrow.model.permission.token.PermissionExpression;
 public class PermissionCheckUserServiceImpl implements PermissionCheckService<User, String> {
 
   @Override
-  public boolean checkPermission(String id, PermissionExpression<?, ?> permissionExpression,
+  public boolean checkPermission(String id, PermissionExpression<User, String> permissionExpression,
       PermissionEnum permission) {
     // TODO Auto-generated method stub
     return false;

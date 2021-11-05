@@ -12,7 +12,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
 @Service
-public class SparrowSortService<T, ID> implements ISparrowSortService<T, ID> {
+public class SortServiceImpl<T, ID> implements SortService<T, ID> {
 
   @Override
   public void sort(List<T> list) {

@@ -41,7 +41,7 @@ public class PermissionServiceImpl implements PermissionService<PermissionToken>
     for (PermissionExpression<User, String> permissionExpression : permissionToken
         .getUserPermissionExpressions()) {   
       for(String username: employeeToken.getUsernames()) {  
-        if (employeeCheckService.checkPermission(username, permissionExpression,
+        if (userCheckService.checkPermission(username, permissionExpression,
             permission))
           return true;
       }

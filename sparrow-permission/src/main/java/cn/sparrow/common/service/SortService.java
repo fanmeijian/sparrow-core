@@ -4,7 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface ISparrowSortService<T, ID> {
+public interface SortService<T, ID> {
 
   /**
    * 对给予的可排序的对象进行排序
