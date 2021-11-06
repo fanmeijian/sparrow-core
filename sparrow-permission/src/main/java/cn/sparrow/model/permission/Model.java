@@ -15,6 +15,7 @@ import org.springframework.util.SerializationUtils;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import cn.sparrow.model.app.SparrowApp;
 import cn.sparrow.model.common.AbstractOperationLog;
+import cn.sparrow.model.common.AbstractSparrowEntity;
 import cn.sparrow.model.permission.token.ModelPermissionToken;
 import lombok.AllArgsConstructor;
 import lombok.Data;

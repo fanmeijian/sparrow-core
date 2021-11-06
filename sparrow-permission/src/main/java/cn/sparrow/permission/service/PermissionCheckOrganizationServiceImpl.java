@@ -17,6 +17,8 @@ public class PermissionCheckOrganizationServiceImpl
 
   @Autowired
   OrganizationRelationRepository organizationRelationRepository;
+  
+
 
   @Override
   public boolean checkPermission(String id, PermissionExpression<Organization, String> permissionExpression,
@@ -24,17 +26,17 @@ public class PermissionCheckOrganizationServiceImpl
 
     // check employee org permission
     switch (permissionExpression.getExpression()) {
+      case IS:
+        return permissionExpression.getId().equals(id);
       case IS_AND_BELOW:
-
-        return sparrowTreeService.isAndChild(id, (String) permissionExpression.getId());
-
+        return sparrowTreeService.isAndChild(id, (String) permissionExpression.getId());      
+      case NOT_IN:
+        return !permissionExpression.getIds().contains(id);
+      case IN:
+        return permissionExpression.getIds().contains(id);
       default:
         break;
     }
-
-    // if(permissionExpression.getPermission().equals(permission) && permissionExpression)
     return false;
   }
-
-
 }

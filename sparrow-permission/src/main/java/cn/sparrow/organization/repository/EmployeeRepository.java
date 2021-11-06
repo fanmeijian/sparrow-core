@@ -22,6 +22,8 @@ public interface EmployeeRepository extends JpaRepository<Employee, String> {
 	void deleteByIdIn(String[] ids);
 
 	List<Employee> findByOrganizationId(@NotBlank String organizationId, Pageable pageable);
+	
+	Employee findByUsername(String username);
 
 	long countByOrganizationId(String id);
 

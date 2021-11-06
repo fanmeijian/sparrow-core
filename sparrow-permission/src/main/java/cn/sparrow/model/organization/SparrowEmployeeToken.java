@@ -30,9 +30,9 @@ public class SparrowEmployeeToken extends AbstractOperationLog{
   @Id
   private String employeeId;
   
-  @OneToOne
-  @MapsId
-  private Employee employee;
+//  @OneToOne
+//  @MapsId
+//  private Employee employee;
   
   @Lob
   @Column(name = "employee_token")

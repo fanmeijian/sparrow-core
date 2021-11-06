@@ -37,8 +37,8 @@ public abstract class AbstractSparrowEntity extends AbstractOperationLog {
   @JsonProperty
   protected String modelName = this.getClass().getName();
 
-  @Transient
-  private Model model;
+//  @Transient
+//  private Model model;
   
   @OneToOne
   @JoinColumn(name = "data_permission_token_id")
