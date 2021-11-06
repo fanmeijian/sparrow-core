@@ -1,26 +1,13 @@
 package cn.sparrow.organization.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import cn.sparrow.model.organization.EmployeeToken;
-import cn.sparrow.organization.repository.EmployeeRepository;
-import cn.sparrow.organization.repository.EmployeeTokenRepository;
 
 @Service
-public class EmployeeTokenService {
-
-  @Autowired
-  EmployeeTokenRepository employeeTokenRepository;
-  
-  @Autowired
-  EmployeeRepository employeeRepository;
+public interface EmployeeTokenService {
 
   // build it from data base, use to get the latest token
-  public EmployeeToken buildEmployeeToken(String username) {
-    return null;
-
-  }
-
+  public EmployeeToken buildEmployeeToken(String username);
   /**
    * get it from data base, the token store in database when user login.
    * 
@@ -28,8 +15,5 @@ public class EmployeeTokenService {
    * @return
    */
 
-  public EmployeeToken getEmployeeToken(String username) {
-    return employeeTokenRepository.findById(employeeRepository.findByUsername(username).getId()).get().getEmployeeToken();
-
-  }
+  public EmployeeToken getEmployeeToken(String username);
 }

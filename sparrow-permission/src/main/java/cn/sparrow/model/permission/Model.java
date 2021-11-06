@@ -10,9 +10,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.PostLoad;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import org.springframework.util.SerializationUtils;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import cn.sparrow.model.app.SparrowApp;
 import cn.sparrow.model.common.AbstractOperationLog;
 import cn.sparrow.model.common.AbstractSparrowEntity;
@@ -56,14 +61,20 @@ public class Model extends AbstractOperationLog implements Serializable {
   @Lob
   @Column(name = "model_permission_token")
   private byte[] modelPermissionTokenByteArray;
-
-  public ModelPermissionToken getModelPermissionToken() {
-    return (ModelPermissionToken) SerializationUtils.deserialize(modelPermissionTokenByteArray);
+  
+  @Transient
+  @JsonProperty
+  private PermissionToken modelPermissionToken;
+  
+  @PostLoad
+  private void postLoad() {
+    this.modelPermissionToken = (PermissionToken) SerializationUtils.deserialize(modelPermissionTokenByteArray);
   }
-
-  public void setModelPermissionToken(ModelPermissionToken modelPermissionToken) {
-    this.modelPermissionTokenByteArray =
-        SerializationUtils.serialize(modelPermissionTokenByteArray);
+  
+  @PreUpdate
+  @PrePersist
+  private void beforeSave() {
+    this.modelPermissionTokenByteArray = SerializationUtils.serialize(modelPermissionToken);
   }
 
   public Model(String name) {

@@ -18,5 +18,6 @@ public interface PermissionTokenService {
   public void update(String permissionTokenId, PermissionToken permissionToken);
   public void removePermission(String permissionTokenId, PermissionToken permissionToken);
   public SparrowPermissionToken save(@NotNull PermissionToken permissionToken);
+  public PermissionToken getModelPermissionToken(String modelName);
   
 }

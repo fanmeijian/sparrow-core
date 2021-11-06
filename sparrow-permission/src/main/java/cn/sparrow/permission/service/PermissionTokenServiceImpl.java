@@ -6,12 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import cn.sparrow.model.permission.PermissionToken;
 import cn.sparrow.model.permission.SparrowPermissionToken;
+import cn.sparrow.permission.repository.ModelRepository;
 import cn.sparrow.permission.repository.PermissionTokenRepository;
 
 @Service
 public class PermissionTokenServiceImpl implements PermissionTokenService {
 
   @Autowired PermissionTokenRepository permissionTokenRepository;
+  @Autowired ModelRepository modelRepository;
   
   @Override
   public SparrowPermissionToken buildToken(@NotBlank String permissionId) {
@@ -41,6 +43,12 @@ public class PermissionTokenServiceImpl implements PermissionTokenService {
   public SparrowPermissionToken save(@NotNull PermissionToken permissionToken) {
     // TODO Auto-generated method stub
     return null;
+  }
+
+  @Override
+  public PermissionToken getModelPermissionToken(String modelName) {
+    
+    return modelRepository.findById(modelName).get().getModelPermissionToken();
   }
 
 
