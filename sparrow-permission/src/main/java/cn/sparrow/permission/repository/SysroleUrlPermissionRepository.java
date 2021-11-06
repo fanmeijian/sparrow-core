@@ -8,16 +8,16 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.transaction.annotation.Transactional;
 
-import cn.sparrow.model.permission.SysroleUrlPermission;
-import cn.sparrow.model.permission.SysroleUrlPermissionPK;
+import cn.sparrow.model.permission.SysroleApiPermission;
+import cn.sparrow.model.permission.SysroleApiPermissionPK;
 
 @RepositoryRestResource(exported = false)
-public interface SysroleUrlPermissionRepository extends JpaRepository<SysroleUrlPermission, SysroleUrlPermissionPK> {
+public interface SysroleUrlPermissionRepository extends JpaRepository<SysroleApiPermission, SysroleApiPermissionPK> {
 
-	Page<SysroleUrlPermission> findByIdUrlId(String urlId, Pageable pageable);
-	Page<SysroleUrlPermission> findByIdUrlIdIn(String[] urlIds, Pageable pageable);
-	List<SysroleUrlPermission> findByIdUrlId(String urlId);
+	Page<SysroleApiPermission> findByIdApiId(String ApiId, Pageable pageable);
+	Page<SysroleApiPermission> findByIdApiIdIn(String[] ApiIds, Pageable pageable);
+	List<SysroleApiPermission> findByIdApiId(String ApiId);
 	
 	@Transactional
-	void deleteByIdIn(List<SysroleUrlPermissionPK> ids);
+	void deleteByIdIn(List<SysroleApiPermissionPK> ids);
 }

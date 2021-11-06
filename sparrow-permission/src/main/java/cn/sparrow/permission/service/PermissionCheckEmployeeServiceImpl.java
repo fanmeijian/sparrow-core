@@ -3,7 +3,7 @@ package cn.sparrow.permission.service;
 import org.springframework.stereotype.Service;
 import cn.sparrow.model.common.PermissionEnum;
 import cn.sparrow.model.organization.Employee;
-import cn.sparrow.model.permission.token.PermissionExpression;
+import cn.sparrow.model.permission.PermissionExpression;
 
 @Service
 public class PermissionCheckEmployeeServiceImpl implements PermissionCheckService<Employee, String> {

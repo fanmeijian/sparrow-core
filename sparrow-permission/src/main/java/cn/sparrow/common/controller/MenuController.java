@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import cn.sparrow.model.common.SparrowTree;
 import cn.sparrow.model.permission.Menu;
-import cn.sparrow.model.permission.MenuPermission;
 import cn.sparrow.permission.repository.MenuRepository;
 import cn.sparrow.permission.service.MenuService;
 
@@ -89,14 +88,14 @@ public class MenuController {
     menuRepository.deleteByIdIn(ids);
   }
 
-  @PostMapping("/menus/permissions")
-  public void addPermission(@NotNull @RequestBody final MenuPermission menuPermission) {
-    menuService.addPermissions(menuPermission);
-  }
-
-  @DeleteMapping("/menus/permissions")
-  public void delPermission(@NotNull @RequestBody final MenuPermission menuPermission) {
-    menuService.delPermissions(menuPermission);
-  }
+//  @PostMapping("/menus/permissions")
+//  public void addPermission(@NotNull @RequestBody final MenuPermission menuPermission) {
+//    menuService.addPermissions(menuPermission);
+//  }
+//
+//  @DeleteMapping("/menus/permissions")
+//  public void delPermission(@NotNull @RequestBody final MenuPermission menuPermission) {
+//    menuService.delPermissions(menuPermission);
+//  }
 
 }

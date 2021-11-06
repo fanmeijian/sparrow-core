@@ -1,8 +1,8 @@
 package cn.sparrow.permission.service;
 
 import cn.sparrow.model.common.PermissionEnum;
+import cn.sparrow.model.permission.PermissionExpression;
 import cn.sparrow.model.permission.PermissionToken;
-import cn.sparrow.model.permission.token.PermissionExpression;
 
 public interface PermissionExpressionService {
 

@@ -22,9 +22,9 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor
 @Entity
-@Table(name = "spr_sysrole_url_permission")
-public class SysroleUrlPermission extends AbstractOperationLog {
-  public SysroleUrlPermission(SysroleUrlPermissionPK f) {
+@Table(name = "spr_sysrole_api")
+public class SysroleApiPermission extends AbstractOperationLog {
+  public SysroleApiPermission(SysroleApiPermissionPK f) {
 		this.id = f;
 	}
 
@@ -32,12 +32,12 @@ private static final long serialVersionUID = 1L;
 
   @EmbeddedId
   @NotNull
-  private SysroleUrlPermissionPK id;
+  private SysroleApiPermissionPK id;
 
   @EqualsAndHashCode.Exclude
   @ManyToOne(fetch = FetchType.EAGER)
-  @JoinColumn(name = "url_id", insertable = false, updatable = false)
-  private SparrowUrl sparrowUrl;
+  @JoinColumn(name = "api_id", insertable = false, updatable = false)
+  private SparrowApi sparrowApi;
   
   @EqualsAndHashCode.Exclude
   @ManyToOne(fetch = FetchType.EAGER)

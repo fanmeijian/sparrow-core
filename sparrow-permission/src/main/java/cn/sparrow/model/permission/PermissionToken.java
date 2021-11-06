@@ -9,7 +9,6 @@ import cn.sparrow.model.organization.OrganizationPositionLevel;
 import cn.sparrow.model.organization.OrganizationPositionLevelPK;
 import cn.sparrow.model.organization.OrganizationRole;
 import cn.sparrow.model.organization.OrganizationRolePK;
-import cn.sparrow.model.permission.token.PermissionExpression;
 import lombok.Data;
 
 @Data

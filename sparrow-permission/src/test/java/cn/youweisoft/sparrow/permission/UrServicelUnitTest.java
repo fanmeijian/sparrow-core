@@ -1,8 +1,5 @@
 package cn.youweisoft.sparrow.permission;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.jeasy.random.EasyRandom;
 import org.junit.Before;
 import org.junit.jupiter.api.Test;
@@ -18,12 +15,7 @@ import org.springframework.context.annotation.FilterType;
 import org.springframework.data.repository.Repository;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import cn.sparrow.model.permission.SparrowUrl;
-import cn.sparrow.model.permission.Sysrole;
-import cn.sparrow.model.permission.SysroleUrlPermissionPK;
 import cn.sparrow.permission.repository.SysroleRepository;
-import cn.sparrow.permission.repository.SysroleUrlPermissionRepository;
 import cn.sparrow.permission.repository.UrlRepository;
 import cn.sparrow.permission.service.UrlPermissionService;
 
@@ -47,7 +39,7 @@ class UrServicelUnitTest extends SampleBaseTestCase {
 	UrlRepository urlRepository;
 	@Autowired
 	SysroleRepository sysroleRepository;
-	@Autowired SysroleUrlPermissionRepository sysroleUrlPermissionRepository;
+//	@Autowired SysroleUrlPermissionRepository sysroleUrlPermissionRepository;
 
 	EasyRandom easyRandom = new EasyRandom();
 	
@@ -58,11 +50,11 @@ class UrServicelUnitTest extends SampleBaseTestCase {
 
 	@Test
 	void test() {
-		List<SysroleUrlPermissionPK> list = new ArrayList<SysroleUrlPermissionPK>();
-		Sysrole sysrole = new Sysrole(easyRandom.nextObject(String.class), easyRandom.nextObject(String.class));
-		list.add(new SysroleUrlPermissionPK(sysroleRepository.save(sysrole).getId(),
-				urlRepository.save(easyRandom.nextObject(SparrowUrl.class)).getId()));
-		urlPermissionService.addSysroleUrlPermission(list);
+//		List<SysroleUrlPermissionPK> list = new ArrayList<SysroleUrlPermissionPK>();
+//		Sysrole sysrole = new Sysrole(easyRandom.nextObject(String.class), easyRandom.nextObject(String.class));
+//		list.add(new SysroleUrlPermissionPK(sysroleRepository.save(sysrole).getId(),
+//				urlRepository.save(easyRandom.nextObject(SparrowUrl.class)).getId()));
+//		urlPermissionService.addSysroleUrlPermission(list);
 	}
 
 }

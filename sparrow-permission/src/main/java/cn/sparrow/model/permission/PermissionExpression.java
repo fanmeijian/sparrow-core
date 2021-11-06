@@ -1,4 +1,4 @@
-package cn.sparrow.model.permission.token;
+package cn.sparrow.model.permission;
 
 import java.io.Serializable;
 import java.util.List;

@@ -8,17 +8,17 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.transaction.annotation.Transactional;
 import cn.sparrow.model.common.UrlPermissionEnum;
-import cn.sparrow.model.permission.SparrowUrl;
+import cn.sparrow.model.permission.SparrowApi;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @Tag(name = "url-controller")
 @RepositoryRestResource(exported = false)
-public interface UrlRepository extends JpaRepository<SparrowUrl, String> {
+public interface UrlRepository extends JpaRepository<SparrowApi, String> {
 
-  List<SparrowUrl> findByClientId(String clientId);
-  List<SparrowUrl> findByClientIdAndPermission(String clientId, UrlPermissionEnum permission);
+  List<SparrowApi> findByClientId(String clientId);
+  List<SparrowApi> findByClientIdAndPermission(String clientId, UrlPermissionEnum permission);
   
   @Transactional
   void deleteByIdIn(String[] ids);
-  Page<SparrowUrl> findByIdIn(String[] ids, Pageable unpaged);
+  Page<SparrowApi> findByIdIn(String[] ids, Pageable unpaged);
 }

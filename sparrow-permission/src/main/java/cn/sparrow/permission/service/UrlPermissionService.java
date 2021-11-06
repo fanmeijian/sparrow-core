@@ -5,20 +5,14 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Set;
-
-import javax.transaction.Transactional;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-
 import cn.sparrow.model.common.UrlPermissionEnum;
-import cn.sparrow.model.permission.SparrowUrl;
-import cn.sparrow.model.permission.SysroleUrlPermission;
-import cn.sparrow.model.permission.SysroleUrlPermissionPK;
+import cn.sparrow.model.permission.SparrowApi;
 import cn.sparrow.permission.repository.SysroleUrlPermissionRepository;
 import cn.sparrow.permission.repository.UrlRepository;
 
@@ -32,25 +26,25 @@ public class UrlPermissionService {
 
 	private static Logger logger = LoggerFactory.getLogger(UrlPermissionService.class);
 
-	public Set<SparrowUrl> getSparrowUrls() {
-		return new HashSet<SparrowUrl>();
+	public Set<SparrowApi> getSparrowUrls() {
+		return new HashSet<SparrowApi>();
 
 	}
+//
+//	public void addSysroleUrlPermission(List<SysroleUrlPermissionPK> sysroleUrlPermissionPKs) {
+//		sysroleUrlPermissionPKs.forEach(f -> {
+//			sysroleUrlPermissionRepository.save(new SysroleUrlPermission(f));
+//		});
+//	}
+//
+//	@Transactional
+//	public void delSysroleUrlPermission(List<SysroleUrlPermissionPK> sysroleUrlPermissionPKs) {
+//		sysroleUrlPermissionPKs.forEach(f -> {
+//			sysroleUrlPermissionRepository.delete(new SysroleUrlPermission(f));
+//		});
+//	}
 
-	public void addSysroleUrlPermission(List<SysroleUrlPermissionPK> sysroleUrlPermissionPKs) {
-		sysroleUrlPermissionPKs.forEach(f -> {
-			sysroleUrlPermissionRepository.save(new SysroleUrlPermission(f));
-		});
-	}
-
-	@Transactional
-	public void delSysroleUrlPermission(List<SysroleUrlPermissionPK> sysroleUrlPermissionPKs) {
-		sysroleUrlPermissionPKs.forEach(f -> {
-			sysroleUrlPermissionRepository.delete(new SysroleUrlPermission(f));
-		});
-	}
-
-	public List<SparrowUrl> getUrlsByClientIdAndPermission(String clientId, UrlPermissionEnum permission) {
+	public List<SparrowApi> getUrlsByClientIdAndPermission(String clientId, UrlPermissionEnum permission) {
 		return urlRepository.findByClientIdAndPermission(clientId, permission);
 	}
 
@@ -100,7 +94,7 @@ public class UrlPermissionService {
 
 	public String[] getSysrolesByUrlId(String urlId) {
 		List<String> list = new ArrayList<String>();
-		sysroleUrlPermissionRepository.findByIdUrlId(urlId).forEach(f -> {
+		sysroleUrlPermissionRepository.findByIdApiId(urlId).forEach(f -> {
 			list.add(f.getSysrole().getCode());
 		});
 		return list.toArray(new String[] {});
@@ -115,19 +109,19 @@ public class UrlPermissionService {
 
 		response.forEach((k, v) -> {
 			if (!k.toString().equals("self")) {
-				urlRepository.save(new SparrowUrl(k.toString(),
+				urlRepository.save(new SparrowApi(k.toString(),
 						v.get("href").toString().replace("http://localhost:8091/api/profile", "") + "/**",
 						HttpMethod.GET, "sparrow", UrlPermissionEnum.AUTHENTICATED));
-				urlRepository.save(new SparrowUrl(k.toString(),
+				urlRepository.save(new SparrowApi(k.toString(),
 						v.get("href").toString().replace("http://localhost:8091/api/profile", "") + "/**",
 						HttpMethod.POST, "sparrow", UrlPermissionEnum.RESTRICT));
-				urlRepository.save(new SparrowUrl(k.toString(),
+				urlRepository.save(new SparrowApi(k.toString(),
 						v.get("href").toString().replace("http://localhost:8091/api/profile", "") + "/**",
 						HttpMethod.PUT, "sparrow", UrlPermissionEnum.DENY));
-				urlRepository.save(new SparrowUrl(k.toString(),
+				urlRepository.save(new SparrowApi(k.toString(),
 						v.get("href").toString().replace("http://localhost:8091/api/profile", "") + "/**",
 						HttpMethod.PATCH, "sparrow", UrlPermissionEnum.RESTRICT));
-				urlRepository.save(new SparrowUrl(k.toString(),
+				urlRepository.save(new SparrowApi(k.toString(),
 						v.get("href").toString().replace("http://localhost:8091/api/profile", "") + "/**",
 						HttpMethod.DELETE, "sparrow", UrlPermissionEnum.RESTRICT));
 			}

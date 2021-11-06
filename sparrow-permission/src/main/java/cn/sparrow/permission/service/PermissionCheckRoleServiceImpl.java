@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service;
 import cn.sparrow.model.common.PermissionEnum;
 import cn.sparrow.model.organization.OrganizationRole;
 import cn.sparrow.model.organization.OrganizationRolePK;
-import cn.sparrow.model.permission.token.PermissionExpression;
+import cn.sparrow.model.permission.PermissionExpression;
 
 @Service
 public class PermissionCheckRoleServiceImpl implements PermissionCheckService<OrganizationRole, OrganizationRolePK> {

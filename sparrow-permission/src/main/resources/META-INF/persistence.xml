@@ -7,42 +7,10 @@
 		<class>cn.sparrow.model.permission.AbstractModelPermissionPK</class>
 		<class>cn.sparrow.model.common.AbstractOperationLog</class>
 		<class>cn.sparrow.model.common.AbstractSparrowUuidEntity</class>
-		<class>cn.sparrow.model.group.GroupDataFieldPermission</class>
-		<class>cn.sparrow.model.group.GroupDataFieldPermissionPK</class>
-		<class>cn.sparrow.model.group.GroupDataPermission</class>
-		<class>cn.sparrow.model.group.GroupDataPermissionPK</class>
-		<class>cn.sparrow.model.group.GroupModelAttributePermission</class>
-		<class>cn.sparrow.model.group.GroupModelAttributePermissionPK</class>
-		<class>cn.sparrow.model.group.GroupModelPermission</class>
-		<class>cn.sparrow.model.group.GroupModelPermissionPK</class>
 		<class>cn.sparrow.model.permission.Model</class>
 		<class>cn.sparrow.model.permission.ModelAttribute</class>
 		<class>cn.sparrow.model.permission.ModelAttributePK</class>
-		<class>cn.sparrow.model.permission.OrganizationDataFieldPermission</class>
-		<class>cn.sparrow.model.permission.OrganizationDataFieldPermissionPK</class>
-		<class>cn.sparrow.model.permission.OrganizationDataPermission</class>
-		<class>cn.sparrow.model.permission.OrganizationDataPermissionPK</class>
-		<class>cn.sparrow.model.permission.OrganizationModelAttributePermission</class>
-		<class>cn.sparrow.model.permission.OrganizationModelAttributePermissionPK</class>
-		<class>cn.sparrow.model.permission.OrganizationModelPermission</class>
-		<class>cn.sparrow.model.permission.OrganizationModelPermissionPK</class>
-		<class>cn.sparrow.model.permission.SysroleDataFieldPermission</class>
-		<class>cn.sparrow.model.permission.SysroleDataFieldPermissionPK</class>
-		<class>cn.sparrow.model.permission.SysroleDataPermission</class>
-		<class>cn.sparrow.model.permission.SysroleDataPermissionPK</class>
-		<class>cn.sparrow.model.permission.SysroleModelAttributePermission</class>
-		<class>cn.sparrow.model.permission.SysroleModelAttributePermissionPK</class>
-		<class>cn.sparrow.model.permission.SysroleModelPermission</class>
-		<class>cn.sparrow.model.permission.SysroleModelPermissionPK</class>
-		<class>cn.sparrow.model.permission.UserDataFieldPermission</class>
-		<class>cn.sparrow.model.permission.UserDataFieldPermissionPK</class>
-		<class>cn.sparrow.model.permission.UserDataPermission</class>
-		<class>cn.sparrow.model.permission.UserDataPermissionPK</class>
-		<class>cn.sparrow.model.permission.UserModelAttributePermission</class>
-		<class>cn.sparrow.model.permission.UserModelAttributePermissionPK</class>
-		<class>cn.sparrow.model.permission.UserModelPermission</class>
 		<class>cn.sparrow.model.app.SparrowApp</class>
-		<class>cn.sparrow.model.permission.UserModelPermissionPK</class>
 		<class>cn.sparrow.model.group.GroupSysrole</class>
 	</persistence-unit>
 </persistence>

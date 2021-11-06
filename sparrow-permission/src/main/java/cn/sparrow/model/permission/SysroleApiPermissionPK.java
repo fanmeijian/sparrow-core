@@ -11,14 +11,14 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Embeddable
-public class SysroleUrlPermissionPK implements Serializable {
+public class SysroleApiPermissionPK implements Serializable {
   // default serial version id, required for serializable classes.
   private static final long serialVersionUID = 1L;
 
   @Column(name = "sysrole_id")
   private String sysroleId;
 
-  @Column(name = "url_id")
-  private String urlId;
+  @Column(name = "api_id")
+  private String apiId;
 
 }

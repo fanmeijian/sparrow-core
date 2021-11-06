@@ -11,10 +11,10 @@ import cn.sparrow.model.organization.OrganizationPositionLevel;
 import cn.sparrow.model.organization.OrganizationPositionLevelPK;
 import cn.sparrow.model.organization.OrganizationRole;
 import cn.sparrow.model.organization.OrganizationRolePK;
+import cn.sparrow.model.permission.PermissionExpression;
 import cn.sparrow.model.permission.PermissionToken;
 import cn.sparrow.model.permission.Sysrole;
 import cn.sparrow.model.permission.User;
-import cn.sparrow.model.permission.token.PermissionExpression;
 
 @Service
 public class PermissionServiceImpl implements PermissionService<PermissionToken> {

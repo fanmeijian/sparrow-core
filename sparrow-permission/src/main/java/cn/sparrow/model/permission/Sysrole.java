@@ -55,10 +55,10 @@ public class Sysrole extends AbstractOperationLog {
 	@OneToMany(targetEntity = GroupSysrole.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "sysrole")
 	private Set<GroupSysrole> groupSysroles;
 	
-	@EqualsAndHashCode.Exclude
-	@JsonIgnore
-	@OneToMany(targetEntity = SysroleUrlPermission.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "sysrole")
-	private Set<SysroleUrlPermission> sysroleUrlPermissions;
+//	@EqualsAndHashCode.Exclude
+//	@JsonIgnore
+//	@OneToMany(targetEntity = SysroleUrlPermission.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "sysrole")
+//	private Set<SysroleUrlPermission> sysroleUrlPermissions;
 
 	public Sysrole(String name, String code) {
 		super();

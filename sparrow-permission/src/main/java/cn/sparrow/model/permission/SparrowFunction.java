@@ -5,11 +5,14 @@ import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Lob;
+import javax.persistence.PostLoad;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import org.springframework.util.SerializationUtils;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import cn.sparrow.model.common.AbstractSparrowEntity;
-import cn.sparrow.model.permission.token.ModelPermissionToken;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -35,12 +38,19 @@ public class SparrowFunction extends AbstractSparrowEntity {
   @Transient
   private List<SparrowFunctionParameter> parameters;
 
-  public ModelPermissionToken getModelPermissionToken() {
-    return (ModelPermissionToken) SerializationUtils.deserialize(funcPermissionTokenByteArray);
+  @Transient
+  @JsonProperty
+  private PermissionToken funcPermissionToken;
+  
+  @PostLoad
+  private void postLoad() {
+    this.funcPermissionToken = (PermissionToken) SerializationUtils.deserialize(funcPermissionTokenByteArray);
   }
-
-  public void setModelPermissionToken(ModelPermissionToken modelPermissionToken) {
-    this.funcPermissionTokenByteArray = SerializationUtils.serialize(funcPermissionTokenByteArray);
+  
+  @PreUpdate
+  @PrePersist
+  private void beforeSave() {
+    this.funcPermissionTokenByteArray = SerializationUtils.serialize(funcPermissionToken);
   }
 
 }
