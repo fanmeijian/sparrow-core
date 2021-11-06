@@ -13,14 +13,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import com.sun.istack.NotNull;
 import cn.sparrow.model.permission.SparrowApi;
-import cn.sparrow.permission.repository.UrlRepository;
+import cn.sparrow.permission.repository.ApiRepository;
 import cn.sparrow.permission.service.UrlService;
 
 @RestController
 public class UrlController {
 
 	@Autowired UrlService urlService;
-	@Autowired UrlRepository urlRepository;
+	@Autowired ApiRepository urlRepository;
 //	@Autowired SysroleUrlPermissionRepository sysroleUrlPermissionRepository;
 	
 	@GetMapping("/sparrowUrls")

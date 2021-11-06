@@ -18,13 +18,13 @@ import cn.sparrow.model.permission.UserSysrole;
 import cn.sparrow.model.permission.UserSysrolePK;
 import cn.sparrow.permission.repository.SysroleMenuRepository;
 import cn.sparrow.permission.repository.SysroleRepository;
-import cn.sparrow.permission.repository.UrlRepository;
+import cn.sparrow.permission.repository.ApiRepository;
 
 @Service
 public class SysroleService {
   @Autowired SysroleRepository sysroleRepository;
 //  @Autowired SysroleUrlPermissionRepository sysroleUrlPermissionRepository;
-  @Autowired UrlRepository urlRepository;
+  @Autowired ApiRepository urlRepository;
   @Autowired UserSysroleRepository userSysroleRepository;
   @Autowired SysroleMenuRepository sysroleMenuRepository;
 //  @Autowired SysroleModelPermissionRepository sysroleModelPermissionRepository;

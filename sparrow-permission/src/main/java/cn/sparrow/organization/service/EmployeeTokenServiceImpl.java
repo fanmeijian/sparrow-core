@@ -7,11 +7,11 @@ import cn.sparrow.organization.repository.EmployeeRepository;
 import cn.sparrow.organization.repository.EmployeeTokenRepository;
 
 @Service
-public class EmployeeTokenServiceImpl implements EmployeeTokenService{
+public class EmployeeTokenServiceImpl implements EmployeeTokenService {
 
   @Autowired
   EmployeeTokenRepository employeeTokenRepository;
-  
+
   @Autowired
   EmployeeRepository employeeRepository;
 
@@ -31,7 +31,11 @@ public class EmployeeTokenServiceImpl implements EmployeeTokenService{
 
   @Override
   public EmployeeToken getEmployeeToken(String username) {
-    return employeeTokenRepository.findById(employeeRepository.findByUsername(username).getId()).get().getEmployeeToken();
+    if (employeeRepository.findByUsername(username) != null)
+      return employeeTokenRepository.findById(employeeRepository.findByUsername(username).getId())
+          .get().getEmployeeToken();
+    else
+      return null;
 
   }
 }

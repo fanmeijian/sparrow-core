@@ -16,7 +16,7 @@ import org.springframework.data.repository.Repository;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import cn.sparrow.permission.repository.SysroleRepository;
-import cn.sparrow.permission.repository.UrlRepository;
+import cn.sparrow.permission.repository.ApiRepository;
 import cn.sparrow.permission.service.UrlPermissionService;
 
 //@RunWith(SpringJUnit4ClassRunner.class)
@@ -36,7 +36,7 @@ class UrServicelUnitTest extends SampleBaseTestCase {
 	UrlPermissionService urlPermissionService;
 
 	@Autowired
-	UrlRepository urlRepository;
+	ApiRepository urlRepository;
 	@Autowired
 	SysroleRepository sysroleRepository;
 //	@Autowired SysroleUrlPermissionRepository sysroleUrlPermissionRepository;

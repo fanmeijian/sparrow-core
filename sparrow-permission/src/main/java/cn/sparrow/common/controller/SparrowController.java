@@ -25,7 +25,7 @@ import cn.sparrow.model.permission.ModelAttribute;
 import cn.sparrow.model.permission.ModelAttributePK;
 import cn.sparrow.permission.repository.ModelAttributeRepository;
 import cn.sparrow.permission.repository.ModelRepository;
-import cn.sparrow.permission.repository.UrlRepository;
+import cn.sparrow.permission.repository.ApiRepository;
 
 @RestController
 public class SparrowController {
@@ -43,7 +43,7 @@ public class SparrowController {
 	ModelAttributeRepository modelAttributeRepository;
 
 	@Autowired
-	UrlRepository urlRepository;
+	ApiRepository urlRepository;
 
 	@PersistenceContext
 	EntityManager entityManager;

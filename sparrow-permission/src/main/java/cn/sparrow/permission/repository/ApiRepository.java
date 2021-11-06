@@ -13,7 +13,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 @Tag(name = "url-controller")
 @RepositoryRestResource(exported = false)
-public interface UrlRepository extends JpaRepository<SparrowApi, String> {
+public interface ApiRepository extends JpaRepository<SparrowApi, String> {
 
   List<SparrowApi> findByClientId(String clientId);
   List<SparrowApi> findByClientIdAndPermission(String clientId, UrlPermissionEnum permission);

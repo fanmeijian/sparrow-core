@@ -12,7 +12,7 @@ import cn.sparrow.model.permission.SysroleApiPermission;
 import cn.sparrow.model.permission.SysroleApiPermissionPK;
 
 @RepositoryRestResource(exported = false)
-public interface SysroleUrlPermissionRepository extends JpaRepository<SysroleApiPermission, SysroleApiPermissionPK> {
+public interface SysroleApiPermissionRepository extends JpaRepository<SysroleApiPermission, SysroleApiPermissionPK> {
 
 	Page<SysroleApiPermission> findByIdApiId(String ApiId, Pageable pageable);
 	Page<SysroleApiPermission> findByIdApiIdIn(String[] ApiIds, Pageable pageable);

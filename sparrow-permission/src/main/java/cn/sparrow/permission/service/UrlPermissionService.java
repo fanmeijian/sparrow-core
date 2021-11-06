@@ -13,16 +13,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import cn.sparrow.model.common.UrlPermissionEnum;
 import cn.sparrow.model.permission.SparrowApi;
-import cn.sparrow.permission.repository.SysroleUrlPermissionRepository;
-import cn.sparrow.permission.repository.UrlRepository;
+import cn.sparrow.permission.repository.SysroleApiPermissionRepository;
+import cn.sparrow.permission.repository.ApiRepository;
 
 @Service
 public class UrlPermissionService {
 	@Autowired
-	UrlRepository urlRepository;
+	ApiRepository urlRepository;
 
 	@Autowired
-	SysroleUrlPermissionRepository sysroleUrlPermissionRepository;
+	SysroleApiPermissionRepository sysroleUrlPermissionRepository;
 
 	private static Logger logger = LoggerFactory.getLogger(UrlPermissionService.class);
 

@@ -42,7 +42,7 @@ public final class AuthorPermissionListener {
     // 检查是否有新建权限
     // 用户是否在拒绝权限列表
 
-    if (permissionService.hasPermission(employeeTokenService.getEmployeeToken(username),
+    if (!permissionService.hasPermission(employeeTokenService.getEmployeeToken(username),
         permissionTokenService.getModelPermissionToken(abstractEntity.getClass().getName()),
         PermissionEnum.AUTHOR)) {
       throw new RepositoryConstraintViolationException(

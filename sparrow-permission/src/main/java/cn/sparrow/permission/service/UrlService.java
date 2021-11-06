@@ -4,12 +4,12 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import cn.sparrow.model.permission.SparrowApi;
-import cn.sparrow.permission.repository.UrlRepository;
+import cn.sparrow.permission.repository.ApiRepository;
 
 @Service
 public class UrlService {
 	@Autowired
-	UrlRepository urlRepository;
+	ApiRepository urlRepository;
 //	@Autowired
 //	SysroleUrlPermissionRepository sysroleUrlPermissionRepository;
 

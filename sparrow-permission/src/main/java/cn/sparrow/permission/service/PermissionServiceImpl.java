@@ -1,6 +1,7 @@
 package cn.sparrow.permission.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import cn.sparrow.model.common.PermissionEnum;
 import cn.sparrow.model.group.Group;
@@ -33,6 +34,11 @@ public class PermissionServiceImpl implements PermissionService<PermissionToken>
   @Override
   public boolean hasPermission(EmployeeToken employeeToken, PermissionToken permissionToken,
       PermissionEnum permission) {
+    
+    if(permissionToken==null
+        || SecurityContextHolder.getContext().getAuthentication().getName().equals("ROOT")
+        || SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains("ROLE_SYSADMIN"))
+      return true;
 
     if(permissionExpressionService.containPermission(permissionToken, permission)) {
       for (PermissionExpression<Employee, String> permissionExpression : permissionToken
