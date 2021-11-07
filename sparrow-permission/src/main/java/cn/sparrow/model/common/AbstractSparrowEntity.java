@@ -10,6 +10,7 @@ import javax.persistence.Transient;
 import javax.validation.constraints.Size;
 import org.hibernate.envers.NotAudited;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.data.rest.core.annotation.RestResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import cn.sparrow.model.permission.Model;
 import cn.sparrow.model.permission.SparrowPermissionToken;
@@ -42,6 +43,7 @@ public abstract class AbstractSparrowEntity extends AbstractOperationLog {
   
   @OneToOne
   @JoinColumn(name = "data_permission_token_id")
+  @RestResource(exported = false)
   protected SparrowPermissionToken sparrowPermissionToken;
   
 

@@ -82,7 +82,7 @@ public class EmployeeService {
 	public MyTree<Employee> getTree(String parentId) {
 		if (parentId == null) {
 			MyTree<Employee> rootTree = new MyTree<Employee>(null);
-			employeeRepository.findByRoot(true).forEach(f -> {
+			employeeRepository.findByIsRoot(true).forEach(f -> {
 				MyTree<Employee> myTree = new MyTree<Employee>(f);
 				buildTree(myTree);
 				rootTree.getChildren().add(myTree);

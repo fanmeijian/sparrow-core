@@ -14,6 +14,6 @@ public interface RoleRepository extends JpaRepository<Role, String> {
 	@Transactional
 	void deleteByIdIn(String[] ids);
 
-	Iterable<Role> findByRoot(boolean b);
+	Iterable<Role> findByIsRoot(boolean b);
 
 }

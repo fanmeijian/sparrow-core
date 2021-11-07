@@ -29,42 +29,45 @@ import lombok.Setter;
 @Table(name = "spr_employee")
 public class Employee extends AbstractSparrowUuidEntity {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	
-	private String name;
-	private String code;
-	private boolean root;
-	private String username;
+  /**
+   * 
+   */
+  private static final long serialVersionUID = 1L;
 
-	// use for create relation at batch
-	@Transient
-	@JsonProperty
-	private List<String> parentIds;
-	
-	@Column(name = "organization_id")
-	private String organizationId;
-	
-	@Transient
-	@JsonProperty
-	private long childCount;
-	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "organization_id", insertable = false, updatable = false)
-	private Organization organization;
-	
-	@JsonIgnore
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "employee",fetch = FetchType.LAZY)
-	private Set<EmployeeOrganizationRole> employeeOrganizationRoles;
-	
-	@JsonIgnore
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "employee",fetch = FetchType.LAZY)
-	private Set<EmployeeOrganizationLevel> employeeOrganizationLevels;
-	
-	@JsonIgnore
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "employee", fetch = FetchType.LAZY)
-	private Set<GroupEmployee> groupEmployees;
+  private String name;
+  private String code;
+  private boolean isRoot;
+  // private String username;
+
+  // use for create relation at batch
+  @Transient
+  @JsonProperty
+  private List<String> parentIds;
+
+  @Column(name = "organization_id")
+  private String organizationId;
+
+  @Transient
+  @JsonProperty
+  private long childCount;
+
+  @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "employee")
+  private Set<EmployeeUser> employeeUsers;
+
+  @ManyToOne(fetch = FetchType.EAGER)
+  @JoinColumn(name = "organization_id", insertable = false, updatable = false)
+  private Organization organization;
+
+  @JsonIgnore
+  @OneToMany(cascade = CascadeType.ALL, mappedBy = "employee", fetch = FetchType.LAZY)
+  private Set<EmployeeOrganizationRole> employeeOrganizationRoles;
+
+  @JsonIgnore
+  @OneToMany(cascade = CascadeType.ALL, mappedBy = "employee", fetch = FetchType.LAZY)
+  private Set<EmployeeOrganizationLevel> employeeOrganizationLevels;
+
+  @JsonIgnore
+  @OneToMany(cascade = CascadeType.ALL, mappedBy = "employee", fetch = FetchType.LAZY)
+  private Set<GroupEmployee> groupEmployees;
 
 }

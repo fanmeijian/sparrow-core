@@ -15,5 +15,5 @@ public interface PositionLevelRepository extends JpaRepository<PositionLevel, St
 	void deleteByIdIn(String[] ids);
 //	Page<Level> findByOrganizationId(String organizationId, Pageable p);
 
-	Iterable<PositionLevel> findByRoot(boolean b);
+	Iterable<PositionLevel> findByIsRoot(boolean b);
 }

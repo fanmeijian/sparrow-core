@@ -31,7 +31,7 @@ public class PositionLevel extends AbstractSparrowUuidEntity {
   private String code;
   private String name;
   private String stat;
-  private boolean root;
+  private boolean isRoot;
 
   // use for create relation at batch
   @Transient

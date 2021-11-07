@@ -31,7 +31,7 @@ public class Role extends AbstractSparrowUuidEntity {
 	private static final long serialVersionUID = 1L;
 	private String code;
 	private String name;
-	private boolean root;
+	private boolean isRoot;
 
 	
 	// use for create relation at batch

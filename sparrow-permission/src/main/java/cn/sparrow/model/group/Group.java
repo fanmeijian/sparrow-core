@@ -35,7 +35,7 @@ public class Group extends AbstractSparrowUuidEntity {
 	private String name;
 	private String owner;
 	private String stat;
-	private boolean root;
+	private boolean isRoot;
 	@Enumerated
 	private GroupTypeEnum type;
 

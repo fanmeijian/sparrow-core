@@ -16,15 +16,13 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @RepositoryRestResource(exported = false)
 public interface EmployeeRepository extends JpaRepository<Employee, String> {
 
-	Iterable<Employee> findByRoot(boolean b);
+	Iterable<Employee> findByIsRoot(boolean b);
 
 	@Transactional
 	void deleteByIdIn(String[] ids);
 
 	List<Employee> findByOrganizationId(@NotBlank String organizationId, Pageable pageable);
 	
-	Employee findByUsername(String username);
-
 	long countByOrganizationId(String id);
 
 }
