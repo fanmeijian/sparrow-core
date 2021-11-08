@@ -12,7 +12,6 @@ import org.hibernate.envers.NotAudited;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.data.rest.core.annotation.RestResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import cn.sparrow.model.permission.Model;
 import cn.sparrow.model.permission.SparrowPermissionToken;
 import cn.sparrow.permission.listener.AuditLogListener;
 import cn.sparrow.permission.listener.AuthorPermissionListener;

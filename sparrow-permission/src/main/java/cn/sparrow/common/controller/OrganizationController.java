@@ -2,10 +2,8 @@ package cn.sparrow.common.controller;
 
 import java.util.List;
 import java.util.Set;
-
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.lang.Nullable;
@@ -16,7 +14,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
 import cn.sparrow.model.common.MyTree;
 import cn.sparrow.model.organization.Employee;
 import cn.sparrow.model.organization.Organization;
@@ -37,15 +34,20 @@ public class OrganizationController {
   @Autowired OrganizationService organizationService;
   @Autowired OrganizationRepository organizationRepository;
   
-  @PostMapping("/organizations")
-  public Organization add(@NotNull @RequestBody Organization organization) {
-    return organizationService.add(organization);
-    
-  }
+//  @PostMapping("/organizations")
+//  public Organization add(@NotNull @RequestBody Organization organization) {
+//    return organizationService.add(organization);
+//    
+//  }
   
   @GetMapping("/organizations/getChildren")
-  public List<OrganizationRelation> getChildren(@NotNull @RequestParam("parentId") final String organizationId){
+  public List<Organization> getChildren(@NotNull @RequestParam("parentId") final String organizationId){
     return organizationService.getChildren(organizationId);
+  }
+  
+  @GetMapping("/organizations/getParents")
+  public List<Organization> getParents(@NotNull @RequestParam("parentId") final String organizationId){
+    return organizationService.getParents(organizationId);
   }
   
   @GetMapping("/organizations/getRoles")
@@ -89,14 +91,19 @@ public class OrganizationController {
   }
   
   
-  @PostMapping("/organizations/relations/batch")
-  public void addRelations(@NotNull @RequestBody Set<OrganizationRelationPK> ids) {
-    organizationService.addRelations(ids);
+  @PostMapping("/organizations/addRelation")
+  public void addRelations(@NotNull @RequestBody Set<OrganizationRelation> organizationRelation) {
+    organizationService.addRelations(organizationRelation);
   }
   
-  @DeleteMapping("/organizations/relations/batch")
-  public void delRelations(@NotNull @RequestBody Set<OrganizationRelationPK> ids) {
-    organizationService.delRelations(ids);
+  @DeleteMapping("/organizations/removeRelation")
+  public void removeRelations(@NotNull @RequestBody Set<OrganizationRelationPK> ids) {
+    organizationService.removeRelations(ids);
+  }
+  
+  @DeleteMapping("/organizations/updateParent")
+  public void updateParent(@NotNull @RequestBody Set<OrganizationRelation> organizationRelation) {
+    organizationService.updateParent(organizationRelation);
   }
   
   @PostMapping("/organizations/roles/batch")

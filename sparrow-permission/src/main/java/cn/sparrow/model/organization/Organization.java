@@ -1,23 +1,24 @@
 package cn.sparrow.model.organization;
 
-import java.util.List;
 import java.util.Set;
-
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-
+import org.springframework.data.rest.core.RepositoryConstraintViolationException;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import cn.sparrow.model.common.AbstractSparrowUuidEntity;
 import cn.sparrow.model.common.OrganizationTypeEnum;
 import cn.sparrow.model.group.GroupOrganization;
+import cn.sparrow.permission.listener.RepositoryErrorFactory;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -33,21 +34,22 @@ public class Organization extends AbstractSparrowUuidEntity {
   * 
   */
   private static final long serialVersionUID = 8581950429388182649L;
+  @Column(unique = true)
   private String code;
   private String name;
   private String stat;
-  private boolean isRoot;
+  private Boolean isRoot;
   // use for create relation at batch
-  @Transient
-  @JsonProperty
-  private List<String> parentIds;
+//  @Transient
+//  @JsonProperty
+//  private List<String> parentIds;
   @Enumerated(EnumType.STRING)
   private OrganizationTypeEnum type; // 公司还是部门
 
   @Transient
   @JsonProperty
-  private boolean hasChildren;
-
+  private long parentCount;
+  
   @Transient
   @JsonProperty
   private long childCount;
@@ -67,6 +69,14 @@ public class Organization extends AbstractSparrowUuidEntity {
   @Transient
   @JsonProperty
   private long employeeCount;
+  
+  @JsonIgnore
+  @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+  private Set<OrganizationRelation> children;
+  
+  @JsonIgnore
+  @OneToMany(mappedBy = "organization", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+  private Set<OrganizationRelation> parents;
 
   @JsonIgnore
   @OneToMany(targetEntity = OrganizationRole.class, cascade = CascadeType.ALL,
