@@ -2,6 +2,7 @@ package cn.sparrow.permission.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,9 @@ import cn.sparrow.common.service.SortService;
 import cn.sparrow.common.service.TreeService;
 import cn.sparrow.model.common.SparrowTree;
 import cn.sparrow.model.permission.Menu;
+import cn.sparrow.model.permission.MenuPermission;
+import cn.sparrow.model.permission.SysroleMenu;
+import cn.sparrow.model.permission.UserMenu;
 import cn.sparrow.permission.repository.MenuRepository;
 import cn.sparrow.permission.repository.SysroleMenuRepository;
 
@@ -153,32 +157,36 @@ public class MenuService {
 		});
 	}
 
-//	public void addPermissions(MenuPermission menuPermission) {
-//		if (menuPermission.getUserMenuPKs() != null) {
-//			menuPermission.getUserMenuPKs().forEach(f -> {
-//				userMenuRepository.save(new UserMenu(f));
-//			});
-//		}
-//
-//		if (menuPermission.getSysroleMenuPKs() != null) {
-//			menuPermission.getSysroleMenuPKs().forEach(f -> {
-//				sysroleMenuRepository.save(new SysroleMenu(f));
-//			});
-//		}
-//	}
-//
-//	public void delPermissions(MenuPermission menuPermission) {
-//		if (menuPermission.getUserMenuPKs() != null) {
-//			userMenuRepository.deleteByIdIn(menuPermission.getUserMenuPKs());
-//		}
-//
-//		if (menuPermission.getSysroleMenuPKs() != null) {
-//			sysroleMenuRepository.deleteByIdIn(menuPermission.getSysroleMenuPKs());
-//		}
-//	}
+	public void addPermissions(MenuPermission menuPermission) {
+		if (menuPermission.getUserMenuPKs() != null) {
+			menuPermission.getUserMenuPKs().forEach(f -> {
+				userMenuRepository.save(new UserMenu(f));
+			});
+		}
+
+		if (menuPermission.getSysroleMenuPKs() != null) {
+			menuPermission.getSysroleMenuPKs().forEach(f -> {
+				sysroleMenuRepository.save(new SysroleMenu(f));
+			});
+		}
+	}
+
+	public void delPermissions(MenuPermission menuPermission) {
+		if (menuPermission.getUserMenuPKs() != null) {
+			userMenuRepository.deleteByIdIn(menuPermission.getUserMenuPKs());
+		}
+
+		if (menuPermission.getSysroleMenuPKs() != null) {
+			sysroleMenuRepository.deleteByIdIn(menuPermission.getSysroleMenuPKs());
+		}
+	}
 
 	public void setPosition(Menu menu) {
 		sparrowSortedService.saveSort(menuRepository, menu);
+	}
+	
+	public Set<SysroleMenu> getSysroleMenus(String menuId){
+	  return sysroleMenuRepository.findByIdMenuId(menuId);
 	}
 
 }

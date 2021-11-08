@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 
 
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = false,onlyExplicitlyIncluded = true)
 @NoArgsConstructor
 @Entity
 @Table(name="spr_sysrole_menu")
@@ -25,6 +25,7 @@ public class SysroleMenu extends AbstractOperationLog {
 
 	private static final long serialVersionUID = 1L;
 
+	@EqualsAndHashCode.Include
 	@EmbeddedId
 	private SysroleMenuPK id;
 

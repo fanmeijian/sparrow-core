@@ -8,14 +8,15 @@ import javax.persistence.EntityListeners;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import cn.sparrow.model.common.AbstractSparrowUuidEntity;
 import cn.sparrow.permission.listener.AuthorPermissionListener;
-import lombok.Getter;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Getter
-@Setter
+@Data
+@EqualsAndHashCode(callSuper = true, onlyExplicitlyIncluded = true)
 @Entity
 @NoArgsConstructor
 @Table(name = "spr_menu")
@@ -33,13 +34,13 @@ public class Menu extends AbstractSparrowUuidEntity implements Serializable {
   private String nextNodeId;
   private String icon;
 
-  // @JsonIgnore
-  // @ManyToOne
-  // @JoinColumn(name = "app_id")
-  // private SparrowApp sparrowApp;
-
+  @JsonIgnore
   @OneToMany(mappedBy = "menu")
   private Set<UserMenu> userMenus;
+  
+  @JsonIgnore
+  @OneToMany(mappedBy = "menu")
+  private Set<SysroleMenu> sysroleMenus;
 
   public Menu(String id, String parentId) {
 	  this.id = id;

@@ -2,7 +2,9 @@ package cn.sparrow.common.controller;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Set;
 import javax.annotation.Nullable;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
@@ -11,9 +13,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import cn.sparrow.model.common.SparrowTree;
 import cn.sparrow.model.permission.Menu;
+import cn.sparrow.model.permission.MenuPermission;
+import cn.sparrow.model.permission.SysroleMenu;
 import cn.sparrow.permission.repository.MenuRepository;
 import cn.sparrow.permission.service.MenuService;
 
@@ -59,6 +64,10 @@ public class MenuController {
     return menuService.getTreeByUsername(principal.getName());
   }
 
+  @GetMapping("/menus/sysroles")
+  public Set<SysroleMenu> getSysroleMenus(@NotBlank @RequestParam("menuId") String menuId){
+    return menuService.getSysroleMenus(menuId);
+  }
 
   // for repository resource controller
   // @GetMapping("/menus/getMyTree")
@@ -68,10 +77,6 @@ public class MenuController {
   // return ResponseEntity.ok(resource);
   // }
 
-  @PostMapping("/menus")
-  public void save(@NotNull @RequestBody final Menu menu) {
-    menuRepository.save(menu);
-  }
 
   @PostMapping("/menus/batch")
   public void add(@NotNull @RequestBody final List<Menu> menus) {
@@ -88,14 +93,14 @@ public class MenuController {
     menuRepository.deleteByIdIn(ids);
   }
 
-//  @PostMapping("/menus/permissions")
-//  public void addPermission(@NotNull @RequestBody final MenuPermission menuPermission) {
-//    menuService.addPermissions(menuPermission);
-//  }
-//
-//  @DeleteMapping("/menus/permissions")
-//  public void delPermission(@NotNull @RequestBody final MenuPermission menuPermission) {
-//    menuService.delPermissions(menuPermission);
-//  }
+  @PostMapping("/menus/permissions")
+  public void addPermission(@NotNull @RequestBody final MenuPermission menuPermission) {
+    menuService.addPermissions(menuPermission);
+  }
+
+  @DeleteMapping("/menus/permissions")
+  public void delPermission(@NotNull @RequestBody final MenuPermission menuPermission) {
+    menuService.delPermissions(menuPermission);
+  }
 
 }

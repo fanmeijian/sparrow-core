@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import cn.sparrow.model.organization.Employee;
 import cn.sparrow.model.organization.EmployeeToken;
+import cn.sparrow.model.organization.EmployeeUser;
 import cn.sparrow.organization.repository.EmployeeRepository;
 import cn.sparrow.organization.repository.EmployeeTokenRepository;
 import cn.sparrow.organization.repository.EmployeeUserRepository;
@@ -36,9 +37,9 @@ public class EmployeeTokenServiceImpl implements EmployeeTokenService {
 
   @Override
   public EmployeeToken getEmployeeToken(String username) {
-    Employee employee = employeeUserRepository.findOneByIdUsername(username).getEmployee();
-    if (employee != null)
-      return employeeTokenRepository.findById(employee.getId())
+    EmployeeUser employeeUser = employeeUserRepository.findOneByIdUsername(username);
+    if (employeeUser != null)
+      return employeeTokenRepository.findById(employeeUser.getEmployee().getId())
           .get().getEmployeeToken();
     else
       return null;
