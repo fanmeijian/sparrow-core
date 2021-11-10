@@ -37,10 +37,6 @@ public class OrganizationRole extends AbstractOperationLog implements Persistabl
 	@EmbeddedId
 	private OrganizationRolePK id;
 	private String stat;
-
-	@Transient
-	@JsonProperty
-	private boolean hasChildren;
 	
 	@Transient
 	@JsonProperty

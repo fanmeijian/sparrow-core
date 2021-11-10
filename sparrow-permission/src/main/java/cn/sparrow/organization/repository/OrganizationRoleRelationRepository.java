@@ -16,4 +16,6 @@ public interface OrganizationRoleRelationRepository
 
 	List<OrganizationRoleRelation> findByIdId(@NotNull OrganizationRolePK organizationRolePK);
 
+	long countByIdParentId(OrganizationRolePK id);
+
 }

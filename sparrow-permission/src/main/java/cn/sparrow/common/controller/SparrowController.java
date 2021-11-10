@@ -5,11 +5,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Table;
 import javax.persistence.metamodel.EntityType;
-import org.apache.ignite.internal.marshaller.optimized.OptimizedMarshaller;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.data.domain.Page;
@@ -17,15 +18,16 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.util.SerializationUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 import cn.sparrow.common.repository.AuditLogRepository;
 import cn.sparrow.common.service.SparrowService;
 import cn.sparrow.model.common.AuditLog;
 import cn.sparrow.model.permission.Model;
 import cn.sparrow.model.permission.ModelAttribute;
 import cn.sparrow.model.permission.ModelAttributePK;
+import cn.sparrow.permission.repository.ApiRepository;
 import cn.sparrow.permission.repository.ModelAttributeRepository;
 import cn.sparrow.permission.repository.ModelRepository;
-import cn.sparrow.permission.repository.ApiRepository;
 
 @RestController
 public class SparrowController {
@@ -51,7 +53,6 @@ public class SparrowController {
 	private ApplicationContext applicationContext;
 	
 	@Autowired AuditLogRepository auditLogRepository;
-	@Autowired OptimizedMarshaller marsh;
 
 	@GetMapping("/init")
 	public void init() {

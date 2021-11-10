@@ -1,7 +1,9 @@
 package cn.sparrow.organization.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import cn.sparrow.model.organization.EmployeeOrganizationRole;
+import cn.sparrow.model.organization.Organization;
 import cn.sparrow.model.organization.OrganizationRole;
 import cn.sparrow.model.organization.OrganizationRolePK;
 import cn.sparrow.model.organization.OrganizationRoleRelation;
@@ -24,16 +27,17 @@ public class RoleService {
 
 	@Autowired
 	RoleRepository roleRepository;
-	@Autowired EmployeeOrganizationRoleRepository employeeOrganizationRoleRepository;
+	@Autowired
+	EmployeeOrganizationRoleRepository employeeOrganizationRoleRepository;
 	@Autowired
 	OrganizationRoleRepository organizationRoleRepository;
 	@Autowired
 	OrganizationRoleRelationRepository organizationRoleRelationRepository;
 
-	public List<EmployeeOrganizationRole> getEmployees(OrganizationRolePK organizationRoleId){
+	public List<EmployeeOrganizationRole> getEmployees(OrganizationRolePK organizationRoleId) {
 		return employeeOrganizationRoleRepository.findByIdOrganizationRoleId(organizationRoleId);
 	}
-	
+
 	public List<OrganizationRoleRelation> getChildren(@NotNull OrganizationRolePK parentId) {
 		return organizationRoleRelationRepository.findByIdParentId(parentId);
 	}
@@ -81,6 +85,14 @@ public class RoleService {
 	@Transactional
 	public void delBatch(String[] ids) {
 		roleRepository.deleteByIdIn(ids);
+	}
+
+	public List<Organization> getParentOrganizations(@NotBlank String roleId) {
+		List<Organization> organizations = new ArrayList<Organization>();
+		organizationRoleRepository.findByIdRoleId(roleId).forEach(f -> {
+			organizations.add(f.getOrganization());
+		});
+		return organizations;
 	}
 
 }

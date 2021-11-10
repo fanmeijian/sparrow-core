@@ -2,6 +2,7 @@ package cn.sparrow.common.controller;
 
 import java.util.List;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import cn.sparrow.model.organization.Organization;
 import cn.sparrow.model.organization.OrganizationRolePK;
 import cn.sparrow.model.organization.OrganizationRoleRelation;
 import cn.sparrow.model.organization.OrganizationRoleRelationPK;
@@ -45,6 +47,11 @@ public class RoleController {
 			@NotNull @RequestParam("organizationId") final String organizationId,
 			@NotNull @RequestParam("roleId") final String roleId) {
 		return roleService.getParents(new OrganizationRolePK(organizationId, roleId));
+	}
+	
+	@GetMapping("/roles/getParentOrganizations")
+	public List<Organization> getParentOrganizations(@NotBlank @RequestParam("roleId") final String roleId){
+		return roleService.getParentOrganizations(roleId);
 	}
 
 	@GetMapping("/roles/getModelName")

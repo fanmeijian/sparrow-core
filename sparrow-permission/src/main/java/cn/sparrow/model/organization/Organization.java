@@ -1,6 +1,7 @@
 package cn.sparrow.model.organization;
 
 import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,17 +9,15 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
-import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import org.springframework.data.rest.core.RepositoryConstraintViolationException;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import cn.sparrow.model.common.AbstractSparrowUuidEntity;
 import cn.sparrow.model.common.OrganizationTypeEnum;
 import cn.sparrow.model.group.GroupOrganization;
-import cn.sparrow.permission.listener.RepositoryErrorFactory;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
