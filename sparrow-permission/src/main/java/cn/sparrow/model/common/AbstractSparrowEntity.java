@@ -2,16 +2,21 @@ package cn.sparrow.model.common;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.persistence.EntityListeners;
 import javax.persistence.JoinColumn;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 import javax.validation.constraints.Size;
+
 import org.hibernate.envers.NotAudited;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.data.rest.core.annotation.RestResource;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import cn.sparrow.model.permission.SparrowFieldPermissionToken;
 import cn.sparrow.model.permission.SparrowPermissionToken;
 import cn.sparrow.permission.listener.AuditLogListener;
 import cn.sparrow.permission.listener.AuthorPermissionListener;
@@ -43,8 +48,12 @@ public abstract class AbstractSparrowEntity extends AbstractOperationLog {
   @OneToOne
   @JoinColumn(name = "data_permission_token_id")
   @RestResource(exported = false)
-  protected SparrowPermissionToken sparrowPermissionToken;
+  protected SparrowPermissionToken sparrowDataPermissionToken;
   
+  @OneToOne
+  @JoinColumn(name = "field_permission_token_id")
+  @RestResource(exported = false)
+  protected SparrowFieldPermissionToken sparrowFieldPermissionToken;
 
   @Transient
   @Size(max = 0)

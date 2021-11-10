@@ -23,10 +23,10 @@ public class ViewServiceImpl implements ViewService {
     Iterator<?> iterator = iterable.iterator();
     while (iterator.hasNext()) {
       AbstractSparrowEntity sparrowEntity = (AbstractSparrowEntity) iterator.next();
-      if (sparrowEntity.getSparrowPermissionToken()!=null && !permissionService.hasPermission(
+      if (sparrowEntity.getSparrowDataPermissionToken()!=null && !permissionService.hasPermission(
           employeeTokenService
               .getEmployeeToken(SecurityContextHolder.getContext().getAuthentication().getName()),
-          sparrowEntity.getSparrowPermissionToken().getPermissionToken(), PermissionEnum.READER)) {
+          sparrowEntity.getSparrowDataPermissionToken().getPermissionToken(), PermissionEnum.READER)) {
         iterator.remove();
       }
     }
