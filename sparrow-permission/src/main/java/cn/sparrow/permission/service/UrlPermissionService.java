@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import cn.sparrow.model.common.UrlPermissionEnum;
+import cn.sparrow.model.common.ApiPermissionEnum;
 import cn.sparrow.model.permission.SparrowApi;
 import cn.sparrow.permission.repository.SysroleApiPermissionRepository;
 import cn.sparrow.permission.repository.ApiRepository;
@@ -44,7 +44,7 @@ public class UrlPermissionService {
 //		});
 //	}
 
-	public List<SparrowApi> getUrlsByClientIdAndPermission(String clientId, UrlPermissionEnum permission) {
+	public List<SparrowApi> getUrlsByClientIdAndPermission(String clientId, ApiPermissionEnum permission) {
 		return urlRepository.findByClientIdAndPermission(clientId, permission);
 	}
 
@@ -111,19 +111,19 @@ public class UrlPermissionService {
 			if (!k.toString().equals("self")) {
 				urlRepository.save(new SparrowApi(k.toString(),
 						v.get("href").toString().replace("http://localhost:8091/api/profile", "") + "/**",
-						HttpMethod.GET, "sparrow", UrlPermissionEnum.AUTHENTICATED));
+						HttpMethod.GET, "sparrow", ApiPermissionEnum.AUTHENTICATED));
 				urlRepository.save(new SparrowApi(k.toString(),
 						v.get("href").toString().replace("http://localhost:8091/api/profile", "") + "/**",
-						HttpMethod.POST, "sparrow", UrlPermissionEnum.RESTRICT));
+						HttpMethod.POST, "sparrow", ApiPermissionEnum.RESTRICT));
 				urlRepository.save(new SparrowApi(k.toString(),
 						v.get("href").toString().replace("http://localhost:8091/api/profile", "") + "/**",
-						HttpMethod.PUT, "sparrow", UrlPermissionEnum.DENY));
+						HttpMethod.PUT, "sparrow", ApiPermissionEnum.DENY));
 				urlRepository.save(new SparrowApi(k.toString(),
 						v.get("href").toString().replace("http://localhost:8091/api/profile", "") + "/**",
-						HttpMethod.PATCH, "sparrow", UrlPermissionEnum.RESTRICT));
+						HttpMethod.PATCH, "sparrow", ApiPermissionEnum.RESTRICT));
 				urlRepository.save(new SparrowApi(k.toString(),
 						v.get("href").toString().replace("http://localhost:8091/api/profile", "") + "/**",
-						HttpMethod.DELETE, "sparrow", UrlPermissionEnum.RESTRICT));
+						HttpMethod.DELETE, "sparrow", ApiPermissionEnum.RESTRICT));
 			}
 		});
 		logger.info("finished url init.");

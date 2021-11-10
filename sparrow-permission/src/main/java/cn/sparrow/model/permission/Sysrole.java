@@ -39,7 +39,7 @@ public class Sysrole extends AbstractOperationLog {
 	private String name;
 	@Column(unique = true)
 	private String code;
-	private boolean isSystem;
+	private Boolean isSystem;
 
 	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY, targetEntity = SysroleMenu.class, cascade = CascadeType.ALL, mappedBy = "sysrole")

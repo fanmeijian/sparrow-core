@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
@@ -16,12 +17,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import cn.sparrow.model.common.AbstractSparrowUuidEntity;
 import cn.sparrow.model.common.GroupTypeEnum;
-import lombok.Getter;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Getter
-@Setter
+@Data
+@EqualsAndHashCode(callSuper = true, onlyExplicitlyIncluded = true)
 @NoArgsConstructor
 @Entity
 @Table(name = "spr_group")
@@ -31,11 +32,12 @@ public class Group extends AbstractSparrowUuidEntity {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	@Column(unique = true)
 	private String code;
 	private String name;
 	private String owner;
 	private String stat;
-	private boolean isRoot;
+	private Boolean isRoot;
 	@Enumerated
 	private GroupTypeEnum type;
 

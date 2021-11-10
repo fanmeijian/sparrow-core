@@ -24,7 +24,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "spr_sysrole_api")
 public class SysroleApiPermission extends AbstractOperationLog {
-  public SysroleApiPermission(SysroleApiPermissionPK f) {
+  public SysroleApiPermission(SysroleApiPK f) {
 		this.id = f;
 	}
 
@@ -32,7 +32,7 @@ private static final long serialVersionUID = 1L;
 
   @EmbeddedId
   @NotNull
-  private SysroleApiPermissionPK id;
+  private SysroleApiPK id;
 
   @EqualsAndHashCode.Exclude
   @ManyToOne(fetch = FetchType.EAGER)

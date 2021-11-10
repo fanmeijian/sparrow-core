@@ -14,18 +14,18 @@ import org.springframework.web.bind.annotation.RestController;
 import com.sun.istack.NotNull;
 import cn.sparrow.model.permission.SparrowApi;
 import cn.sparrow.permission.repository.ApiRepository;
-import cn.sparrow.permission.service.UrlService;
+import cn.sparrow.permission.service.ApiService;
 
 @RestController
-public class UrlController {
+public class ApiController {
 
-	@Autowired UrlService urlService;
-	@Autowired ApiRepository urlRepository;
+	@Autowired ApiService apiService;
+	@Autowired ApiRepository apiRepository;
 //	@Autowired SysroleUrlPermissionRepository sysroleUrlPermissionRepository;
 	
 	@GetMapping("/sparrowUrls")
 	public Page<SparrowApi> getUrls(@Nullable Pageable pageable) {
-		return urlRepository.findAll(pageable);
+		return apiRepository.findAll(pageable);
 	}
 	
 //	@PostMapping("/sparrowUrls/getPermissionById")
@@ -35,22 +35,22 @@ public class UrlController {
 	
 	@PostMapping("/sparrowUrls/getPermissionByUrlId")
     public Page<SparrowApi> getPermissionByUrlId(@RequestBody final String[] ids){
-      return urlRepository.findByIdIn(ids, Pageable.unpaged());
+      return apiRepository.findByIdIn(ids, Pageable.unpaged());
     }
 
 	@PostMapping("/sparrowUrls/batch")
 	public List<SparrowApi> add(@NotNull @RequestBody final List<SparrowApi> urls) {
-		return urlRepository.saveAll(urls);
+		return apiRepository.saveAll(urls);
 	}
 
 	@PatchMapping("/sparrowUrls/batch")
 	public List<SparrowApi> update(@NotNull @RequestBody final List<SparrowApi> urls) {
-		return urlRepository.saveAll(urls);
+		return apiRepository.saveAll(urls);
 	}
 
 	@DeleteMapping("/sparrowUrls/batch")
 	public void delete(@NotNull @RequestBody final String[] ids) {
-		urlRepository.deleteByIdIn(ids);
+		apiRepository.deleteByIdIn(ids);
 	}
 
 //	@GetMapping("/sparrowUrls/permissions")

@@ -7,7 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.transaction.annotation.Transactional;
-import cn.sparrow.model.common.UrlPermissionEnum;
+import cn.sparrow.model.common.ApiPermissionEnum;
 import cn.sparrow.model.permission.SparrowApi;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
@@ -16,7 +16,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 public interface ApiRepository extends JpaRepository<SparrowApi, String> {
 
   List<SparrowApi> findByClientId(String clientId);
-  List<SparrowApi> findByClientIdAndPermission(String clientId, UrlPermissionEnum permission);
+  List<SparrowApi> findByClientIdAndPermission(String clientId, ApiPermissionEnum permission);
   
   @Transactional
   void deleteByIdIn(String[] ids);

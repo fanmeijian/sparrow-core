@@ -9,15 +9,15 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.transaction.annotation.Transactional;
 
 import cn.sparrow.model.permission.SysroleApiPermission;
-import cn.sparrow.model.permission.SysroleApiPermissionPK;
+import cn.sparrow.model.permission.SysroleApiPK;
 
 @RepositoryRestResource(exported = false)
-public interface SysroleApiPermissionRepository extends JpaRepository<SysroleApiPermission, SysroleApiPermissionPK> {
+public interface SysroleApiPermissionRepository extends JpaRepository<SysroleApiPermission, SysroleApiPK> {
 
 	Page<SysroleApiPermission> findByIdApiId(String ApiId, Pageable pageable);
 	Page<SysroleApiPermission> findByIdApiIdIn(String[] ApiIds, Pageable pageable);
 	List<SysroleApiPermission> findByIdApiId(String ApiId);
 	
 	@Transactional
-	void deleteByIdIn(List<SysroleApiPermissionPK> ids);
+	void deleteByIdIn(List<SysroleApiPK> ids);
 }

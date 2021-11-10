@@ -29,7 +29,7 @@ public class Menu extends AbstractSparrowUuidEntity implements Serializable {
   private String name;
   private String parentId;
   private String url;
-  private boolean isSystem;
+  private Boolean isSystem;
   private String previousNodeId;
   private String nextNodeId;
   private String icon;

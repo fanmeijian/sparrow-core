@@ -11,12 +11,12 @@ import org.springframework.data.domain.Persistable;
 
 import cn.sparrow.model.common.AbstractOperationLog;
 import cn.sparrow.model.organization.PositionLevel;
-import lombok.Getter;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Getter
-@Setter
+@Data
+@EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor
 @Entity
 @Table(name = "spr_group_position_level")
@@ -26,6 +26,7 @@ public class GroupPositionLevel extends AbstractOperationLog implements Persista
    * 
    */
   private static final long serialVersionUID = 1L;
+  @EqualsAndHashCode.Include
   @EmbeddedId
   private GroupPositionLevelPK id;
   private String stat;

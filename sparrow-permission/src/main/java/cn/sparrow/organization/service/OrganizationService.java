@@ -54,7 +54,7 @@ public class OrganizationService {
 	@Autowired
 	RoleService roleService;
 	@Autowired
-	LevelService levelService;
+	PositionLevelService levelService;
 	@Autowired
 	GroupService groupService;
 	@Autowired

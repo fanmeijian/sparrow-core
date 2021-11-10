@@ -20,34 +20,34 @@ import cn.sparrow.model.organization.OrganizationPositionLevelPK;
 import cn.sparrow.model.organization.OrganizationPositionLevelRelation;
 import cn.sparrow.model.organization.Role;
 import cn.sparrow.organization.repository.PositionLevelRepository;
-import cn.sparrow.organization.service.LevelService;
+import cn.sparrow.organization.service.PositionLevelService;
 
 @RestController
 public class PositionLevelController {
 
 	@Autowired
-	LevelService levelService;
+	PositionLevelService positionLevelService;
 	@Autowired
-	PositionLevelRepository levelRepository;
+	PositionLevelRepository positionLevelRepository;
 
 	@PostMapping("/levels")
 	public PositionLevel save(@NotNull @RequestBody PositionLevel level) {
-		return levelService.save(level);
+		return positionLevelService.save(level);
 	}
 	
 	@GetMapping("/levels/getChildren")
 	public List<OrganizationPositionLevelRelation> getChildren(@NotNull @RequestParam("organizationId") final String organizationId,@NotNull @RequestParam("positionLevelId") final String positionLevelId){
-	  return levelService.getChildren(new OrganizationPositionLevelPK(organizationId, positionLevelId));
+	  return positionLevelService.getChildren(new OrganizationPositionLevelPK(organizationId, positionLevelId));
 	}
 	
 	@GetMapping("/levels/getParents")
 	public List<OrganizationPositionLevelRelation> getParents(@NotNull @RequestParam("organizationId") final String organizationId,@NotNull @RequestParam("positionLevelId") final String positionLevelId){
-	  return levelService.getParents(new OrganizationPositionLevelPK(organizationId, positionLevelId));
+	  return positionLevelService.getParents(new OrganizationPositionLevelPK(organizationId, positionLevelId));
 	}
 	
 	@GetMapping("/levels/getParentOrganizations")
 	public List<Organization> getParentOrganizations(@NotBlank @RequestParam("positionLevelId") final String positionLevelId){
-		return levelService.getParentOrganizations(positionLevelId);
+		return positionLevelService.getParentOrganizations(positionLevelId);
 	}
 
 	@GetMapping("/levels/getModelName")
@@ -57,17 +57,17 @@ public class PositionLevelController {
 
 	@PostMapping("/levels/batch")
 	public void add(@NotNull @RequestBody final List<PositionLevel> levels) {
-		levelRepository.saveAll(levels);
+		positionLevelRepository.saveAll(levels);
 	}
 
 	@PatchMapping("/levels/batch")
 	public void update(@NotNull @RequestBody final List<PositionLevel> levels) {
-		levelRepository.saveAll(levels);
+		positionLevelRepository.saveAll(levels);
 	}
 
 
 	@PostMapping("/levels/relations/batch")
 	public void addRelations(@NotNull @RequestBody List<OrganizationPositionLevelRelation> organizationLevelRelations) {
-		levelService.addRelations(organizationLevelRelations);
+		positionLevelService.addRelations(organizationLevelRelations);
 	}
 }

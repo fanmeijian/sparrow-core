@@ -7,22 +7,22 @@ import cn.sparrow.model.permission.SparrowApi;
 import cn.sparrow.permission.repository.ApiRepository;
 
 @Service
-public class UrlService {
+public class ApiService {
 	@Autowired
-	ApiRepository urlRepository;
+	ApiRepository apiRepository;
 //	@Autowired
 //	SysroleUrlPermissionRepository sysroleUrlPermissionRepository;
 
 	public int saveUrls(List<SparrowApi> sparrowUrls) {
-		return urlRepository.saveAll(sparrowUrls).size();
+		return apiRepository.saveAll(sparrowUrls).size();
 	}
 
 	public SparrowApi updateUrl(SparrowApi sparrowUrl) {
-		return urlRepository.save(sparrowUrl);
+		return apiRepository.save(sparrowUrl);
 	}
 
 	public SparrowApi getUrl(String id) {
-		return urlRepository.findById(id).get();
+		return apiRepository.findById(id).get();
 	}
 
 	public void deleteByIds(List<String> ids) {
@@ -31,7 +31,7 @@ public class UrlService {
 
 	public void delUrls(List<String> sparrowUrls) {
 		sparrowUrls.forEach(f -> {
-			urlRepository.deleteById(f);
+			apiRepository.deleteById(f);
 		});
 	}
 

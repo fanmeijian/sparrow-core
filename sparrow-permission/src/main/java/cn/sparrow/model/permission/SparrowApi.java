@@ -13,7 +13,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.http.HttpMethod;
 import cn.sparrow.model.common.AbstractOperationLog;
-import cn.sparrow.model.common.UrlPermissionEnum;
+import cn.sparrow.model.common.ApiPermissionEnum;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -21,13 +21,14 @@ import lombok.NoArgsConstructor;
 
 @EntityListeners({  AuditingEntityListener.class })
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
 @NoArgsConstructor
 @Entity
 @Table(name = "spr_api")
 public class SparrowApi extends AbstractOperationLog implements Serializable {
   private static final long serialVersionUID = 1L;
 
+  @EqualsAndHashCode.Include
   @Id
   @GenericGenerator(name = "id-generator", strategy = "uuid")
   @GeneratedValue(generator = "id-generator")
@@ -40,7 +41,7 @@ public class SparrowApi extends AbstractOperationLog implements Serializable {
   private HttpMethod method;
   
   @Enumerated(EnumType.STRING)
-  private UrlPermissionEnum permission;
+  private ApiPermissionEnum permission;
 
   @Column(name = "client_id")
   private String clientId;
@@ -56,7 +57,7 @@ public class SparrowApi extends AbstractOperationLog implements Serializable {
 //  @JoinColumn(name = "app_id")
 //  private SparrowApp sparrowApp;
   
-  public SparrowApi(String name, String uri,HttpMethod method , String clientId, UrlPermissionEnum permission) {
+  public SparrowApi(String name, String uri,HttpMethod method , String clientId, ApiPermissionEnum permission) {
     this.name = name;
     this.uri = uri;
     this.method = method;

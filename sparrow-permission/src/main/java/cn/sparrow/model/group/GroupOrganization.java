@@ -12,12 +12,11 @@ import cn.sparrow.model.common.AbstractOperationLog;
 import cn.sparrow.model.organization.Organization;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.EqualsAndHashCode.Exclude;
 import lombok.NoArgsConstructor;
 
 
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
 @NoArgsConstructor
 @Entity
 @Table(name = "spr_group_organization")
@@ -25,15 +24,14 @@ public class GroupOrganization extends AbstractOperationLog
     implements Persistable<GroupOrganizationPK> {
 
   private static final long serialVersionUID = 1L;
+  @EqualsAndHashCode.Include
   @EmbeddedId
   private GroupOrganizationPK id;
 
-  @Exclude
   @ManyToOne
   @JoinColumn(name = "group_id", insertable = false, updatable = false)
   private Group group;
   
-  @Exclude
   @ManyToOne
   @JoinColumn(name = "organization_id", insertable = false, updatable = false)
   private Organization organization;

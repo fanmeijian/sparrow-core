@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Embeddable
-public class SysroleApiPermissionPK implements Serializable {
+public class SysroleApiPK implements Serializable {
   // default serial version id, required for serializable classes.
   private static final long serialVersionUID = 1L;
 

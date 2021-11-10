@@ -21,7 +21,7 @@ import cn.sparrow.organization.repository.OrganizationLevelRelationRepository;
 import cn.sparrow.organization.repository.OrganizationLevelRepository;
 
 @Service
-public class LevelService {
+public class PositionLevelService {
 
 	@Autowired
 	PositionLevelRepository levelRepository;

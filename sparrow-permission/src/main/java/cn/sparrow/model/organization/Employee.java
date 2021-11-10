@@ -18,12 +18,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import cn.sparrow.model.common.AbstractSparrowUuidEntity;
 import cn.sparrow.model.group.GroupEmployee;
-import lombok.Getter;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Getter
-@Setter
+@Data
+@EqualsAndHashCode(callSuper = true, onlyExplicitlyIncluded = true)
 @NoArgsConstructor
 @Entity
 @Table(name = "spr_employee")
@@ -35,8 +35,9 @@ public class Employee extends AbstractSparrowUuidEntity {
   private static final long serialVersionUID = 1L;
 
   private String name;
+  @Column(unique = true)
   private String code;
-  private boolean isRoot;
+  private Boolean isRoot;
 
   // use for create relation at batch
   @Transient
