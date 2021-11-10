@@ -2,6 +2,8 @@ package cn.sparrow.common.controller;
 
 import java.util.List;
 
+import javax.validation.constraints.NotBlank;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.sun.istack.NotNull;
 
 import cn.sparrow.model.organization.PositionLevel;
+import cn.sparrow.model.organization.Organization;
 import cn.sparrow.model.organization.OrganizationPositionLevelPK;
 import cn.sparrow.model.organization.OrganizationPositionLevelRelation;
 import cn.sparrow.model.organization.Role;
@@ -40,6 +43,11 @@ public class PositionLevelController {
 	@GetMapping("/levels/getParents")
 	public List<OrganizationPositionLevelRelation> getParents(@NotNull @RequestParam("organizationId") final String organizationId,@NotNull @RequestParam("positionLevelId") final String positionLevelId){
 	  return levelService.getParents(new OrganizationPositionLevelPK(organizationId, positionLevelId));
+	}
+	
+	@GetMapping("/levels/getParentOrganizations")
+	public List<Organization> getParentOrganizations(@NotBlank @RequestParam("positionLevelId") final String positionLevelId){
+		return levelService.getParentOrganizations(positionLevelId);
 	}
 
 	@GetMapping("/levels/getModelName")

@@ -37,7 +37,6 @@ public class Employee extends AbstractSparrowUuidEntity {
   private String name;
   private String code;
   private boolean isRoot;
-  // private String username;
 
   // use for create relation at batch
   @Transient

@@ -15,13 +15,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import cn.sparrow.model.common.AbstractSparrowUuidEntity;
 import cn.sparrow.model.group.GroupPositionLevel;
-import lombok.Getter;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 
-@Getter
-@Setter
+@Data
+@EqualsAndHashCode(callSuper = true, onlyExplicitlyIncluded = true)
 @Entity
 @NoArgsConstructor
 @Table(name = "spr_position_level")
@@ -31,7 +31,7 @@ public class PositionLevel extends AbstractSparrowUuidEntity {
   private String code;
   private String name;
   private String stat;
-  private boolean isRoot;
+  private Boolean isRoot;
 
   // use for create relation at batch
   @Transient

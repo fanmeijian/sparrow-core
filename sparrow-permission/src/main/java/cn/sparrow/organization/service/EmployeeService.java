@@ -1,13 +1,13 @@
 package cn.sparrow.organization.service;
 
-import java.util.Set;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import cn.sparrow.model.common.MyTree;
+import cn.sparrow.model.common.SparrowTree;
 import cn.sparrow.model.organization.Employee;
 import cn.sparrow.model.organization.EmployeeOrganizationLevel;
 import cn.sparrow.model.organization.EmployeeOrganizationLevelPK;
@@ -79,27 +79,27 @@ public class EmployeeService {
 		});
 	}
 
-	public MyTree<Employee> getTree(String parentId) {
+	public SparrowTree<Employee, String> getTree(String parentId) {
 		if (parentId == null) {
-			MyTree<Employee> rootTree = new MyTree<Employee>(null);
+			SparrowTree<Employee, String> rootTree = new SparrowTree<Employee, String>(null);
 			employeeRepository.findByIsRoot(true).forEach(f -> {
-				MyTree<Employee> myTree = new MyTree<Employee>(f);
+				SparrowTree<Employee, String> myTree = new SparrowTree<Employee, String>(f);
 				buildTree(myTree);
 				rootTree.getChildren().add(myTree);
 			});
 
 			return rootTree;
 		} else {
-			MyTree<Employee> myTree = new MyTree<Employee>(employeeRepository.findById(parentId).orElse(null));
+			SparrowTree<Employee, String> myTree = new SparrowTree<Employee, String>(employeeRepository.findById(parentId).orElse(null));
 			buildTree(myTree);
 			return myTree;
 		}
 	}
 
-	public void buildTree(MyTree<Employee> myTree) {
+	public void buildTree(SparrowTree<Employee, String> myTree) {
 		employeeRelationRepository.findByIdParentId(myTree.getMe() == null ? null : myTree.getMe().getId())
 				.forEach(f -> {
-					MyTree<Employee> leaf = new MyTree<Employee>(f.getEmployee());
+					SparrowTree<Employee, String> leaf = new SparrowTree<Employee, String>(f.getEmployee());
 					// 防止死循环
 					if (employeeRelationRepository
 							.findById(new EmployeeRelationPK(f.getId().getParentId(), f.getId().getEmployeeId()))

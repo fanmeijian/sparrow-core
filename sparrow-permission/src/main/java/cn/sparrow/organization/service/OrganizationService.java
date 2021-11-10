@@ -5,14 +5,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import javax.validation.constraints.NotBlank;
-import org.apache.commons.collections.map.HashedMap;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import cn.sparrow.common.service.GroupService;
-import cn.sparrow.model.common.MyTree;
+import cn.sparrow.model.common.SparrowTree;
 import cn.sparrow.model.organization.Employee;
 import cn.sparrow.model.organization.Organization;
 import cn.sparrow.model.organization.OrganizationGroup;
@@ -26,6 +28,7 @@ import cn.sparrow.model.organization.OrganizationRolePK;
 import cn.sparrow.organization.repository.EmployeeRepository;
 import cn.sparrow.organization.repository.OrganizationGroupRepository;
 import cn.sparrow.organization.repository.OrganizationLevelRepository;
+import cn.sparrow.organization.repository.OrganizationPositionLevelRelationRepository;
 import cn.sparrow.organization.repository.OrganizationRelationRepository;
 import cn.sparrow.organization.repository.OrganizationRepository;
 import cn.sparrow.organization.repository.OrganizationRoleRelationRepository;
@@ -42,6 +45,8 @@ public class OrganizationService {
 	OrganizationRoleRelationRepository organizationRoleRelationRepository;
 	@Autowired
 	OrganizationLevelRepository organizationLevelRepository;
+	@Autowired
+	OrganizationPositionLevelRelationRepository organizationPositionLevelRelationRepository;
 	@Autowired
 	OrganizationGroupRepository organizationGroupRepository;
 	@Autowired
@@ -81,11 +86,12 @@ public class OrganizationService {
 	}
 
 	public List<OrganizationPositionLevel> getOrganizationLevels(@NotBlank String organizationId) {
-		List<OrganizationPositionLevel> roles = organizationLevelRepository.findByIdOrganizationId(organizationId);
-		roles.forEach(f -> {
-			f.setHasChildren(levelService.getChildren(f.getId()).size() > 0 ? true : false);
+		List<OrganizationPositionLevel> organizationPositionLevels = organizationLevelRepository
+				.findByIdOrganizationId(organizationId);
+		organizationPositionLevels.forEach(f -> {
+			f.setChildCount(organizationPositionLevelRelationRepository.countByIdParentId(f.getId()));
 		});
-		return roles;
+		return organizationPositionLevels;
 	}
 
 	public List<Employee> getEmployees(@NotBlank String organizationId, Pageable pageable) {
@@ -225,19 +231,19 @@ public class OrganizationService {
 		});
 	}
 
-	public MyTree<Organization> getTree(String parentId) {
+	public SparrowTree<Organization, String> getTree(String parentId) {
 
 		if (parentId == null) {
-			MyTree<Organization> rootTree = new MyTree<Organization>(null);
+			SparrowTree<Organization, String> rootTree = new SparrowTree<Organization, String>(null);
 			organizationRepository.findByIsRoot(true).forEach(f -> {
-				MyTree<Organization> myTree = new MyTree<Organization>(f);
+				SparrowTree<Organization, String> myTree = new SparrowTree<Organization, String>(f);
 				buildTree(myTree);
 				rootTree.getChildren().add(myTree);
 			});
 
 			return rootTree;
 		} else {
-			MyTree<Organization> myTree = new MyTree<Organization>(
+			SparrowTree<Organization, String> myTree = new SparrowTree<Organization, String>(
 					organizationRepository.findById(parentId).orElse(null));
 			buildTree(myTree);
 			return myTree;
@@ -245,10 +251,10 @@ public class OrganizationService {
 
 	}
 
-	public void buildTree(MyTree<Organization> myTree) {
+	public void buildTree(SparrowTree<Organization, String> myTree) {
 		organizationRelationRepository.findByIdParentId(myTree.getMe() == null ? null : myTree.getMe().getId())
 				.forEach(f -> {
-					MyTree<Organization> leaf = new MyTree<Organization>(f.getOrganization());
+					SparrowTree<Organization, String> leaf = new SparrowTree<Organization, String>(f.getOrganization());
 					// 防止死循环
 					if (organizationRelationRepository
 							.findById(

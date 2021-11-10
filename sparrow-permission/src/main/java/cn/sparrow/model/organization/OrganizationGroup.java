@@ -15,26 +15,24 @@ import cn.sparrow.model.group.Group;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.EqualsAndHashCode.Exclude;
 
 @NoArgsConstructor
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
 @Entity
 @Table(name = "spr_organization_group")
 @EntityListeners(AuditingEntityListener.class)
 public class OrganizationGroup extends AbstractOperationLog implements Persistable<OrganizationGroupPK> {
 	private static final long serialVersionUID = 1L;
+	@EqualsAndHashCode.Include
 	@EmbeddedId
 	private OrganizationGroupPK id;
 	private String stat;
 
-	@Exclude
 	@ManyToOne
 	@JoinColumn(name = "organization_id", insertable = false, updatable = false)
 	private Organization organization;
 	
-	@Exclude
 	@ManyToOne
 	@JoinColumn(name = "group_id", insertable = false, updatable = false)
 	private Group group;

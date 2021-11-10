@@ -23,11 +23,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import cn.sparrow.model.common.AbstractOperationLog;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.EqualsAndHashCode.Exclude;
 import lombok.NoArgsConstructor;
 
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
 @NoArgsConstructor
 @Entity
 @Table(name = "spr_organization_position_level")
@@ -38,28 +37,26 @@ public class OrganizationPositionLevel extends AbstractOperationLog implements P
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	@EqualsAndHashCode.Include
 	@EmbeddedId
 	private OrganizationPositionLevelPK id;
 	private String stat;
-
+	
 	@Transient
 	@JsonProperty
-	private boolean hasChildren;
+	private long childCount;
 
-	@Exclude
 	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
 	@JoinColumns({ @JoinColumn(name = "organization_id", referencedColumnName = "organization_id"),
 			@JoinColumn(name = "position_level_id", referencedColumnName = "position_level_id") })
 	private List<EmployeeOrganizationLevel> employeeOrganizationLevels;
 
-	@Exclude
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "position_level_id", insertable = false, updatable = false)
 	private PositionLevel positionLevel;
 
 	@JsonIgnore
-	@Exclude
 	@ManyToOne
 	@JoinColumn(name = "organization_id", insertable = false, updatable = false)
 	private Organization organization;

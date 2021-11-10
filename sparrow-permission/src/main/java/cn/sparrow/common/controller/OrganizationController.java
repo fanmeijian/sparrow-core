@@ -2,8 +2,10 @@ package cn.sparrow.common.controller;
 
 import java.util.List;
 import java.util.Set;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.lang.Nullable;
@@ -14,7 +16,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import cn.sparrow.model.common.MyTree;
+
+import cn.sparrow.model.common.SparrowTree;
 import cn.sparrow.model.organization.Employee;
 import cn.sparrow.model.organization.Organization;
 import cn.sparrow.model.organization.OrganizationGroup;
@@ -137,7 +140,7 @@ public class OrganizationController {
   }
   
   @GetMapping("/orgranizations/getTreeByParentId")
-  public MyTree<Organization> tree(@Nullable @RequestParam("parentId") String parentId){
+  public SparrowTree<Organization, String> tree(@Nullable @RequestParam("parentId") String parentId){
     return organizationService.getTree(parentId==null||parentId.isBlank()?null:parentId);
   }
   

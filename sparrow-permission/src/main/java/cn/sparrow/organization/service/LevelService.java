@@ -1,12 +1,16 @@
 package cn.sparrow.organization.service;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import javax.validation.constraints.NotBlank;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import cn.sparrow.model.organization.EmployeeOrganizationLevel;
+import cn.sparrow.model.organization.Organization;
 import cn.sparrow.model.organization.PositionLevel;
 import cn.sparrow.model.organization.OrganizationPositionLevel;
 import cn.sparrow.model.organization.OrganizationPositionLevelPK;
@@ -59,5 +63,13 @@ public class LevelService {
 	
 	public List<OrganizationPositionLevelRelation> getParents(OrganizationPositionLevelPK id) {
 		return organizationLevelRelationRepository.findByIdId(id);
+	}
+
+	public List<Organization> getParentOrganizations(@NotBlank String positionLevelId) {
+		List<Organization> organizations = new ArrayList<Organization>();
+		organizationLevelRepository.findByIdPositionLevelId(positionLevelId).forEach(f -> {
+			organizations.add(f.getOrganization());
+		});
+		return organizations;
 	}
 }
