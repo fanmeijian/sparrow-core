@@ -16,6 +16,10 @@ import org.hibernate.annotations.GenericGenerator;
 import org.springframework.util.SerializationUtils;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+import cn.sparrow.common.configuration.ModelAttributePKDeserializer;
 import cn.sparrow.model.common.AbstractOperationLog;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -45,6 +49,8 @@ public class SparrowFieldPermissionToken extends AbstractOperationLog {
 
 	@Transient
 	@JsonProperty
+//	@JsonSerialize(keyUsing = ModelAttributePKDeserializer.class)
+	@JsonDeserialize(keyUsing = ModelAttributePKDeserializer.class)
 	private Map<ModelAttributePK, PermissionToken> permissionToken;
 
 	@SuppressWarnings("unchecked")
