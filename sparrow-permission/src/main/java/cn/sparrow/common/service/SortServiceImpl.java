@@ -151,7 +151,8 @@ public class SortServiceImpl<T, ID> implements SortService<T, ID> {
       buildNext(nextNode, sorLinkedList, map);
   }
 
-  public ID getNodeId(T node) {
+  @SuppressWarnings("unchecked")
+public ID getNodeId(T node) {
     try {
       return (ID) BeanUtils.getPropertyDescriptor(node.getClass(), "id").getReadMethod()
           .invoke(node);
@@ -163,7 +164,8 @@ public class SortServiceImpl<T, ID> implements SortService<T, ID> {
     return null;
   }
 
-  public ID getPreviousNodeId(T node) {
+  @SuppressWarnings("unchecked")
+public ID getPreviousNodeId(T node) {
     if (node == null)
       return null;
     try {
@@ -177,7 +179,8 @@ public class SortServiceImpl<T, ID> implements SortService<T, ID> {
     return null;
   }
 
-  public ID getNextNodeId(T node) {
+  @SuppressWarnings("unchecked")
+public ID getNextNodeId(T node) {
     if (node == null)
       return null;
 

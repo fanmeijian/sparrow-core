@@ -70,7 +70,8 @@ public abstract class AbstractTreeService<T, ID> implements TreeService<T, ID> {
     sortService.saveSort(repository, node);
   }
 
-  public ID getNodeId(T node) {
+  @SuppressWarnings("unchecked")
+public ID getNodeId(T node) {
     try {
       return (ID) BeanUtils.getPropertyDescriptor(node.getClass(), "id").getReadMethod()
           .invoke(node);

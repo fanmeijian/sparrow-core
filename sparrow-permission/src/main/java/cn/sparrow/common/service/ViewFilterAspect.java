@@ -13,7 +13,8 @@ public class ViewFilterAspect {
   @Autowired
   ViewService viewService;
 
-  @Around("@annotation(ViewFilter)")
+  @SuppressWarnings("unchecked")
+@Around("@annotation(ViewFilter)")
   public Object filterNoReadObject(ProceedingJoinPoint joinPoint) throws Throwable {
     viewService.filterNoReadObject((Iterable<AbstractSparrowEntity>) joinPoint.proceed());
     return joinPoint.proceed();

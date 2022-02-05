@@ -102,6 +102,7 @@ public class UrlPermissionService {
 
 	public void init() {
 		RestTemplate restTemplate = new RestTemplate();
+		@SuppressWarnings({ "unchecked", "rawtypes" })
 		LinkedHashMap<?, LinkedHashMap> response = (LinkedHashMap) restTemplate
 				.getForObject("http://localhost:8091/api/profile", LinkedHashMap.class).get("_links");
 

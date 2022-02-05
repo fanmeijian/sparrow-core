@@ -23,10 +23,10 @@ public class ApiController {
 	@Autowired ApiRepository apiRepository;
 //	@Autowired SysroleUrlPermissionRepository sysroleUrlPermissionRepository;
 	
-	@GetMapping("/sparrowApis")
-	public Page<SparrowApi> getUrls(@Nullable Pageable pageable) {
-		return apiRepository.findAll(pageable);
-	}
+//	@GetMapping("/sparrowApis")
+//	public Page<SparrowApi> getUrls(@Nullable Pageable pageable) {
+//		return apiRepository.findAll(pageable);
+//	}
 	
 //	@PostMapping("/sparrowApis/getPermissionById")
 //	public Page<SysroleUrlPermission> getPermissionById(@RequestBody final String[] ids){

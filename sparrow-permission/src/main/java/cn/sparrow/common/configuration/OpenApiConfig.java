@@ -10,6 +10,7 @@ import io.swagger.v3.oas.models.info.License;
 /**
  * 
  * @author fansword
+ * 用于设置api文档的说明配置
  *
  */
 @Configuration
