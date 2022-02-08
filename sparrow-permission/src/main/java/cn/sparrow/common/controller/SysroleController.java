@@ -23,15 +23,15 @@ public class SysroleController {
   @Autowired SysroleService sysroleService;
   @Autowired SysroleRepository sysroleRepository;
   
-  @PostMapping("/sysroles/batch")
-  public void add(@NotNull @RequestBody List<Sysrole> sysroles) {
-	  sysroleRepository.saveAll(sysroles);
-  }
-  
-  @PatchMapping("/sysroles/batch")
-  public void udpate(@NotNull @RequestBody List<Sysrole> sysroles) {
-	  sysroleRepository.saveAll(sysroles);
-  }
+//  @PostMapping("/sysroles/batch")
+//  public void add(@NotNull @RequestBody List<Sysrole> sysroles) {
+//	  sysroleRepository.saveAll(sysroles);
+//  }
+//  
+//  @PatchMapping("/sysroles/batch")
+//  public void udpate(@NotNull @RequestBody List<Sysrole> sysroles) {
+//	  sysroleRepository.saveAll(sysroles);
+//  }
   
   @DeleteMapping("/sysroles/batch")
   public void delete(@NotNull @RequestBody String[] ids) {

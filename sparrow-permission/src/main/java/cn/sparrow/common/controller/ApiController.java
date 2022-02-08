@@ -10,9 +10,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.sun.istack.NotNull;
 import cn.sparrow.model.permission.SparrowApi;
+import cn.sparrow.model.permission.SysroleApiPK;
 import cn.sparrow.permission.repository.ApiRepository;
 import cn.sparrow.permission.service.ApiService;
 
@@ -43,28 +45,28 @@ public class ApiController {
 		return apiRepository.saveAll(urls);
 	}
 
-	@PatchMapping("/sparrowApis/batch")
-	public List<SparrowApi> update(@NotNull @RequestBody final List<SparrowApi> urls) {
-		return apiRepository.saveAll(urls);
-	}
+//	@PatchMapping("/sparrowApis/batch")
+//	public List<SparrowApi> update(@NotNull @RequestBody final List<SparrowApi> urls) {
+//		return apiRepository.saveAll(urls);
+//	}
 
 	@DeleteMapping("/sparrowApis/batch")
 	public void delete(@NotNull @RequestBody final String[] ids) {
 		apiRepository.deleteByIdIn(ids);
 	}
 
-//	@GetMapping("/sparrowApis/permissions")
-//	public Page<?> getPermission(@Nullable @RequestParam("urlId") String urlId, Pageable pageable) {
-//		return urlService.getPermissions(urlId, pageable);
-//	}
-//	
-//	@PostMapping("/sparrowApis/permissions")
-//	public void addPermission(@NotNull @RequestBody final List<SysroleUrlPermissionPK> sysroleUrlPermissionPKs) {
-//		urlService.addPermissions(sysroleUrlPermissionPKs);
-//	}
-//
-//	@DeleteMapping("/sparrowApis/permissions")
-//	public void delPermission(@NotNull @RequestBody final List<SysroleUrlPermissionPK> sysroleUrlPermissionPKs) {
-//		urlService.delPermissions(sysroleUrlPermissionPKs);
-//	}
+	@GetMapping("/sparrowApis/permissions")
+	public Page<?> getPermission(@Nullable @RequestParam("apiId") String urlId, Pageable pageable) {
+		return apiService.getPermissions(urlId, pageable);
+	}
+	
+	@PostMapping("/sparrowApis/permissions")
+	public void addPermission(@NotNull @RequestBody final List<SysroleApiPK> sysroleUrlPermissionPKs) {
+		apiService.addPermissions(sysroleUrlPermissionPKs);
+	}
+
+	@DeleteMapping("/sparrowApis/permissions")
+	public void delPermission(@NotNull @RequestBody final List<SysroleApiPK> sysroleUrlPermissionPKs) {
+		apiService.delPermissions(sysroleUrlPermissionPKs);
+	}
 }

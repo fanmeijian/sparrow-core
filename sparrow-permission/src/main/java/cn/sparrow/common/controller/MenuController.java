@@ -78,15 +78,15 @@ public class MenuController {
   // }
 
 
-  @PostMapping("/menus/batch")
-  public void add(@NotNull @RequestBody final List<Menu> menus) {
-    menuRepository.saveAll(menus);
-  }
-
-  @PatchMapping("/menus/batch")
-  public void update(@NotNull @RequestBody final List<Menu> menus) {
-    menuRepository.saveAll(menus);
-  }
+//  @PostMapping("/menus/batch")
+//  public void add(@NotNull @RequestBody final List<Menu> menus) {
+//    menuRepository.saveAll(menus);
+//  }
+//
+//  @PatchMapping("/menus/batch")
+//  public void update(@NotNull @RequestBody final List<Menu> menus) {
+//    menuRepository.saveAll(menus);
+//  }
 
   @DeleteMapping("/menus/batch")
   public void delete(@NotNull @RequestBody final String[] ids) {

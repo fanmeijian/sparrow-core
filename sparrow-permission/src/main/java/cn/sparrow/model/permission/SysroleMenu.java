@@ -37,6 +37,9 @@ public class SysroleMenu extends AbstractOperationLog {
 	@JoinColumn(name = "sysrole_id", insertable = false, updatable = false)
 	private Sysrole sysrole;
 	
+	//是否包含所有子单，如果勾选了，则如果有新加子菜单，则会自动授予该角色
+	private Boolean includeSubMenu;
+	
 	public SysroleMenu(SysroleMenuPK sysroleMenuPK) {
 		this.id = sysroleMenuPK;
 	}
