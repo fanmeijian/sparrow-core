@@ -30,10 +30,6 @@ public class RoleController {
 	@Autowired
 	RoleRepository roleRepository;
 
-	@PostMapping("/roles")
-	public Role save(@NotNull @RequestBody Role role) {
-		return roleService.save(role);
-	}
 
 	@GetMapping("/roles/getChildren")
 	public List<OrganizationRoleRelation> getChildren(

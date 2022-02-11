@@ -29,44 +29,39 @@ public class PositionLevelController {
 	PositionLevelService positionLevelService;
 	@Autowired
 	PositionLevelRepository positionLevelRepository;
-
-	@PostMapping("/levels")
-	public PositionLevel save(@NotNull @RequestBody PositionLevel level) {
-		return positionLevelService.save(level);
-	}
 	
-	@GetMapping("/levels/getChildren")
+	@GetMapping("/positionLevels/getChildren")
 	public List<OrganizationPositionLevelRelation> getChildren(@NotNull @RequestParam("organizationId") final String organizationId,@NotNull @RequestParam("positionLevelId") final String positionLevelId){
 	  return positionLevelService.getChildren(new OrganizationPositionLevelPK(organizationId, positionLevelId));
 	}
 	
-	@GetMapping("/levels/getParents")
+	@GetMapping("/positionLevels/getParents")
 	public List<OrganizationPositionLevelRelation> getParents(@NotNull @RequestParam("organizationId") final String organizationId,@NotNull @RequestParam("positionLevelId") final String positionLevelId){
 	  return positionLevelService.getParents(new OrganizationPositionLevelPK(organizationId, positionLevelId));
 	}
 	
-	@GetMapping("/levels/getParentOrganizations")
+	@GetMapping("/positionLevels/getParentOrganizations")
 	public List<Organization> getParentOrganizations(@NotBlank @RequestParam("positionLevelId") final String positionLevelId){
 		return positionLevelService.getParentOrganizations(positionLevelId);
 	}
 
-	@GetMapping("/levels/getModelName")
+	@GetMapping("/positionLevels/getModelName")
 	public String getModelName() {
 		return "{\"modelName\":\"" + Role.class.getName() + "\"}";
 	}
 
-	@PostMapping("/levels/batch")
+	@PostMapping("/positionLevels/batch")
 	public void add(@NotNull @RequestBody final List<PositionLevel> levels) {
 		positionLevelRepository.saveAll(levels);
 	}
 
-	@PatchMapping("/levels/batch")
+	@PatchMapping("/positionLevels/batch")
 	public void update(@NotNull @RequestBody final List<PositionLevel> levels) {
 		positionLevelRepository.saveAll(levels);
 	}
 
 
-	@PostMapping("/levels/relations/batch")
+	@PostMapping("/positionLevels/relations/batch")
 	public void addRelations(@NotNull @RequestBody List<OrganizationPositionLevelRelation> organizationLevelRelations) {
 		positionLevelService.addRelations(organizationLevelRelations);
 	}

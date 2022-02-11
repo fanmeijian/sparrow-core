@@ -41,13 +41,8 @@ public class EmployeeController {
 	OrganizationService organizationService;
 	@Autowired
 	EmployeeService employeeService;
-
-	@PostMapping("/employees")
-	public Employee save(@NotNull @RequestBody Employee employee) {
-		return employeeService.save(employee);
-	}
 	
-	@PutMapping("/employees")
+	@PutMapping("/employees/setMasterOrg")
 	public void updateOrganization(@RequestParam("employeeId") String employeeId, @RequestParam("organizationId") String organizationId) {
 		employeeService.saveMasterOrganization(employeeId, organizationId);
 	}

@@ -6,7 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import cn.sparrow.model.organization.PositionLevel;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-@Tag(name = "level-controller")
+@Tag(name = "position-level-controller")
 public interface PositionLevelRepository extends JpaRepository<PositionLevel, String> {
 
 	@Transactional
