@@ -125,7 +125,9 @@ public class MenuService {
 		userMenuRepository.findByIdUsername(username).forEach(f -> {
 			menus.add(f.getMenu());
 			buildParents(f.getMenu().getParentId(), menus);
-			buildChildren(f.getMenu().getId(), menus);
+			if(f.getIncludeSubMenu()) {
+				buildChildren(f.getMenu().getId(), menus);
+			}
 		});
 	}
 
@@ -135,7 +137,10 @@ public class MenuService {
       sysroleMenuRepository.findByIdSysroleId(sysroleId).forEach(f -> {
         menus.add(f.getMenu());
         buildParents(f.getMenu().getParentId(), menus);
-        buildChildren(f.getMenu().getId(), menus);
+        if(f.getIncludeSubMenu()) {
+        	// 当勾选了包含子菜单后，则取所有的子菜单，新增的子菜单也自动授权了。如果没勾选，则后面新加的权限不会出现，需要手工授权
+            buildChildren(f.getMenu().getId(), menus);
+        }
       });
 	}
 

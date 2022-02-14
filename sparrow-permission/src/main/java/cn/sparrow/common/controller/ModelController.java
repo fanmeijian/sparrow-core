@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import cn.sparrow.model.permission.Model;
+import cn.sparrow.model.permission.ModelPermission;
 import cn.sparrow.permission.repository.ModelRepository;
 import cn.sparrow.permission.service.ModelService;
 
@@ -59,15 +60,15 @@ public class ModelController {
 		modelRepository.deleteByNameIn(ids);
 	}
 
-//	@PostMapping("/models/permissions")
-//	public void addPermission(@NotNull @RequestBody final ModelPermission modelPermission) {
-//		modelService.addPermissions(modelPermission);
-//	}
-//
-//	@DeleteMapping("/models/permissions")
-//	public void delPermission(@NotNull @RequestBody final ModelPermission modelPermission) {
-//		modelService.delPermissions(modelPermission);
-//	}
+	@PostMapping("/models/permissions")
+	public void addPermission(@NotNull @RequestBody final ModelPermission modelPermission) {
+		modelService.addPermissions(modelPermission);
+	}
+
+	@DeleteMapping("/models/permissions")
+	public void delPermission(@NotNull @RequestBody final ModelPermission modelPermission) {
+		modelService.delPermissions(modelPermission);
+	}
 
 	
 }
