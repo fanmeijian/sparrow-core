@@ -21,7 +21,7 @@ public class PermissionExpression<T, ID> implements Serializable{
   private PermissionTypeEnum permissionType;
   private PermissionExpressionEnum expression;
   private PermissionEnum permission;
-  private ID id;
-  private List<ID> ids;
+  private ID id; //当PermissionExpressionEnum为is/not的时候用
+  private List<ID> ids;//当PermissionExpressionEnum为IN,NOT_IN的时候用
   private String regxOrCustom;
 }
