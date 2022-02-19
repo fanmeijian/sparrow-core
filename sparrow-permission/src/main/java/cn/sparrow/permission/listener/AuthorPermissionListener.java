@@ -1,13 +1,14 @@
 package cn.sparrow.permission.listener;
 
 import javax.persistence.PrePersist;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.core.RepositoryConstraintViolationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
+
 import cn.sparrow.model.common.AbstractSparrowEntity;
 import cn.sparrow.model.common.PermissionEnum;
-import cn.sparrow.model.permission.PermissionToken;
 import cn.sparrow.organization.service.EmployeeTokenService;
 import cn.sparrow.permission.service.PermissionService;
 import cn.sparrow.permission.service.PermissionTokenService;
@@ -15,12 +16,12 @@ import cn.sparrow.permission.service.PermissionTokenService;
 @Component
 public final class AuthorPermissionListener {
 
-  private static PermissionService<PermissionToken> permissionService;
+  private static PermissionService permissionService;
   private static PermissionTokenService permissionTokenService;
   private static EmployeeTokenService employeeTokenService;
 
   @Autowired
-  public void setPermissionService(PermissionService<PermissionToken> permissionService) {
+  public void setPermissionService(PermissionService permissionService) {
     AuthorPermissionListener.permissionService = permissionService;
   }
 

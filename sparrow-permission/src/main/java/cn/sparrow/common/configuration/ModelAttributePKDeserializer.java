@@ -9,7 +9,7 @@ import com.fasterxml.jackson.databind.KeyDeserializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import cn.sparrow.model.permission.ModelAttributePK;
-import cn.sparrow.model.permission.PermissionToken;
+import cn.sparrow.permission.service.PermissionToken;
 
 public class ModelAttributePKDeserializer extends KeyDeserializer{
 

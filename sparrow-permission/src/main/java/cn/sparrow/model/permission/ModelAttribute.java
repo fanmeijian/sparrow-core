@@ -23,6 +23,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import cn.sparrow.model.common.AbstractOperationLog;
 import cn.sparrow.permission.listener.AuditLogListener;
+import cn.sparrow.permission.service.PermissionToken;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

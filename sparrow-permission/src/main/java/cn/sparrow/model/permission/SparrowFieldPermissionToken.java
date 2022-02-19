@@ -21,6 +21,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import cn.sparrow.common.configuration.ModelAttributePKDeserializer;
 import cn.sparrow.model.common.AbstractOperationLog;
+import cn.sparrow.permission.service.PermissionToken;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
