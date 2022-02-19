@@ -27,57 +27,74 @@ public class PermissionServiceImpl implements PermissionService {
 	public boolean hasPermission(EmployeeToken employeeToken, PermissionToken permissionToken,
 			PermissionEnum permissionEnum) {
 
-		if (permissionToken == null || SecurityContextHolder.getContext().getAuthentication().getName().equals("ROOT")
-				|| SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains("ROLE_SYSADMIN"))
+//		if (permissionToken == null || SecurityContextHolder.getContext().getAuthentication().getName().equals("ROOT")
+//				|| SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains("ROLE_SYSADMIN"))
+//			return true;
+
+		// deny
+		if (permissionToken.getDenyPermissions() != null) {
+			for (PermissionExpression<?> permissionExpression : permissionToken.getDenyPermissions().get(permissionEnum)
+					.get(PermissionTargetEnum.EMPLOYEE)) {
+				if (permissionExpressionService.evaluate(employeeToken.getEmployeeId(), permissionExpression)) {
+					return false;
+				}
+			}
+		}
+
+		// allow
+		if (permissionToken.getAllowPermissions() != null) {
+
+			for (PermissionExpression<?> permissionExpression : permissionToken.getAllowPermissions()
+					.get(permissionEnum).get(PermissionTargetEnum.EMPLOYEE)) {
+				if (permissionExpressionService.evaluate(employeeToken.getEmployeeId(), permissionExpression)) {
+					return true;
+				}
+			}
+
+//		for (PermissionExpression<?> permissionExpression : permissionToken.getAllowPermissions().get(permissionEnum)
+//				.get(PermissionTargetEnum.USER)) {
+//			employeeToken.getUsernames().forEach(username -> {
+//				permissionExpressionService.evaluate(username, permissionExpression);
+//			});
+//		}
+//
+//		for (PermissionExpression<?> permissionExpression : permissionToken.getAllowPermissions().get(permissionEnum)
+//				.get(PermissionTargetEnum.SYSROLE)) {
+//			employeeToken.getSysroleIds().forEach(sysroleId -> {
+//				permissionExpressionService.evaluate(sysroleId, permissionExpression);
+//			});
+//		}
+//
+//		for (PermissionExpression<?> permissionExpression : permissionToken.getAllowPermissions().get(permissionEnum)
+//				.get(PermissionTargetEnum.GROUP)) {
+//			employeeToken.getGroupIds().forEach(groupId -> {
+//				permissionExpressionService.evaluate(groupId, permissionExpression);
+//			});
+//		}
+//
+//		for (PermissionExpression<?> permissionExpression : permissionToken.getAllowPermissions().get(permissionEnum)
+//				.get(PermissionTargetEnum.ROLE)) {
+//			employeeToken.getRoleIds().forEach(organizationRoleId -> {
+//				permissionExpressionServiceRole.evaluate(organizationRoleId, permissionExpression);
+//			});
+//		}
+//
+//		for (PermissionExpression<?> permissionExpression : permissionToken.getAllowPermissions().get(permissionEnum)
+//				.get(PermissionTargetEnum.LEVEL)) {
+//			employeeToken.getPositionLevelIds().forEach(organizationPositionLevelId -> {
+//				permissionExpressionServicePositionLevel.evaluate(organizationPositionLevelId, permissionExpression);
+//			});
+//		}
+//
+//		for (PermissionExpression<?> permissionExpression : permissionToken.getAllowPermissions().get(permissionEnum)
+//				.get(PermissionTargetEnum.ORGANIZATION)) {
+//			employeeToken.getOrganizationIds().forEach(organizationId -> {
+//				permissionExpressionServiceOrganization.evaluate(organizationId, permissionExpression);
+//			});
+//		}
+		}else {
 			return true;
-
-		for (PermissionExpression<?> permissionExpression : permissionToken.getAllowPermissions().get(permissionEnum)
-				.get(PermissionTargetEnum.EMPLOYEE)) {
-			permissionExpressionService.evaluate(employeeToken.getEmployeeId(), permissionExpression);
 		}
-
-		for (PermissionExpression<?> permissionExpression : permissionToken.getAllowPermissions().get(permissionEnum)
-				.get(PermissionTargetEnum.USER)) {
-			employeeToken.getUsernames().forEach(username -> {
-				permissionExpressionService.evaluate(username, permissionExpression);
-			});
-		}
-
-		for (PermissionExpression<?> permissionExpression : permissionToken.getAllowPermissions().get(permissionEnum)
-				.get(PermissionTargetEnum.SYSROLE)) {
-			employeeToken.getSysroleIds().forEach(sysroleId -> {
-				permissionExpressionService.evaluate(sysroleId, permissionExpression);
-			});
-		}
-
-		for (PermissionExpression<?> permissionExpression : permissionToken.getAllowPermissions().get(permissionEnum)
-				.get(PermissionTargetEnum.GROUP)) {
-			employeeToken.getGroupIds().forEach(groupId -> {
-				permissionExpressionService.evaluate(groupId, permissionExpression);
-			});
-		}
-
-		for (PermissionExpression<?> permissionExpression : permissionToken.getAllowPermissions().get(permissionEnum)
-				.get(PermissionTargetEnum.ROLE)) {
-			employeeToken.getRoleIds().forEach(organizationRoleId -> {
-				permissionExpressionServiceRole.evaluate(organizationRoleId, permissionExpression);
-			});
-		}
-
-		for (PermissionExpression<?> permissionExpression : permissionToken.getAllowPermissions().get(permissionEnum)
-				.get(PermissionTargetEnum.LEVEL)) {
-			employeeToken.getPositionLevelIds().forEach(organizationPositionLevelId -> {
-				permissionExpressionServicePositionLevel.evaluate(organizationPositionLevelId, permissionExpression);
-			});
-		}
-
-		for (PermissionExpression<?> permissionExpression : permissionToken.getAllowPermissions().get(permissionEnum)
-				.get(PermissionTargetEnum.ORGANIZATION)) {
-			employeeToken.getOrganizationIds().forEach(organizationId -> {
-				permissionExpressionServiceOrganization.evaluate(organizationId, permissionExpression);
-			});
-		}
-
 		return false;
 
 	}
