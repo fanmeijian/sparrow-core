@@ -53,7 +53,7 @@ public class EmployeeTokenServiceImpl implements EmployeeTokenService {
 		});
 
 		// 员工所在组织列表
-		organizations.add(employee.getOrganization().getId());
+		organizations.add(employee.getOrganizationId());
 
 		// 员工担任的岗位列表
 		employee.getEmployeeOrganizationRoles().forEach(f -> {
@@ -64,7 +64,7 @@ public class EmployeeTokenServiceImpl implements EmployeeTokenService {
 		// 员工的级别
 		employee.getEmployeeOrganizationLevels().forEach(f -> {
 			positionLevelPKs.add(f.getId().getOrganizationLevelId());
-			organizations.add(f.getId().getOrganizationLevelId().getOrganizationId());
+//			organizations.add(f.getId().getOrganizationLevelId().getOrganizationId());
 		});
 
 		// 员工所在的组

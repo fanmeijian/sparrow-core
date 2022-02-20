@@ -1,5 +1,6 @@
 package cn.sparrow.permission.service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -32,9 +33,9 @@ public class PermissionServiceImpl implements PermissionService {
 	public boolean hasPermission(@NotNull EmployeeToken employeeToken, @NotNull PermissionToken permissionToken,
 			PermissionEnum permissionEnum) {
 
-		if (permissionToken == null || SecurityContextHolder.getContext().getAuthentication().getName().equals("ROOT"))
+//		if (permissionToken == null || SecurityContextHolder.getContext().getAuthentication().getName().equals("ROOT"))
 //				SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains("ROLE_SYSADMIN1"))
-			return true;
+//			return true;
 
 		Map<PermissionEnum, Map<PermissionTargetEnum, List<PermissionExpression<?>>>> denyPermission = permissionToken
 				.getDenyPermissions();
@@ -43,64 +44,69 @@ public class PermissionServiceImpl implements PermissionService {
 
 		// deny
 		if (denyPermission != null) {
-			for (PermissionExpression<?> permissionExpression : permissionToken.getDenyPermissions().get(permissionEnum)
-					.get(PermissionTargetEnum.EMPLOYEE)) {
-				if (permissionExpressionService.evaluate(employeeToken.getEmployeeId(), permissionExpression)) {
-					return false;
-				}
-			}
-
-			for (PermissionExpression<?> permissionExpression : denyPermission.get(permissionEnum)
-					.get(PermissionTargetEnum.USER)) {
-				for (String username : employeeToken.getUsernames()) {
-					if (permissionExpressionService.evaluate(username, permissionExpression)) {
-						return true;
+			Map<PermissionTargetEnum, List<PermissionExpression<?>>> permissionExpress = denyPermission
+					.get(permissionEnum);
+			if (permissionExpress != null) {
+				for (PermissionExpression<?> permissionExpression : nullToEmptyList(
+						permissionExpress.get(PermissionTargetEnum.EMPLOYEE))) {
+					if (permissionExpressionService.evaluate(employeeToken.getEmployeeId(), permissionExpression)) {
+						return false;
 					}
 				}
-			}
 
-			for (PermissionExpression<?> permissionExpression : denyPermission.get(permissionEnum)
-					.get(PermissionTargetEnum.SYSROLE)) {
-				for (String sysroleId : employeeToken.getSysroleIds()) {
-					if (permissionExpressionService.evaluate(sysroleId, permissionExpression)) {
-						return true;
+				for (PermissionExpression<?> permissionExpression : nullToEmptyList(
+						permissionExpress.get(PermissionTargetEnum.USER))) {
+					for (String username : employeeToken.getUsernames()) {
+						if (permissionExpressionService.evaluate(username, permissionExpression)) {
+							return true;
+						}
 					}
 				}
-			}
 
-			for (PermissionExpression<?> permissionExpression : denyPermission.get(permissionEnum)
-					.get(PermissionTargetEnum.GROUP)) {
-				for (String groupId : employeeToken.getGroupIds()) {
-					if (permissionExpressionService.evaluate(groupId, permissionExpression)) {
-						return true;
+				for (PermissionExpression<?> permissionExpression : nullToEmptyList(
+						permissionExpress.get(PermissionTargetEnum.SYSROLE))) {
+					for (String sysroleId : employeeToken.getSysroleIds()) {
+						if (permissionExpressionService.evaluate(sysroleId, permissionExpression)) {
+							return true;
+						}
 					}
 				}
-			}
 
-			for (PermissionExpression<?> permissionExpression : denyPermission.get(permissionEnum)
-					.get(PermissionTargetEnum.ROLE)) {
-				for (OrganizationRolePK organizationRoleId : employeeToken.getRoleIds()) {
-					if (permissionExpressionServiceRole.evaluate(organizationRoleId, permissionExpression)) {
-						return true;
+				for (PermissionExpression<?> permissionExpression : nullToEmptyList(
+						permissionExpress.get(PermissionTargetEnum.GROUP))) {
+					for (String groupId : employeeToken.getGroupIds()) {
+						if (permissionExpressionService.evaluate(groupId, permissionExpression)) {
+							return true;
+						}
 					}
 				}
-			}
 
-			for (PermissionExpression<?> permissionExpression : denyPermission.get(permissionEnum)
-					.get(PermissionTargetEnum.LEVEL)) {
-				for (OrganizationPositionLevelPK organizationPositionLevelId : employeeToken.getPositionLevelIds()) {
-					if (permissionExpressionServicePositionLevel.evaluate(organizationPositionLevelId,
-							permissionExpression)) {
-						return true;
+				for (PermissionExpression<?> permissionExpression : nullToEmptyList(
+						permissionExpress.get(PermissionTargetEnum.ROLE))) {
+					for (OrganizationRolePK organizationRoleId : employeeToken.getRoleIds()) {
+						if (permissionExpressionServiceRole.evaluate(organizationRoleId, permissionExpression)) {
+							return true;
+						}
 					}
 				}
-			}
 
-			for (PermissionExpression<?> permissionExpression : permissionToken.getAllowPermissions()
-					.get(permissionEnum).get(PermissionTargetEnum.ORGANIZATION)) {
-				for (String organizationId : employeeToken.getOrganizationIds()) {
-					if (permissionExpressionServiceOrganization.evaluate(organizationId, permissionExpression)) {
-						return true;
+				for (PermissionExpression<?> permissionExpression : nullToEmptyList(
+						permissionExpress.get(PermissionTargetEnum.LEVEL))) {
+					for (OrganizationPositionLevelPK organizationPositionLevelId : employeeToken
+							.getPositionLevelIds()) {
+						if (permissionExpressionServicePositionLevel.evaluate(organizationPositionLevelId,
+								permissionExpression)) {
+							return true;
+						}
+					}
+				}
+
+				for (PermissionExpression<?> permissionExpression : nullToEmptyList(
+						permissionExpress.get(PermissionTargetEnum.ORGANIZATION))) {
+					for (String organizationId : employeeToken.getOrganizationIds()) {
+						if (permissionExpressionServiceOrganization.evaluate(organizationId, permissionExpression)) {
+							return true;
+						}
 					}
 				}
 			}
@@ -108,68 +114,73 @@ public class PermissionServiceImpl implements PermissionService {
 
 		// allow
 		if (allowPermission != null) {
-
-			for (PermissionExpression<?> permissionExpression : allowPermission.get(permissionEnum)
-					.get(PermissionTargetEnum.EMPLOYEE)) {
-				if (permissionExpressionService.evaluate(employeeToken.getEmployeeId(), permissionExpression)) {
-					return true;
-				}
-			}
-
-			for (PermissionExpression<?> permissionExpression : allowPermission.get(permissionEnum)
-					.get(PermissionTargetEnum.USER)) {
-				for (String username : employeeToken.getUsernames()) {
-					if (permissionExpressionService.evaluate(username, permissionExpression)) {
+			Map<PermissionTargetEnum, List<PermissionExpression<?>>> permissionExpress = allowPermission
+					.get(permissionEnum);
+			if (permissionExpress != null) {
+				for (PermissionExpression<?> permissionExpression : nullToEmptyList(
+						permissionExpress.get(PermissionTargetEnum.EMPLOYEE))) {
+					if (permissionExpressionService.evaluate(employeeToken.getEmployeeId(), permissionExpression)) {
 						return true;
+					}
+				}
+
+				for (PermissionExpression<?> permissionExpression : nullToEmptyList(
+						permissionExpress.get(PermissionTargetEnum.USER))) {
+					for (String username : employeeToken.getUsernames()) {
+						if (permissionExpressionService.evaluate(username, permissionExpression)) {
+							return true;
+						}
+					}
+				}
+
+				for (PermissionExpression<?> permissionExpression : nullToEmptyList(
+						permissionExpress.get(PermissionTargetEnum.SYSROLE))) {
+					for (String sysroleId : employeeToken.getSysroleIds()) {
+						if (permissionExpressionService.evaluate(sysroleId, permissionExpression)) {
+							return true;
+						}
+					}
+				}
+
+				for (PermissionExpression<?> permissionExpression : nullToEmptyList(
+						permissionExpress.get(PermissionTargetEnum.GROUP))) {
+					for (String groupId : employeeToken.getGroupIds()) {
+						if (permissionExpressionService.evaluate(groupId, permissionExpression)) {
+							return true;
+						}
+					}
+				}
+
+				for (PermissionExpression<?> permissionExpression : nullToEmptyList(
+						permissionExpress.get(PermissionTargetEnum.ROLE))) {
+					for (OrganizationRolePK organizationRoleId : employeeToken.getRoleIds()) {
+						if (permissionExpressionServiceRole.evaluate(organizationRoleId, permissionExpression)) {
+							return true;
+						}
+					}
+				}
+
+				for (PermissionExpression<?> permissionExpression : nullToEmptyList(
+						permissionExpress.get(PermissionTargetEnum.LEVEL))) {
+					for (OrganizationPositionLevelPK organizationPositionLevelId : employeeToken
+							.getPositionLevelIds()) {
+						if (permissionExpressionServicePositionLevel.evaluate(organizationPositionLevelId,
+								permissionExpression)) {
+							return true;
+						}
+					}
+				}
+
+				for (PermissionExpression<?> permissionExpression : nullToEmptyList(
+						permissionExpress.get(PermissionTargetEnum.ORGANIZATION))) {
+					for (String organizationId : employeeToken.getOrganizationIds()) {
+						if (permissionExpressionServiceOrganization.evaluate(organizationId, permissionExpression)) {
+							return true;
+						}
 					}
 				}
 			}
 
-			for (PermissionExpression<?> permissionExpression : allowPermission.get(permissionEnum)
-					.get(PermissionTargetEnum.SYSROLE)) {
-				for (String sysroleId : employeeToken.getSysroleIds()) {
-					if (permissionExpressionService.evaluate(sysroleId, permissionExpression)) {
-						return true;
-					}
-				}
-			}
-
-			for (PermissionExpression<?> permissionExpression : allowPermission.get(permissionEnum)
-					.get(PermissionTargetEnum.GROUP)) {
-				for (String groupId : employeeToken.getGroupIds()) {
-					if (permissionExpressionService.evaluate(groupId, permissionExpression)) {
-						return true;
-					}
-				}
-			}
-
-			for (PermissionExpression<?> permissionExpression : allowPermission.get(permissionEnum)
-					.get(PermissionTargetEnum.ROLE)) {
-				for (OrganizationRolePK organizationRoleId : employeeToken.getRoleIds()) {
-					if (permissionExpressionServiceRole.evaluate(organizationRoleId, permissionExpression)) {
-						return true;
-					}
-				}
-			}
-
-			for (PermissionExpression<?> permissionExpression : allowPermission.get(permissionEnum)
-					.get(PermissionTargetEnum.LEVEL)) {
-				for (OrganizationPositionLevelPK organizationPositionLevelId : employeeToken.getPositionLevelIds()) {
-					if (permissionExpressionServicePositionLevel.evaluate(organizationPositionLevelId,
-							permissionExpression)) {
-						return true;
-					}
-				}
-			}
-
-			for (PermissionExpression<?> permissionExpression : allowPermission.get(permissionEnum)
-					.get(PermissionTargetEnum.ORGANIZATION)) {
-				for (String organizationId : employeeToken.getOrganizationIds()) {
-					if (permissionExpressionServiceOrganization.evaluate(organizationId, permissionExpression)) {
-						return true;
-					}
-				}
-			}
 		} else {
 			return true;
 		}
@@ -207,5 +218,9 @@ public class PermissionServiceImpl implements PermissionService {
 	public boolean hasPermission(String employeeId, String tokenId, PermissionEnum permission) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	private List<PermissionExpression<?>> nullToEmptyList(List<PermissionExpression<?>> list) {
+		return list == null ? Collections.emptyList() : list;
 	}
 }

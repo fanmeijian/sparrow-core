@@ -115,14 +115,14 @@ public final class ReadPermissionListener {
 		String username = SecurityContextHolder.getContext().getAuthentication() == null ? ""
 				: SecurityContextHolder.getContext().getAuthentication().getName();
 		
-		if (!permissionService.hasPermission(employeeTokenService.getEmployeeToken(username),
-				permissionTokenService.getModelPermissionToken(abstractEntity.getClass().getName()),
-				PermissionEnum.DELETER)) {
-			String id = abstractEntity.getId();
-			emptyData(abstractEntity);
-			abstractEntity.setId(id);
-			abstractEntity.getErrorMessage().add("模型拒绝读者: " + abstractEntity.getClass().getName());
-		}
+//		if (!permissionService.hasPermission(employeeTokenService.getEmployeeToken(username),
+//				permissionTokenService.getModelPermissionToken(abstractEntity.getClass().getName()),
+//				PermissionEnum.DELETER)) {
+//			String id = abstractEntity.getId();
+//			emptyData(abstractEntity);
+//			abstractEntity.setId(id);
+//			abstractEntity.getErrorMessage().add("模型拒绝读者: " + abstractEntity.getClass().getName());
+//		}
 //
 //		// 将模型对象放进去
 ////		abstractEntity.setModel(modelRepository.findById(abstractEntity.getClass().getName()).orElse(null));

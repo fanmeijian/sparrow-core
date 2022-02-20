@@ -5,6 +5,9 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -18,6 +21,7 @@ public class EmployeeUser {
   @EmbeddedId
   private EmployeeUserPK id;
   
+  @JsonIgnore
   @ManyToOne
   @JoinColumn(name = "employee_id", insertable = false, updatable = false)
   private Employee employee;

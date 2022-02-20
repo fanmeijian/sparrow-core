@@ -11,15 +11,13 @@ public class PermissionExpressionServiceImpl<ID> implements PermissionExpression
 		case IN:
 			if (permissionExpression.getIds().contains(id)) {
 				return true;
-			} else {
-				return false;
 			}
+			break;
 		case NOT_IN:
 			if (permissionExpression.getIds().contains(id)) {
 				return true;
-			} else {
-				return false;
 			}
+			break;
 		default:
 			break;
 		}

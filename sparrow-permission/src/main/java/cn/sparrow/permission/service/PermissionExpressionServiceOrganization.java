@@ -19,32 +19,38 @@ public class PermissionExpressionServiceOrganization {
 			if (permissionExpression.getIds().contains(id)) {
 				return true;
 			}
+			break;
 		case NOT_IN:
 			if (permissionExpression.getIds().contains(id)) {
 				return true;
 			}
+			break;
 		case IS_ABOVE:
 			if (organizationService.getParents(permissionExpression.getIds().get(0).toString())
 					.contains(organizationRepository.findById(id).get())) {
 				return true;
 			}
+			break;
 		case IS_AND_ABOVE:
 			if (organizationService.getParents(permissionExpression.getIds().get(0).toString())
 					.contains(organizationRepository.findById(id).get())
 					|| permissionExpression.getIds().get(0).toString().equals(id)) {
 				return true;
 			}
+			break;
 		case IS_BELOW:
 			if (organizationService.getChildren(permissionExpression.getIds().get(0).toString())
 					.contains(organizationRepository.findById(id).get())) {
 				return true;
 			}
+			break;
 		case IS_AND_BELOW:
 			if (organizationService.getChildren(permissionExpression.getIds().get(0).toString())
 					.contains(organizationRepository.findById(id).get())
 					|| permissionExpression.getIds().get(0).toString().equals(id)) {
 				return true;
 			}
+			break;
 		default:
 			break;
 		}
