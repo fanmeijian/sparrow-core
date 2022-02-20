@@ -95,10 +95,12 @@ public class EmployeeTokenServiceImpl implements EmployeeTokenService {
 	@Override
 	public EmployeeToken getEmployeeToken(String username) {
 		EmployeeUser employeeUser = employeeUserRepository.findOneByIdUsername(username);
-		if (employeeUser != null)
-			return employeeTokenRepository.findById(employeeUser.getEmployee().getId()).get().getEmployeeToken();
-		else
-			return buildEmployeeToken(username);
-
+		if (employeeUser != null) {
+			EmployeeToken employeeToken = employeeTokenRepository
+					.findOneByEmployeeId(employeeUser.getId().getEmployeeId());
+			if (employeeToken != null)
+				return employeeToken;
+		}
+		return buildEmployeeToken(username);
 	}
 }

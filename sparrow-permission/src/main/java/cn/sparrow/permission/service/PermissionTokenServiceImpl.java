@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import cn.sparrow.model.common.PermissionEnum;
 import cn.sparrow.model.common.PermissionTypeEnum;
+import cn.sparrow.model.permission.Model;
 import cn.sparrow.model.permission.SparrowPermissionToken;
 import cn.sparrow.permission.repository.ModelRepository;
 import cn.sparrow.permission.repository.PermissionTokenRepository;
@@ -54,8 +55,13 @@ public class PermissionTokenServiceImpl implements PermissionTokenService {
 
 	@Override
 	public PermissionToken getModelPermissionToken(String modelName) {
+		Model model = modelRepository.findById(modelName).orElse(null);
+		if (model != null) {
+			return model.getModelPermissionToken();
+		} else {
+			return null;
+		}
 
-		return modelRepository.findById(modelName).get().getModelPermissionToken();
 	}
 
 }

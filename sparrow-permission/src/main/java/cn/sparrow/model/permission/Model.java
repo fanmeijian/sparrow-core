@@ -34,55 +34,56 @@ import lombok.NoArgsConstructor;
 @Table(name = "spr_model")
 public class Model extends AbstractOperationLog implements Serializable {
 
-  private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-  @EqualsAndHashCode.Include
-  @Id
-  private String name;
-  private String nameTxt;
-  private String remark;
-  private boolean isSystem;
-  @Column(name = "app_id")
-  private String appId;
+	@EqualsAndHashCode.Include
+	@Id
+	private String name;
+	private String nameTxt;
+	private String remark;
+	private boolean isSystem;
+	@Column(name = "app_id")
+	private String appId;
 
-  // @ManyToOne
-  // @JoinColumn(name = "catalog_id")
-  // private Catalog catalog;
+	// @ManyToOne
+	// @JoinColumn(name = "catalog_id")
+	// private Catalog catalog;
 
-  @ManyToOne
-  @JoinColumn(name = "app_id", insertable = false, updatable = false)
-  private SparrowApp sparrowApp;
+	@ManyToOne
+	@JoinColumn(name = "app_id", insertable = false, updatable = false)
+	private SparrowApp sparrowApp;
 
-  @JsonIgnore
-  @OneToMany(targetEntity = ModelAttribute.class, cascade = CascadeType.ALL, mappedBy = "model")
-  private List<ModelAttribute> modelAttributes;
+	@JsonIgnore
+	@OneToMany(targetEntity = ModelAttribute.class, cascade = CascadeType.ALL, mappedBy = "model")
+	private List<ModelAttribute> modelAttributes;
 
-  @Lob
-  @Column(name = "model_permission_token")
-  private byte[] modelPermissionTokenByteArray;
-  
-  @Transient
-  @JsonProperty
-  private PermissionToken modelPermissionToken;
-  
-  @PostLoad
-  private void postLoad() {
-    this.modelPermissionToken = (PermissionToken) SerializationUtils.deserialize(modelPermissionTokenByteArray);
-  }
-  
-  @PreUpdate
-  @PrePersist
-  private void beforeSave() {
-    this.modelPermissionTokenByteArray = SerializationUtils.serialize(modelPermissionToken);
-  }
+	@Lob
+	@Column(name = "model_permission_token")
+	private byte[] modelPermissionTokenByteArray;
 
-  public Model(String name) {
-    this.name = name;
-  }
+	@Transient
+	@JsonProperty
+	private PermissionToken modelPermissionToken;
 
-  public Model(String name, boolean isSystem) {
-    this.name = name;
-    this.isSystem = isSystem;
-  }
+	@PostLoad
+	private void postLoad() {
+		if (modelPermissionTokenByteArray != null)
+			this.modelPermissionToken = (PermissionToken) SerializationUtils.deserialize(modelPermissionTokenByteArray);
+	}
+
+	@PreUpdate
+	@PrePersist
+	private void beforeSave() {
+		this.modelPermissionTokenByteArray = SerializationUtils.serialize(modelPermissionToken);
+	}
+
+	public Model(String name) {
+		this.name = name;
+	}
+
+	public Model(String name, boolean isSystem) {
+		this.name = name;
+		this.isSystem = isSystem;
+	}
 
 }

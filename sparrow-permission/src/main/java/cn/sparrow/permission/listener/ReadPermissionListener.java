@@ -7,34 +7,43 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
 import javax.persistence.Id;
 import javax.persistence.PostLoad;
+
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.rest.core.RepositoryConstraintViolationException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
+
 import cn.sparrow.model.common.AbstractSparrowUuidEntity;
+import cn.sparrow.model.common.PermissionEnum;
+import cn.sparrow.organization.service.EmployeeTokenService;
+import cn.sparrow.permission.service.PermissionService;
+import cn.sparrow.permission.service.PermissionTokenService;
 
 // jpa级别的校验
 @Component
 public final class ReadPermissionListener {
-//	private static Logger logger = LoggerFactory.getLogger(ReadPermissionListener.class);
-//	private static IPermission<AbstractDataPermissionPK> dataPermissionService;
-//	private static IPermission<ModelPermissionPK> modelPermissionService;
-////	private static ModelRepository modelRepository;
-//
-//	@Autowired
-//	public void setModelIPermission(IPermission<ModelPermissionPK> modelPermissionService) {
-//		ReadPermissionListener.modelPermissionService = modelPermissionService;
-//	}
-//
-//	@Autowired
-//	public void setPermissionService(IPermission<AbstractDataPermissionPK> dataPermissionService) {
-//		ReadPermissionListener.dataPermissionService = dataPermissionService;
-//	}
-//	
-//	@Autowired
-//	public void setModelRepository(ModelRepository modelRepository) {
-//	    ReadPermissionListener.modelRepository = modelRepository;
-//	}
+	private static PermissionService permissionService;
+	private static PermissionTokenService permissionTokenService;
+	private static EmployeeTokenService employeeTokenService;
+
+	@Autowired
+	public void setPermissionService(PermissionService permissionService) {
+		ReadPermissionListener.permissionService = permissionService;
+	}
+
+	@Autowired
+	public void setPermissionTokenService(PermissionTokenService permissionTokenService) {
+		ReadPermissionListener.permissionTokenService = permissionTokenService;
+	}
+
+	@Autowired
+	public void setEmployeeTokenService(EmployeeTokenService employeeTokenService) {
+		ReadPermissionListener.employeeTokenService = employeeTokenService;
+	}
 
 	private void emptyData(Object object) {
 		try {
@@ -102,9 +111,18 @@ public final class ReadPermissionListener {
 	// 读取单据权限检查
 	@PostLoad
 	public void postLoad(AbstractSparrowUuidEntity abstractEntity) {
-//
-//		String username = SecurityContextHolder.getContext().getAuthentication() == null ? ""
-//				: SecurityContextHolder.getContext().getAuthentication().getName();
+
+		String username = SecurityContextHolder.getContext().getAuthentication() == null ? ""
+				: SecurityContextHolder.getContext().getAuthentication().getName();
+		
+		if (!permissionService.hasPermission(employeeTokenService.getEmployeeToken(username),
+				permissionTokenService.getModelPermissionToken(abstractEntity.getClass().getName()),
+				PermissionEnum.DELETER)) {
+			String id = abstractEntity.getId();
+			emptyData(abstractEntity);
+			abstractEntity.setId(id);
+			abstractEntity.getErrorMessage().add("模型拒绝读者: " + abstractEntity.getClass().getName());
+		}
 //
 //		// 将模型对象放进去
 ////		abstractEntity.setModel(modelRepository.findById(abstractEntity.getClass().getName()).orElse(null));
