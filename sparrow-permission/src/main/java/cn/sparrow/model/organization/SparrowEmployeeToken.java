@@ -13,6 +13,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import org.springframework.util.SerializationUtils;
 import cn.sparrow.model.common.AbstractOperationLog;
+import cn.sparrow.organization.service.EmployeeToken;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

@@ -1,5 +1,7 @@
 package cn.sparrow.permission.service;
 
+import javax.validation.constraints.NotNull;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -7,9 +9,9 @@ import org.springframework.stereotype.Service;
 import cn.sparrow.model.common.PermissionEnum;
 import cn.sparrow.model.common.PermissionTargetEnum;
 import cn.sparrow.model.common.PermissionTypeEnum;
-import cn.sparrow.model.organization.EmployeeToken;
 import cn.sparrow.model.organization.OrganizationPositionLevelPK;
 import cn.sparrow.model.organization.OrganizationRolePK;
+import cn.sparrow.organization.service.EmployeeToken;
 
 @Service
 public class PermissionServiceImpl implements PermissionService {
@@ -24,12 +26,12 @@ public class PermissionServiceImpl implements PermissionService {
 	PermissionExpressionServiceOrganization permissionExpressionServiceOrganization;
 
 	@Override
-	public boolean hasPermission(EmployeeToken employeeToken, PermissionToken permissionToken,
+	public boolean hasPermission(@NotNull EmployeeToken employeeToken,@NotNull PermissionToken permissionToken,
 			PermissionEnum permissionEnum) {
 
-//		if (permissionToken == null || SecurityContextHolder.getContext().getAuthentication().getName().equals("ROOT")
-//				|| SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains("ROLE_SYSADMIN"))
-//			return true;
+		if (permissionToken == null || SecurityContextHolder.getContext().getAuthentication().getName().equals("ROOT1")
+				|| SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains("ROLE_SYSADMIN1"))
+			return true;
 
 		// deny
 		if (permissionToken.getDenyPermissions() != null) {

@@ -1,6 +1,9 @@
-package cn.sparrow.model.organization;
+package cn.sparrow.organization.service;
 
 import java.util.List;
+
+import cn.sparrow.model.organization.OrganizationPositionLevelPK;
+import cn.sparrow.model.organization.OrganizationRolePK;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
