@@ -1,8 +1,8 @@
 package cn.sparrow.permission.service;
 
-import cn.sparrow.model.common.PermissionEnum;
-import cn.sparrow.model.common.PermissionTypeEnum;
-import cn.sparrow.organization.service.EmployeeToken;
+import cn.sparrow.permission.constant.PermissionEnum;
+import cn.sparrow.permission.constant.PermissionTypeEnum;
+import cn.sparrow.permission.service.organization.EmployeeToken;
 
 public interface PermissionService {
 

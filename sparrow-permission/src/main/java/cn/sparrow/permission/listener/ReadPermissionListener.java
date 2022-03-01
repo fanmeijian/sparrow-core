@@ -17,11 +17,11 @@ import org.springframework.data.rest.core.RepositoryConstraintViolationException
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
-import cn.sparrow.model.common.AbstractSparrowUuidEntity;
-import cn.sparrow.model.common.PermissionEnum;
-import cn.sparrow.organization.service.EmployeeTokenService;
+import cn.sparrow.permission.constant.PermissionEnum;
+import cn.sparrow.permission.model.AbstractSparrowUuidEntity;
 import cn.sparrow.permission.service.PermissionService;
 import cn.sparrow.permission.service.PermissionTokenService;
+import cn.sparrow.permission.service.organization.EmployeeTokenService;
 
 // jpa级别的校验
 @Component

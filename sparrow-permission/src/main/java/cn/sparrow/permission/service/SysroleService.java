@@ -10,15 +10,16 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import cn.sparrow.common.repository.UserSysroleRepository;
-import cn.sparrow.model.common.PreserveSysroleEnum;
-import cn.sparrow.model.permission.Sysrole;
-import cn.sparrow.model.permission.SysroleMenu;
-import cn.sparrow.model.permission.SysroleMenuPK;
-import cn.sparrow.model.permission.UserSysrole;
-import cn.sparrow.model.permission.UserSysrolePK;
+
 import cn.sparrow.permission.repository.SysroleMenuRepository;
 import cn.sparrow.permission.repository.SysroleRepository;
+import cn.sparrow.permission.repository.UserSysroleRepository;
+import cn.sparrow.permission.constant.PreserveSysroleEnum;
+import cn.sparrow.permission.model.Sysrole;
+import cn.sparrow.permission.model.SysroleMenu;
+import cn.sparrow.permission.model.SysroleMenuPK;
+import cn.sparrow.permission.model.UserSysrole;
+import cn.sparrow.permission.model.UserSysrolePK;
 import cn.sparrow.permission.repository.ApiRepository;
 
 @Service

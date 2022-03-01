@@ -6,8 +6,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.transaction.annotation.Transactional;
 
-import cn.sparrow.model.permission.ModelAttribute;
-import cn.sparrow.model.permission.ModelAttributePK;
+import cn.sparrow.permission.model.ModelAttribute;
+import cn.sparrow.permission.model.ModelAttributePK;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @Tag(name = "model-attribute-controller")

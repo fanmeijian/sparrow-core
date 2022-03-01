@@ -3,7 +3,7 @@ package cn.sparrow.permission.service;
 import java.io.Serializable;
 import java.util.List;
 
-import cn.sparrow.model.common.PermissionExpressionEnum;
+import cn.sparrow.permission.constant.PermissionExpressionEnum;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

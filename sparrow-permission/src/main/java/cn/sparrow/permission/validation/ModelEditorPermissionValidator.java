@@ -4,7 +4,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
-import cn.sparrow.model.common.AbstractSparrowUuidEntity;
+
+import cn.sparrow.permission.model.AbstractSparrowUuidEntity;
 
 // 这个是再repository的校验级别，不是jpa的
 @Component

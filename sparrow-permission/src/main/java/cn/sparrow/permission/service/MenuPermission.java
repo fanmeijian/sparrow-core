@@ -2,8 +2,8 @@ package cn.sparrow.permission.service;
 
 import java.util.List;
 
-import cn.sparrow.model.permission.SysroleMenuPK;
-import cn.sparrow.model.permission.UserMenuPK;
+import cn.sparrow.permission.model.SysroleMenuPK;
+import cn.sparrow.permission.model.UserMenuPK;
 import lombok.Data;
 
 @Data

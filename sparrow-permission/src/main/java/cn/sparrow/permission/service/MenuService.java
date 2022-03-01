@@ -7,15 +7,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import cn.sparrow.common.repository.UserMenuRepository;
-import cn.sparrow.common.service.SortService;
-import cn.sparrow.common.service.TreeService;
-import cn.sparrow.model.common.SparrowTree;
-import cn.sparrow.model.permission.Menu;
-import cn.sparrow.model.permission.SysroleMenu;
-import cn.sparrow.model.permission.UserMenu;
+
+import cn.sparrow.permission.model.Menu;
+import cn.sparrow.permission.model.SparrowTree;
+import cn.sparrow.permission.model.SysroleMenu;
+import cn.sparrow.permission.model.UserMenu;
 import cn.sparrow.permission.repository.MenuRepository;
 import cn.sparrow.permission.repository.SysroleMenuRepository;
+import cn.sparrow.permission.repository.UserMenuRepository;
 
 @Service
 public class MenuService {

@@ -3,8 +3,8 @@ package cn.sparrow.permission.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import cn.sparrow.organization.repository.OrganizationRepository;
-import cn.sparrow.organization.service.OrganizationService;
+import cn.sparrow.permission.repository.organization.OrganizationRepository;
+import cn.sparrow.permission.service.organization.OrganizationService;
 
 @Service
 public class PermissionExpressionServiceOrganization {

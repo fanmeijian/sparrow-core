@@ -9,8 +9,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.rest.core.annotation.RestResource;
 import org.springframework.transaction.annotation.Transactional;
 
-import cn.sparrow.model.common.ApiPermissionEnum;
-import cn.sparrow.model.permission.SparrowApi;
+import cn.sparrow.permission.constant.ApiPermissionEnum;
+import cn.sparrow.permission.model.SparrowApi;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @Tag(name = "api-controller")

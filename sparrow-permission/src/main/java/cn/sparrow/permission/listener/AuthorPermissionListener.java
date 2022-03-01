@@ -6,11 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.core.RepositoryConstraintViolationException;
 import org.springframework.stereotype.Component;
 
-import cn.sparrow.model.common.AbstractSparrowEntity;
-import cn.sparrow.model.common.PermissionEnum;
-import cn.sparrow.organization.service.EmployeeTokenService;
+import cn.sparrow.permission.constant.PermissionEnum;
+import cn.sparrow.permission.model.AbstractSparrowEntity;
 import cn.sparrow.permission.service.PermissionService;
 import cn.sparrow.permission.service.PermissionTokenService;
+import cn.sparrow.permission.service.organization.EmployeeTokenService;
 
 @Component
 public final class AuthorPermissionListener {

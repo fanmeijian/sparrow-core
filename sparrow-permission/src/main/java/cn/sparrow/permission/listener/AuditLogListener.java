@@ -24,8 +24,8 @@ import org.springframework.util.SerializationUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import cn.sparrow.model.common.AbstractOperationLog;
-import cn.sparrow.model.common.AuditLog;
+import cn.sparrow.permission.model.AbstractOperationLog;
+import cn.sparrow.permission.model.AuditLog;
 
 @Component
 public final class AuditLogListener {

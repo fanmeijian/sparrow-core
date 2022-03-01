@@ -11,9 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import cn.sparrow.model.common.ApiPermissionEnum;
-import cn.sparrow.model.permission.SparrowApi;
+
 import cn.sparrow.permission.repository.SysroleApiPermissionRepository;
+import cn.sparrow.permission.constant.ApiPermissionEnum;
+import cn.sparrow.permission.model.SparrowApi;
 import cn.sparrow.permission.repository.ApiRepository;
 
 @Service

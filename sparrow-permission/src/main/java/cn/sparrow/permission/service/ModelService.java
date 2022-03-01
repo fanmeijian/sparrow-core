@@ -14,11 +14,11 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import cn.sparrow.model.permission.Model;
-import cn.sparrow.model.permission.ModelAttribute;
-import cn.sparrow.model.permission.ModelAttributePK;
-import cn.sparrow.model.permission.ModelPermission;
-import cn.sparrow.model.permission.SparrowPermissionToken;
+import cn.sparrow.permission.model.Model;
+import cn.sparrow.permission.model.ModelAttribute;
+import cn.sparrow.permission.model.ModelAttributePK;
+import cn.sparrow.permission.model.ModelPermission;
+import cn.sparrow.permission.model.SparrowPermissionToken;
 import cn.sparrow.permission.repository.ModelAttributeRepository;
 import cn.sparrow.permission.repository.ModelRepository;
 import cn.sparrow.permission.repository.PermissionTokenRepository;

@@ -4,7 +4,8 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.rest.core.annotation.RestResource;
 import org.springframework.transaction.annotation.Transactional;
-import cn.sparrow.model.permission.Menu;
+
+import cn.sparrow.permission.model.Menu;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @Tag(name = "menu-controller")

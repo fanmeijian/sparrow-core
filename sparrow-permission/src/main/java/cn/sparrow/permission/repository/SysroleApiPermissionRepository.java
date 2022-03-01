@@ -8,8 +8,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.transaction.annotation.Transactional;
 
-import cn.sparrow.model.permission.SysroleApiPermission;
-import cn.sparrow.model.permission.SysroleApiPK;
+import cn.sparrow.permission.model.SysroleApiPK;
+import cn.sparrow.permission.model.SysroleApiPermission;
 
 @RepositoryRestResource(exported = false)
 public interface SysroleApiPermissionRepository extends JpaRepository<SysroleApiPermission, SysroleApiPK> {

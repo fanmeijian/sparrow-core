@@ -4,8 +4,8 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-import cn.sparrow.model.common.PermissionEnum;
-import cn.sparrow.model.common.PermissionTargetEnum;
+import cn.sparrow.permission.constant.PermissionEnum;
+import cn.sparrow.permission.constant.PermissionTargetEnum;
 import lombok.Data;
 
 @Data

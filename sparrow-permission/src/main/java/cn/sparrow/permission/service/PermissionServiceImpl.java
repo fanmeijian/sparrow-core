@@ -10,12 +10,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import cn.sparrow.model.common.PermissionEnum;
-import cn.sparrow.model.common.PermissionTargetEnum;
-import cn.sparrow.model.common.PermissionTypeEnum;
-import cn.sparrow.model.organization.OrganizationPositionLevelPK;
-import cn.sparrow.model.organization.OrganizationRolePK;
-import cn.sparrow.organization.service.EmployeeToken;
+import cn.sparrow.permission.constant.PermissionEnum;
+import cn.sparrow.permission.constant.PermissionTargetEnum;
+import cn.sparrow.permission.constant.PermissionTypeEnum;
+import cn.sparrow.permission.model.organization.OrganizationPositionLevelPK;
+import cn.sparrow.permission.model.organization.OrganizationRolePK;
+import cn.sparrow.permission.service.organization.EmployeeToken;
 
 @Service
 public class PermissionServiceImpl implements PermissionService {

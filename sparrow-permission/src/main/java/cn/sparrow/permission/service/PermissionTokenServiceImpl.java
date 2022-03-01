@@ -6,8 +6,8 @@ import javax.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import cn.sparrow.model.permission.Model;
-import cn.sparrow.model.permission.SparrowPermissionToken;
+import cn.sparrow.permission.model.Model;
+import cn.sparrow.permission.model.SparrowPermissionToken;
 import cn.sparrow.permission.repository.ModelRepository;
 import cn.sparrow.permission.repository.PermissionTokenRepository;
 

@@ -7,9 +7,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import cn.sparrow.model.permission.SparrowApi;
-import cn.sparrow.model.permission.SysroleApiPK;
-import cn.sparrow.model.permission.SysroleApiPermission;
+import cn.sparrow.permission.model.SparrowApi;
+import cn.sparrow.permission.model.SysroleApiPK;
+import cn.sparrow.permission.model.SysroleApiPermission;
 import cn.sparrow.permission.repository.ApiRepository;
 import cn.sparrow.permission.repository.SysroleApiPermissionRepository;
 
