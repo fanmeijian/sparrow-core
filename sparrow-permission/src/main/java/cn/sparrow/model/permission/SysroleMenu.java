@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 
 
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = false,onlyExplicitlyIncluded = true)
 @NoArgsConstructor
 @Entity
 @Table(name="spr_sysrole_menu")
@@ -25,6 +25,7 @@ public class SysroleMenu extends AbstractOperationLog {
 
 	private static final long serialVersionUID = 1L;
 
+	@EqualsAndHashCode.Include
 	@EmbeddedId
 	private SysroleMenuPK id;
 
@@ -35,6 +36,9 @@ public class SysroleMenu extends AbstractOperationLog {
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "sysrole_id", insertable = false, updatable = false)
 	private Sysrole sysrole;
+	
+	//是否包含所有子单，如果勾选了，则如果有新加子菜单，则会自动授予该角色
+	private Boolean includeSubMenu;
 	
 	public SysroleMenu(SysroleMenuPK sysroleMenuPK) {
 		this.id = sysroleMenuPK;

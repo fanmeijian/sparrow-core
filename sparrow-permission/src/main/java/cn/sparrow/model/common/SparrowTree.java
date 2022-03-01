@@ -12,44 +12,59 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class SparrowTree<T, ID> {
 
-	@EqualsAndHashCode.Include
-	private ID id;
+  @EqualsAndHashCode.Include
+  private ID id;
 
-	private String name;
-	private T me;
-	private int level;
-	private List<SparrowTree<T, ID>> children = new ArrayList<SparrowTree<T, ID>>();
+  private String name;
+  private T me;
+  private int level;
+  private int childCount;
+  private ID previousNodeId;
+  private ID nextNodeId;
+  private List<SparrowTree<T, ID>> children = new ArrayList<SparrowTree<T, ID>>();
 
-	public SparrowTree(T me) {
-		this.me = me;
-	}
+  public SparrowTree(T me) {
+    this.me = me;
+  }
 
-	public SparrowTree(String name, int level) {
-		this.name = name;
-		this.level = level;
-	}
+  public SparrowTree(String name, int level) {
+    this.name = name;
+    this.level = level;
+  }
 
-	public SparrowTree(T me, String name, int level) {
-		super();
-		this.me = me;
-		this.name = name;
-		this.level = level;
-	}
+  public SparrowTree(T me, String name, int level) {
+    this.me = me;
+    this.name = name;
+    this.level = level;
+  }
 
-	public SparrowTree(ID id, String name) {
-		this.id = id;
-		this.name = name;
-	}
+  public SparrowTree(ID id, String name) {
+    this.id = id;
+    this.name = name;
+  }
 
-	public SparrowTree(T t, ID id) {
-		this.me = t;
-		this.id = id;
-	}
+  public SparrowTree(T object, ID id) {
+    this.me = object;
+    this.id = id;
+  }
 
-	public void setChildren(List<SparrowSortableTree<T, ID>> sortableChildren) {
-		this.children.clear();
-		this.children.addAll(sortableChildren);
-		
-	}
+  public SparrowTree(ID id, String name, ID previousNodeId, ID nextNodeId) {
+    this.id = id;
+    this.nextNodeId = nextNodeId;
+    this.previousNodeId = previousNodeId;
+  }
+
+  public SparrowTree(ID id, ID previousNodeId, ID nextNodeId) {
+    this.id = id;
+    this.nextNodeId = nextNodeId;
+    this.previousNodeId = previousNodeId;
+  }
+
+  public SparrowTree(T object, ID id, ID previousNodeId, ID nextNodeId) {
+    this.id = id;
+    this.me = object;
+    this.nextNodeId = nextNodeId;
+    this.previousNodeId = previousNodeId;
+  }
 
 }

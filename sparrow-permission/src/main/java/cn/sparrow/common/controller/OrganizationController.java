@@ -17,13 +17,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import cn.sparrow.model.common.MyTree;
+import cn.sparrow.model.common.SparrowTree;
 import cn.sparrow.model.organization.Employee;
 import cn.sparrow.model.organization.Organization;
 import cn.sparrow.model.organization.OrganizationGroup;
 import cn.sparrow.model.organization.OrganizationGroupPK;
-import cn.sparrow.model.organization.OrganizationLevel;
-import cn.sparrow.model.organization.OrganizationLevelPK;
+import cn.sparrow.model.organization.OrganizationPositionLevel;
+import cn.sparrow.model.organization.OrganizationPositionLevelPK;
 import cn.sparrow.model.organization.OrganizationRelation;
 import cn.sparrow.model.organization.OrganizationRelationPK;
 import cn.sparrow.model.organization.OrganizationRole;
@@ -37,15 +37,20 @@ public class OrganizationController {
   @Autowired OrganizationService organizationService;
   @Autowired OrganizationRepository organizationRepository;
   
-  @PostMapping("/organizations")
-  public Organization add(@NotNull @RequestBody Organization organization) {
-    return organizationService.add(organization);
-    
-  }
+//  @PostMapping("/organizations")
+//  public Organization add(@NotNull @RequestBody Organization organization) {
+//    return organizationService.add(organization);
+//    
+//  }
   
   @GetMapping("/organizations/getChildren")
-  public Set<OrganizationRelation> getChildren(@NotNull @RequestParam("parentId") final String organizationId){
+  public List<Organization> getChildren(@NotNull @RequestParam("parentId") final String organizationId){
     return organizationService.getChildren(organizationId);
+  }
+  
+  @GetMapping("/organizations/getParents")
+  public List<Organization> getParents(@NotNull @RequestParam("parentId") final String organizationId){
+    return organizationService.getParents(organizationId);
   }
   
   @GetMapping("/organizations/getRoles")
@@ -54,7 +59,7 @@ public class OrganizationController {
   }
   
   @GetMapping("/organizations/getLevels")
-  public List<OrganizationLevel> getLevels(@NotBlank @RequestParam("organizationId") final String organizationId){
+  public List<OrganizationPositionLevel> getLevels(@NotBlank @RequestParam("organizationId") final String organizationId){
     return organizationService.getOrganizationLevels(organizationId);
   }
   
@@ -89,14 +94,19 @@ public class OrganizationController {
   }
   
   
-  @PostMapping("/organizations/relations/batch")
-  public void addRelations(@NotNull @RequestBody Set<OrganizationRelationPK> ids) {
-    organizationService.addRelations(ids);
+  @PostMapping("/organizations/addRelation")
+  public void addRelations(@NotNull @RequestBody Set<OrganizationRelation> organizationRelation) {
+    organizationService.addRelations(organizationRelation);
   }
   
-  @DeleteMapping("/organizations/relations/batch")
-  public void delRelations(@NotNull @RequestBody Set<OrganizationRelationPK> ids) {
-    organizationService.delRelations(ids);
+  @DeleteMapping("/organizations/removeRelation")
+  public void removeRelations(@NotNull @RequestBody Set<OrganizationRelationPK> ids) {
+    organizationService.removeRelations(ids);
+  }
+  
+  @DeleteMapping("/organizations/updateParent")
+  public void updateParent(@NotNull @RequestBody Set<OrganizationRelation> organizationRelation) {
+    organizationService.updateParent(organizationRelation);
   }
   
   @PostMapping("/organizations/roles/batch")
@@ -110,12 +120,12 @@ public class OrganizationController {
   }
   
   @PostMapping("/organizations/levels/batch")
-  public void addLevels(@NotNull @RequestBody Set<OrganizationLevelPK> ids) {
+  public void addLevels(@NotNull @RequestBody Set<OrganizationPositionLevelPK> ids) {
     organizationService.addLevels(ids);
   }
   
   @DeleteMapping("/organizations/levels/batch")
-  public void delLevels(@NotNull @RequestBody Set<OrganizationLevelPK> ids) {
+  public void delLevels(@NotNull @RequestBody Set<OrganizationPositionLevelPK> ids) {
     organizationService.delLevels(ids);
   }
   
@@ -130,7 +140,7 @@ public class OrganizationController {
   }
   
   @GetMapping("/orgranizations/getTreeByParentId")
-  public MyTree<Organization> tree(@Nullable @RequestParam("parentId") String parentId){
+  public SparrowTree<Organization, String> tree(@Nullable @RequestParam("parentId") String parentId){
     return organizationService.getTree(parentId==null||parentId.isBlank()?null:parentId);
   }
   

@@ -17,13 +17,13 @@ import cn.sparrow.group.repository.GroupRepository;
 import cn.sparrow.group.repository.GroupRoleRepository;
 import cn.sparrow.group.repository.GroupSysroleRepository;
 import cn.sparrow.group.repository.GroupUserRepository;
-import cn.sparrow.model.common.MyTree;
+import cn.sparrow.model.common.SparrowTree;
 import cn.sparrow.model.group.Group;
-import cn.sparrow.model.group.GroupLevel;
-import cn.sparrow.model.group.GroupLevelPK;
 import cn.sparrow.model.group.GroupMember;
 import cn.sparrow.model.group.GroupOrganization;
 import cn.sparrow.model.group.GroupOrganizationPK;
+import cn.sparrow.model.group.GroupPositionLevel;
+import cn.sparrow.model.group.GroupPositionLevelPK;
 import cn.sparrow.model.group.GroupRelation;
 import cn.sparrow.model.group.GroupRelationPK;
 import cn.sparrow.model.group.GroupRole;
@@ -103,15 +103,15 @@ public class GroupService {
 		});
 	}
 
-	public void addLevels(Set<GroupLevelPK> ids) {
+	public void addLevels(Set<GroupPositionLevelPK> ids) {
 		ids.forEach(f -> {
-			groupLevelRepository.save(new GroupLevel(f));
+			groupLevelRepository.save(new GroupPositionLevel(f));
 		});
 	}
 
-	public void delLevels(Set<GroupLevelPK> ids) {
+	public void delLevels(Set<GroupPositionLevelPK> ids) {
 		ids.forEach(f -> {
-			groupLevelRepository.delete(new GroupLevel(f));
+			groupLevelRepository.delete(new GroupPositionLevel(f));
 		});
 	}
 
@@ -139,16 +139,16 @@ public class GroupService {
 		});
 	}
 
-	public MyTree<Group> getTree(String parentId) {
-		MyTree<Group> myTree = new MyTree<Group>(
+	public SparrowTree<Group, String> getTree(String parentId) {
+		SparrowTree<Group, String> myTree = new SparrowTree<Group, String>(
 				parentId == null ? null : groupRepository.findById(parentId).orElse(null));
 		buildTree(myTree);
 		return myTree;
 	}
 
-	public void buildTree(MyTree<Group> myTree) {
+	public void buildTree(SparrowTree<Group, String> myTree) {
 		groupRelationRepository.findByIdParentId(myTree.getMe() == null ? null : myTree.getMe().getId()).forEach(f -> {
-			MyTree<Group> leaf = new MyTree<Group>(f.getGroup());
+			SparrowTree<Group, String> leaf = new SparrowTree<Group, String>(f.getGroup());
 			// 防止死循环
 			if (groupRelationRepository.findById(new GroupRelationPK(f.getId().getParentId(), f.getId().getGroupId()))
 					.orElse(null) == null)

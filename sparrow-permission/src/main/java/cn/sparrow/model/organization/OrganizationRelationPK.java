@@ -17,7 +17,7 @@ public class OrganizationRelationPK implements Serializable{
    */
   private static final long serialVersionUID = 1L;
   @Column(name = "organization_id")
-  private String organizationId;
+  protected String organizationId;
   @Column(name = "parent_id")
-  private String parentId;
+  protected String parentId;
 }   

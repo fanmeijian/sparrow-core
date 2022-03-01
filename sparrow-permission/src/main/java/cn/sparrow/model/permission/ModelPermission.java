@@ -2,13 +2,15 @@ package cn.sparrow.model.permission;
 
 import java.util.List;
 
-import cn.sparrow.model.group.GroupModelPermissionPK;
+import cn.sparrow.permission.service.PermissionToken;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class ModelPermission {
-	private List<UserModelPermissionPK> userModelPermissionPKs;
-	private List<SysroleModelPermissionPK> sysroleModelPermissionPKs;
-	private List<GroupModelPermissionPK> groupModelPermissionPKs;
-	private List<OrganizationModelPermissionPK> organizationModelPermissionPKs;
+	private List<String> modelName;
+	private PermissionToken permissionToken;
 }

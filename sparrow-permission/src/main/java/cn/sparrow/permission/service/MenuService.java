@@ -2,15 +2,15 @@ package cn.sparrow.permission.service;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import cn.sparrow.common.repository.UserMenuRepository;
-import cn.sparrow.common.service.ISparrowSortedService;
-import cn.sparrow.model.common.SparrowSortableTree;
+import cn.sparrow.common.service.SortService;
+import cn.sparrow.common.service.TreeService;
+import cn.sparrow.model.common.SparrowTree;
 import cn.sparrow.model.permission.Menu;
 import cn.sparrow.model.permission.MenuPermission;
 import cn.sparrow.model.permission.SysroleMenu;
@@ -32,74 +32,76 @@ public class MenuService {
 	SysroleMenuRepository sysroleMenuRepository;
 
 	@Autowired
-	ISparrowSortedService<Menu, String> sparrowSortedService;
+	SortService<Menu, String> sparrowSortedService;
+	
+	@Autowired TreeService<Menu, String> sparrowTreeService;
 
 	@Autowired
 	SysroleService sysroleService;
 
-	public SparrowSortableTree<Menu, String> getTreeByParentId(String parentId) {
+	public SparrowTree<Menu, String> getTreeByParentId(String parentId) {
 		Menu menu = menuRepository.findById(parentId).orElse(new Menu(null, null));
-		SparrowSortableTree<Menu, String> menuTree = new SparrowSortableTree<Menu, String>(menu, menu.getId(),menu.getNextNodeId(), menu.getNextNodeId());
+		SparrowTree<Menu, String> menuTree = new SparrowTree<Menu, String>(menu, menu.getId(),menu.getNextNodeId(), menu.getNextNodeId());
 		buildTree(menuTree);
-		sparrowSortedService.sort(menuTree);
+		sparrowTreeService.sort(menuTree);
 		return menuTree;
 	}
 
-	public void buildTree(SparrowSortableTree<Menu, String> menuTree) {
+	public void buildTree(SparrowTree<Menu, String> menuTree) {
 		List<Menu> menus = menuRepository.findByParentId(menuTree.getMe().getId());
 		// sort the menus
 //        sparrowSortedService.sort(menus);
 
 		for (Menu menu : menus) {
-			SparrowSortableTree<Menu, String> leaf = new SparrowSortableTree<Menu, String>(menu, menu.getId(),menu.getNextNodeId(), menu.getNextNodeId());
-			menuTree.getSortableChildren().add(leaf);
+			SparrowTree<Menu, String> leaf = new SparrowTree<Menu, String>(menu, menu.getId(),menu.getNextNodeId(), menu.getNextNodeId());
+			menuTree.getChildren().add(leaf);
 			buildTree(leaf);
 		}
 	}
 
-	public void buildTree(SparrowSortableTree<Menu, String> menuTree, List<Menu> userMenus) {
+	public void buildTree(SparrowTree<Menu, String> menuTree, List<Menu> userMenus) {
 		List<Menu> menus = menuRepository.findByParentId(menuTree.getMe().getId());
 		// sort the menus
 //        sparrowSortedService.sort(menus);
 
 		for (Menu menu : menus) {
-			SparrowSortableTree<Menu, String> leaf = new SparrowSortableTree<Menu, String>(menu, menu.getId(),menu.getNextNodeId(), menu.getNextNodeId());
+			SparrowTree<Menu, String> leaf = new SparrowTree<Menu, String>(menu, menu.getId(),menu.getNextNodeId(), menu.getNextNodeId());
 			if (userMenus.stream().anyMatch(p -> p.getId().equals(menu.getId())))
-				menuTree.getSortableChildren().add(leaf);
+				menuTree.getChildren().add(leaf);
 			buildTree(leaf, userMenus);
 		}
 	}
 
-	public SparrowSortableTree<Menu, String> getTreeByUsername(String username) {
-		SparrowSortableTree<Menu, String> menuTree = new SparrowSortableTree<Menu, String>(new Menu());
+	public SparrowTree<Menu, String> getTreeByUsername(String username) {
+		SparrowTree<Menu, String> menuTree = new SparrowTree<Menu, String>(new Menu());
 		buildUserTree(username, menuTree);
-		sparrowSortedService.sort(menuTree);
+		sparrowTreeService.sort(menuTree);
 		return menuTree;
 	}
 
-	public SparrowSortableTree<Menu, String> getTreeBySysroleId(String sysroleId) {
-		SparrowSortableTree<Menu, String> menuTree = new SparrowSortableTree<Menu, String>(new Menu());
+	public SparrowTree<Menu, String> getTreeBySysroleId(String sysroleId) {
+		SparrowTree<Menu, String> menuTree = new SparrowTree<Menu, String>(new Menu());
 		buildSysroleTree(sysroleId, menuTree);
 		return menuTree;
 	}
 
 	// 构建角色菜单的大树，含直接父级的菜单
-	public void buildSysroleTree(String sysroleId, SparrowSortableTree<Menu, String> menuTree) {
+	public void buildSysroleTree(String sysroleId, SparrowTree<Menu, String> menuTree) {
 		List<Menu> menusSet = new ArrayList<Menu>();
 		getSysroleMenusWithParentAndChildren(sysroleId, menusSet);
 
 		// 构建用户的菜单树
 		List<Menu> menus = menuRepository.findByParentId(menuTree.getMe().getId());
 		for (Menu menu : menus) {
-			SparrowSortableTree<Menu, String> leaf = new SparrowSortableTree<Menu, String>(menu, menu.getId(),menu.getNextNodeId(), menu.getNextNodeId());
+			SparrowTree<Menu, String> leaf = new SparrowTree<Menu, String>(menu, menu.getId(),menu.getNextNodeId(), menu.getNextNodeId());
 			if (menusSet.stream().anyMatch(p -> p.getId().equals(menu.getId())))
-				menuTree.getSortableChildren().add(leaf);
+				menuTree.getChildren().add(leaf);
 			buildTree(leaf, menusSet);
 		}
 	}
 
 	// 构建用户菜单的大树，含直接父级的菜单
-	public void buildUserTree(String username, SparrowSortableTree<Menu, String> menuTree) {
+	public void buildUserTree(String username, SparrowTree<Menu, String> menuTree) {
 		List<Menu> menusSet = new ArrayList<Menu>();
 		getUserMenusWithParentAndChildren(username, menusSet);
 		// 整合用户拥有角色的菜单
@@ -110,9 +112,9 @@ public class MenuService {
 		// 构建用户的菜单树
 		List<Menu> menus = menuRepository.findByParentId(menuTree.getMe().getId());
 		for (Menu menu : menus) {
-			SparrowSortableTree<Menu, String> leaf = new SparrowSortableTree<Menu, String>(menu, menu.getId(),menu.getNextNodeId(), menu.getNextNodeId());
+			SparrowTree<Menu, String> leaf = new SparrowTree<Menu, String>(menu, menu.getId(),menu.getNextNodeId(), menu.getNextNodeId());
 			if (menusSet.stream().anyMatch(p -> p.getId().equals(menu.getId())))
-				menuTree.getSortableChildren().add(leaf);
+				menuTree.getChildren().add(leaf);
 			buildTree(leaf, menusSet);
 		}
 	}
@@ -123,18 +125,23 @@ public class MenuService {
 		userMenuRepository.findByIdUsername(username).forEach(f -> {
 			menus.add(f.getMenu());
 			buildParents(f.getMenu().getParentId(), menus);
-			buildChildren(f.getMenu().getId(), menus);
+			if(f.getIncludeSubMenu()) {
+				buildChildren(f.getMenu().getId(), menus);
+			}
 		});
 	}
 
 	// 获取角色菜单的亲戚集合（不含兄弟姐妹节点）
 	public void getSysroleMenusWithParentAndChildren(String sysroleId, List<Menu> menus) {
-		// menus.addAll(userRepository.findById(username).get().getMenus()) ;
-		sysroleMenuRepository.findByIdSysroleId(sysroleId).forEach(f -> {
-			menus.add(f.getMenu());
-			buildParents(f.getMenu().getParentId(), menus);
-			buildChildren(f.getMenu().getId(), menus);
-		});
+//      menus.addAll(userRepository.findById(username).get().getMenus());
+      sysroleMenuRepository.findByIdSysroleId(sysroleId).forEach(f -> {
+        menus.add(f.getMenu());
+        buildParents(f.getMenu().getParentId(), menus);
+        if(f.getIncludeSubMenu()) {
+        	// 当勾选了包含子菜单后，则取所有的子菜单，新增的子菜单也自动授权了。如果没勾选，则后面新加的权限不会出现，需要手工授权
+            buildChildren(f.getMenu().getId(), menus);
+        }
+      });
 	}
 
 	// 获取到所有的祖先集合
@@ -181,6 +188,10 @@ public class MenuService {
 
 	public void setPosition(Menu menu) {
 		sparrowSortedService.saveSort(menuRepository, menu);
+	}
+	
+	public Set<SysroleMenu> getSysroleMenus(String menuId){
+	  return sysroleMenuRepository.findByIdMenuId(menuId);
 	}
 
 }

@@ -12,12 +12,14 @@ import cn.sparrow.model.permission.SysroleMenuPK;
 
 @RepositoryRestResource(exported = false)
 public interface SysroleMenuRepository extends JpaRepository<SysroleMenu, SysroleMenuPK> {
-	Set<SysroleMenu> findByIdSysroleId(String sysroleId);
+  Set<SysroleMenu> findByIdSysroleId(String sysroleId);
 
-	@Transactional
-	void deleteByIdSysroleIdAndIdMenuIdIn(String sysroleId, List<String> menuIds);
-	
-	@Transactional
-	void deleteByIdIn(List<SysroleMenuPK> ids);
-	
+  @Transactional
+  void deleteByIdSysroleIdAndIdMenuIdIn(String sysroleId, List<String> menuIds);
+
+  @Transactional
+  void deleteByIdIn(List<SysroleMenuPK> ids);
+
+  Set<SysroleMenu> findByIdMenuId(String menuId);
+
 }

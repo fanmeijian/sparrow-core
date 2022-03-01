@@ -7,7 +7,7 @@ import javax.validation.constraints.NotNull;
 
 public enum PermissionEnum {
 	ALL, ALL_CRUD, READER, AUTHOR, EDITOR, DELETER, DOWNLOAD, FORWARD, SHARE_ALL, SHARE_READER, SHARE_AUTHOR,
-	SHARE_EDITOR, SHARE_DELETER, SHARE_DOWNLOAD, SHARE_FORWARD;
+	SHARE_EDITOR, SHARE_DELETER, SHARE_DOWNLOAD, SHARE_FORWARD, EXECUTE, SHARE_EXECUTE;
 
 	private static final Map<String, PermissionEnum> mappings = new HashMap<>(16);
 

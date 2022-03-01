@@ -7,7 +7,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import cn.sparrow.model.app.SparrowApp;
-import cn.sparrow.model.common.AbstractSparrowEntity;
+import cn.sparrow.model.common.AbstractSparrowUuidEntity;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,7 +16,7 @@ import lombok.Setter;
 @Entity
 @Table(name = "spr_flow_no")
 @NamedQuery(name = "FlowNo.findAll", query = "SELECT s FROM FlowNo s")
-public class FlowNo extends AbstractSparrowEntity {
+public class FlowNo extends AbstractSparrowUuidEntity {
 	private static final long serialVersionUID = 1L;
 
 	private String code;

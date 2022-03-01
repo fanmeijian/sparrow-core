@@ -9,13 +9,14 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sun.istack.NotNull;
 
-import cn.sparrow.model.common.MyTree;
+import cn.sparrow.model.common.SparrowTree;
 import cn.sparrow.model.organization.Employee;
 import cn.sparrow.model.organization.EmployeeOrganizationLevel;
 import cn.sparrow.model.organization.EmployeeOrganizationLevelPK;
@@ -40,10 +41,10 @@ public class EmployeeController {
 	OrganizationService organizationService;
 	@Autowired
 	EmployeeService employeeService;
-
-	@PostMapping("/employees")
-	public Employee save(@NotNull @RequestBody Employee employee) {
-		return employeeService.save(employee);
+	
+	@PutMapping("/employees/setMasterOrg")
+	public void updateOrganization(@RequestParam("employeeId") String employeeId, @RequestParam("organizationId") String organizationId) {
+		employeeService.saveMasterOrganization(employeeId, organizationId);
 	}
 	
 	@GetMapping("/employees/getChildren")
@@ -72,7 +73,7 @@ public class EmployeeController {
 	}
 
 	@GetMapping("/employees/getTreeByParentId")
-	public MyTree<Employee> tree(@Nullable @RequestParam("parentId") String parentId) {
+	public SparrowTree<Employee, String> tree(@Nullable @RequestParam("parentId") String parentId) {
 		return employeeService.getTree(parentId == null || parentId.isBlank() ? null : parentId);
 	}
 
