@@ -1,15 +1,11 @@
 package cn.sparrow.permission.service;
 
-import java.util.List;
-
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import cn.sparrow.model.common.PermissionEnum;
-import cn.sparrow.model.common.PermissionTypeEnum;
 import cn.sparrow.model.permission.Model;
 import cn.sparrow.model.permission.SparrowPermissionToken;
 import cn.sparrow.permission.repository.ModelRepository;
@@ -57,7 +53,7 @@ public class PermissionTokenServiceImpl implements PermissionTokenService {
 	public PermissionToken getModelPermissionToken(String modelName) {
 		Model model = modelRepository.findById(modelName).orElse(null);
 		if (model != null) {
-			return model.getModelPermissionToken();
+			return model.getSparrowPermissionToken().getPermissionToken();
 		} else {
 			return null;
 		}

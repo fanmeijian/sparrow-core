@@ -1,4 +1,4 @@
-package cn.sparrow.common.configuration;
+package cn.sparrow.permission.listener;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

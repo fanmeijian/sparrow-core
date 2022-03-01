@@ -1,10 +1,11 @@
 package cn.sparrow.model.common;
 
-import java.io.Serializable;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+
 import org.hibernate.annotations.GenericGenerator;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -15,7 +16,7 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
 @AllArgsConstructor
 @NoArgsConstructor
-public abstract class AbstractSparrowUuidEntity extends AbstractSparrowEntity implements Serializable {
+public abstract class AbstractSparrowUuidEntity extends AbstractSparrowEntity {
 	private static final long serialVersionUID = 1L;
 
 	@EqualsAndHashCode.Include

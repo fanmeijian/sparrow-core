@@ -17,9 +17,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import cn.sparrow.model.common.SparrowTree;
 import cn.sparrow.model.permission.Menu;
-import cn.sparrow.model.permission.MenuPermission;
 import cn.sparrow.model.permission.SysroleMenu;
 import cn.sparrow.permission.repository.MenuRepository;
+import cn.sparrow.permission.service.MenuPermission;
 import cn.sparrow.permission.service.MenuService;
 
 @RestController

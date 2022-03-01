@@ -12,7 +12,6 @@ import cn.sparrow.common.service.SortService;
 import cn.sparrow.common.service.TreeService;
 import cn.sparrow.model.common.SparrowTree;
 import cn.sparrow.model.permission.Menu;
-import cn.sparrow.model.permission.MenuPermission;
 import cn.sparrow.model.permission.SysroleMenu;
 import cn.sparrow.model.permission.UserMenu;
 import cn.sparrow.permission.repository.MenuRepository;

@@ -2,25 +2,21 @@ package cn.sparrow.model.permission;
 
 import java.io.Serializable;
 import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.PostLoad;
-import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
-import org.springframework.util.SerializationUtils;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+
 import cn.sparrow.model.app.SparrowApp;
 import cn.sparrow.model.common.AbstractOperationLog;
-import cn.sparrow.permission.service.PermissionToken;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -57,25 +53,9 @@ public class Model extends AbstractOperationLog implements Serializable {
 	@OneToMany(targetEntity = ModelAttribute.class, cascade = CascadeType.ALL, mappedBy = "model")
 	private List<ModelAttribute> modelAttributes;
 
-	@Lob
-	@Column(name = "model_permission_token")
-	private byte[] modelPermissionTokenByteArray;
-
-	@Transient
-	@JsonProperty
-	private PermissionToken modelPermissionToken;
-
-	@PostLoad
-	private void postLoad() {
-		if (modelPermissionTokenByteArray != null)
-			this.modelPermissionToken = (PermissionToken) SerializationUtils.deserialize(modelPermissionTokenByteArray);
-	}
-
-	@PreUpdate
-	@PrePersist
-	private void beforeSave() {
-		this.modelPermissionTokenByteArray = SerializationUtils.serialize(modelPermissionToken);
-	}
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "permission_token_id")
+	private SparrowPermissionToken sparrowPermissionToken;
 
 	public Model(String name) {
 		this.name = name;

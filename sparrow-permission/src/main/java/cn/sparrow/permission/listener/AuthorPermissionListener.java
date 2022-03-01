@@ -4,7 +4,6 @@ import javax.persistence.PrePersist;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.core.RepositoryConstraintViolationException;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import cn.sparrow.model.common.AbstractSparrowEntity;
@@ -38,8 +37,7 @@ public final class AuthorPermissionListener {
   // 新建和编辑单据权限检查
   @PrePersist
   private void beforeAnyUpdate(AbstractSparrowEntity abstractEntity) {
-    String username = SecurityContextHolder.getContext().getAuthentication() == null ? ""
-        : SecurityContextHolder.getContext().getAuthentication().getName();
+    String username = abstractEntity.getCreatedBy();
     // 检查是否有新建权限
     // 用户是否在拒绝权限列表
 
