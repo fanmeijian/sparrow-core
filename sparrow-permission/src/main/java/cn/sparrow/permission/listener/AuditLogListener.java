@@ -5,9 +5,9 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+
 import javax.persistence.EmbeddedId;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -15,14 +15,16 @@ import javax.persistence.Id;
 import javax.persistence.PostPersist;
 import javax.persistence.PostUpdate;
 import javax.persistence.PreRemove;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.util.SerializationUtils;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import cn.sparrow.model.common.AbstractSparrowUuidEntity;
+
+import cn.sparrow.model.common.AbstractOperationLog;
 import cn.sparrow.model.common.AuditLog;
 
 @Component
@@ -89,8 +91,7 @@ public final class AuditLogListener {
     auditLog.setObjectId(id);
     auditLog.setTimestamp(new Date());
     auditLog.setRevtype(revtype);
-    auditLog.setUsername(SecurityContextHolder.getContext().getAuthentication() == null ? null
-        : SecurityContextHolder.getContext().getAuthentication().getName());
+    auditLog.setUsername(((AbstractOperationLog)sparrowEntity).getCreatedBy());
     entityManager.getTransaction().begin();
     entityManager.persist(auditLog);
     entityManager.getTransaction().commit();

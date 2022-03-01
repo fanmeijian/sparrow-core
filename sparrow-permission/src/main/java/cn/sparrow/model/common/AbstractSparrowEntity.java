@@ -16,8 +16,7 @@ import org.springframework.data.rest.core.annotation.RestResource;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import cn.sparrow.model.permission.SparrowFieldPermissionToken;
-import cn.sparrow.model.permission.SparrowPermissionToken;
+import cn.sparrow.model.permission.DataPermissionToken;
 import cn.sparrow.permission.listener.AuditLogListener;
 import cn.sparrow.permission.listener.AuthorPermissionListener;
 import cn.sparrow.permission.listener.DeleterPermissionListener;
@@ -48,12 +47,7 @@ public abstract class AbstractSparrowEntity extends AbstractOperationLog {
   @OneToOne
   @JoinColumn(name = "data_permission_token_id")
   @RestResource(exported = false)
-  protected SparrowPermissionToken sparrowDataPermissionToken;
-  
-  @OneToOne
-  @JoinColumn(name = "field_permission_token_id")
-  @RestResource(exported = false)
-  protected SparrowFieldPermissionToken sparrowFieldPermissionToken;
+  protected DataPermissionToken dataPermissionToken;
 
   @Transient
   @Size(max = 0)
