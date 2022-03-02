@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.2"
+	xmlns="http://xmlns.jcp.org/xml/ns/persistence"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd">
+	<persistence-unit name="sparrow-unit"
+		transaction-type="RESOURCE_LOCAL">
+		<class>cn.sparrow.dataconfig.model.DataList</class>
+		<class>cn.sparrow.permission.model.organization.Employee</class>
+		<class>cn.sparrow.permission.model.organization.EmployeeOrganizationLevel</class>
+		<class>cn.sparrow.permission.model.organization.EmployeeOrganizationLevelPK</class>
+		<class>cn.sparrow.permission.model.organization.EmployeeOrganizationRole</class>
+		<class>cn.sparrow.permission.model.organization.EmployeeOrganizationRolePK</class>
+		<class>cn.sparrow.permission.model.organization.Organization</class>
+		<class>cn.sparrow.permission.model.organization.OrganizationGroup</class>
+		<class>cn.sparrow.permission.model.organization.OrganizationGroupPK</class>
+		<class>cn.sparrow.permission.model.organization.OrganizationRole</class>
+		<class>cn.sparrow.permission.model.organization.OrganizationRolePK</class>
+		<class>cn.sparrow.permission.model.organization.Role</class>
+		<class>cn.sparrow.model.common.AbstractSparrowUuidEntity</class>
+	</persistence-unit>
+</persistence>
