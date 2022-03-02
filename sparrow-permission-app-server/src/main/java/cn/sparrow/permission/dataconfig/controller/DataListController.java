@@ -1,4 +1,4 @@
-package cn.sparrow.dataconfig.controller;
+package cn.sparrow.permission.dataconfig.controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,12 +12,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
-import cn.sparrow.dataconfig.model.DataList;
-import cn.sparrow.dataconfig.repository.DataListRepository;
-import cn.sparrow.dataconfig.service.DataListService;
 import cn.sparrow.permission.constant.PermissionEnum;
 import cn.sparrow.permission.constant.PermissionExpressionEnum;
 import cn.sparrow.permission.constant.PermissionTargetEnum;
+import cn.sparrow.permission.dataconfig.model.DataList;
+import cn.sparrow.permission.dataconfig.repository.DataListRepository;
+import cn.sparrow.permission.dataconfig.service.DataListService;
 import cn.sparrow.permission.model.SparrowTree;
 import cn.sparrow.permission.service.EmployeeToken;
 import cn.sparrow.permission.service.EmployeeTokenService;

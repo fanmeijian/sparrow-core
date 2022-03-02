@@ -1,4 +1,4 @@
-package cn.sparrow;
+package cn.sparrow.permission;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,4 +1,4 @@
-package cn.youweisoft.sparrow.permission;
+package cn.sparrow.permission;
 
 import org.junit.Before;
 import org.mockito.MockitoAnnotations;

@@ -1,4 +1,4 @@
-package cn.sparrow.common.configuration;
+package cn.sparrow.permission.common.configuration;
 
 import java.util.Collections;
 import java.util.Map;

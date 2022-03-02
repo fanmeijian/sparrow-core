@@ -1,4 +1,4 @@
-package cn.sparrow.common.configuration;
+package cn.sparrow.permission.common.configuration;
 //package cn.sportunione.jpa;
 //
 import java.util.stream.Collectors;

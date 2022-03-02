@@ -1,4 +1,4 @@
-package cn.sparrow;
+package cn.sparrow.permission;
 
 import java.text.SimpleDateFormat;
 

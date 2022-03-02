@@ -1,4 +1,4 @@
-package cn.sparrow.dataconfig.service;
+package cn.sparrow.permission.dataconfig.service;
 
 import java.util.List;
 
@@ -7,8 +7,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import cn.sparrow.dataconfig.model.DataList;
-import cn.sparrow.dataconfig.repository.DataListRepository;
+import cn.sparrow.permission.dataconfig.model.DataList;
+import cn.sparrow.permission.dataconfig.repository.DataListRepository;
 import cn.sparrow.permission.model.SparrowTree;
 
 @Service

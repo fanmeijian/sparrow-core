@@ -1,4 +1,4 @@
-package cn.sparrow.common.configuration;
+package cn.sparrow.permission.common.configuration;
 
 import java.util.Collections;
 import java.util.List;
@@ -20,7 +20,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import cn.sparrow.common.exception.ApiError;
+import cn.sparrow.permission.common.exception.ApiError;
 
 @ControllerAdvice
 public class GlobalExceptionHandler{

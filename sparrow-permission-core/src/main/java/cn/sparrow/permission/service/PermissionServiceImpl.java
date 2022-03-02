@@ -36,6 +36,8 @@ public class PermissionServiceImpl implements PermissionService {
 //				SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains("ROLE_SYSADMIN1"))
 //			return true;
 
+		if (permissionToken == null)
+			return true;
 		Map<PermissionEnum, Map<PermissionTargetEnum, List<PermissionExpression<?>>>> denyPermission = permissionToken
 				.getDenyPermissions();
 		Map<PermissionEnum, Map<PermissionTargetEnum, List<PermissionExpression<?>>>> allowPermission = permissionToken

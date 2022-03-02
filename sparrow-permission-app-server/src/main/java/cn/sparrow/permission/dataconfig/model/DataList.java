@@ -1,4 +1,4 @@
-package cn.sparrow.dataconfig.model;
+package cn.sparrow.permission.dataconfig.model;
 
 import java.io.Serializable;
 

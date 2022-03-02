@@ -1,4 +1,4 @@
-package cn.sparrow.common.configuration;
+package cn.sparrow.permission.common.configuration;
 
 import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties;
 import org.springframework.context.annotation.Bean;

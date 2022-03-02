@@ -1,10 +1,10 @@
-package cn.sparrow.dataconfig.repository;
+package cn.sparrow.permission.dataconfig.repository;
 
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
-import cn.sparrow.dataconfig.model.DataList;
+import cn.sparrow.permission.dataconfig.model.DataList;
 
 /**
  * @author fansword

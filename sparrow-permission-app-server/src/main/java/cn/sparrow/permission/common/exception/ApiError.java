@@ -1,4 +1,4 @@
-package cn.sparrow.common.exception;
+package cn.sparrow.permission.common.exception;
 
 import java.util.Date;
 

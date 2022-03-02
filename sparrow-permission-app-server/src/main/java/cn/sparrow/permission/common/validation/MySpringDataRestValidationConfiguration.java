@@ -1,4 +1,4 @@
-package cn.sparrow.common.validation;
+package cn.sparrow.permission.common.validation;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

@@ -1,4 +1,4 @@
-package cn.sparrow.common.listener;
+package cn.sparrow.permission.common.listener;
 
 import org.springframework.context.event.EventListener;
 import org.springframework.security.authentication.event.AbstractAuthenticationFailureEvent;
