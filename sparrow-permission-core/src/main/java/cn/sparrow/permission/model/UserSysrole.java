@@ -2,12 +2,10 @@ package cn.sparrow.permission.model;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,7 +18,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Table(name = "spr_user_sysrole")
-@EntityListeners(AuditingEntityListener.class)
 public class UserSysrole extends AbstractOperationLog {
   private static final long serialVersionUID = 1L;
 

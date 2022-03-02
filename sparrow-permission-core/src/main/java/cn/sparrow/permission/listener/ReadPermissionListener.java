@@ -12,38 +12,31 @@ import javax.persistence.Id;
 import javax.persistence.PostLoad;
 
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.rest.core.RepositoryConstraintViolationException;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
-import cn.sparrow.permission.constant.PermissionEnum;
 import cn.sparrow.permission.model.AbstractSparrowUuidEntity;
-import cn.sparrow.permission.service.EmployeeTokenService;
-import cn.sparrow.permission.service.PermissionService;
-import cn.sparrow.permission.service.PermissionTokenService;
 
 // jpa级别的校验
 @Component
-public final class ReadPermissionListener {
-	private static PermissionService permissionService;
-	private static PermissionTokenService permissionTokenService;
-	private static EmployeeTokenService employeeTokenService;
+public final class ReadPermissionListener extends AbstractPermissionListener{
+//	private static PermissionService permissionService;
+//	private static PermissionTokenService permissionTokenService;
+//	private static EmployeeTokenService employeeTokenService;
 
-	@Autowired
-	public void setPermissionService(PermissionService permissionService) {
-		ReadPermissionListener.permissionService = permissionService;
-	}
-
-	@Autowired
-	public void setPermissionTokenService(PermissionTokenService permissionTokenService) {
-		ReadPermissionListener.permissionTokenService = permissionTokenService;
-	}
-
-	@Autowired
-	public void setEmployeeTokenService(EmployeeTokenService employeeTokenService) {
-		ReadPermissionListener.employeeTokenService = employeeTokenService;
-	}
+//	@Autowired
+//	public void setPermissionService(PermissionService permissionService) {
+//		ReadPermissionListener.permissionService = permissionService;
+//	}
+//
+//	@Autowired
+//	public void setPermissionTokenService(PermissionTokenService permissionTokenService) {
+//		ReadPermissionListener.permissionTokenService = permissionTokenService;
+//	}
+//
+//	@Autowired
+//	public void setEmployeeTokenService(EmployeeTokenService employeeTokenService) {
+//		ReadPermissionListener.employeeTokenService = employeeTokenService;
+//	}
 
 	private void emptyData(Object object) {
 		try {
@@ -112,8 +105,8 @@ public final class ReadPermissionListener {
 	@PostLoad
 	public void postLoad(AbstractSparrowUuidEntity abstractEntity) {
 
-		String username = SecurityContextHolder.getContext().getAuthentication() == null ? ""
-				: SecurityContextHolder.getContext().getAuthentication().getName();
+		this.init();
+		String username = CurrentUser.INSTANCE.get();
 		
 //		if (!permissionService.hasPermission(employeeTokenService.getEmployeeToken(username),
 //				permissionTokenService.getModelPermissionToken(abstractEntity.getClass().getName()),

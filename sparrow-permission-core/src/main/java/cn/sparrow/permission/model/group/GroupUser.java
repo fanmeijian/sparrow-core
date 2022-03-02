@@ -4,8 +4,6 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-import org.springframework.data.domain.Persistable;
-
 import cn.sparrow.permission.model.AbstractOperationLog;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -16,7 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Table(name = "spr_group_user")
-public class GroupUser extends AbstractOperationLog implements Persistable<GroupUserPK> {
+public class GroupUser extends AbstractOperationLog {
 
   private static final long serialVersionUID = 1L;
   @EqualsAndHashCode.Include
@@ -27,11 +25,6 @@ public class GroupUser extends AbstractOperationLog implements Persistable<Group
 
   public GroupUser(GroupUserPK f) {
     this.id = f;
-  }
-
-  @Override
-  public boolean isNew() {
-    return true;
   }
 
 }

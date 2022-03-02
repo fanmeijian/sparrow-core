@@ -4,19 +4,16 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.transaction.Transactional;
-
-import org.apache.commons.collections.map.HashedMap;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ContextConfiguration;
@@ -26,6 +23,7 @@ import cn.sparrow.permission.constant.OrganizationTypeEnum;
 import cn.sparrow.permission.constant.PermissionEnum;
 import cn.sparrow.permission.constant.PermissionExpressionEnum;
 import cn.sparrow.permission.constant.PermissionTargetEnum;
+import cn.sparrow.permission.listener.CurrentUser;
 import cn.sparrow.permission.model.Model;
 import cn.sparrow.permission.model.SparrowPermissionToken;
 import cn.sparrow.permission.model.organization.Employee;
@@ -53,7 +51,7 @@ import cn.sparrow.permission.service.PermissionTokenServiceImpl;
 @RunWith(SpringRunner.class)
 @EnableAutoConfiguration
 @DataJpaTest
-@Import(JpaConfig.class)
+//@Import(JpaConfig.class)
 @WithMockUser(username = "user2")
 @ContextConfiguration(classes = { PermissionServiceImpl.class, PermissionExpression.class,
 		PermissionExpressionServiceImpl.class, PermissionExpressionServiceOrganization.class,
@@ -127,8 +125,8 @@ public class JPAUnitTest {
 		unit1 = organizationRepository.save(organizationRepository.save(new Organization("部门三", "0103-03",OrganizationTypeEnum.UNIT))).getId();
 		organizationRelationRepository.save(new OrganizationRelation(new OrganizationRelationPK(unit1, orgId2)));
 		
-		Map<PermissionEnum, Map<PermissionTargetEnum, List<PermissionExpression<?>>>> allowPermissions = new HashedMap();
-		Map<PermissionTargetEnum, List<PermissionExpression<?>>> targetMap = new HashedMap();
+		Map<PermissionEnum, Map<PermissionTargetEnum, List<PermissionExpression<?>>>> allowPermissions = new HashMap<PermissionEnum, Map<PermissionTargetEnum, List<PermissionExpression<?>>>>();
+		Map<PermissionTargetEnum, List<PermissionExpression<?>>> targetMap = new HashMap<PermissionTargetEnum, List<PermissionExpression<?>>>();
 		List<PermissionExpression<?>> expressions = new ArrayList<PermissionExpression<?>>();
 		PermissionExpression<String> expression = new PermissionExpression<String>();
 		List<String> ids = new ArrayList<String>();
@@ -152,7 +150,7 @@ public class JPAUnitTest {
 	public void should_find_no_tutorials_if_repository_is_empty() {
 		
 		
-		
+		CurrentUser.INSTANCE.logIn("user10");
 		
 		Organization organization = new Organization("asdffd","dsafdf", OrganizationTypeEnum.UNIT);
 //		System.out.println(organizationRepository.save(organization).getId());

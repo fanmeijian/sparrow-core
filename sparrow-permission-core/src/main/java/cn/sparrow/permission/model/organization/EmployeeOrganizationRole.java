@@ -2,15 +2,11 @@ package cn.sparrow.permission.model.organization;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
-import org.springframework.data.domain.Persistable;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -24,8 +20,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Table(name = "spr_employee_organization_role")
-@EntityListeners(AuditingEntityListener.class)
-public class EmployeeOrganizationRole extends AbstractOperationLog implements Persistable<EmployeeOrganizationRolePK> {
+public class EmployeeOrganizationRole extends AbstractOperationLog {
 
 	/**
 	 * 
@@ -49,11 +44,6 @@ public class EmployeeOrganizationRole extends AbstractOperationLog implements Pe
 
 	public EmployeeOrganizationRole(EmployeeOrganizationRolePK f) {
 		this.id = f;
-	}
-
-	@Override
-	public boolean isNew() {
-		return true;
 	}
 
 }

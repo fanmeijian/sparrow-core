@@ -7,7 +7,6 @@ import java.util.Map;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import cn.sparrow.permission.constant.PermissionEnum;

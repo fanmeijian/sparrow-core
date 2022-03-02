@@ -25,7 +25,6 @@ import org.springframework.util.SerializationUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import cn.sparrow.permission.model.AbstractOperationLog;
 import cn.sparrow.permission.model.AuditLog;
 
 @Component
@@ -35,7 +34,6 @@ public final class AuditLogListener {
 
 	@Autowired
 	private ObjectFactory<EntityManagerFactory> entityManagerObjectFactory;
-
 
 	@PostPersist
 	private void beforePersist(Object sparrowEntity) {
@@ -89,7 +87,7 @@ public final class AuditLogListener {
 		auditLog.setObjectId(id);
 		auditLog.setTimestamp(new Date());
 		auditLog.setRevtype(revtype);
-		auditLog.setUsername(((AbstractOperationLog) sparrowEntity).getCreatedBy());
+		auditLog.setUsername(CurrentUser.INSTANCE.get());
 		entityManager.getTransaction().begin();
 		entityManager.persist(auditLog);
 		entityManager.getTransaction().commit();

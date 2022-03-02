@@ -4,7 +4,6 @@ import java.util.Set;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
@@ -12,9 +11,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-
-import org.springframework.data.domain.Persistable;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -29,8 +25,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Table(name = "spr_organization_role")
-@EntityListeners(AuditingEntityListener.class)
-public class OrganizationRole extends AbstractOperationLog implements Persistable<OrganizationRolePK> {
+public class OrganizationRole extends AbstractOperationLog{
 
 	private static final long serialVersionUID = 1L;
 	@EqualsAndHashCode.Include
@@ -67,11 +62,6 @@ public class OrganizationRole extends AbstractOperationLog implements Persistabl
 
 	public OrganizationRole(OrganizationRolePK f) {
 		this.id = f;
-	}
-
-	@Override
-	public boolean isNew() {
-		return true;
 	}
 
 }

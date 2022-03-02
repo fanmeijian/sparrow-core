@@ -8,10 +8,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
+import javax.validation.ValidationException;
 
-import org.springframework.data.rest.core.RepositoryConstraintViolationException;
-
-import cn.sparrow.permission.listener.RepositoryErrorFactory;
 import cn.sparrow.permission.model.AbstractOperationLog;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -45,13 +43,12 @@ public class GroupRelation extends AbstractOperationLog {
 	public GroupRelation(GroupRelationPK id) {
 		this.id = id;
 	}
-	
+
 	@PrePersist
 	@PreUpdate
 	private void preSave() {
 		if (id.getGroupId().equals(id.getParentId())) {
-			throw new RepositoryConstraintViolationException(
-					RepositoryErrorFactory.getErros(this, "", "can not add relation to self"));
+			throw new ValidationException("can not add relation to self");
 		}
 	}
 

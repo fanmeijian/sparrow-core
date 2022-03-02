@@ -7,8 +7,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import org.springframework.data.domain.Persistable;
-
 import cn.sparrow.permission.model.AbstractOperationLog;
 import cn.sparrow.permission.model.organization.PositionLevel;
 import lombok.Data;
@@ -20,7 +18,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Table(name = "spr_group_position_level")
-public class GroupPositionLevel extends AbstractOperationLog implements Persistable<GroupPositionLevelPK> {
+public class GroupPositionLevel extends AbstractOperationLog {
 
   /**
    * 
@@ -41,11 +39,6 @@ public class GroupPositionLevel extends AbstractOperationLog implements Persista
 
   public GroupPositionLevel(GroupPositionLevelPK f) {
     this.id = f;
-  }
-
-  @Override
-  public boolean isNew() {
-    return true;
   }
 
 }

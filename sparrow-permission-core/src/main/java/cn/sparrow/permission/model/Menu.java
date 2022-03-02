@@ -2,12 +2,13 @@ package cn.sparrow.permission.model;
 
 import java.io.Serializable;
 import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import cn.sparrow.permission.listener.AuthorPermissionListener;
@@ -20,7 +21,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor
 @Table(name = "spr_menu")
-@EntityListeners({AuditingEntityListener.class, AuthorPermissionListener.class})
+@EntityListeners({ AuthorPermissionListener.class})
 public class Menu extends AbstractSparrowUuidEntity implements Serializable {
   private static final long serialVersionUID = 1L;
 

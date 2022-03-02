@@ -1,14 +1,13 @@
 package cn.sparrow.permission.repository.organization;
 
 import java.util.Set;
+
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.transaction.annotation.Transactional;
 
 import cn.sparrow.permission.model.organization.OrganizationRelation;
 import cn.sparrow.permission.model.organization.OrganizationRelationPK;
 
-@RepositoryRestResource(exported = false)
 public interface OrganizationRelationRepository
     extends JpaRepository<OrganizationRelation, OrganizationRelationPK> {
   Set<OrganizationRelation> findByIdOrganizationId(String organizationId);

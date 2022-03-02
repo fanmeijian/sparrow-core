@@ -2,13 +2,10 @@ package cn.sparrow.permission.model.group;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import cn.sparrow.permission.model.AbstractOperationLog;
 import cn.sparrow.permission.model.organization.Employee;
@@ -21,7 +18,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Table(name = "spr_group_employee")
-@EntityListeners(AuditingEntityListener.class)
 public class GroupEmployee extends AbstractOperationLog {
 
 	/**

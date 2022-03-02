@@ -11,8 +11,6 @@ import javax.persistence.Transient;
 import javax.validation.constraints.Size;
 
 import org.hibernate.envers.NotAudited;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import org.springframework.data.rest.core.annotation.RestResource;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -25,35 +23,31 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @MappedSuperclass
-@EntityListeners({ReadPermissionListener.class, AuditLogListener.class,
-    AuditingEntityListener.class, AuthorPermissionListener.class, EditorPermissionListener.class,
-    DeleterPermissionListener.class})
+@EntityListeners({ ReadPermissionListener.class, AuditLogListener.class, AuthorPermissionListener.class,
+		EditorPermissionListener.class, DeleterPermissionListener.class })
 @Data
 @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
 public abstract class AbstractSparrowEntity extends AbstractOperationLog {
-  /**
-   * 
-   */
-  private static final long serialVersionUID = 1L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
-  @Transient
-  @JsonProperty
-  protected String modelName = this.getClass().getName();
+	@Transient
+	@JsonProperty
+	protected String modelName = this.getClass().getName();
 
 //  @Transient
 //  private Model model;
-  
-  @OneToOne
-  @JoinColumn(name = "data_permission_token_id")
-  @RestResource(exported = false)
-  protected DataPermissionToken dataPermissionToken;
 
-  @Transient
-  @Size(max = 0)
-  @NotAudited
-  @JsonProperty
-  private List<String> errorMessage = new ArrayList<String>();
-  
+	@OneToOne
+	@JoinColumn(name = "data_permission_token_id")
+	protected DataPermissionToken dataPermissionToken;
 
+	@Transient
+	@Size(max = 0)
+	@NotAudited
+	@JsonProperty
+	private List<String> errorMessage = new ArrayList<String>();
 
 }

@@ -2,15 +2,11 @@ package cn.sparrow.permission.model.organization;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
-import org.springframework.data.domain.Persistable;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -22,9 +18,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = false,onlyExplicitlyIncluded = true)
 @Entity
 @Table(name = "spr_employee_organization_position_level")
-@EntityListeners(AuditingEntityListener.class)
-public class EmployeeOrganizationLevel extends AbstractOperationLog
-		implements Persistable<EmployeeOrganizationLevelPK> {
+public class EmployeeOrganizationLevel extends AbstractOperationLog{
 
 	/**
 	 * 
@@ -52,11 +46,6 @@ public class EmployeeOrganizationLevel extends AbstractOperationLog
 
 	public EmployeeOrganizationLevel(EmployeeOrganizationLevelPK f) {
 		this.id = f;
-	}
-
-	@Override
-	public boolean isNew() {
-		return true;
 	}
 
 }

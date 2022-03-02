@@ -8,10 +8,10 @@ import javax.persistence.ManyToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
-import org.springframework.data.rest.core.RepositoryConstraintViolationException;
+import javax.validation.ValidationException;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import cn.sparrow.permission.listener.RepositoryErrorFactory;
 import cn.sparrow.permission.model.AbstractOperationLog;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -57,8 +57,7 @@ public class OrganizationRelation extends AbstractOperationLog {
   @PreUpdate
   private void preSave() {
     if (id.getOrganizationId().equals(id.getParentId())) {
-      throw new RepositoryConstraintViolationException(
-          RepositoryErrorFactory.getErros(this, "", "can not add relation to self"));
+      throw new ValidationException("can not add relation to self");
     }
   }
 

@@ -6,8 +6,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import org.springframework.data.domain.Persistable;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -17,7 +15,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Table(name = "spr_user_menu")
-public class UserMenu extends AbstractOperationLog implements Persistable<UserMenuPK> {
+public class UserMenu extends AbstractOperationLog {
 
 	/**
 	 * 
@@ -37,12 +35,6 @@ public class UserMenu extends AbstractOperationLog implements Persistable<UserMe
 	public UserMenu(UserMenuPK id) {
 		super();
 		this.id = id;
-	}
-
-	// 用于避免调用save和saveall方法的时候，会先执行select语句
-	@Override
-	public boolean isNew() {
-		return true;
 	}
 
 }
