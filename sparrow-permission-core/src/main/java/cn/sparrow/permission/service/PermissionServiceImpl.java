@@ -38,6 +38,9 @@ public class PermissionServiceImpl implements PermissionService {
 
 		if (permissionToken == null)
 			return true;
+		if (employeeToken == null) {
+			return false;
+		}
 		Map<PermissionEnum, Map<PermissionTargetEnum, List<PermissionExpression<?>>>> denyPermission = permissionToken
 				.getDenyPermissions();
 		Map<PermissionEnum, Map<PermissionTargetEnum, List<PermissionExpression<?>>>> allowPermission = permissionToken

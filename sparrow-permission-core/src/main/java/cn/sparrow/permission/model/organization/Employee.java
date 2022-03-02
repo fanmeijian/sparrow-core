@@ -69,5 +69,11 @@ public class Employee extends AbstractSparrowUuidEntity {
   @JsonIgnore
   @OneToMany(cascade = CascadeType.ALL, mappedBy = "employee", fetch = FetchType.LAZY)
   private Set<GroupEmployee> groupEmployees;
+  
+  public Employee(String name, String code,String organizationId) {
+	  this.name = name;
+	  this.code = code;
+	  this.organizationId = organizationId;
+  }
 
 }

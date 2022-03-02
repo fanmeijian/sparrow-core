@@ -10,14 +10,20 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
 @Table(name = "spr_employee_user")
+@NoArgsConstructor
 public class EmployeeUser {
   
-  @EqualsAndHashCode.Include
+  public EmployeeUser(EmployeeUserPK employeeUserPK) {
+		this.id = employeeUserPK;
+	}
+
+@EqualsAndHashCode.Include
   @EmbeddedId
   private EmployeeUserPK id;
   

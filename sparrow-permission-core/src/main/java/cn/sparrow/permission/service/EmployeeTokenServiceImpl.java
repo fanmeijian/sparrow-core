@@ -11,6 +11,9 @@ import cn.sparrow.permission.model.organization.EmployeeUser;
 import cn.sparrow.permission.model.organization.OrganizationPositionLevelPK;
 import cn.sparrow.permission.model.organization.OrganizationRolePK;
 import cn.sparrow.permission.repository.UserSysroleRepository;
+import cn.sparrow.permission.repository.group.GroupEmployeeRepository;
+import cn.sparrow.permission.repository.organization.EmployeeOrganizationLevelRepository;
+import cn.sparrow.permission.repository.organization.EmployeeOrganizationRoleRepository;
 import cn.sparrow.permission.repository.organization.EmployeeRepository;
 import cn.sparrow.permission.repository.organization.EmployeeTokenRepository;
 import cn.sparrow.permission.repository.organization.EmployeeUserRepository;
@@ -26,6 +29,14 @@ public class EmployeeTokenServiceImpl implements EmployeeTokenService {
 	EmployeeUserRepository employeeUserRepository;
 	@Autowired
 	UserSysroleRepository userSysroleRepository;
+	@Autowired
+	EmployeeOrganizationRoleRepository employeeOrganizationRoleRepository;
+	
+	@Autowired
+	EmployeeOrganizationLevelRepository employeeOrganizationLevelRepository;
+	
+	@Autowired
+	GroupEmployeeRepository groupEmployeeRepository;
 
 	@Override
 	// build it from data base, use to get the latest token
@@ -45,30 +56,36 @@ public class EmployeeTokenServiceImpl implements EmployeeTokenService {
 		List<String> groups = new ArrayList<String>();
 
 		// 员工拥有的登录账户
-		employee.getEmployeeUsers().forEach(eu -> {
+//		employee.getEmployeeUsers().forEach(eu -> {
+//			usernames.add(eu.getId().getUsername());
+//			userSysroleRepository.findByIdUsername(username).forEach(us -> {
+//				sysroles.add(us.getId().getSysroleId());
+//			});
+//		});
+		employeeUserRepository.findByIdEmployeeId(employeeId).forEach(eu -> {
 			usernames.add(eu.getId().getUsername());
 			userSysroleRepository.findByIdUsername(username).forEach(us -> {
 				sysroles.add(us.getId().getSysroleId());
 			});
 		});
-
+		
 		// 员工所在组织列表
 		organizations.add(employee.getOrganizationId());
 
 		// 员工担任的岗位列表
-		employee.getEmployeeOrganizationRoles().forEach(f -> {
+		employeeOrganizationRoleRepository.findByIdEmployeeId(employeeId).forEach(f -> {
 			rolePKs.add(f.getId().getOrganizationRoleId());
 			organizations.add(f.getId().getOrganizationRoleId().getOrganizationId());
 		});
 
 		// 员工的级别
-		employee.getEmployeeOrganizationLevels().forEach(f -> {
+		employeeOrganizationLevelRepository.findByIdEmployeeId(employeeId).forEach(f -> {
 			positionLevelPKs.add(f.getId().getOrganizationLevelId());
 //			organizations.add(f.getId().getOrganizationLevelId().getOrganizationId());
 		});
 
 		// 员工所在的组
-		employee.getGroupEmployees().forEach(f -> {
+		groupEmployeeRepository.findByIdEmployeeId(employeeId).forEach(f -> {
 			groups.add(f.getId().getGroupId());
 		});
 

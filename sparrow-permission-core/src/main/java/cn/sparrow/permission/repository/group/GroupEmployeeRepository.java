@@ -14,5 +14,6 @@ import cn.sparrow.permission.model.group.GroupEmployeePK;
 public interface GroupEmployeeRepository extends JpaRepository<GroupEmployee, GroupEmployeePK> {
 
 	List<GroupEmployee> findByIdGroupId(@NotBlank String groupId);
+	List<GroupEmployee> findByIdEmployeeId(@NotBlank String employeeId);
 
 }

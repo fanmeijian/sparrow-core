@@ -96,4 +96,10 @@ public class Organization extends AbstractSparrowUuidEntity {
   @OneToMany(targetEntity = GroupOrganization.class, cascade = CascadeType.ALL,
       mappedBy = "organization", fetch = FetchType.LAZY)
   private Set<GroupOrganization> groupOrganizations;
+  
+  public Organization(String name, String code, OrganizationTypeEnum type) {
+	  this.code = code;
+	  this.name = name;
+	  this.type = type;
+  }
 }
