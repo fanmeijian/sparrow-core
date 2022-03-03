@@ -5,6 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 import cn.sparrow.permission.model.AbstractOperationLog;
@@ -18,6 +20,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Table(name = "spr_group_employee")
+@NamedQueries({
+	@NamedQuery(name = "GroupEmployee.findByEmployeeId", query = "SELECT o FROM GroupEmployee o WHERE o.id.employeeId = :employeeId") })
 public class GroupEmployee extends AbstractOperationLog {
 
 	/**

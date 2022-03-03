@@ -1,8 +1,5 @@
 package cn.sparrow.permission.service;
 
-import org.springframework.stereotype.Service;
-
-@Service
 public class PermissionExpressionServiceImpl<ID> implements PermissionExpressionService<ID> {
 
 	@Override

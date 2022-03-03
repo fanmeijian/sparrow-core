@@ -6,6 +6,8 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -20,6 +22,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Table(name = "spr_employee_organization_role")
+@NamedQueries({
+		@NamedQuery(name = "EmployeeOrganizationRole.findByEmployeeId", query = "SELECT o FROM EmployeeOrganizationRole o WHERE o.id.employeeId=: employeeId") })
 public class EmployeeOrganizationRole extends AbstractOperationLog {
 
 	/**

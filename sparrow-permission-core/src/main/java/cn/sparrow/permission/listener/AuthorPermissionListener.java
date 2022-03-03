@@ -3,18 +3,10 @@ package cn.sparrow.permission.listener;
 import javax.persistence.PrePersist;
 import javax.validation.ValidationException;
 
-import org.springframework.beans.factory.ObjectFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import cn.sparrow.permission.constant.PermissionEnum;
 import cn.sparrow.permission.model.AbstractSparrowEntity;
-import cn.sparrow.permission.service.EmployeeTokenService;
-import cn.sparrow.permission.service.PermissionService;
-import cn.sparrow.permission.service.PermissionTokenService;
 
-@Component
-public final class AuthorPermissionListener extends AbstractPermissionListener{
+public final class AuthorPermissionListener extends AbstractPermissionListener {
 //
 //	private PermissionService permissionService;
 //	private PermissionTokenService permissionTokenService;
@@ -61,7 +53,7 @@ public final class AuthorPermissionListener extends AbstractPermissionListener{
 		// 检查是否有新建权限
 		// 用户是否在拒绝权限列表
 
-		if (!permissionService.hasPermission(employeeTokenService.getEmployeeToken(username),
+		if (!permissionService.hasPermission(username,
 				permissionTokenService.getModelPermissionToken(abstractEntity.getClass().getName()),
 				PermissionEnum.AUTHOR)) {
 			throw new ValidationException(

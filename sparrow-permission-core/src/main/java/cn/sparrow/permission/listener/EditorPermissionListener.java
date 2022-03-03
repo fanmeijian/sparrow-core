@@ -3,12 +3,9 @@ package cn.sparrow.permission.listener;
 import javax.persistence.PreUpdate;
 import javax.validation.ValidationException;
 
-import org.springframework.stereotype.Component;
-
 import cn.sparrow.permission.constant.PermissionEnum;
 import cn.sparrow.permission.model.AbstractSparrowEntity;
 
-@Component
 public final class EditorPermissionListener extends AbstractPermissionListener {
 
 	@PreUpdate

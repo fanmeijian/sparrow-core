@@ -69,5 +69,12 @@
 		<class>cn.sparrow.permission.model.organization.PositionLevel</class>
 		<class>cn.sparrow.permission.model.organization.Role</class>
 		<class>cn.sparrow.permission.model.organization.SparrowEmployeeToken</class>
+		<properties>
+            <property name="javax.persistence.jdbc.driver" value="org.h2.Driver" />
+            <property name="javax.persistence.jdbc.url" value="jdbc:h2:mem:spr;DB_CLOSE_DELAY=-1" />
+            <property name="hibernate.show_sql" value="true" />
+            <property name="hibernate.hbm2ddl.auto" value="update" />
+            
+        </properties>
 	</persistence-unit>
 </persistence>

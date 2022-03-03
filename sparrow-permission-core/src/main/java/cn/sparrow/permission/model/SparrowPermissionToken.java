@@ -12,8 +12,8 @@ import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.apache.commons.lang3.SerializationUtils;
 import org.hibernate.annotations.GenericGenerator;
-import org.springframework.util.SerializationUtils;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;

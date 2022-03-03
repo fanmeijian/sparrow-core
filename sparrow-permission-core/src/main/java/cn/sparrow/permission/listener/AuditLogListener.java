@@ -1,5 +1,6 @@
 package cn.sparrow.permission.listener;
 
+import java.io.Serializable;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -24,18 +25,14 @@ import javax.persistence.PostPersist;
 import javax.persistence.PostUpdate;
 import javax.persistence.PreRemove;
 
-import org.springframework.beans.factory.ObjectFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.util.ReflectionUtils;
-import org.springframework.util.SerializationUtils;
+import org.apache.commons.lang3.SerializationUtils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import cn.sparrow.permission.model.AuditLog;
 
-@Component
+
 public final class AuditLogListener {
 
 //	@PersistenceContext(name = "cn.sparrow.permission.domain1")
@@ -43,8 +40,6 @@ public final class AuditLogListener {
 	
 	private EntityManagerFactory entityManagerFactory ;
 	
-	@Autowired
-	private ObjectFactory<EntityManagerFactory> entityManagerObjectFactory;
 
 	@PostPersist
 	private void beforePersist(Object sparrowEntity) {
@@ -68,7 +63,7 @@ public final class AuditLogListener {
 		properties.put("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
 		properties.put("hibernate.show_sql", "true");
 		properties.put("javax.persistence.provider", "org.hibernate.jpa.HibernatePersistenceProvider");
-		this.entityManagerFactory = Persistence.createEntityManagerFactory("cn.sparrow.permission.domain", properties);
+//		this.entityManagerFactory = Persistence.createEntityManagerFactory("cn.sparrow.permission.domain", properties);
 		
 //		this.entityManagerFactory = this.entityManagerObjectFactory.getObject();
 		String id = null;
@@ -76,9 +71,9 @@ public final class AuditLogListener {
 			List<Field> fieldList = new ArrayList<Field>();
 			// fieldList.addAll(Arrays.asList(sparrowEntity.getClass().getSuperclass().getDeclaredFields()));
 			// fieldList.addAll(Arrays.asList(sparrowEntity.getClass().getDeclaredFields()));
-			ReflectionUtils.doWithFields(sparrowEntity.getClass(), f -> {
-				fieldList.add(f);
-			});
+//			ReflectionUtils.doWithFields(sparrowEntity.getClass(), f -> {
+//				fieldList.add(f);
+//			});
 			Field[] fields = fieldList.toArray(new Field[] {});
 			for (Field field : fields) {
 				for (Annotation annotation : field.getDeclaredAnnotations()) {
@@ -98,9 +93,10 @@ public final class AuditLogListener {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		EntityManager entityManager = entityManagerFactory.createEntityManager();
+		entityManager = CurrentEntityManagerFactory.INSTANCE.getEntityManager();
+//		EntityManager entityManager = entityManagerFactory.createEntityManager();
 		AuditLog auditLog = new AuditLog();
-		auditLog.setObjectBytearray(SerializationUtils.serialize(sparrowEntity));
+		auditLog.setObjectBytearray(SerializationUtils.serialize((Serializable) sparrowEntity));
 		auditLog.setModelName(sparrowEntity.getClass().getName());
 		auditLog.setObjectId(id);
 		auditLog.setTimestamp(new Date());

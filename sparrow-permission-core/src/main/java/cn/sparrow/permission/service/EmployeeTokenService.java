@@ -1,8 +1,5 @@
 package cn.sparrow.permission.service;
 
-import org.springframework.stereotype.Service;
-
-@Service
 public interface EmployeeTokenService {
 
   // build it from data base, use to get the latest token

@@ -2,7 +2,6 @@ package cn.sparrow.permission.listener;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,13 +10,9 @@ import java.util.List;
 import javax.persistence.Id;
 import javax.persistence.PostLoad;
 
-import org.springframework.beans.BeanUtils;
-import org.springframework.stereotype.Component;
-
 import cn.sparrow.permission.model.AbstractSparrowUuidEntity;
 
 // jpa级别的校验
-@Component
 public final class ReadPermissionListener extends AbstractPermissionListener{
 //	private static PermissionService permissionService;
 //	private static PermissionTokenService permissionTokenService;
@@ -39,13 +34,13 @@ public final class ReadPermissionListener extends AbstractPermissionListener{
 //	}
 
 	private void emptyData(Object object) {
-		try {
-
-			BeanUtils.copyProperties(object.getClass().getConstructor().newInstance(), object);
-		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
-				| NoSuchMethodException | SecurityException e) {
-			e.printStackTrace();
-		}
+//		try {
+//
+//			BeanUtils.copyProperties(object.getClass().getConstructor().newInstance(), object);
+//		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
+//				| NoSuchMethodException | SecurityException e) {
+//			e.printStackTrace();
+//		}
 	}
 
 	private void emptyDataField(Object object, String fieldName, String type) {

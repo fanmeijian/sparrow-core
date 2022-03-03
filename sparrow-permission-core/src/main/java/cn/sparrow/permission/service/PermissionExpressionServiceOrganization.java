@@ -1,13 +1,8 @@
 package cn.sparrow.permission.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-@Service
 public class PermissionExpressionServiceOrganization {
 
-	@Autowired
-	OrganizationHelper organizationHelper;
+	private OrganizationHelper organizationHelper = new OrganizationHelper();
 
 	public boolean evaluate(String id, PermissionExpression<?> permissionExpression) {
 		switch (permissionExpression.getExpression()) {

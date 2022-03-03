@@ -4,14 +4,13 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Lob;
-import javax.persistence.MapsId;
-import javax.persistence.OneToOne;
 import javax.persistence.PostLoad;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import org.springframework.util.SerializationUtils;
+
+import org.apache.commons.lang3.SerializationUtils;
 
 import cn.sparrow.permission.model.AbstractOperationLog;
 import cn.sparrow.permission.service.EmployeeToken;

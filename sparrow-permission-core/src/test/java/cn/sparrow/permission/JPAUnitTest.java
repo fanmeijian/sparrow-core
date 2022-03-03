@@ -1,5 +1,6 @@
 package cn.sparrow.permission;
 
+
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -10,25 +11,18 @@ import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceProperty;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.context.annotation.Import;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import cn.sparrow.permission.constant.OrganizationTypeEnum;
 import cn.sparrow.permission.constant.PermissionEnum;
 import cn.sparrow.permission.constant.PermissionExpressionEnum;
 import cn.sparrow.permission.constant.PermissionTargetEnum;
+import cn.sparrow.permission.listener.CurrentEntityManagerFactory;
 import cn.sparrow.permission.listener.CurrentUser;
 import cn.sparrow.permission.model.Model;
 import cn.sparrow.permission.model.SparrowPermissionToken;
@@ -37,112 +31,149 @@ import cn.sparrow.permission.model.organization.EmployeeUser;
 import cn.sparrow.permission.model.organization.EmployeeUserPK;
 import cn.sparrow.permission.model.organization.Organization;
 import cn.sparrow.permission.model.organization.OrganizationRelation;
-import cn.sparrow.permission.model.organization.OrganizationRelationPK;
-import cn.sparrow.permission.repository.ModelRepository;
-import cn.sparrow.permission.repository.PermissionTokenRepository;
-import cn.sparrow.permission.repository.organization.EmployeeRepository;
-import cn.sparrow.permission.repository.organization.EmployeeUserRepository;
-import cn.sparrow.permission.repository.organization.OrganizationRelationRepository;
-import cn.sparrow.permission.repository.organization.OrganizationRepository;
-import cn.sparrow.permission.service.EmployeeTokenServiceImpl;
-import cn.sparrow.permission.service.OrganizationHelper;
 import cn.sparrow.permission.service.PermissionExpression;
-import cn.sparrow.permission.service.PermissionExpressionServiceImpl;
-import cn.sparrow.permission.service.PermissionExpressionServiceOrganization;
 import cn.sparrow.permission.service.PermissionService;
-import cn.sparrow.permission.service.PermissionServiceImpl;
 import cn.sparrow.permission.service.PermissionToken;
-import cn.sparrow.permission.service.PermissionTokenServiceImpl;
+import eu.drus.jpa.unit.api.JpaUnit;
+import eu.drus.jpa.unit.api.TransactionMode;
+import eu.drus.jpa.unit.api.Transactional;
 
-@RunWith(SpringRunner.class)
-@EnableAutoConfiguration
-@DataJpaTest
-@Import(JpaConfig.class)
-@WithMockUser(username = "user2")
-@ContextConfiguration(classes = { PermissionServiceImpl.class, PermissionExpression.class,
-		PermissionExpressionServiceImpl.class, PermissionExpressionServiceOrganization.class,
-		OrganizationHelper.class, PermissionTokenServiceImpl.class, EmployeeTokenServiceImpl.class, AuditingEntityListener.class})
+//@RunWith(SpringRunner.class)
+//@EnableAutoConfiguration
+////@DataJpaTest
+//@Import(JpaConfig.class)
+//@WithMockUser(username = "user2")
+//@ContextConfiguration(classes = { PermissionServiceImpl.class, PermissionExpression.class,
+//		PermissionExpressionServiceImpl.class, PermissionExpressionServiceOrganization.class, OrganizationHelper.class,
+//		PermissionTokenServiceImpl.class, EmployeeTokenServiceImpl.class, AuditingEntityListener.class })
+@ExtendWith(JpaUnit.class)
+@Transactional(TransactionMode.DISABLED)
 public class JPAUnitTest {
-	@Autowired
+//	@Rule
+//    public EntityManagerProvider provider = EntityManagerProvider.withUnit("cn.sparrow.permission.domain");
+
 	PermissionService permissionService;
 
-	@Autowired
-	OrganizationRepository organizationRepository;
-	
-	@Autowired
-	OrganizationRelationRepository organizationRelationRepository;
-	
-	@Autowired
-	EmployeeRepository employeeRepository;
-	
-	@Autowired
-	PermissionTokenRepository permissionTokenRepository;
-	
-	@Autowired
-	ModelRepository modelRepository;
-	
-	@Autowired
-	EmployeeUserRepository employeeUserRepository;
-	
-	@PersistenceContext
-	EntityManager entityManager;
-	
-	
-	@Before
+	@PersistenceContext(unitName = "cn.sparrow.permission.domain", properties = {
+			@PersistenceProperty(name = "javax.persistence.provider", value = "org.hibernate.jpa.HibernatePersistenceProvider"),
+			@PersistenceProperty(name = "javax.persistence.jdbc.url", value = "jdbc:h2:mem:spr;DB_CLOSE_DELAY=-1")
+			})
+	private EntityManager entityManager;
+
+//	@PersistenceUnit
+	EntityManagerFactory entityManagerFactory;
+
+	@BeforeEach
 	public void before() {
+		CurrentEntityManagerFactory.INSTANCE.set(entityManager.getEntityManagerFactory());
+		CurrentUser.INSTANCE.logIn("ROOT");
+//		this.entityManager = PersistenceUtil.entityManager();
 		Map<String, String> properties = new HashMap<String, String>();
 		properties.put("javax.persistence.jdbc.url", "jdbc:h2:mem:spr;DB_CLOSE_DELAY=-1");
 		properties.put("javax.persistence.jdbc.driver", "org.h2.Driver");
 		properties.put("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
 		properties.put("hibernate.show_sql", "true");
 		properties.put("javax.persistence.provider", "org.hibernate.jpa.HibernatePersistenceProvider");
-		
+
 //		new HibernatePersistenceProvider().createEntityManagerFactory(persistenceUnitName, properties)
-//		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("cn.sparrow.permission.domain1", properties);
+//		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("cn.sparrow.permission.domain", properties);
 //		entityManager = entityManagerFactory.createEntityManager();
 		// 初始化组织架构
-		String orgId1="";
-		String orgId2="";
-		String unit1="";
-		String emp="";
+		String orgId1 = "";
+		String orgId2 = "";
+		String unit1 = "";
+		String emp = "";
+		entityManager.getTransaction().begin();
 //		Organization organization = organizationRepository.save(new Organization("总公司", "010000",OrganizationTypeEnum.ORGANIZATION));
-		orgId1 = organizationRepository.save(new Organization("总公司", "01",OrganizationTypeEnum.ORGANIZATION)).getId();
-		unit1 = organizationRepository.save(organizationRepository.save(new Organization("部门一", "01-01",OrganizationTypeEnum.UNIT))).getId();
-		emp = employeeRepository.save(new Employee("张三", "00001", orgId1)).getId();
-		employeeRepository.save(new Employee("李四", "00002", orgId1)).getId();
-		organizationRelationRepository.save(new OrganizationRelation(new OrganizationRelationPK(unit1, orgId1)));
-		unit1 = organizationRepository.save(organizationRepository.save(new Organization("部门二", "01-02",OrganizationTypeEnum.UNIT))).getId();
-		organizationRelationRepository.save(new OrganizationRelation(new OrganizationRelationPK(unit1, orgId1)));
-		unit1 = organizationRepository.save(organizationRepository.save(new Organization("部门三", "01-03",OrganizationTypeEnum.UNIT))).getId();
-		organizationRelationRepository.save(new OrganizationRelation(new OrganizationRelationPK(unit1, orgId1)));
+		Organization organization = new Organization("总公司", "01", OrganizationTypeEnum.ORGANIZATION);
+		entityManager.persist(organization);
+		orgId1 = organization.getId();
+		organization = new Organization("部门一", "01-01", OrganizationTypeEnum.UNIT);
+		entityManager.persist(organization);
+		unit1 = organization.getId();
+		Employee employee = new Employee("张三", "00001", orgId1);
+		entityManager.persist(employee);
+		emp = employee.getId();
+		employee = new Employee("李四", "00002", orgId1);
+		entityManager.persist(employee);
 
-		orgId2 = organizationRepository.save(new Organization("分公司一", "0101",OrganizationTypeEnum.ORGANIZATION)).getId();
-		organizationRelationRepository.save(new OrganizationRelation(new OrganizationRelationPK(orgId2, orgId1)));
-		unit1 = organizationRepository.save(organizationRepository.save(new Organization("部门一", "0101-01",OrganizationTypeEnum.UNIT))).getId();
-		organizationRelationRepository.save(new OrganizationRelation(new OrganizationRelationPK(unit1, orgId2)));
-		unit1 = organizationRepository.save(organizationRepository.save(new Organization("部门二", "0101-02",OrganizationTypeEnum.UNIT))).getId();
-		organizationRelationRepository.save(new OrganizationRelation(new OrganizationRelationPK(unit1, orgId2)));
-		unit1 = organizationRepository.save(organizationRepository.save(new Organization("部门三", "0101-03",OrganizationTypeEnum.UNIT))).getId();
-		organizationRelationRepository.save(new OrganizationRelation(new OrganizationRelationPK(unit1, orgId2)));
-		
-		orgId2 = organizationRepository.save(new Organization("分公司二", "0102",OrganizationTypeEnum.ORGANIZATION)).getId();
-		organizationRelationRepository.save(new OrganizationRelation(new OrganizationRelationPK(orgId2, orgId1)));
-		unit1 = organizationRepository.save(organizationRepository.save(new Organization("部门一", "0102-01",OrganizationTypeEnum.UNIT))).getId();
-		organizationRelationRepository.save(new OrganizationRelation(new OrganizationRelationPK(unit1, orgId2)));
-		unit1 = organizationRepository.save(organizationRepository.save(new Organization("部门二", "0102-02",OrganizationTypeEnum.UNIT))).getId();
-		organizationRelationRepository.save(new OrganizationRelation(new OrganizationRelationPK(unit1, orgId2)));
-		unit1 = organizationRepository.save(organizationRepository.save(new Organization("部门三", "0102-03",OrganizationTypeEnum.UNIT))).getId();
-		organizationRelationRepository.save(new OrganizationRelation(new OrganizationRelationPK(unit1, orgId2)));
-		
-		orgId2 = organizationRepository.save(new Organization("分公司三", "0103",OrganizationTypeEnum.ORGANIZATION)).getId();
-		organizationRelationRepository.save(new OrganizationRelation(new OrganizationRelationPK(orgId2, orgId1)));
-		unit1 = organizationRepository.save(organizationRepository.save(new Organization("部门一", "0103-01",OrganizationTypeEnum.UNIT))).getId();
-		organizationRelationRepository.save(new OrganizationRelation(new OrganizationRelationPK(unit1, orgId2)));
-		unit1 = organizationRepository.save(organizationRepository.save(new Organization("部门二", "0103-02",OrganizationTypeEnum.UNIT))).getId();
-		organizationRelationRepository.save(new OrganizationRelation(new OrganizationRelationPK(unit1, orgId2)));
-		unit1 = organizationRepository.save(organizationRepository.save(new Organization("部门三", "0103-03",OrganizationTypeEnum.UNIT))).getId();
-		organizationRelationRepository.save(new OrganizationRelation(new OrganizationRelationPK(unit1, orgId2)));
-		
+		OrganizationRelation organizationRelation = new OrganizationRelation(unit1, orgId1);
+		entityManager.persist(organizationRelation);
+
+		organization = new Organization("部门二", "01-02", OrganizationTypeEnum.UNIT);
+		entityManager.persist(organization);
+		unit1 = organization.getId();
+		organizationRelation = new OrganizationRelation(unit1, orgId1);
+		entityManager.persist(organizationRelation);
+		organization = new Organization("部门三", "01-03", OrganizationTypeEnum.UNIT);
+		entityManager.persist(organization);
+		unit1 = organization.getId();
+		organizationRelation = new OrganizationRelation(unit1, orgId1);
+		entityManager.persist(organizationRelation);
+
+		organization = new Organization("分公司一", "0101", OrganizationTypeEnum.ORGANIZATION);
+		entityManager.persist(organization);
+		orgId2 = organization.getId();
+		organizationRelation = new OrganizationRelation(orgId2, orgId1);
+		entityManager.persist(organizationRelation);
+		organization = new Organization("部门一", "0101-01", OrganizationTypeEnum.UNIT);
+		entityManager.persist(organization);
+		unit1 = organization.getId();
+		organizationRelation = new OrganizationRelation(unit1, orgId2);
+		entityManager.persist(organizationRelation);
+		organization = new Organization("部门二", "0101-02", OrganizationTypeEnum.UNIT);
+		entityManager.persist(organization);
+		unit1 = organization.getId();
+		organizationRelation = new OrganizationRelation(unit1, orgId2);
+		entityManager.persist(organizationRelation);
+		organization = new Organization("部门三", "0101-03", OrganizationTypeEnum.UNIT);
+		entityManager.persist(organization);
+		unit1 = organization.getId();
+		organizationRelation = new OrganizationRelation(unit1, orgId2);
+		entityManager.persist(organizationRelation);
+
+		organization = new Organization("分公司二", "0102", OrganizationTypeEnum.ORGANIZATION);
+		entityManager.persist(organization);
+		orgId2 = organization.getId();
+		organizationRelation = new OrganizationRelation(orgId2, orgId1);
+		entityManager.persist(organizationRelation);
+		organization = new Organization("部门一", "0102-01", OrganizationTypeEnum.UNIT);
+		entityManager.persist(organization);
+		unit1 = organization.getId();
+		organizationRelation = new OrganizationRelation(unit1, orgId2);
+		entityManager.persist(organizationRelation);
+		organization = new Organization("部门二", "0102-02", OrganizationTypeEnum.UNIT);
+		entityManager.persist(organization);
+		unit1 = organization.getId();
+		organizationRelation = new OrganizationRelation(unit1, orgId2);
+		entityManager.persist(organizationRelation);
+		organization = new Organization("部门三", "0102-03", OrganizationTypeEnum.UNIT);
+		entityManager.persist(organization);
+		unit1 = organization.getId();
+		organizationRelation = new OrganizationRelation(unit1, orgId2);
+		entityManager.persist(organizationRelation);
+
+		organization = new Organization("分公司三", "0103", OrganizationTypeEnum.ORGANIZATION);
+		entityManager.persist(organization);
+		orgId2 = organization.getId();
+		organizationRelation = new OrganizationRelation(orgId2, orgId1);
+		entityManager.persist(organizationRelation);
+		organization = new Organization("部门一", "0103-01", OrganizationTypeEnum.UNIT);
+		entityManager.persist(organization);
+		unit1 = organization.getId();
+		organizationRelation = new OrganizationRelation(unit1, orgId2);
+		entityManager.persist(organizationRelation);
+		organization = new Organization("部门二", "0103-02", OrganizationTypeEnum.UNIT);
+		entityManager.persist(organization);
+		unit1 = organization.getId();
+		organizationRelation = new OrganizationRelation(unit1, orgId2);
+		entityManager.persist(organizationRelation);
+		organization = new Organization("部门三", "0103-03", OrganizationTypeEnum.UNIT);
+		entityManager.persist(organization);
+		unit1 = organization.getId();
+		organizationRelation = new OrganizationRelation(unit1, orgId2);
+		entityManager.persist(organizationRelation);
+
 		Map<PermissionEnum, Map<PermissionTargetEnum, List<PermissionExpression<?>>>> allowPermissions = new HashMap<PermissionEnum, Map<PermissionTargetEnum, List<PermissionExpression<?>>>>();
 		Map<PermissionTargetEnum, List<PermissionExpression<?>>> targetMap = new HashMap<PermissionTargetEnum, List<PermissionExpression<?>>>();
 		List<PermissionExpression<?>> expressions = new ArrayList<PermissionExpression<?>>();
@@ -155,24 +186,29 @@ public class JPAUnitTest {
 		targetMap.put(PermissionTargetEnum.EMPLOYEE, expressions);
 		allowPermissions.put(PermissionEnum.AUTHOR, targetMap);
 //		String permissionTokenId = permissionTokenRepository.save(new SparrowPermissionToken(new PermissionToken(allowPermissions,null))).getId();
-		
+
 		Model model = new Model("cn.sparrow.permission.model.organization.Organization");
-		model.setSparrowPermissionToken(permissionTokenRepository.save(new SparrowPermissionToken(new PermissionToken(allowPermissions,null))));
-		
-		String modelName = modelRepository.save(model).getName();
-		
-		employeeUserRepository.save(new EmployeeUser(new EmployeeUserPK("user1",emp)));
+		SparrowPermissionToken sparrowPermissionToken = new SparrowPermissionToken(
+				new PermissionToken(allowPermissions, null));
+		entityManager.persist(sparrowPermissionToken);
+		model.setSparrowPermissionToken(sparrowPermissionToken);
+		entityManager.persist(model);
+		String modelName = model.getName();
+		EmployeeUser employeeUser = new EmployeeUser(new EmployeeUserPK("user1", emp));
+		entityManager.persist(employeeUser);
+		entityManager.getTransaction().commit();
+//		entityManager.getTransaction().commit();
 	}
 
 	@Test
 	public void should_find_no_tutorials_if_repository_is_empty() {
-		
-		
-		CurrentUser.INSTANCE.logIn("user10");
-		
-		Organization organization = new Organization("asdffd","dsafdf", OrganizationTypeEnum.UNIT);
+		System.out
+				.println("-----------" + entityManager.createNamedQuery("EmployeeUser.findAll").getResultList().size());
+		CurrentUser.INSTANCE.logIn("user1");
+		Organization organization = new Organization("asdffd", "dsafdf", OrganizationTypeEnum.UNIT);
 //		System.out.println(organizationRepository.save(organization).getId());
-		assertNotNull(organizationRepository.save(organization));
+		entityManager.persist(organization);
+		assertNotNull(organization.getId());
 	}
 
 	@Test

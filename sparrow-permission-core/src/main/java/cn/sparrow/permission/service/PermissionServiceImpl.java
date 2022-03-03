@@ -1,30 +1,25 @@
 package cn.sparrow.permission.service;
 
+import java.awt.geom.IllegalPathStateException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
 import javax.validation.constraints.NotNull;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import cn.sparrow.permission.constant.PermissionEnum;
 import cn.sparrow.permission.constant.PermissionTargetEnum;
 import cn.sparrow.permission.constant.PermissionTypeEnum;
+import cn.sparrow.permission.listener.CurrentEntityManagerFactory;
+import cn.sparrow.permission.model.organization.EmployeeUser;
 import cn.sparrow.permission.model.organization.OrganizationPositionLevelPK;
 import cn.sparrow.permission.model.organization.OrganizationRolePK;
 
-@Service
 public class PermissionServiceImpl implements PermissionService {
 
-	@Autowired
-	PermissionExpressionService<String> permissionExpressionService;
-	@Autowired
-	PermissionExpressionService<OrganizationRolePK> permissionExpressionServiceRole;
-	@Autowired
-	PermissionExpressionService<OrganizationPositionLevelPK> permissionExpressionServicePositionLevel;
-	@Autowired
+	PermissionExpressionService<String> permissionExpressionService = new PermissionExpressionServiceImpl<String>();
+	PermissionExpressionService<OrganizationRolePK> permissionExpressionServiceRole = new PermissionExpressionServiceImpl<OrganizationRolePK>();
+	PermissionExpressionService<OrganizationPositionLevelPK> permissionExpressionServicePositionLevel = new PermissionExpressionServiceImpl<OrganizationPositionLevelPK>();
 	PermissionExpressionServiceOrganization permissionExpressionServiceOrganization;
 
 	@Override
@@ -218,12 +213,19 @@ public class PermissionServiceImpl implements PermissionService {
 	}
 
 	@Override
-	public boolean hasPermission(String employeeId, String tokenId, PermissionEnum permission) {
-		// TODO Auto-generated method stub
+	public boolean hasPermission(String employeeId, String tokenId, PermissionEnum permissionEnum) {
 		return false;
 	}
 
 	private List<PermissionExpression<?>> nullToEmptyList(List<PermissionExpression<?>> list) {
 		return list == null ? Collections.emptyList() : list;
+	}
+
+	@Override
+	public boolean hasPermission(String username, PermissionToken permissionToken, PermissionEnum permissionEnum) {
+		if (username.equals("ROOT"))
+			return true;
+		return this.hasPermission(new EmployeeTokenServiceImpl().getEmployeeToken(username), permissionToken,
+				permissionEnum);
 	}
 }

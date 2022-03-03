@@ -1,23 +1,22 @@
 package cn.sparrow.permission.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 import cn.sparrow.permission.model.organization.OrganizationRelation;
-import cn.sparrow.permission.repository.organization.OrganizationRelationRepository;
-import cn.sparrow.permission.repository.organization.OrganizationRepository;
 
-@Service
 public class OrganizationHelper {
-	@Autowired
-	OrganizationRepository organizationRepository;
-
-	@Autowired
-	OrganizationRelationRepository organizationRelationRepository;
+	@PersistenceContext
+	EntityManager entityManager;
 
 	public boolean isAbove(String ancestorId, String orgId) {
+		List<OrganizationRelation> organizationRelations = entityManager
+				.createNamedQuery("findByOrganizationId", OrganizationRelation.class)
+				.setParameter("organizationId", orgId).getResultList();
 		boolean flag = false;
-		for (OrganizationRelation orgRelation : organizationRelationRepository.findByIdOrganizationId(orgId)) {
+		for (OrganizationRelation orgRelation : organizationRelations) {
 			if (ancestorId.equals(orgRelation.getId().getParentId()))
 				return true;
 			else {
@@ -26,10 +25,13 @@ public class OrganizationHelper {
 		}
 		return flag;
 	}
-	
+
 	public boolean isBelow(String descendantsId, String orgId) {
+		List<OrganizationRelation> organizationRelations = entityManager
+				.createNamedQuery("findByOrganizationId", OrganizationRelation.class).setParameter("parentId", orgId)
+				.getResultList();
 		boolean flag = false;
-		for (OrganizationRelation orgRelation : organizationRelationRepository.findByIdParentId(orgId)) {
+		for (OrganizationRelation orgRelation : organizationRelations) {
 			if (descendantsId.equals(orgRelation.getId().getOrganizationId()))
 				return true;
 			else {

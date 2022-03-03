@@ -1,28 +1,24 @@
 package cn.sparrow.permission.service;
 
+import javax.persistence.EntityManager;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
+import cn.sparrow.permission.listener.CurrentEntityManagerFactory;
 import cn.sparrow.permission.model.Model;
 import cn.sparrow.permission.model.SparrowPermissionToken;
-import cn.sparrow.permission.repository.ModelRepository;
-import cn.sparrow.permission.repository.PermissionTokenRepository;
 
-@Service
 public class PermissionTokenServiceImpl implements PermissionTokenService {
-
-	@Autowired
-	PermissionTokenRepository permissionTokenRepository;
-	@Autowired
-	ModelRepository modelRepository;
+	
+	EntityManager entityManager;
+	
+	public PermissionTokenServiceImpl() {
+		this.entityManager = CurrentEntityManagerFactory.INSTANCE.getEntityManager();
+	}
 
 	@Override
-	public SparrowPermissionToken buildToken(@NotBlank String permissionId) {
-
-		return permissionTokenRepository.findById(permissionId).get();
+	public SparrowPermissionToken buildToken(@NotBlank String permissionTokenId) {
+		return entityManager.find(SparrowPermissionToken.class, permissionTokenId);
 	}
 
 	@Override
@@ -40,7 +36,10 @@ public class PermissionTokenServiceImpl implements PermissionTokenService {
 	@Override
 	public SparrowPermissionToken create(PermissionToken permissionToken) {
 		SparrowPermissionToken sparrowPermissionToken = new SparrowPermissionToken(permissionToken);
-		return permissionTokenRepository.save(sparrowPermissionToken);
+		entityManager.getTransaction().begin();
+		entityManager.persist(sparrowPermissionToken);
+		entityManager.getTransaction().commit();
+		return sparrowPermissionToken;
 	}
 
 	@Override
@@ -51,7 +50,7 @@ public class PermissionTokenServiceImpl implements PermissionTokenService {
 
 	@Override
 	public PermissionToken getModelPermissionToken(String modelName) {
-		Model model = modelRepository.findById(modelName).orElse(null);
+		Model model = entityManager.find(Model.class, modelName);
 		if (model != null) {
 			return model.getSparrowPermissionToken().getPermissionToken();
 		} else {
