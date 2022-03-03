@@ -2,7 +2,7 @@ package cn.sparrow.permission.service;
 
 import java.util.List;
 
-import javax.annotation.Nullable;
+import javax.validation.constraints.Null;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -46,7 +46,7 @@ public interface ApiService {
 	public void delete(@NotNull @RequestBody final String[] ids);
 
 	@GetMapping("/sparrowApis/permissions")
-	public Page<?> getPermission(@Nullable @RequestParam("apiId") String urlId, Pageable pageable);
+	public Page<?> getPermission(@Null @RequestParam("apiId") String urlId, Pageable pageable);
 
 	@PostMapping("/sparrowApis/permissions")
 	public void addPermission(@NotNull @RequestBody final List<SysroleApiPK> sysroleUrlPermissionPKs);

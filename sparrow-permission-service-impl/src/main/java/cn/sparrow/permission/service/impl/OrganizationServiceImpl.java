@@ -25,19 +25,19 @@ import cn.sparrow.permission.model.organization.OrganizationRelation;
 import cn.sparrow.permission.model.organization.OrganizationRelationPK;
 import cn.sparrow.permission.model.organization.OrganizationRole;
 import cn.sparrow.permission.model.organization.OrganizationRolePK;
-import cn.sparrow.permission.repository.organization.EmployeeRepository;
-import cn.sparrow.permission.repository.organization.OrganizationGroupRepository;
-import cn.sparrow.permission.repository.organization.OrganizationLevelRepository;
-import cn.sparrow.permission.repository.organization.OrganizationPositionLevelRelationRepository;
-import cn.sparrow.permission.repository.organization.OrganizationRelationRepository;
-import cn.sparrow.permission.repository.organization.OrganizationRepository;
-import cn.sparrow.permission.repository.organization.OrganizationRoleRelationRepository;
-import cn.sparrow.permission.repository.organization.OrganizationRoleRepository;
 import cn.sparrow.permission.service.EmployeeService;
 import cn.sparrow.permission.service.GroupService;
 import cn.sparrow.permission.service.OrganizationService;
 import cn.sparrow.permission.service.PositionLevelService;
 import cn.sparrow.permission.service.RoleService;
+import cn.sparrow.permission.service.repository.EmployeeRepository;
+import cn.sparrow.permission.service.repository.OrganizationGroupRepository;
+import cn.sparrow.permission.service.repository.OrganizationLevelRepository;
+import cn.sparrow.permission.service.repository.OrganizationPositionLevelRelationRepository;
+import cn.sparrow.permission.service.repository.OrganizationRelationRepository;
+import cn.sparrow.permission.service.repository.OrganizationRepository;
+import cn.sparrow.permission.service.repository.OrganizationRoleRelationRepository;
+import cn.sparrow.permission.service.repository.OrganizationRoleRepository;
 
 @Service
 public class OrganizationServiceImpl implements OrganizationService{

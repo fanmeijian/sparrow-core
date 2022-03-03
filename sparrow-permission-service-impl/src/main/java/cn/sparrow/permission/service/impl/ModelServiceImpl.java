@@ -22,10 +22,10 @@ import cn.sparrow.permission.model.ModelAttribute;
 import cn.sparrow.permission.model.ModelAttributePK;
 import cn.sparrow.permission.model.ModelPermission;
 import cn.sparrow.permission.model.SparrowPermissionToken;
-import cn.sparrow.permission.repository.ModelAttributeRepository;
-import cn.sparrow.permission.repository.ModelRepository;
-import cn.sparrow.permission.repository.PermissionTokenRepository;
 import cn.sparrow.permission.service.ModelService;
+import cn.sparrow.permission.service.repository.ModelAttributeRepository;
+import cn.sparrow.permission.service.repository.ModelRepository;
+import cn.sparrow.permission.service.repository.PermissionTokenRepository;
 
 @Service
 public class ModelServiceImpl implements ModelService{

@@ -1,6 +1,5 @@
 package cn.sparrow.permission.service;
 
-import java.awt.geom.IllegalPathStateException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -10,13 +9,12 @@ import javax.validation.constraints.NotNull;
 import cn.sparrow.permission.constant.PermissionEnum;
 import cn.sparrow.permission.constant.PermissionTargetEnum;
 import cn.sparrow.permission.constant.PermissionTypeEnum;
-import cn.sparrow.permission.listener.CurrentEntityManagerFactory;
-import cn.sparrow.permission.model.organization.EmployeeUser;
 import cn.sparrow.permission.model.organization.OrganizationPositionLevelPK;
 import cn.sparrow.permission.model.organization.OrganizationRolePK;
 
 public class PermissionServiceImpl implements PermissionService {
 
+	
 	PermissionExpressionService<String> permissionExpressionService = new PermissionExpressionServiceImpl<String>();
 	PermissionExpressionService<OrganizationRolePK> permissionExpressionServiceRole = new PermissionExpressionServiceImpl<OrganizationRolePK>();
 	PermissionExpressionService<OrganizationPositionLevelPK> permissionExpressionServicePositionLevel = new PermissionExpressionServiceImpl<OrganizationPositionLevelPK>();

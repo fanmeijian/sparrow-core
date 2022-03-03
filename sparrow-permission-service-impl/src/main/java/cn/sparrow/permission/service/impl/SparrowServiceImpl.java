@@ -29,13 +29,13 @@ import cn.sparrow.permission.model.AuditLog;
 import cn.sparrow.permission.model.Model;
 import cn.sparrow.permission.model.ModelAttribute;
 import cn.sparrow.permission.model.ModelAttributePK;
-import cn.sparrow.permission.repository.ApiRepository;
-import cn.sparrow.permission.repository.AuditLogRepository;
-import cn.sparrow.permission.repository.ModelAttributeRepository;
-import cn.sparrow.permission.repository.ModelRepository;
 import cn.sparrow.permission.service.ModelService;
 import cn.sparrow.permission.service.SparrowService;
 import cn.sparrow.permission.service.SysroleService;
+import cn.sparrow.permission.service.repository.ApiRepository;
+import cn.sparrow.permission.service.repository.AuditLogRepository;
+import cn.sparrow.permission.service.repository.ModelAttributeRepository;
+import cn.sparrow.permission.service.repository.ModelRepository;
 
 @Service
 public class SparrowServiceImpl implements SparrowService{

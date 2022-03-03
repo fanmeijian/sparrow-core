@@ -2,12 +2,12 @@ package cn.sparrow.permission.service.impl;
 
 import java.util.List;
 
-import javax.annotation.Nullable;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import cn.sparrow.permission.model.ModelAttribute;
 import cn.sparrow.permission.model.ModelAttributePK;
-import cn.sparrow.permission.repository.ModelAttributeRepository;
 import cn.sparrow.permission.service.ModelAttributeService;
+import cn.sparrow.permission.service.repository.ModelAttributeRepository;
 
 @Service
 public class ModelAttributeServiceImpl implements ModelAttributeService {

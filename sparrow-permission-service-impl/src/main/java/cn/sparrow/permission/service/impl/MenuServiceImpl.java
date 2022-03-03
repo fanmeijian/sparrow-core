@@ -16,14 +16,14 @@ import cn.sparrow.permission.model.Menu;
 import cn.sparrow.permission.model.SparrowTree;
 import cn.sparrow.permission.model.SysroleMenu;
 import cn.sparrow.permission.model.UserMenu;
-import cn.sparrow.permission.repository.MenuRepository;
-import cn.sparrow.permission.repository.SysroleMenuRepository;
-import cn.sparrow.permission.repository.UserMenuRepository;
 import cn.sparrow.permission.service.MenuPermission;
 import cn.sparrow.permission.service.MenuService;
 import cn.sparrow.permission.service.SortService;
 import cn.sparrow.permission.service.SysroleService;
 import cn.sparrow.permission.service.TreeService;
+import cn.sparrow.permission.service.repository.MenuRepository;
+import cn.sparrow.permission.service.repository.SysroleMenuRepository;
+import cn.sparrow.permission.service.repository.UserMenuRepository;
 
 @Service
 public class MenuServiceImpl implements MenuService{

@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service;
 import cn.sparrow.permission.constant.PreserveSysroleEnum;
 import cn.sparrow.permission.model.UserSysrole;
 import cn.sparrow.permission.model.UserSysrolePK;
-import cn.sparrow.permission.repository.UserMenuRepository;
-import cn.sparrow.permission.repository.UserSysroleRepository;
+import cn.sparrow.permission.service.repository.UserMenuRepository;
+import cn.sparrow.permission.service.repository.UserSysroleRepository;
 
 @Service
 public class UserService {

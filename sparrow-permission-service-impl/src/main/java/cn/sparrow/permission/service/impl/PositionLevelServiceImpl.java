@@ -15,11 +15,11 @@ import cn.sparrow.permission.model.organization.OrganizationPositionLevel;
 import cn.sparrow.permission.model.organization.OrganizationPositionLevelPK;
 import cn.sparrow.permission.model.organization.OrganizationPositionLevelRelation;
 import cn.sparrow.permission.model.organization.PositionLevel;
-import cn.sparrow.permission.repository.organization.EmployeeOrganizationLevelRepository;
-import cn.sparrow.permission.repository.organization.OrganizationLevelRelationRepository;
-import cn.sparrow.permission.repository.organization.OrganizationLevelRepository;
-import cn.sparrow.permission.repository.organization.PositionLevelRepository;
 import cn.sparrow.permission.service.PositionLevelService;
+import cn.sparrow.permission.service.repository.EmployeeOrganizationLevelRepository;
+import cn.sparrow.permission.service.repository.OrganizationLevelRelationRepository;
+import cn.sparrow.permission.service.repository.OrganizationLevelRepository;
+import cn.sparrow.permission.service.repository.PositionLevelRepository;
 
 @Service
 public class PositionLevelServiceImpl implements PositionLevelService{

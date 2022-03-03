@@ -10,9 +10,9 @@ import org.springframework.stereotype.Service;
 import cn.sparrow.permission.model.SparrowApi;
 import cn.sparrow.permission.model.SysroleApiPK;
 import cn.sparrow.permission.model.SysroleApiPermission;
-import cn.sparrow.permission.repository.ApiRepository;
-import cn.sparrow.permission.repository.SysroleApiPermissionRepository;
 import cn.sparrow.permission.service.ApiService;
+import cn.sparrow.permission.service.repository.ApiRepository;
+import cn.sparrow.permission.service.repository.SysroleApiPermissionRepository;
 
 @Service
 public class ApiServiceImpl implements ApiService{

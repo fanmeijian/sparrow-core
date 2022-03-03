@@ -3,7 +3,7 @@ package cn.sparrow.permission.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
-import cn.sparrow.permission.repository.app.FlowNoRepository;
+import cn.sparrow.permission.service.repository.FlowNoRepository;
 
 
 @RestController

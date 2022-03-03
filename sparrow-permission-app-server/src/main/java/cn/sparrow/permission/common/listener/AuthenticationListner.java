@@ -5,12 +5,15 @@ import org.springframework.security.authentication.event.AbstractAuthenticationF
 import org.springframework.security.authentication.event.AuthenticationSuccessEvent;
 import org.springframework.stereotype.Component;
 
+import cn.sparrow.permission.listener.CurrentUser;
+
 @Component
 public class AuthenticationListner {
 
   @EventListener
   public void onSuccess(AuthenticationSuccessEvent success) {
     System.out.println(success);
+    CurrentUser.INSTANCE.logIn(success.getAuthentication().getName());
   }
 
   @EventListener

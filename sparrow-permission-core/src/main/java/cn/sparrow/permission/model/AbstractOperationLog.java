@@ -41,13 +41,13 @@ public abstract class AbstractOperationLog implements Serializable {
 	@UpdateTimestamp
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date modifiedDate; // 最后更新时间
-	
+
 	@PrePersist
 	private void preCreate() {
 		this.createdBy = CurrentUser.INSTANCE.get();
 		this.modifiedBy = CurrentUser.INSTANCE.get();
 	}
-	
+
 	@PreUpdate
 	private void preUpdate() {
 		this.modifiedBy = CurrentUser.INSTANCE.get();

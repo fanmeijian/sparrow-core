@@ -3,13 +3,12 @@ package cn.sparrow.permission.service;
 import java.util.List;
 
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 
 import cn.sparrow.permission.model.organization.OrganizationRelation;
 
 public class OrganizationHelper {
-	@PersistenceContext
-	EntityManager entityManager;
+
+	private EntityManager entityManager;
 
 	public boolean isAbove(String ancestorId, String orgId) {
 		List<OrganizationRelation> organizationRelations = entityManager
@@ -39,5 +38,13 @@ public class OrganizationHelper {
 			}
 		}
 		return flag;
+	}
+
+	public OrganizationHelper(EntityManager entityManager) {
+		this.entityManager = entityManager;
+	}
+
+	public OrganizationHelper() {
+
 	}
 }

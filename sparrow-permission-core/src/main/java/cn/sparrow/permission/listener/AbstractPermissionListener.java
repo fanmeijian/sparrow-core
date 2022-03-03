@@ -1,5 +1,6 @@
 package cn.sparrow.permission.listener;
 
+import javax.persistence.EntityManager;
 import javax.persistence.MappedSuperclass;
 
 import cn.sparrow.permission.service.EmployeeTokenService;
@@ -14,7 +15,7 @@ public abstract class AbstractPermissionListener {
 	protected PermissionService permissionService;
 	protected PermissionTokenService permissionTokenService;
 	protected EmployeeTokenService employeeTokenService;
-
+	protected EntityManager entityManager;
 //	@Autowired
 //	protected ObjectFactory<PermissionService> permissionServiceFactory;
 //	@Autowired
@@ -26,9 +27,9 @@ public abstract class AbstractPermissionListener {
 //		this.permissionService = permissionServiceFactory.getObject();
 //		this.permissionTokenService = permissionTokenServiceFactory.getObject();
 //		this.employeeTokenService = employeeTokenServiceFactory.getObject();
-		
+
 		this.permissionService = new PermissionServiceImpl();
-		this.permissionTokenService = new PermissionTokenServiceImpl();
-		this.employeeTokenService = new EmployeeTokenServiceImpl();
+		this.permissionTokenService = new PermissionTokenServiceImpl(entityManager);
+		this.employeeTokenService = new EmployeeTokenServiceImpl(entityManager);
 	}
 }

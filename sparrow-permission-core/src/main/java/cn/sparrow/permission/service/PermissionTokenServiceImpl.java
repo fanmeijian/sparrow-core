@@ -4,17 +4,12 @@ import javax.persistence.EntityManager;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-import cn.sparrow.permission.listener.CurrentEntityManagerFactory;
 import cn.sparrow.permission.model.Model;
 import cn.sparrow.permission.model.SparrowPermissionToken;
 
 public class PermissionTokenServiceImpl implements PermissionTokenService {
-	
-	EntityManager entityManager;
-	
-	public PermissionTokenServiceImpl() {
-		this.entityManager = CurrentEntityManagerFactory.INSTANCE.getEntityManager();
-	}
+
+	private EntityManager entityManager;
 
 	@Override
 	public SparrowPermissionToken buildToken(@NotBlank String permissionTokenId) {
@@ -56,6 +51,14 @@ public class PermissionTokenServiceImpl implements PermissionTokenService {
 		} else {
 			return null;
 		}
+
+	}
+
+	public PermissionTokenServiceImpl(EntityManager entityManager) {
+		this.entityManager = entityManager;
+	}
+
+	public PermissionTokenServiceImpl() {
 
 	}
 

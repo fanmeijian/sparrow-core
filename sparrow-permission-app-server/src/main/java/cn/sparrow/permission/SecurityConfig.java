@@ -61,7 +61,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 					"初始化拒绝额访问资源:" + url.getId() + " " + url.getMethod() + " " + url.getName() + " " + url.getUri());
 
 			try {
-				http.csrf().disable().authorizeRequests().antMatchers(url.getMethod(), url.getUri()).denyAll();
+				http.csrf().disable().authorizeRequests().antMatchers(url.getMethod().toString(), url.getUri()).denyAll();
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -70,7 +70,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		urlPermissionService.getUrlsByClientIdAndPermission(clientId, ApiPermissionEnum.ANONYMOUS).forEach(url -> {
 			logger.debug("初始化匿名访问资源:" + url.getId() + " " + url.getMethod() + " " + url.getName() + " " + url.getUri());
 			try {
-				http.csrf().disable().authorizeRequests().antMatchers(url.getMethod(), url.getUri()).permitAll();
+				http.csrf().disable().authorizeRequests().antMatchers(url.getMethod().toString(), url.getUri()).permitAll();
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -81,7 +81,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			try {
 			  http.csrf().disable()
               .authorizeRequests(
-                      (authorizeRequests) -> authorizeRequests.antMatchers(url.getMethod(), url.getUri()).authenticated())
+                      (authorizeRequests) -> authorizeRequests.antMatchers(url.getMethod().toString(), url.getUri()).authenticated())
               .oauth2ResourceServer().jwt().jwtAuthenticationConverter(jwtAuthenticationConverter());
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
@@ -96,7 +96,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			try {
 				http.csrf().disable()
 						.authorizeRequests(
-								(authorizeRequests) -> authorizeRequests.antMatchers(url.getMethod(), url.getUri())
+								(authorizeRequests) -> authorizeRequests.antMatchers(url.getMethod().toString(), url.getUri())
 										.hasAnyRole("SYSADMIN"))
 						.oauth2ResourceServer().jwt().jwtAuthenticationConverter(jwtAuthenticationConverter());
 			} catch (Exception e) {

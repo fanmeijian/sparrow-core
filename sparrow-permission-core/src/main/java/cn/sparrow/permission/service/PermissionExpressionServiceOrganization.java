@@ -1,8 +1,10 @@
 package cn.sparrow.permission.service;
 
+import javax.persistence.EntityManager;
+
 public class PermissionExpressionServiceOrganization {
 
-	private OrganizationHelper organizationHelper = new OrganizationHelper();
+	private OrganizationHelper organizationHelper;
 
 	public boolean evaluate(String id, PermissionExpression<?> permissionExpression) {
 		switch (permissionExpression.getExpression()) {
@@ -42,6 +44,14 @@ public class PermissionExpressionServiceOrganization {
 			break;
 		}
 		return false;
+	}
+
+	public PermissionExpressionServiceOrganization(EntityManager entityManager) {
+		this.organizationHelper = new OrganizationHelper(entityManager);
+	}
+
+	public PermissionExpressionServiceOrganization() {
+
 	}
 
 }

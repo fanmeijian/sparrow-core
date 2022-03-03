@@ -4,8 +4,8 @@ import java.util.List;
 import java.util.Set;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Null;
 
-import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -110,5 +110,5 @@ public interface GroupService {
 
 	@Operation(summary = "获取组织树")
 	@GetMapping("/groups/getTreeByParentId")
-	public SparrowTree<Group, String> tree(@Nullable @RequestParam("parentId") String parentId);
+	public SparrowTree<Group, String> tree(@Null @RequestParam("parentId") String parentId);
 }

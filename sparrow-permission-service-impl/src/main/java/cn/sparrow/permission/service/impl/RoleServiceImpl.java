@@ -17,11 +17,11 @@ import cn.sparrow.permission.model.organization.OrganizationRolePK;
 import cn.sparrow.permission.model.organization.OrganizationRoleRelation;
 import cn.sparrow.permission.model.organization.OrganizationRoleRelationPK;
 import cn.sparrow.permission.model.organization.Role;
-import cn.sparrow.permission.repository.organization.EmployeeOrganizationRoleRepository;
-import cn.sparrow.permission.repository.organization.OrganizationRoleRelationRepository;
-import cn.sparrow.permission.repository.organization.OrganizationRoleRepository;
-import cn.sparrow.permission.repository.organization.RoleRepository;
 import cn.sparrow.permission.service.RoleService;
+import cn.sparrow.permission.service.repository.EmployeeOrganizationRoleRepository;
+import cn.sparrow.permission.service.repository.OrganizationRoleRelationRepository;
+import cn.sparrow.permission.service.repository.OrganizationRoleRepository;
+import cn.sparrow.permission.service.repository.RoleRepository;
 
 @Service
 public class RoleServiceImpl implements RoleService{

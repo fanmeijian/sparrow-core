@@ -2,8 +2,8 @@ package cn.sparrow.permission.service;
 
 import java.util.List;
 
-import javax.annotation.Nullable;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,7 +23,7 @@ public interface ModelService {
 	
 	@Operation(summary = "获取模型列表")
 	@GetMapping("/models")
-	public Page<Model> models(@Nullable Pageable pageable);
+	public Page<Model> models(@Null Pageable pageable);
 
 	@Operation(summary = "更新模型")
 	@PostMapping("/models")
@@ -31,7 +31,7 @@ public interface ModelService {
 
 	@Operation(summary = "获取指定模型")
 	@PostMapping("/models/getModelsInId")
-	public Page<Model> getModelsInId(@NotNull @RequestBody String[] ids, @Nullable Pageable pageable);
+	public Page<Model> getModelsInId(@NotNull @RequestBody String[] ids, @Null Pageable pageable);
 
 	@Operation(summary = "批量新增模型")
 	@PostMapping("/models/batch")

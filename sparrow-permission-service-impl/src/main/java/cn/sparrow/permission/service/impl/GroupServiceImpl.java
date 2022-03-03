@@ -27,16 +27,16 @@ import cn.sparrow.permission.model.group.GroupUserPK;
 import cn.sparrow.permission.model.organization.Employee;
 import cn.sparrow.permission.model.organization.OrganizationGroup;
 import cn.sparrow.permission.model.organization.OrganizationGroupPK;
-import cn.sparrow.permission.repository.group.GroupEmployeeRepository;
-import cn.sparrow.permission.repository.group.GroupLevelRepository;
-import cn.sparrow.permission.repository.group.GroupOrganizationRepository;
-import cn.sparrow.permission.repository.group.GroupRelationRepository;
-import cn.sparrow.permission.repository.group.GroupRepository;
-import cn.sparrow.permission.repository.group.GroupRoleRepository;
-import cn.sparrow.permission.repository.group.GroupSysroleRepository;
-import cn.sparrow.permission.repository.group.GroupUserRepository;
-import cn.sparrow.permission.repository.organization.OrganizationGroupRepository;
 import cn.sparrow.permission.service.GroupService;
+import cn.sparrow.permission.service.repository.GroupEmployeeRepository;
+import cn.sparrow.permission.service.repository.GroupLevelRepository;
+import cn.sparrow.permission.service.repository.GroupOrganizationRepository;
+import cn.sparrow.permission.service.repository.GroupRelationRepository;
+import cn.sparrow.permission.service.repository.GroupRepository;
+import cn.sparrow.permission.service.repository.GroupRoleRepository;
+import cn.sparrow.permission.service.repository.GroupSysroleRepository;
+import cn.sparrow.permission.service.repository.GroupUserRepository;
+import cn.sparrow.permission.service.repository.OrganizationGroupRepository;
 
 /**
  * 群组服务

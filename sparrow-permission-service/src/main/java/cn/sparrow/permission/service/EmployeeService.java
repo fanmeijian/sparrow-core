@@ -3,7 +3,8 @@ package cn.sparrow.permission.service;
 import java.util.List;
 import java.util.Set;
 
-import org.springframework.lang.Nullable;
+import javax.validation.constraints.Null;
+
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -51,7 +52,7 @@ public interface EmployeeService {
 
 	@Operation(summary = "获取员工关系树")
 	@GetMapping("/employees/getTreeByParentId")
-	public SparrowTree<Employee, String> tree(@Nullable @RequestParam("parentId") String parentId);
+	public SparrowTree<Employee, String> tree(@Null @RequestParam("parentId") String parentId);
 
 	@Operation(summary = "批量新增员工")
 	@PostMapping("/employees/batch")

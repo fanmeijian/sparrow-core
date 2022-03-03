@@ -1,6 +1,7 @@
 package cn.sparrow.permission.service.idconverter;
 
 import java.io.Serializable;
+
 import org.springframework.data.rest.webmvc.spi.BackendIdConverter;
 import org.springframework.stereotype.Component;
 

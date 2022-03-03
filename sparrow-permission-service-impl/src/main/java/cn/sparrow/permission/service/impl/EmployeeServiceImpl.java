@@ -15,11 +15,11 @@ import cn.sparrow.permission.model.organization.EmployeeOrganizationRole;
 import cn.sparrow.permission.model.organization.EmployeeOrganizationRolePK;
 import cn.sparrow.permission.model.organization.EmployeeRelation;
 import cn.sparrow.permission.model.organization.EmployeeRelationPK;
-import cn.sparrow.permission.repository.organization.EmployeeOrganizationLevelRepository;
-import cn.sparrow.permission.repository.organization.EmployeeOrganizationRoleRepository;
-import cn.sparrow.permission.repository.organization.EmployeeRelationRepository;
-import cn.sparrow.permission.repository.organization.EmployeeRepository;
 import cn.sparrow.permission.service.EmployeeService;
+import cn.sparrow.permission.service.repository.EmployeeOrganizationLevelRepository;
+import cn.sparrow.permission.service.repository.EmployeeOrganizationRoleRepository;
+import cn.sparrow.permission.service.repository.EmployeeRelationRepository;
+import cn.sparrow.permission.service.repository.EmployeeRepository;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService{

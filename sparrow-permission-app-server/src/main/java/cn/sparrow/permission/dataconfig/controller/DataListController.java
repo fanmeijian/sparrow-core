@@ -18,11 +18,14 @@ import cn.sparrow.permission.constant.PermissionTargetEnum;
 import cn.sparrow.permission.dataconfig.model.DataList;
 import cn.sparrow.permission.dataconfig.repository.DataListRepository;
 import cn.sparrow.permission.dataconfig.service.DataListService;
+import cn.sparrow.permission.listener.CurrentEntityManagerFactory;
 import cn.sparrow.permission.model.SparrowTree;
 import cn.sparrow.permission.service.EmployeeToken;
 import cn.sparrow.permission.service.EmployeeTokenService;
+import cn.sparrow.permission.service.EmployeeTokenServiceImpl;
 import cn.sparrow.permission.service.PermissionExpression;
 import cn.sparrow.permission.service.PermissionService;
+import cn.sparrow.permission.service.PermissionServiceImpl;
 import cn.sparrow.permission.service.PermissionToken;
 import cn.sparrow.permission.service.ViewFilter;
 
@@ -51,6 +54,7 @@ public class DataListController {
 
 	@GetMapping("/dataLists/test")
 	public boolean test() {
+		System.out.print(CurrentEntityManagerFactory.INSTANCE.get());
 		PermissionToken permissionToken = new PermissionToken();
 		EmployeeToken employeeToken = new EmployeeToken();
 		employeeToken.setEmployeeId("001");

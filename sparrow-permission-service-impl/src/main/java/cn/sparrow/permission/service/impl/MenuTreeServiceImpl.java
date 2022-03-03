@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import cn.sparrow.permission.model.Menu;
 import cn.sparrow.permission.model.SparrowTree;
 import cn.sparrow.permission.model.organization.OrganizationRelation;
-import cn.sparrow.permission.repository.organization.OrganizationRelationRepository;
+import cn.sparrow.permission.service.repository.OrganizationRelationRepository;
 
 @Service
 public class MenuTreeServiceImpl extends AbstractTreeService<Menu, String> {

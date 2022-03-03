@@ -7,20 +7,11 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
 import javax.persistence.EmbeddedId;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.Id;
-import javax.persistence.Persistence;
-import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceContextType;
 import javax.persistence.PostPersist;
 import javax.persistence.PostUpdate;
 import javax.persistence.PreRemove;
@@ -32,14 +23,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import cn.sparrow.permission.model.AuditLog;
 
-
 public final class AuditLogListener {
 
-//	@PersistenceContext(name = "cn.sparrow.permission.domain1")
-	private EntityManager entityManager ;
-	
-	private EntityManagerFactory entityManagerFactory ;
-	
+	private EntityManager entityManager;
 
 	@PostPersist
 	private void beforePersist(Object sparrowEntity) {
@@ -57,14 +43,6 @@ public final class AuditLogListener {
 	}
 
 	public void saveAuditLog(Object sparrowEntity, String revtype) {
-		Map<String, String> properties = new HashMap<String, String>();
-		properties.put("javax.persistence.jdbc.url", "jdbc:h2:mem:spr;DB_CLOSE_DELAY=-1");
-		properties.put("javax.persistence.jdbc.driver", "org.h2.Driver");
-		properties.put("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
-		properties.put("hibernate.show_sql", "true");
-		properties.put("javax.persistence.provider", "org.hibernate.jpa.HibernatePersistenceProvider");
-//		this.entityManagerFactory = Persistence.createEntityManagerFactory("cn.sparrow.permission.domain", properties);
-		
 //		this.entityManagerFactory = this.entityManagerObjectFactory.getObject();
 		String id = null;
 		try {
@@ -93,8 +71,6 @@ public final class AuditLogListener {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		entityManager = CurrentEntityManagerFactory.INSTANCE.getEntityManager();
-//		EntityManager entityManager = entityManagerFactory.createEntityManager();
 		AuditLog auditLog = new AuditLog();
 		auditLog.setObjectBytearray(SerializationUtils.serialize((Serializable) sparrowEntity));
 		auditLog.setModelName(sparrowEntity.getClass().getName());
