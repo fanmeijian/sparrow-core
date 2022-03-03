@@ -52,7 +52,7 @@ public class Model extends AbstractOperationLog implements Serializable {
 	@OneToMany(targetEntity = ModelAttribute.class, cascade = CascadeType.ALL, mappedBy = "model")
 	private List<ModelAttribute> modelAttributes;
 
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(cascade = CascadeType.ALL,optional=false)
 	@JoinColumn(name = "permission_token_id")
 	private SparrowPermissionToken sparrowPermissionToken;
 

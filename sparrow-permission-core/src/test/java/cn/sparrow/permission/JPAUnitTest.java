@@ -8,12 +8,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import javax.persistence.PersistenceContext;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ContextConfiguration;
@@ -51,7 +57,7 @@ import cn.sparrow.permission.service.PermissionTokenServiceImpl;
 @RunWith(SpringRunner.class)
 @EnableAutoConfiguration
 @DataJpaTest
-//@Import(JpaConfig.class)
+@Import(JpaConfig.class)
 @WithMockUser(username = "user2")
 @ContextConfiguration(classes = { PermissionServiceImpl.class, PermissionExpression.class,
 		PermissionExpressionServiceImpl.class, PermissionExpressionServiceOrganization.class,
@@ -77,11 +83,23 @@ public class JPAUnitTest {
 	
 	@Autowired
 	EmployeeUserRepository employeeUserRepository;
-
+	
+	@PersistenceContext
+	EntityManager entityManager;
+	
+	
 	@Before
-	
 	public void before() {
-	
+		Map<String, String> properties = new HashMap<String, String>();
+		properties.put("javax.persistence.jdbc.url", "jdbc:h2:mem:spr;DB_CLOSE_DELAY=-1");
+		properties.put("javax.persistence.jdbc.driver", "org.h2.Driver");
+		properties.put("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
+		properties.put("hibernate.show_sql", "true");
+		properties.put("javax.persistence.provider", "org.hibernate.jpa.HibernatePersistenceProvider");
+		
+//		new HibernatePersistenceProvider().createEntityManagerFactory(persistenceUnitName, properties)
+//		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("cn.sparrow.permission.domain1", properties);
+//		entityManager = entityManagerFactory.createEntityManager();
 		// 初始化组织架构
 		String orgId1="";
 		String orgId2="";

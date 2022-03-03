@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Lob;
+import javax.persistence.OneToOne;
 import javax.persistence.PostLoad;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
@@ -44,6 +45,9 @@ public class SparrowPermissionToken extends AbstractOperationLog {
 	@Column(name = "permission_token", nullable = false)
 	private byte[] permissionTokenByteArray;
 
+	@OneToOne(mappedBy = "sparrowPermissionToken")
+	private Model model;
+	
 	@Transient
 	@JsonProperty
 	private PermissionToken permissionToken;
