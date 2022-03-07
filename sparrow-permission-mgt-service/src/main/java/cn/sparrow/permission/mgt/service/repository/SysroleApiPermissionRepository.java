@@ -14,7 +14,7 @@ public interface SysroleApiPermissionRepository extends JpaRepository<SysroleApi
 
 	Page<SysroleApiPermission> findByIdApiId(String ApiId, Pageable pageable);
 	Page<SysroleApiPermission> findByIdApiIdIn(String[] ApiIds, Pageable pageable);
-	List<SysroleApiPermission> findByIdApiId(String ApiId);
+//	List<SysroleApiPermission> findByIdApiId(String ApiId);
 	
 	@Transactional
 	void deleteByIdIn(List<SysroleApiPK> ids);

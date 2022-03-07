@@ -7,6 +7,8 @@ import javax.persistence.MappedSuperclass;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.envers.Audited;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -25,6 +27,7 @@ public abstract class AbstractSparrowUuidEntity extends AbstractSparrowEntity {
 	@GenericGenerator(name = "id-generator", strategy = "uuid")
 	@GeneratedValue(generator = "id-generator")
 	@Audited
+	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	private String id;
 
 }

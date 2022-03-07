@@ -18,6 +18,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.envers.Audited;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import cn.sparrow.permission.constant.OrganizationTypeEnum;
@@ -32,6 +33,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Table(name = "spr_organization")
+@JsonIgnoreProperties(value={"children","dataPermissionToken"}, allowGetters=true)
 public class Organization extends AbstractSparrowEntity {
 
 	/**
@@ -42,6 +44,7 @@ public class Organization extends AbstractSparrowEntity {
 	@GenericGenerator(name = "id-generator", strategy = "uuid")
 	@GeneratedValue(generator = "id-generator")
 	@Audited
+	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	private String id;
 	
 	private static final long serialVersionUID = 8581950429388182649L;
@@ -62,30 +65,29 @@ public class Organization extends AbstractSparrowEntity {
 	private OrganizationTypeEnum type; // 公司还是部门
 
 	@Transient
-	@JsonProperty
+	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	private long parentCount;
 
 	@Transient
-	@JsonProperty
+	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	private long childCount;
 
 	@Transient
-	@JsonProperty
+	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	private long levelCount;
 
 	@Transient
-	@JsonProperty
+	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	private long groupCount;
 
 	@Transient
-	@JsonProperty
+	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	private long roleCount;
 
 	@Transient
-	@JsonProperty
+	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	private long employeeCount;
 
-	@JsonIgnore
 	@OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Set<OrganizationRelation> children;
 
