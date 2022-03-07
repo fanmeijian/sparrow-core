@@ -209,9 +209,9 @@ public class JPAUnitTest {
 		assertNotNull(organization.getId());
 	}
 
-	@Test
-	public void AuthorPermissionTest() {
-		assertTrue("权限检查失败", permissionService.hasPermission("1", "2", PermissionEnum.AUTHOR));
-
-	}
+//	@Test
+//	public void AuthorPermissionTest() {
+//		assertTrue("权限检查失败", permissionService.hasPermission("1", "2", PermissionEnum.AUTHOR));
+//
+//	}
 }

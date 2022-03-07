@@ -10,7 +10,6 @@ import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 import javax.validation.constraints.Size;
 
-import org.hibernate.boot.model.IdentifierGeneratorDefinition.Builder;
 import org.hibernate.envers.NotAudited;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -22,7 +21,7 @@ import lombok.EqualsAndHashCode;
 @MappedSuperclass
 @Data
 @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
-public abstract class AbstractSparrowEntity extends Builder implements Serializable{
+public abstract class AbstractSparrowEntity implements Serializable{
 	/**
 	 * 
 	 */
@@ -35,7 +34,7 @@ public abstract class AbstractSparrowEntity extends Builder implements Serializa
 //  @Transient
 //  private Model model;
 
-	@OneToOne
+	@OneToOne(targetEntity = DataPermissionToken.class)
 	@JoinColumn(name = "data_permission_token_id")
 	protected DataPermissionToken dataPermissionToken;
 
