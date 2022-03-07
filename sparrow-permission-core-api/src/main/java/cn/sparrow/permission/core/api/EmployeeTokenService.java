@@ -5,7 +5,8 @@ import cn.sparrow.permission.model.token.EmployeeToken;
 public interface EmployeeTokenService {
 
   // build it from data base, use to get the latest token
-  public EmployeeToken buildEmployeeToken(String username);
+  public EmployeeToken buildEmployeeTokenWithUsername(String username);
+  public EmployeeToken buildEmployeeTokenWithEmployeeId(String employeeId);
   /**
    * get it from data base, the token store in database when user login.
    * 
@@ -13,5 +14,6 @@ public interface EmployeeTokenService {
    * @return
    */
 
-  public EmployeeToken getEmployeeToken(String username);
+  public EmployeeToken getEmployeeTokenByUsername(String username);
+  public EmployeeToken getEmployeeTokenByEmployeeId(String employeeId);
 }

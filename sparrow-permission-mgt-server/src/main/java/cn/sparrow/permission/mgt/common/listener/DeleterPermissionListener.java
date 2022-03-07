@@ -13,7 +13,7 @@ public final class DeleterPermissionListener extends AbstractPermissionListener 
 		this.init();
 		String username = CurrentUser.INSTANCE.get();
 
-		if (!permissionService.hasPermission(employeeTokenService.getEmployeeToken(username),
+		if (!permissionService.hasPermission(employeeTokenService.getEmployeeTokenByUsername(username),
 				permissionTokenService.getModelPermissionToken(abstractEntity.getClass().getName()),
 				PermissionEnum.DELETER)) {
 			throw new ValidationException(

@@ -12,7 +12,7 @@ public final class EditorPermissionListener extends AbstractPermissionListener {
 	private void beforeAnyUpdate(AbstractSparrowEntity abstractEntity) {
 		this.init();
 		String username = CurrentUser.INSTANCE.get();
-		if (!permissionService.hasPermission(employeeTokenService.getEmployeeToken(username),
+		if (!permissionService.hasPermission(employeeTokenService.getEmployeeTokenByUsername(username),
 				permissionTokenService.getModelPermissionToken(abstractEntity.getClass().getName()),
 				PermissionEnum.EDITOR)) {
 			throw new ValidationException(

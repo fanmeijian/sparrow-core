@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.EntityManager;
 import javax.validation.constraints.NotNull;
 
 import cn.sparrow.permission.constant.PermissionEnum;
@@ -18,8 +19,16 @@ import cn.sparrow.permission.model.token.PermissionExpression;
 import cn.sparrow.permission.model.token.PermissionToken;
 
 public class PermissionServiceImpl implements PermissionService {
-
+	private EntityManager entityManager;
 	
+	public PermissionServiceImpl() {
+		
+	}
+	
+	public PermissionServiceImpl(EntityManager entityManager) {
+		this.entityManager = entityManager;
+	}
+
 	PermissionExpressionService<String> permissionExpressionService = new PermissionExpressionServiceImpl<String>();
 	PermissionExpressionService<OrganizationRolePK> permissionExpressionServiceRole = new PermissionExpressionServiceImpl<OrganizationRolePK>();
 	PermissionExpressionService<OrganizationPositionLevelPK> permissionExpressionServicePositionLevel = new PermissionExpressionServiceImpl<OrganizationPositionLevelPK>();
@@ -217,7 +226,9 @@ public class PermissionServiceImpl implements PermissionService {
 
 	@Override
 	public boolean hasPermission(String employeeId, String tokenId, PermissionEnum permissionEnum) {
-		return false;
+		EmployeeToken employeeToken = new EmployeeTokenServiceImpl(entityManager).getEmployeeTokenByEmployeeId(employeeId);
+		PermissionToken permissionToken = new PermissionTokenServiceImpl(entityManager).buildToken(tokenId).getPermissionToken();
+		return hasPermission(employeeToken, permissionToken, permissionEnum);
 	}
 
 	private List<PermissionExpression<?>> nullToEmptyList(List<PermissionExpression<?>> list) {
@@ -228,7 +239,7 @@ public class PermissionServiceImpl implements PermissionService {
 	public boolean hasPermission(String username, PermissionToken permissionToken, PermissionEnum permissionEnum) {
 		if (username.equals("ROOT"))
 			return true;
-		return this.hasPermission(new EmployeeTokenServiceImpl().getEmployeeToken(username), permissionToken,
+		return this.hasPermission(new EmployeeTokenServiceImpl().getEmployeeTokenByUsername(username), permissionToken,
 				permissionEnum);
 	}
 }

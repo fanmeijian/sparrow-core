@@ -19,21 +19,64 @@ import cn.sparrow.permission.model.token.EmployeeToken;
 import cn.sparrow.permission.model.token.SparrowEmployeeToken;
 
 public class EmployeeTokenServiceImpl implements EmployeeTokenService {
-
 	private EntityManager entityManager;
 
 	@Override
 	// build it from data base, use to get the latest token
-	public EmployeeToken buildEmployeeToken(String username) {
+	public EmployeeToken buildEmployeeTokenWithUsername(String username) {
 		List<EmployeeUser> employeeUsers = entityManager
 				.createNamedQuery("EmployeeUser.findByUsername", EmployeeUser.class).setParameter("username", username)
 				.getResultList();
 		EmployeeUser employeeUser = employeeUsers.get(0);
-		if (employeeUser == null) {
+		return buildEmployeeTokenWithEmployeeId(employeeUser.getId().getEmployeeId());
+	}
+
+	/**
+	 * get it from data base, the token store in database when user login.
+	 * 
+	 * @param username
+	 * @return
+	 */
+
+	@Override
+	public EmployeeToken getEmployeeTokenByUsername(String username) {
+		try {
+			EmployeeUser employeeUser = entityManager
+					.createNamedQuery("EmployeeUser.findByUsername", EmployeeUser.class)
+					.setParameter("username", username).getSingleResult();
+			SparrowEmployeeToken sparrowEmployeeToken = entityManager.find(SparrowEmployeeToken.class,
+					employeeUser.getId().getEmployeeId());
+			if (sparrowEmployeeToken != null && sparrowEmployeeToken.getEmployeeToken() != null)
+				return sparrowEmployeeToken.getEmployeeToken();
+			else {
+				return buildEmployeeTokenWithUsername(username);
+			}
+		} catch (NoResultException e) {
 			return null;
 		}
-		String employeeId = employeeUser.getId().getEmployeeId();
-		Employee employee = employeeUser.getEmployee();
+	}
+
+	public EmployeeTokenServiceImpl(EntityManager entityManager) {
+		this.entityManager = entityManager;
+	}
+
+	public EmployeeTokenServiceImpl() {
+	}
+
+	@Override
+	public EmployeeToken getEmployeeTokenByEmployeeId(String employeeId) {
+		SparrowEmployeeToken sparrowEmployeeToken = entityManager.find(SparrowEmployeeToken.class, employeeId);
+		if (sparrowEmployeeToken != null && sparrowEmployeeToken.getEmployeeToken() != null)
+			return sparrowEmployeeToken.getEmployeeToken();
+		else {
+			return buildEmployeeTokenWithEmployeeId(employeeId);
+		}
+	}
+
+	@Override
+	public EmployeeToken buildEmployeeTokenWithEmployeeId(String employeeId) {
+
+		Employee employee = entityManager.find(Employee.class, employeeId);
 
 		List<String> usernames = new ArrayList<String>();
 		List<String> sysroles = new ArrayList<String>();
@@ -43,19 +86,15 @@ public class EmployeeTokenServiceImpl implements EmployeeTokenService {
 		List<String> groups = new ArrayList<String>();
 
 		// 员工拥有的登录账户
-//		employee.getEmployeeUsers().forEach(eu -> {
-//			usernames.add(eu.getId().getUsername());
-//			userSysroleRepository.findByIdUsername(username).forEach(us -> {
-//				sysroles.add(us.getId().getSysroleId());
-//			});
-//		});
-		employeeUsers.forEach(eu -> {
-			usernames.add(eu.getId().getUsername());
-			entityManager.createNamedQuery("UserSysrole.findByUsername", UserSysrole.class)
-					.setParameter("username", username).getResultList().forEach(us -> {
-						sysroles.add(us.getId().getSysroleId());
-					});
-		});
+		if (employee.getEmployeeUsers() != null) {
+			employee.getEmployeeUsers().forEach(eu -> {
+				usernames.add(eu.getId().getUsername());
+				entityManager.createNamedQuery("UserSysrole.findByUsername", UserSysrole.class)
+						.setParameter("username", eu.getId().getUsername()).getResultList().forEach(us -> {
+							sysroles.add(us.getId().getSysroleId());
+						});
+			});
+		}
 
 		// 员工所在组织列表
 		organizations.add(employee.getOrganizationId());
@@ -90,38 +129,6 @@ public class EmployeeTokenServiceImpl implements EmployeeTokenService {
 		employeeToken.setPositionLevelIds(positionLevelPKs);
 
 		return employeeToken;
-
 	}
-
-	/**
-	 * get it from data base, the token store in database when user login.
-	 * 
-	 * @param username
-	 * @return
-	 */
-
-	@Override
-	public EmployeeToken getEmployeeToken(String username) {
-		try {
-			EmployeeUser employeeUser = entityManager
-					.createNamedQuery("EmployeeUser.findByUsername", EmployeeUser.class)
-					.setParameter("username", username).getSingleResult();
-			SparrowEmployeeToken sparrowEmployeeToken = entityManager.find(SparrowEmployeeToken.class,
-					employeeUser.getId().getEmployeeId());
-			if (sparrowEmployeeToken != null && sparrowEmployeeToken.getEmployeeToken() != null)
-				return sparrowEmployeeToken.getEmployeeToken();
-			else {
-				return buildEmployeeToken(username);
-			}
-		} catch (NoResultException e) {
-			return null;
-		}
-	}
-
-	public EmployeeTokenServiceImpl(EntityManager entityManager) {
-		this.entityManager = entityManager;
-	}
-
-	public EmployeeTokenServiceImpl() {
-	}
+	
 }
