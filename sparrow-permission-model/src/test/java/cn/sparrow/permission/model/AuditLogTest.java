@@ -1,4 +1,4 @@
-package cn.sparrow.permission;
+package cn.sparrow.permission.model;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -17,13 +17,13 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @ExtendWith(JpaUnit.class)
-class AuditTest {
+public class AuditLogTest {
 
 	@PersistenceContext(unitName = "cn.sparrow.permission.domain")
 	EntityManager entityManager;
 
 	@Test
-	void AuditLotTest() {
+	public void test() {
 		Organization organization = new Organization("test", "001", OrganizationTypeEnum.UNIT);
 		entityManager.persist(organization);
 		entityManager.getTransaction().commit();
