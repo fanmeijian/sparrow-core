@@ -5,7 +5,7 @@ import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-import cn.sparrow.permission.model.AbstractSparrowUuidEntity;
+import cn.sparrow.permission.model.common.AbstractSparrowUuidEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

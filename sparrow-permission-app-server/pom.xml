@@ -131,7 +131,12 @@
 		</dependency>
 		<dependency>
 			<groupId>cn.sparrow.permission</groupId>
-			<artifactId>sparrow-permission-service-impl</artifactId>
+			<artifactId>sparrow-permission-mgt-service</artifactId>
+			<version>0.0.1</version>
+		</dependency>
+		<dependency>
+			<groupId>cn.sparrow.permission</groupId>
+			<artifactId>sparrow-permission-core-service</artifactId>
 			<version>0.0.1</version>
 		</dependency>
 	</dependencies>

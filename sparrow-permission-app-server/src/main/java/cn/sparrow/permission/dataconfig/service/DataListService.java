@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import cn.sparrow.permission.dataconfig.model.DataList;
 import cn.sparrow.permission.dataconfig.repository.DataListRepository;
-import cn.sparrow.permission.model.SparrowTree;
+import cn.sparrow.permission.model.resource.SparrowTree;
 
 @Service
 public class DataListService {

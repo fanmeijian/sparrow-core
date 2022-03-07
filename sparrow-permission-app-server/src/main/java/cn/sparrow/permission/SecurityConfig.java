@@ -14,8 +14,8 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 
 import cn.sparrow.permission.constant.ApiPermissionEnum;
-import cn.sparrow.permission.service.SparrowService;
-import cn.sparrow.permission.service.impl.UrlPermissionService;
+import cn.sparrow.permission.mgt.api.SparrowService;
+import cn.sparrow.permission.mgt.service.impl.UrlPermissionService;
 
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {

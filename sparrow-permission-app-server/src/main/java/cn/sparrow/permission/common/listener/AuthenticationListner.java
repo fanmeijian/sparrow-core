@@ -5,8 +5,6 @@ import org.springframework.security.authentication.event.AbstractAuthenticationF
 import org.springframework.security.authentication.event.AuthenticationSuccessEvent;
 import org.springframework.stereotype.Component;
 
-import cn.sparrow.permission.listener.CurrentUser;
-
 @Component
 public class AuthenticationListner {
 

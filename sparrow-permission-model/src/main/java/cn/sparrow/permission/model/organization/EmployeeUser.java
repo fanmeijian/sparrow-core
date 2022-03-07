@@ -11,9 +11,12 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import cn.sparrow.permission.model.common.AbstractSparrowEntity;
+import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+@Data
+@EqualsAndHashCode(callSuper = false,onlyExplicitlyIncluded = true)
 @Entity
 @Table(name = "spr_employee_user")
 @NoArgsConstructor

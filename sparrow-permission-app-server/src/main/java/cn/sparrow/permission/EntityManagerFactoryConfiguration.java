@@ -3,7 +3,6 @@ package cn.sparrow.permission;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
@@ -12,13 +11,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 
-import cn.sparrow.permission.listener.CurrentEntityManagerFactory;
-import cn.sparrow.permission.service.EmployeeTokenService;
-import cn.sparrow.permission.service.EmployeeTokenServiceImpl;
-import cn.sparrow.permission.service.PermissionService;
-import cn.sparrow.permission.service.PermissionServiceImpl;
-import cn.sparrow.permission.service.PermissionTokenService;
-import cn.sparrow.permission.service.PermissionTokenServiceImpl;
+import cn.sparrow.permission.common.listener.CurrentEntityManagerFactory;
+import cn.sparrow.permission.core.api.EmployeeTokenService;
+import cn.sparrow.permission.core.api.PermissionService;
+import cn.sparrow.permission.core.api.PermissionTokenService;
+import cn.sparrow.permission.core.service.EmployeeTokenServiceImpl;
+import cn.sparrow.permission.core.service.PermissionServiceImpl;
+import cn.sparrow.permission.core.service.PermissionTokenServiceImpl;
 
 @Configuration
 public class EntityManagerFactoryConfiguration {

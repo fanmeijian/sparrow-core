@@ -12,22 +12,20 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import cn.sparrow.permission.common.listener.CurrentEntityManagerFactory;
 import cn.sparrow.permission.constant.PermissionEnum;
 import cn.sparrow.permission.constant.PermissionExpressionEnum;
 import cn.sparrow.permission.constant.PermissionTargetEnum;
+import cn.sparrow.permission.core.api.EmployeeTokenService;
+import cn.sparrow.permission.core.api.PermissionService;
+import cn.sparrow.permission.core.service.ViewFilter;
 import cn.sparrow.permission.dataconfig.model.DataList;
 import cn.sparrow.permission.dataconfig.repository.DataListRepository;
 import cn.sparrow.permission.dataconfig.service.DataListService;
-import cn.sparrow.permission.listener.CurrentEntityManagerFactory;
-import cn.sparrow.permission.model.SparrowTree;
-import cn.sparrow.permission.service.EmployeeToken;
-import cn.sparrow.permission.service.EmployeeTokenService;
-import cn.sparrow.permission.service.EmployeeTokenServiceImpl;
-import cn.sparrow.permission.service.PermissionExpression;
-import cn.sparrow.permission.service.PermissionService;
-import cn.sparrow.permission.service.PermissionServiceImpl;
-import cn.sparrow.permission.service.PermissionToken;
-import cn.sparrow.permission.service.ViewFilter;
+import cn.sparrow.permission.model.resource.SparrowTree;
+import cn.sparrow.permission.model.token.EmployeeToken;
+import cn.sparrow.permission.model.token.PermissionExpression;
+import cn.sparrow.permission.model.token.PermissionToken;
 
 @RestController
 public class DataListController {
