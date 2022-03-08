@@ -1,4 +1,4 @@
-package cn.sparrow.permission;
+package cn.sparrow.permission.mgt.service;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
