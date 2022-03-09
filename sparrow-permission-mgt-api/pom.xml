@@ -47,11 +47,6 @@
 		</dependency>
 		<dependency>
 			<groupId>cn.sparrow.permission</groupId>
-			<artifactId>sparrow-permission-common</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>cn.sparrow.permission</groupId>
 			<artifactId>sparrow-permission-model</artifactId>
 			<version>0.0.1</version>
 		</dependency>

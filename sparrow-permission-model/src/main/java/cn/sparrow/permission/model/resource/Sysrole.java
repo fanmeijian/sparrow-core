@@ -12,6 +12,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -36,7 +38,7 @@ public class Sysrole extends AbstractSparrowEntity {
 	@GenericGenerator(name = "id-generator", strategy = "uuid")
 	@GeneratedValue(generator = "id-generator")
 	protected String id;
-	
+
 	private String name;
 	@Column(unique = true)
 	private String code;
@@ -45,18 +47,18 @@ public class Sysrole extends AbstractSparrowEntity {
 	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY, targetEntity = SysroleMenu.class, cascade = CascadeType.ALL, mappedBy = "sysrole")
 	private Set<SysroleMenu> sysroleMenus;
-	
+
 	@JsonIgnore
 	@OneToMany(targetEntity = GroupSysrole.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "sysrole")
 	private Set<GroupSysrole> groupSysroles;
-	
+
 	@OneToMany(mappedBy = "sysrole", cascade = CascadeType.ALL)
 	private Set<UserSysrole> userSysroles;
-	
-//	@EqualsAndHashCode.Exclude
-//	@JsonIgnore
-//	@OneToMany(targetEntity = SysroleUrlPermission.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "sysrole")
-//	private Set<SysroleUrlPermission> sysroleUrlPermissions;
+
+	@JsonIgnore
+	@OneToMany
+	@LazyCollection(LazyCollectionOption.TRUE)
+	private Set<SysroleApiPermission> sysroleApiPermissions;
 
 	public Sysrole(String name, String code) {
 		super();

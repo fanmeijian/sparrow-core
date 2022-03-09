@@ -10,22 +10,26 @@ import org.springframework.stereotype.Service;
 import cn.sparrow.permission.mgt.api.ApiService;
 import cn.sparrow.permission.mgt.service.repository.ApiRepository;
 import cn.sparrow.permission.mgt.service.repository.SysroleApiPermissionRepository;
+import cn.sparrow.permission.mgt.service.repository.SysroleRepository;
 import cn.sparrow.permission.model.resource.SparrowApi;
+import cn.sparrow.permission.model.resource.Sysrole;
 import cn.sparrow.permission.model.resource.SysroleApiPK;
 import cn.sparrow.permission.model.resource.SysroleApiPermission;
 
 @Service
-public class ApiServiceImpl implements ApiService{
+public class ApiServiceImpl implements ApiService {
 	@Autowired
 	ApiRepository apiRepository;
 	@Autowired
 	SysroleApiPermissionRepository sysroleApiPermissionRepository;
+	@Autowired
+	SysroleRepository sysroleRepository;
 
-	public int saveUrls(List<SparrowApi> sparrowUrls) {
+	public int saveApis(List<SparrowApi> sparrowUrls) {
 		return apiRepository.saveAll(sparrowUrls).size();
 	}
 
-	public SparrowApi updateUrl(SparrowApi sparrowUrl) {
+	public SparrowApi updateApi(SparrowApi sparrowUrl) {
 		return apiRepository.save(sparrowUrl);
 	}
 
@@ -43,13 +47,8 @@ public class ApiServiceImpl implements ApiService{
 		});
 	}
 
-	public Page<?> getPermissions(String urlId, Pageable pageable) {
-		if (urlId != null) {
-			return sysroleApiPermissionRepository.findByIdApiId(urlId,pageable);
-	
-		} else {
-			return sysroleApiPermissionRepository.findAll(pageable);
-		}
+	public Page<Sysrole> getPermissions(String apiId, Pageable pageable) {
+		return sysroleApiPermissionRepository.findByApiId(apiId, pageable);
 	}
 
 	public void addPermissions(List<SysroleApiPK> sysroleUrlPermissionPKs) {
@@ -77,11 +76,11 @@ public class ApiServiceImpl implements ApiService{
 	@Override
 	public void delete(String[] ids) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
-	public Page<?> getPermission(String urlId, Pageable pageable) {
+	public Page<Sysrole> getPermission(String apiId, Pageable pageable) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -89,13 +88,25 @@ public class ApiServiceImpl implements ApiService{
 	@Override
 	public void addPermission(List<SysroleApiPK> sysroleUrlPermissionPKs) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void delPermission(List<SysroleApiPK> sysroleUrlPermissionPKs) {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
+	@Override
+	public SparrowApi updateApi(String apiId, SparrowApi sparrowApi) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Page<SparrowApi> all(Pageable pageable) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

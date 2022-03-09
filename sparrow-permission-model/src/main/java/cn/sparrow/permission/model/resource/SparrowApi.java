@@ -10,6 +10,9 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
+
 import cn.sparrow.permission.constant.ApiPermissionEnum;
 import cn.sparrow.permission.constant.HttpMethodEnum;
 import cn.sparrow.permission.model.common.AbstractSparrowEntity;
@@ -25,6 +28,7 @@ import lombok.NoArgsConstructor;
 public class SparrowApi extends AbstractSparrowEntity {
 	private static final long serialVersionUID = 1L;
 
+	@JsonProperty(access = Access.READ_ONLY)
 	@EqualsAndHashCode.Include
 	@Id
 	@GenericGenerator(name = "id-generator", strategy = "uuid")

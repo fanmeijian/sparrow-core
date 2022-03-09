@@ -16,7 +16,7 @@ public interface SysroleRepository extends JpaRepository<Sysrole, String> {
   Page<Sysrole> findByNameContaining(String name, Pageable p);
 
   List<Sysrole> findByCode(String name);
-
+  
   @Transactional
   void deleteByIdIn(@NotNull String[] ids);
 }
