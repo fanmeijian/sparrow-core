@@ -14,7 +14,7 @@ import cn.sparrow.permission.model.resource.SysroleApiPermission;
 
 public interface SysroleApiPermissionRepository extends JpaRepository<SysroleApiPermission, SysroleApiPK> {
 
-	Page<SysroleApiPermission> findByIdApiId(String ApiId, Pageable pageable);
+	Page<SysroleApiPermission> findByIdApiId(String apiId, Pageable pageable);
 
 	Page<SysroleApiPermission> findByIdApiIdIn(String[] ApiIds, Pageable pageable);
 

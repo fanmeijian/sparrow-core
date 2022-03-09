@@ -12,8 +12,6 @@ import org.springframework.beans.BeansException;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
-import cn.sparrow.permission.mgt.api.SortService;
-
 @Service
 public class SortServiceImpl<T, ID> implements SortService<T, ID> {
 

@@ -17,7 +17,6 @@ import org.springframework.data.domain.ExampleMatcher.StringMatcher;
 import org.springframework.stereotype.Service;
 
 import cn.sparrow.permission.mgt.api.MenuService;
-import cn.sparrow.permission.mgt.api.SortService;
 import cn.sparrow.permission.mgt.api.SysroleService;
 import cn.sparrow.permission.mgt.api.TreeService;
 import cn.sparrow.permission.mgt.service.repository.MenuRepository;

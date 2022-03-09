@@ -1,4 +1,4 @@
-package cn.sparrow.permission.mgt.api;
+package cn.sparrow.permission.mgt.service.impl;
 
 import java.util.LinkedList;
 import java.util.List;

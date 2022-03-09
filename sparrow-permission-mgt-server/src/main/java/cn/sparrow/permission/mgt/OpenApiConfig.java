@@ -1,4 +1,4 @@
-package cn.sparrow.permission.mgt.api;
+package cn.sparrow.permission.mgt;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

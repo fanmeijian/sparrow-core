@@ -1,5 +1,6 @@
 package cn.sparrow.permission.mgt.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -8,6 +9,7 @@ import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.ExampleMatcher.StringMatcher;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -46,7 +48,11 @@ public class ApiServiceImpl implements ApiService {
 
 	@Override
 	public Page<Sysrole> getPermissions(String apiId, Pageable pageable) {
-		return sysroleApiPermissionRepository.findByApiId(apiId, pageable);
+		List<Sysrole> sysroles = new ArrayList<Sysrole>();
+		sysroleApiPermissionRepository.findByIdApiId(apiId, pageable).forEach(f->{
+			sysroles.add(f.getSysrole());
+		});
+		return new PageImpl<>(sysroles);
 	}
 
 	@Override
