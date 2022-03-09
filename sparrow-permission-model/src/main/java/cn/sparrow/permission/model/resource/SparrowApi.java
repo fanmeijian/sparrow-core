@@ -36,7 +36,7 @@ public class SparrowApi extends AbstractSparrowEntity {
 	private String id;
 	private String name;
 	private String uri;
-	private boolean isSystem;
+	private Boolean isSystem;
 
 	@Enumerated(EnumType.STRING)
 	private HttpMethodEnum method;

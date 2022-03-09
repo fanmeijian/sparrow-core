@@ -18,7 +18,7 @@ public interface SysroleApiPermissionRepository extends JpaRepository<SysroleApi
 
 	Page<SysroleApiPermission> findByIdApiIdIn(String[] ApiIds, Pageable pageable);
 
-	@Query(value = "SELECT * FROM SysroleApiPermission WHERE apiId = ?1", countQuery = "SELECT count(*) FROM SysroleApiPermission WHERE apiId = ?1", nativeQuery = true)
+	@Query(value = "SELECT s.* FROM spr_sysrole_api sa left join spr_sysrole s on sa.sysrole_id = s.id WHERE sa.api_id = ?1", countQuery = "SELECT count(*) FROM spr_sysrole_api sp WHERE sa.api_id = ?1", nativeQuery = true)
 	Page<Sysrole> findByApiId(String ApiId, Pageable pageable);
 
 	@Transactional

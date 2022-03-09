@@ -67,22 +67,13 @@ public class OrganizationServiceImpl implements OrganizationService{
 	@Autowired
 	EmployeeService employeeService;
 
-	public Organization add(Organization organization) {
-		Organization org = organizationRepository.save(organization);
-		// if (organization.getParentIds() != null) {
-		// organization.getParentIds().forEach(f -> {
-		// organizationRelationRepository
-		// .save(new OrganizationRelation(new OrganizationRelationPK(org.getId(), f)));
-		// });
-		// }
-		return org;
-	}
-
-	public List<OrganizationGroup> getOrganizationGroups(@NotBlank String organizationId) {
+	@Override
+	public List<OrganizationGroup> getGroups(@NotBlank String organizationId) {
 		return organizationGroupRepository.findByIdOrganizationId(organizationId);
 	}
 
-	public List<OrganizationRole> getOrganizationRoles(@NotBlank String organizationId) {
+	@Override
+	public List<OrganizationRole> getRoles(@NotBlank String organizationId) {
 		List<OrganizationRole> roles = organizationRoleRepository.findByIdOrganizationId(organizationId);
 		roles.forEach(f -> {
 			f.setChildCount(organizationRoleRelationRepository.countByIdParentId(f.getId()));
@@ -90,7 +81,8 @@ public class OrganizationServiceImpl implements OrganizationService{
 		return roles;
 	}
 
-	public List<OrganizationPositionLevel> getOrganizationLevels(@NotBlank String organizationId) {
+	@Override
+	public List<OrganizationPositionLevel> getLevels(@NotBlank String organizationId) {
 		List<OrganizationPositionLevel> organizationPositionLevels = organizationLevelRepository
 				.findByIdOrganizationId(organizationId);
 		organizationPositionLevels.forEach(f -> {
@@ -99,6 +91,7 @@ public class OrganizationServiceImpl implements OrganizationService{
 		return organizationPositionLevels;
 	}
 
+	@Override
 	public List<Employee> getEmployees(@NotBlank String organizationId, Pageable pageable) {
 		List<Employee> employees = employeeRepository.findByOrganizationId(organizationId, pageable);
 		employees.forEach(f -> {
@@ -143,8 +136,9 @@ public class OrganizationServiceImpl implements OrganizationService{
 		return parents;
 	}
 
+	@Override
 	@Transactional
-	public void delBatch(String[] ids) {
+	public void delete(String[] ids) {
 		organizationRelationRepository.deleteByIdOrganizationIdInOrIdParentIdIn(ids, ids);
 		organizationRepository.deleteByIdIn(ids);
 	}
@@ -236,7 +230,8 @@ public class OrganizationServiceImpl implements OrganizationService{
 		});
 	}
 
-	public SparrowTree<Organization, String> getTree(String parentId) {
+	@Override
+	public SparrowTree<Organization, String> getTreeByParentId(String parentId) {
 
 		if (parentId == null) {
 			SparrowTree<Organization, String> rootTree = new SparrowTree<Organization, String>(null);
@@ -271,51 +266,16 @@ public class OrganizationServiceImpl implements OrganizationService{
 	}
 
 	@Override
-	public List<OrganizationRole> getRoles(@NotBlank String organizationId) {
-		// TODO Auto-generated method stub
-		return null;
+	public Organization create(Organization organization) {
+		return organizationRepository.save(organization);
 	}
 
 	@Override
-	public List<OrganizationPositionLevel> getLevels(@NotBlank String organizationId) {
-		// TODO Auto-generated method stub
-		return null;
+	public Organization update(String id, Map<String,Object> map) {
+		Organization source = organizationRepository.getById(id);
+		PatchUpdateHelper.merge(source, map);
+		return organizationRepository.save(source);
 	}
 
-	@Override
-	public List<OrganizationGroup> getGroups(@NotBlank String organizationId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<Employee> getEmployees(@NotBlank String organizationId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void add(@NotNull List<Organization> organizations) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void update(@NotNull List<Organization> organizations) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void del(@NotNull String[] ids) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public SparrowTree<Organization, String> tree(String parentId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 }

@@ -13,6 +13,9 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 import cn.sparrow.permission.model.app.SparrowApp;
 import cn.sparrow.permission.model.common.AbstractSparrowEntity;
@@ -28,6 +31,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Table(name = "spr_model")
+@JsonIgnoreProperties(value = {"modelAttributes","sparrowPermissionToken","dataPermissionToken"},allowGetters = true)
 public class Model extends AbstractSparrowEntity {
 
 	private static final long serialVersionUID = 1L;
@@ -37,7 +41,7 @@ public class Model extends AbstractSparrowEntity {
 	private String name;
 	private String nameTxt;
 	private String remark;
-	private boolean isSystem;
+	private Boolean isSystem;
 	@Column(name = "app_id")
 	private String appId;
 
@@ -45,6 +49,7 @@ public class Model extends AbstractSparrowEntity {
 	// @JoinColumn(name = "catalog_id")
 	// private Catalog catalog;
 
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "app_id", insertable = false, updatable = false)
 	private SparrowApp sparrowApp;

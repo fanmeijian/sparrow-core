@@ -1,57 +1,70 @@
 package cn.sparrow.permission.mgt.api;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 
+import com.fasterxml.jackson.annotation.JsonCreator.Mode;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.sparrow.permission.model.resource.Model;
 import cn.sparrow.permission.model.resource.ModelPermission;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
+@Tag(name = "模型服务")
 @RequestMapping("/models")
 public interface ModelService {
 	
-	@Operation(summary = "获取模型列表")
-	@GetMapping("/models")
-	public Page<Model> models(@Null Pageable pageable);
+	@Operation(summary = "浏览模型")
+	@GetMapping("")
+	@ResponseBody
+	public Page<Model> models(@Nullable Pageable pageable,@Nullable Model model);
+
+	@Operation(summary = "新增模型")
+	@PostMapping("")
+	@ResponseBody
+	public Model create( @RequestBody Model model);
+
+	@Operation(summary = "模型详情")
+	@GetMapping("/{modelId}")
+	@ResponseBody
+	public Model getModel(@PathVariable("modelId") String modelId);
 
 	@Operation(summary = "更新模型")
-	@PostMapping("/models")
-	public void save(@NotNull @RequestBody final Model model);
+	@PatchMapping("/{modelId}")
+	@ResponseBody
+	@io.swagger.v3.oas.annotations.parameters.RequestBody(content = @Content(schema = @Schema(implementation = Model.class)))
+	public Model update(@PathVariable("modelId") String modelId, Map<String,Object> map);
 
-	@Operation(summary = "获取指定模型")
-	@PostMapping("/models/getModelsInId")
-	public Page<Model> getModelsInId(@NotNull @RequestBody String[] ids, @Null Pageable pageable);
-
-	@Operation(summary = "批量新增模型")
-	@PostMapping("/models/batch")
-	public void add(@NotNull @RequestBody final List<Model> models);
-
-	@Operation(summary = "批量更新模型")
-	@PatchMapping("/models/batch")
-	public void update(@NotNull @RequestBody final List<Model> models);
-
-	@Operation(summary = "批量删除模型")
-	@DeleteMapping("/models/batch")
-	public void delete(@NotNull @RequestBody final String[] ids);
+	@Operation(summary = "删除模型")
+	@DeleteMapping("")
+	@ResponseBody
+	public void delete( @RequestBody List<String> ids);
 
 	@Operation(summary = "设置模型权限")
-	@PostMapping("/models/permissions")
-	public void addPermission(@NotNull @RequestBody final ModelPermission modelPermission);
+	@PostMapping("/permissions")
+	@ResponseBody
+	public void addPermission( @RequestBody ModelPermission modelPermission);
 
 	@Operation(summary = "删除模型权限")
-	@DeleteMapping("/models/permissions")
-	public void delPermission(@NotNull @RequestBody final ModelPermission modelPermission);
+	@DeleteMapping("/permissions")
+	public void removePermission( @RequestBody ModelPermission modelPermission);
 	
 	public void init();
 }

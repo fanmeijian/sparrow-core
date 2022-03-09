@@ -3,13 +3,17 @@ package cn.sparrow.permission.mgt.service.impl;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.validation.constraints.NotNull;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.ExampleMatcher.StringMatcher;
 import org.springframework.stereotype.Service;
 
 import cn.sparrow.permission.mgt.api.MenuService;
@@ -24,10 +28,11 @@ import cn.sparrow.permission.model.resource.SparrowTree;
 import cn.sparrow.permission.model.resource.SysroleMenu;
 import cn.sparrow.permission.model.resource.UserMenu;
 import cn.sparrow.permission.model.token.MenuPermission;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
-public class MenuServiceImpl implements MenuService{
-	private static Logger logger = LoggerFactory.getLogger(MenuServiceImpl.class);
+public class MenuServiceImpl implements MenuService {
 
 	@Autowired
 	MenuRepository menuRepository;
@@ -40,15 +45,20 @@ public class MenuServiceImpl implements MenuService{
 
 	@Autowired
 	SortService<Menu, String> sparrowSortedService;
-	
-	@Autowired TreeService<Menu, String> sparrowTreeService;
+
+	@Autowired
+	TreeService<Menu, String> sparrowTreeService;
 
 	@Autowired
 	SysroleService sysroleService;
 
+	@Autowired
+	UserService userService;
+
 	public SparrowTree<Menu, String> getTreeByParentId(String parentId) {
 		Menu menu = menuRepository.findById(parentId).orElse(new Menu(null, null));
-		SparrowTree<Menu, String> menuTree = new SparrowTree<Menu, String>(menu, menu.getId(),menu.getNextNodeId(), menu.getNextNodeId());
+		SparrowTree<Menu, String> menuTree = new SparrowTree<Menu, String>(menu, menu.getId(), menu.getNextNodeId(),
+				menu.getNextNodeId());
 		buildTree(menuTree);
 		sparrowTreeService.sort(menuTree);
 		return menuTree;
@@ -60,7 +70,8 @@ public class MenuServiceImpl implements MenuService{
 //        sparrowSortedService.sort(menus);
 
 		for (Menu menu : menus) {
-			SparrowTree<Menu, String> leaf = new SparrowTree<Menu, String>(menu, menu.getId(),menu.getNextNodeId(), menu.getNextNodeId());
+			SparrowTree<Menu, String> leaf = new SparrowTree<Menu, String>(menu, menu.getId(), menu.getNextNodeId(),
+					menu.getNextNodeId());
 			menuTree.getChildren().add(leaf);
 			buildTree(leaf);
 		}
@@ -72,7 +83,8 @@ public class MenuServiceImpl implements MenuService{
 //        sparrowSortedService.sort(menus);
 
 		for (Menu menu : menus) {
-			SparrowTree<Menu, String> leaf = new SparrowTree<Menu, String>(menu, menu.getId(),menu.getNextNodeId(), menu.getNextNodeId());
+			SparrowTree<Menu, String> leaf = new SparrowTree<Menu, String>(menu, menu.getId(), menu.getNextNodeId(),
+					menu.getNextNodeId());
 			if (userMenus.stream().anyMatch(p -> p.getId().equals(menu.getId())))
 				menuTree.getChildren().add(leaf);
 			buildTree(leaf, userMenus);
@@ -100,7 +112,8 @@ public class MenuServiceImpl implements MenuService{
 		// 构建用户的菜单树
 		List<Menu> menus = menuRepository.findByParentId(menuTree.getMe().getId());
 		for (Menu menu : menus) {
-			SparrowTree<Menu, String> leaf = new SparrowTree<Menu, String>(menu, menu.getId(),menu.getNextNodeId(), menu.getNextNodeId());
+			SparrowTree<Menu, String> leaf = new SparrowTree<Menu, String>(menu, menu.getId(), menu.getNextNodeId(),
+					menu.getNextNodeId());
 			if (menusSet.stream().anyMatch(p -> p.getId().equals(menu.getId())))
 				menuTree.getChildren().add(leaf);
 			buildTree(leaf, menusSet);
@@ -112,14 +125,15 @@ public class MenuServiceImpl implements MenuService{
 		List<Menu> menusSet = new ArrayList<Menu>();
 		getUserMenusWithParentAndChildren(username, menusSet);
 		// 整合用户拥有角色的菜单
-		sysroleService.getUserSysroles(username).forEach(userSysrole -> {
-			getSysroleMenusWithParentAndChildren(userSysrole.getId().getSysroleId(), menusSet);
+		userService.getSysroles(username).forEach(sysrole -> {
+			getSysroleMenusWithParentAndChildren(sysrole.getId(), menusSet);
 		});
 
 		// 构建用户的菜单树
 		List<Menu> menus = menuRepository.findByParentId(menuTree.getMe().getId());
 		for (Menu menu : menus) {
-			SparrowTree<Menu, String> leaf = new SparrowTree<Menu, String>(menu, menu.getId(),menu.getNextNodeId(), menu.getNextNodeId());
+			SparrowTree<Menu, String> leaf = new SparrowTree<Menu, String>(menu, menu.getId(), menu.getNextNodeId(),
+					menu.getNextNodeId());
 			if (menusSet.stream().anyMatch(p -> p.getId().equals(menu.getId())))
 				menuTree.getChildren().add(leaf);
 			buildTree(leaf, menusSet);
@@ -132,7 +146,7 @@ public class MenuServiceImpl implements MenuService{
 		userMenuRepository.findByIdUsername(username).forEach(f -> {
 			menus.add(f.getMenu());
 			buildParents(f.getMenu().getParentId(), menus);
-			if(f.getIncludeSubMenu()) {
+			if (f.getIncludeSubMenu()) {
 				buildChildren(f.getMenu().getId(), menus);
 			}
 		});
@@ -141,14 +155,14 @@ public class MenuServiceImpl implements MenuService{
 	// 获取角色菜单的亲戚集合（不含兄弟姐妹节点）
 	public void getSysroleMenusWithParentAndChildren(String sysroleId, List<Menu> menus) {
 //      menus.addAll(userRepository.findById(username).get().getMenus());
-      sysroleMenuRepository.findByIdSysroleId(sysroleId).forEach(f -> {
-        menus.add(f.getMenu());
-        buildParents(f.getMenu().getParentId(), menus);
-        if(f.getIncludeSubMenu()) {
-        	// 当勾选了包含子菜单后，则取所有的子菜单，新增的子菜单也自动授权了。如果没勾选，则后面新加的权限不会出现，需要手工授权
-            buildChildren(f.getMenu().getId(), menus);
-        }
-      });
+		sysroleMenuRepository.findByIdSysroleId(sysroleId).forEach(f -> {
+			menus.add(f.getMenu());
+			buildParents(f.getMenu().getParentId(), menus);
+			if (f.getIncludeSubMenu()) {
+				// 当勾选了包含子菜单后，则取所有的子菜单，新增的子菜单也自动授权了。如果没勾选，则后面新加的权限不会出现，需要手工授权
+				buildChildren(f.getMenu().getId(), menus);
+			}
+		});
 	}
 
 	// 获取到所有的祖先集合
@@ -169,7 +183,8 @@ public class MenuServiceImpl implements MenuService{
 		});
 	}
 
-	public void addPermissions(MenuPermission menuPermission) {
+	@Override
+	public void addPermission(MenuPermission menuPermission) {
 		if (menuPermission.getUserMenuPKs() != null) {
 			menuPermission.getUserMenuPKs().forEach(f -> {
 				userMenuRepository.save(new UserMenu(f));
@@ -183,7 +198,8 @@ public class MenuServiceImpl implements MenuService{
 		}
 	}
 
-	public void delPermissions(MenuPermission menuPermission) {
+	@Override
+	public void delPermission(MenuPermission menuPermission) {
 		if (menuPermission.getUserMenuPKs() != null) {
 			userMenuRepository.deleteByIdIn(menuPermission.getUserMenuPKs());
 		}
@@ -196,33 +212,45 @@ public class MenuServiceImpl implements MenuService{
 	public void setPosition(Menu menu) {
 		sparrowSortedService.saveSort(menuRepository, menu);
 	}
-	
-	public Set<SysroleMenu> getSysroleMenus(String menuId){
-	  return sysroleMenuRepository.findByIdMenuId(menuId);
+
+	public Set<SysroleMenu> getSysroleMenus(String menuId) {
+		return sysroleMenuRepository.findByIdMenuId(menuId);
 	}
 
 	@Override
 	public SparrowTree<Menu, String> getMyTree(Principal principal) {
-		// TODO Auto-generated method stub
-		return null;
+		return getTreeByUsername(principal.getName());
 	}
 
 	@Override
 	public void delete(@NotNull String[] ids) {
-		// TODO Auto-generated method stub
-		
+		menuRepository.deleteByIdIn(ids);
 	}
 
 	@Override
-	public void addPermission(@NotNull MenuPermission menuPermission) {
-		// TODO Auto-generated method stub
-		
+	public Page<Menu> all(Pageable pageable, Menu menu) {
+		ExampleMatcher matcher = ExampleMatcher.matching().withIgnoreCase().withStringMatcher(StringMatcher.CONTAINING);
+		return menuRepository.findAll(Example.of(menu, matcher), pageable);
 	}
 
 	@Override
-	public void delPermission(@NotNull MenuPermission menuPermission) {
-		// TODO Auto-generated method stub
-		
+	public void setPosition(String menuId, String prevId, String nextId) {
+		Menu menu = menuRepository.getById(menuId);
+		menu.setPreviousNodeId(prevId);
+		menu.setNextNodeId(nextId);
+		setPosition(menu);
+	}
+
+	@Override
+	public Menu save(Menu menu) {
+		return menuRepository.save(menu);
+	}
+
+	@Override
+	public Menu update(String menuId, Map<String, Object> map) {
+		Menu source = menuRepository.getById(menuId);
+		PatchUpdateHelper.merge(source, map);
+		return menuRepository.save(source);
 	}
 
 }

@@ -19,6 +19,8 @@ import org.hibernate.annotations.GenericGenerator;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import cn.sparrow.permission.model.resource.Model;
 import lombok.Data;
@@ -42,10 +44,10 @@ public class SparrowPermissionToken implements Serializable {
 	@GeneratedValue(generator = "id-generator")
 	protected String id;
 
-	@JsonIgnore
-	@Lob
-	@Column(name = "permission_token", nullable = false)
-	private byte[] permissionTokenByteArray;
+	// @JsonIgnore
+	// @Lob
+	// @Column(name = "permission_token", nullable = false)
+	// private byte[] permissionTokenByteArray;
 
 	@OneToOne(mappedBy = "sparrowPermissionToken")
 	private Model model;
@@ -54,25 +56,54 @@ public class SparrowPermissionToken implements Serializable {
 	@JsonProperty
 	private PermissionToken permissionToken;
 
+	@Lob
+	private String permissonTokenString;
+
 	@PostLoad
 	private void postLoad() {
-		this.permissionToken = (PermissionToken) SerializationUtils.deserialize(permissionTokenByteArray);
+		// if(permissionTokenByteArray!=null)
+		// 	this.permissionToken = (PermissionToken) SerializationUtils.deserialize(permissionTokenByteArray);
+		
+		try {
+			this.permissionToken = new ObjectMapper().readValue(permissonTokenString, PermissionToken.class);
+		} catch (JsonProcessingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@PreUpdate
 	@PrePersist
 	private void beforeSave() {
-		this.permissionTokenByteArray = SerializationUtils.serialize(permissionToken);
+		// this.permissionTokenByteArray = SerializationUtils.serialize(permissionToken);
+		try {
+			this.permissonTokenString = new ObjectMapper().writeValueAsString(this.permissionToken);
+		} catch (JsonProcessingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public void setPermissionToken(PermissionToken permissionToken) {
 		this.permissionToken = permissionToken;
-		this.permissionTokenByteArray = SerializationUtils.serialize(permissionToken);
+		// this.permissionTokenByteArray = SerializationUtils.serialize(permissionToken);
+		try {
+			this.permissonTokenString = new ObjectMapper().writeValueAsString(this.permissionToken);
+		} catch (JsonProcessingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public SparrowPermissionToken(PermissionToken permissionToken) {
 		this.permissionToken = permissionToken;
-		this.permissionTokenByteArray = SerializationUtils.serialize(permissionToken);
+		// this.permissionTokenByteArray = SerializationUtils.serialize(permissionToken);
+		try {
+			this.permissonTokenString = new ObjectMapper().writeValueAsString(this.permissionToken);
+		} catch (JsonProcessingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }

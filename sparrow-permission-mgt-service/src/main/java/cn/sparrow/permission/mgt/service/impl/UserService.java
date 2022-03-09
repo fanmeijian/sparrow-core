@@ -1,5 +1,8 @@
 package cn.sparrow.permission.mgt.service.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +11,7 @@ import org.springframework.stereotype.Service;
 import cn.sparrow.permission.constant.PreserveSysroleEnum;
 import cn.sparrow.permission.mgt.service.repository.UserMenuRepository;
 import cn.sparrow.permission.mgt.service.repository.UserSysroleRepository;
+import cn.sparrow.permission.model.resource.Sysrole;
 import cn.sparrow.permission.model.resource.UserSysrole;
 import cn.sparrow.permission.model.resource.UserSysrolePK;
 
@@ -47,6 +51,15 @@ public class UserService {
 //    });
 //  }
 //  
+
+  public List<Sysrole> getSysroles(String username){
+    List<Sysrole> sysroles = new ArrayList<Sysrole>();
+    userSysroleRepository.findByIdUsername(username).forEach(f->{
+      sysroles.add(f.getSysrole());
+    });
+    return sysroles;
+  }
+
   public void init(String username) {
     userSysroleRepository.save(new UserSysrole(new UserSysrolePK(username,PreserveSysroleEnum.SYSADMIN.name())));
     logger.info("Grant user {} with role", username, PreserveSysroleEnum.SYSADMIN.name());

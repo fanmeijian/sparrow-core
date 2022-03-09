@@ -1,8 +1,12 @@
 package cn.sparrow.permission.mgt.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.domain.ExampleMatcher.StringMatcher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -25,88 +29,49 @@ public class ApiServiceImpl implements ApiService {
 	@Autowired
 	SysroleRepository sysroleRepository;
 
-	public int saveApis(List<SparrowApi> sparrowUrls) {
-		return apiRepository.saveAll(sparrowUrls).size();
+	@Override
+	public SparrowApi create(SparrowApi sparrowApi) {
+		return apiRepository.save(sparrowApi);
 	}
 
-	public SparrowApi updateApi(SparrowApi sparrowUrl) {
-		return apiRepository.save(sparrowUrl);
-	}
-
-	public SparrowApi getUrl(String id) {
+	@Override
+	public SparrowApi getApi(String id) {
 		return apiRepository.findById(id).get();
 	}
 
-	public void deleteByIds(List<String> ids) {
-
+	@Override
+	public void delete(List<String> ids) {
+		apiRepository.deleteAllByIdInBatch(ids);
 	}
 
-	public void delUrls(List<String> sparrowUrls) {
-		sparrowUrls.forEach(f -> {
-			apiRepository.deleteById(f);
-		});
-	}
-
+	@Override
 	public Page<Sysrole> getPermissions(String apiId, Pageable pageable) {
 		return sysroleApiPermissionRepository.findByApiId(apiId, pageable);
 	}
 
+	@Override
 	public void addPermissions(List<SysroleApiPK> sysroleUrlPermissionPKs) {
 		sysroleUrlPermissionPKs.forEach(f -> {
 			sysroleApiPermissionRepository.save(new SysroleApiPermission(f));
 		});
 	}
 
+	@Override
 	public void delPermissions(List<SysroleApiPK> sysroleUrlPermissionPKs) {
 		sysroleApiPermissionRepository.deleteByIdIn(sysroleUrlPermissionPKs);
 	}
 
 	@Override
-	public Page<SparrowApi> getPermissionByUrlId(String[] ids) {
-		// TODO Auto-generated method stub
-		return null;
+	public SparrowApi update(String apiId, Map<String, Object> map) {
+		SparrowApi source = apiRepository.getById(apiId);
+		PatchUpdateHelper.merge(source, map);
+		return apiRepository.save(source);
 	}
 
 	@Override
-	public List<SparrowApi> add(List<SparrowApi> urls) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void delete(String[] ids) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public Page<Sysrole> getPermission(String apiId, Pageable pageable) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void addPermission(List<SysroleApiPK> sysroleUrlPermissionPKs) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void delPermission(List<SysroleApiPK> sysroleUrlPermissionPKs) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public SparrowApi updateApi(String apiId, SparrowApi sparrowApi) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Page<SparrowApi> all(Pageable pageable) {
-		// TODO Auto-generated method stub
-		return null;
+	public Page<SparrowApi> all(Pageable pageable, SparrowApi sparrowApi) {
+		ExampleMatcher matcher = ExampleMatcher.matching().withIgnoreCase().withStringMatcher(StringMatcher.CONTAINING);
+		return apiRepository.findAll(Example.of(sparrowApi, matcher), pageable);
 	}
 
 }

@@ -1,16 +1,23 @@
 package cn.sparrow.permission.mgt.service.impl;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
+import javax.transaction.Transactional;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.ExampleMatcher.StringMatcher;
 import org.springframework.stereotype.Service;
 
 import cn.sparrow.permission.constant.PreserveSysroleEnum;
@@ -24,7 +31,9 @@ import cn.sparrow.permission.model.resource.SysroleMenu;
 import cn.sparrow.permission.model.resource.SysroleMenuPK;
 import cn.sparrow.permission.model.resource.UserSysrole;
 import cn.sparrow.permission.model.resource.UserSysrolePK;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 public class SysroleServiceImpl implements SysroleService{
   @Autowired
@@ -39,14 +48,17 @@ public class SysroleServiceImpl implements SysroleService{
   // @Autowired SysroleModelPermissionRepository sysroleModelPermissionRepository;
   // @Autowired SysroleDataPermissionRepository sysroleDataPermissionRepository;
 
-  private static Logger logger = LoggerFactory.getLogger(SysroleServiceImpl.class);
-
   public void delMenus(String sysroleId, List<String> menuIds) {
     sysroleMenuRepository.deleteByIdSysroleIdAndIdMenuIdIn(sysroleId, menuIds);
   }
 
-  public List<UserSysrole> getUserSysroles(@NotBlank String username) {
-    return userSysroleRepository.findByIdUsername(username, Pageable.unpaged()).toList();
+  @Override
+  public List<String> getUsers( String sysroleId) {
+    List<String> usernames= new ArrayList<String>();
+    userSysroleRepository.findByIdSysroleId(sysroleId).forEach(f->{
+      usernames.add(f.getId().getUsername());
+    });
+    return usernames;
   }
 
   public void addMenus(String sysroleId, List<String> menuIds) {
@@ -93,10 +105,10 @@ public class SysroleServiceImpl implements SysroleService{
 
   public void init() {
     sysroleRepository.save(new Sysrole("超级管理员", PreserveSysroleEnum.SYSADMIN.name()));
-    logger.info("Create sysrole {}", PreserveSysroleEnum.SYSADMIN.name());
+    log.info("Create sysrole {}", PreserveSysroleEnum.SYSADMIN.name());
 
     sysroleRepository.save(new Sysrole("系统管理员", PreserveSysroleEnum.ADMIN.name()));
-    logger.info("Create sysrole {}", PreserveSysroleEnum.ADMIN.name());
+    log.info("Create sysrole {}", PreserveSysroleEnum.ADMIN.name());
 
     // urlRepository.findAll().forEach(f->{
     // if(!f.getMethod().equals(HttpMethod.GET)) {
@@ -110,7 +122,7 @@ public class SysroleServiceImpl implements SysroleService{
 
     userSysroleRepository.save(new UserSysrole(new UserSysrolePK("ROOT",
         sysroleRepository.findByCode(PreserveSysroleEnum.SYSADMIN.name()).get(0).getId())));
-    logger.info("Grant user {} sysrole SYSADMIN", PreserveSysroleEnum.ADMIN.name());
+    log.info("Grant user {} sysrole SYSADMIN", PreserveSysroleEnum.ADMIN.name());
 
   }
   //
@@ -133,18 +145,42 @@ public class SysroleServiceImpl implements SysroleService{
   // });
   // }
 
-  public void addPermissions(@NotNull List<UserSysrole> userSysroles) {
-    userSysroleRepository.saveAll(userSysroles);
+  @Override
+  @Transactional
+  public void addPermissions( List<UserSysrolePK> userSysroles) {
+    userSysroles.forEach(f->{
+      userSysroleRepository.save(new UserSysrole(f));
+    });
   }
 
-  public void delPermissions(@NotNull List<UserSysrolePK> userSysrolePKs) {
-    userSysroleRepository.deleteByIdIn(userSysrolePKs);
+  @Override
+  @Transactional
+  public void removePermissions(@NotNull List<UserSysrolePK> userSysrolePKs) {
+    userSysroleRepository.deleteAllByIdInBatch(userSysrolePKs);
   }
 
 @Override
-public void delete(@NotNull String[] ids) {
-	// TODO Auto-generated method stub
-	
+@Transactional
+public void delete( List<String> ids) {
+  sysroleRepository.deleteAllByIdInBatch(ids);
+}
+
+@Override
+public Page<Sysrole> all(Pageable pageable, Sysrole sysrole) {
+  ExampleMatcher matcher = ExampleMatcher.matching().withIgnoreCase().withStringMatcher(StringMatcher.CONTAINING);
+		return sysroleRepository.findAll(Example.of(sysrole, matcher), pageable);
+}
+
+@Override
+public Sysrole create(Sysrole sysrole) {
+  return sysroleRepository.save(sysrole);
+}
+
+@Override
+public Sysrole update(String sysroleId, Map<String, Object> map) {
+  Sysrole source=sysroleRepository.getById(sysroleId);
+  PatchUpdateHelper.merge(source, map);
+  return sysroleRepository.save(source);
 }
 
 

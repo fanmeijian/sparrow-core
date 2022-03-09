@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import cn.sparrow.permission.mgt.api.ModelService;
 import cn.sparrow.permission.mgt.api.SparrowService;
-import cn.sparrow.permission.mgt.api.SysroleService;
 import cn.sparrow.permission.mgt.service.repository.ApiRepository;
 import cn.sparrow.permission.mgt.service.repository.ModelAttributeRepository;
 import cn.sparrow.permission.mgt.service.repository.ModelRepository;
@@ -37,8 +36,6 @@ public class SparrowServiceImpl implements SparrowService{
 
 	private static Logger logger = LoggerFactory.getLogger(SparrowServiceImpl.class);
 
-	@Autowired
-	SysroleService sysroleService;
 	@Autowired
 	ModelService modelService;
 
@@ -214,11 +211,6 @@ public class SparrowServiceImpl implements SparrowService{
 							+ "','" + sysroleId  + "',now(),'SparrowSystem',now(),'SparrowSystem');");
 		}
 	}
-	
-	@Autowired
-	SparrowService sparrowService;
-
-	
 
 	@Autowired
 	ModelRepository modelRepository;

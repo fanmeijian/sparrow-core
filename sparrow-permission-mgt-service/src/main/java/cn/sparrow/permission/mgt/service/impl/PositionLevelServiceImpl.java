@@ -2,6 +2,7 @@ package cn.sparrow.permission.mgt.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.constraints.NotBlank;
 
@@ -14,11 +15,13 @@ import cn.sparrow.permission.mgt.service.repository.EmployeeOrganizationLevelRep
 import cn.sparrow.permission.mgt.service.repository.OrganizationLevelRelationRepository;
 import cn.sparrow.permission.mgt.service.repository.OrganizationLevelRepository;
 import cn.sparrow.permission.mgt.service.repository.PositionLevelRepository;
+import cn.sparrow.permission.model.organization.Employee;
 import cn.sparrow.permission.model.organization.EmployeeOrganizationLevel;
 import cn.sparrow.permission.model.organization.Organization;
 import cn.sparrow.permission.model.organization.OrganizationPositionLevel;
 import cn.sparrow.permission.model.organization.OrganizationPositionLevelPK;
 import cn.sparrow.permission.model.organization.OrganizationPositionLevelRelation;
+import cn.sparrow.permission.model.organization.OrganizationPositionLevelRelationPK;
 import cn.sparrow.permission.model.organization.PositionLevel;
 
 @Service
@@ -32,12 +35,18 @@ public class PositionLevelServiceImpl implements PositionLevelService{
 	OrganizationLevelRepository organizationLevelRepository;
 	@Autowired EmployeeOrganizationLevelRepository employeeOrganizationLevelRepository;
 
-	public List<EmployeeOrganizationLevel> getEmployees(OrganizationPositionLevelPK organizationLevelId) {
-		return employeeOrganizationLevelRepository.findByIdOrganizationLevelId(organizationLevelId);
+	@Override
+	public List<Employee> getEmployees(OrganizationPositionLevelPK organizationLevelId) {
+		List<Employee> employees = new ArrayList<Employee>();
+		employeeOrganizationLevelRepository.findByIdOrganizationLevelId(organizationLevelId).forEach(f->{
+			employees.add(f.getEmployee());
+		});
+		return employees;
 	}
 	
+	@Override
 	@Transactional
-	public PositionLevel save(PositionLevel lvel) {
+	public PositionLevel create(PositionLevel lvel) {
 		PositionLevel savedLevel = levelRepository.save(lvel);
 		// 保存岗位所在的组织
 		if (lvel.getOrganizationIds() != null) {
@@ -48,22 +57,34 @@ public class PositionLevelServiceImpl implements PositionLevelService{
 		return savedLevel;
 	}
 
-	public void addRelations(List<OrganizationPositionLevelRelation> organizationLevelRelations) {
+	@Override
+	@Transactional
+	public void addRelation(List<OrganizationPositionLevelRelation> organizationLevelRelations) {
 		organizationLevelRelationRepository.saveAll(organizationLevelRelations);
-
 	}
 
+	@Override
 	@Transactional
-	public void delBatch(String[] ids) {
+	public void delete(String[] ids) {
 		levelRepository.deleteByIdIn(ids);
 	}
 
-	public List<OrganizationPositionLevelRelation> getChildren(OrganizationPositionLevelPK parentId) {
-		return organizationLevelRelationRepository.findByIdParentId(parentId);
+	@Override
+	public List<OrganizationPositionLevel> getChildren(OrganizationPositionLevelPK parentId) {
+		List<OrganizationPositionLevel> positionLevels = new ArrayList<OrganizationPositionLevel>();
+		organizationLevelRelationRepository.findByIdParentId(parentId).forEach(f->{
+			positionLevels.add(f.getOrganizationLevel());
+		});
+		return positionLevels;
 	}
 	
-	public List<OrganizationPositionLevelRelation> getParents(OrganizationPositionLevelPK id) {
-		return organizationLevelRelationRepository.findByIdId(id);
+	@Override
+	public List<OrganizationPositionLevel> getParents(OrganizationPositionLevelPK id) {
+		List<OrganizationPositionLevel> positionLevels = new ArrayList<OrganizationPositionLevel>();
+		organizationLevelRelationRepository.findByIdId(id).forEach(f->{
+			positionLevels.add(f.getOrganizationLevel());
+		});
+		return positionLevels;
 	}
 
 	public List<Organization> getParentOrganizations(@NotBlank String positionLevelId) {
@@ -74,27 +95,19 @@ public class PositionLevelServiceImpl implements PositionLevelService{
 		return organizations;
 	}
 
+
 	@Override
-	public List<OrganizationPositionLevelRelation> getChildren(String organizationId, String positionLevelId) {
-		// TODO Auto-generated method stub
-		return null;
+	@Transactional
+	public void removeRelation(List<OrganizationPositionLevelRelationPK> ids) {
+		organizationLevelRelationRepository.deleteAllByIdInBatch(ids);;
 	}
 
 	@Override
-	public List<OrganizationPositionLevelRelation> getParents(String organizationId, String positionLevelId) {
-		// TODO Auto-generated method stub
-		return null;
+	@Transactional
+	public PositionLevel update(String positionLevelId, Map<String, Object> map) {
+		PositionLevel source = levelRepository.getById(positionLevelId);
+		PatchUpdateHelper.merge(source, map);
+		return levelRepository.save(source);
 	}
 
-	@Override
-	public void add(List<PositionLevel> levels) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void update(List<PositionLevel> levels) {
-		// TODO Auto-generated method stub
-		
-	}
 }

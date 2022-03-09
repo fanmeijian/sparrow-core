@@ -13,8 +13,11 @@ import javax.transaction.Transactional;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.ExampleMatcher.StringMatcher;
 import org.springframework.stereotype.Service;
 
 import cn.sparrow.permission.mgt.api.ModelService;
@@ -28,14 +31,15 @@ import cn.sparrow.permission.model.resource.ModelPermission;
 import cn.sparrow.permission.model.token.SparrowPermissionToken;
 
 @Service
-public class ModelServiceImpl implements ModelService{
+public class ModelServiceImpl implements ModelService {
 
 	@Autowired
 	ModelRepository modelRepository;
 
-//  @Autowired UserModelPermissionRepository userModelPermissionRepository;
-//  @Autowired SysroleModelPermissionRepository sysroleModelPermissionRepository;
-//  @Autowired OrganizationModelPermissionRepository organizationModelPermissionRepository;
+	// @Autowired UserModelPermissionRepository userModelPermissionRepository;
+	// @Autowired SysroleModelPermissionRepository sysroleModelPermissionRepository;
+	// @Autowired OrganizationModelPermissionRepository
+	// organizationModelPermissionRepository;
 	@PersistenceContext
 	EntityManager entityManager;
 	@Autowired
@@ -43,27 +47,31 @@ public class ModelServiceImpl implements ModelService{
 	@Autowired
 	PermissionTokenRepository permissionTokenRepository;
 
-	public Model getModel(Object object) {
-		return modelRepository.findById(object.getClass().getName()).orElse(null);
+	@Override
+	public Model getModel(String modelId) {
+		return modelRepository.findById(modelId).orElse(null);
 	}
 
+	@Override
 	@Transactional
-	public void addPermissions(ModelPermission modelPermission) {
+	public void addPermission(ModelPermission modelPermission) {
 		modelPermission.getModelName().forEach(modelName -> {
 			Model model = modelRepository.findById(modelName).get();
 			SparrowPermissionToken sparrowPermissionToken = model.getSparrowPermissionToken();
-			if(sparrowPermissionToken==null) {
+			if (sparrowPermissionToken == null) {
 				sparrowPermissionToken = new SparrowPermissionToken(modelPermission.getPermissionToken());
 				model.setSparrowPermissionToken(permissionTokenRepository.save(sparrowPermissionToken));
 				modelRepository.save(model);
-			}else {
+			} else {
 				sparrowPermissionToken.setPermissionToken(modelPermission.getPermissionToken());
 				permissionTokenRepository.save(sparrowPermissionToken);
 			}
 		});
 	}
 
-	public void delPermissions(ModelPermission modelPermission) {
+	@Override
+	@Transactional
+	public void removePermission(ModelPermission modelPermission) {
 
 	}
 
@@ -88,51 +96,26 @@ public class ModelServiceImpl implements ModelService{
 	}
 
 	@Override
-	public Page<Model> models(Pageable pageable) {
-		// TODO Auto-generated method stub
-		return null;
+	public Page<Model> models(Pageable pageable, Model model) {
+		ExampleMatcher matcher = ExampleMatcher.matching().withIgnoreCase().withStringMatcher(StringMatcher.CONTAINING);
+		return modelRepository.findAll(Example.of(model, matcher), pageable);
 	}
 
 	@Override
-	public void save(@NotNull Model model) {
-		// TODO Auto-generated method stub
-		
+	public Model create(Model model) {
+		return modelRepository.save(model);
 	}
 
 	@Override
-	public Page<Model> getModelsInId(@NotNull String[] ids, Pageable pageable) {
-		// TODO Auto-generated method stub
-		return null;
+	public Model update(String modelId, Map<String, Object> map) {
+		Model source = modelRepository.getById(modelId);
+		PatchUpdateHelper.merge(source, map);
+		return modelRepository.save(source);
 	}
 
 	@Override
-	public void add(@NotNull List<Model> models) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void update(@NotNull List<Model> models) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void delete(@NotNull String[] ids) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void addPermission(@NotNull ModelPermission modelPermission) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void delPermission(@NotNull ModelPermission modelPermission) {
-		// TODO Auto-generated method stub
-		
+	public void delete(List<String> ids) {
+		modelRepository.deleteAllByIdInBatch(ids);
 	}
 
 }

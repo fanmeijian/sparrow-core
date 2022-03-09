@@ -1,6 +1,8 @@
 package cn.sparrow.permission.mgt.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +21,12 @@ import cn.sparrow.permission.model.organization.EmployeeOrganizationRole;
 import cn.sparrow.permission.model.organization.EmployeeOrganizationRolePK;
 import cn.sparrow.permission.model.organization.EmployeeRelation;
 import cn.sparrow.permission.model.organization.EmployeeRelationPK;
+import cn.sparrow.permission.model.organization.PositionLevel;
+import cn.sparrow.permission.model.organization.Role;
 import cn.sparrow.permission.model.resource.SparrowTree;
 
 @Service
-public class EmployeeServiceImpl implements EmployeeService{
+public class EmployeeServiceImpl implements EmployeeService {
 
 	@Autowired
 	EmployeeRelationRepository employeeRelationRepository;
@@ -33,48 +37,63 @@ public class EmployeeServiceImpl implements EmployeeService{
 	@Autowired
 	EmployeeOrganizationLevelRepository employeeOrganizationLevelRepository;
 
+	@Override
 	@Transactional
-	public void saveMasterOrganization(String employeeId, String organizationId) {
-		Employee employee = employeeRepository.getOne(employeeId);
-		employee.setOrganizationId(organizationId);
-		employeeRepository.save(employee);
-	}
-	
-	public Employee save(Employee employee) {
-		Employee r = employeeRepository.save(employee);
-		if(employee.getParentIds()!=null) {
-			employee.getParentIds().forEach(f->{
-				employeeRelationRepository.save(new EmployeeRelation(new EmployeeRelationPK(employee.getId(),f)));
-	    	});
-	    }
-		return r;
+	public Employee update(String employeeId, Map<String, Object> map) {
+		Employee source = employeeRepository.getById(employeeId);
+		PatchUpdateHelper.merge(source, map);
+		return employeeRepository.save(source);
 	}
 
-	public void addRelations(Set<EmployeeRelation> ids) {
-		employeeRelationRepository.saveAll(ids);
+	@Override
+	@Transactional
+	public Employee create(Employee employee) {	
+		return employeeRepository.save(employee);
 	}
 
-	public void delRelations(Set<EmployeeRelationPK> ids) {
+	@Override
+	@Transactional
+	public void addRelation(Set<EmployeeRelationPK> ids) {
+		ids.forEach(f -> {
+			employeeRelationRepository.save(new EmployeeRelation(f));
+		});
+	}
+
+	@Override
+	@Transactional
+	public void removeRelation(Set<EmployeeRelationPK> ids) {
 		ids.forEach(f -> {
 			employeeRelationRepository.deleteById(f);
 		});
 	}
 
-	public void addRoles(Set<EmployeeOrganizationRole> ids) {
-      employeeOrganizationRoleRepository.saveAll(ids);
+	@Override
+	@Transactional
+	public void addRole(Set<EmployeeOrganizationRolePK> ids) {
+		ids.forEach(f -> {
+			employeeOrganizationRoleRepository.save(new EmployeeOrganizationRole(f));
+		});
 	}
 
-	public void delRoles(Set<EmployeeOrganizationRolePK> ids) {
+	@Override
+	@Transactional
+	public void removeRole(Set<EmployeeOrganizationRolePK> ids) {
 		ids.forEach(f -> {
 			employeeOrganizationRoleRepository.delete(new EmployeeOrganizationRole(f));
 		});
 	}
 
-	public void addLevels(List<EmployeeOrganizationLevel> ids) {
-		employeeOrganizationLevelRepository.saveAll(ids);
+	@Override
+	@Transactional
+	public void addLevel(List<EmployeeOrganizationLevelPK> ids) {
+		ids.forEach(f -> {
+			employeeOrganizationLevelRepository.save(new EmployeeOrganizationLevel(f));
+		});
 	}
 
-	public void delLevels(Set<EmployeeOrganizationLevelPK> ids) {
+	@Override
+	@Transactional
+	public void removeLevel(Set<EmployeeOrganizationLevelPK> ids) {
 		ids.forEach(f -> {
 			employeeOrganizationLevelRepository.delete(new EmployeeOrganizationLevel(f));
 		});
@@ -91,7 +110,8 @@ public class EmployeeServiceImpl implements EmployeeService{
 
 			return rootTree;
 		} else {
-			SparrowTree<Employee, String> myTree = new SparrowTree<Employee, String>(employeeRepository.findById(parentId).orElse(null));
+			SparrowTree<Employee, String> myTree = new SparrowTree<Employee, String>(
+					employeeRepository.findById(parentId).orElse(null));
 			buildTree(myTree);
 			return myTree;
 		}
@@ -110,64 +130,62 @@ public class EmployeeServiceImpl implements EmployeeService{
 				});
 	}
 
-	  @Transactional
-	  public void delBatch(String[] ids) {
-		  employeeRelationRepository.deleteByIdEmployeeIdInOrIdParentIdIn(ids,ids);
-		  employeeRepository.deleteByIdIn(ids);
-	  }
-
-	public List<EmployeeRelation> getChildren(String parentId) {
-		List<EmployeeRelation> employeeRelation = employeeRelationRepository.findByIdParentId(parentId);
-		employeeRelation.forEach(f->{
-			f.getEmployee().setChildCount(this.getChildCount(f.getEmployee().getId()));
-		});
-		return employeeRelation;
+	@Transactional
+	public void delBatch(String[] ids) {
+		employeeRelationRepository.deleteByIdEmployeeIdInOrIdParentIdIn(ids, ids);
+		employeeRepository.deleteByIdIn(ids);
 	}
-	
+
+	@Override
+	public List<Employee> getChildren(String employeeId) {
+		List<Employee> employees = new ArrayList<Employee>();
+		employeeRelationRepository.findByIdParentId(employeeId).forEach(f -> {
+			f.getEmployee().setChildCount(this.getChildCount(f.getEmployee().getId()));
+			employees.add(f.getEmployee());
+		});
+		return employees;
+	}
+
 	public long getChildCount(String parentId) {
 		return employeeRelationRepository.countByIdParentId(parentId);
 	}
 
-	public List<EmployeeRelation> getParents(String employeeId) {
-		return employeeRelationRepository.findByIdEmployeeId(employeeId);
-	}
-
-	public List<EmployeeOrganizationLevel> getLevels(String employeeId) {
-		return employeeOrganizationLevelRepository.findByIdEmployeeId(employeeId);
-	}
-
-	public List<EmployeeOrganizationRole> getRoles(String employeeId) {
-		return employeeOrganizationRoleRepository.findByIdEmployeeId(employeeId);
+	@Override
+	public List<Employee> getParents(String employeeId) {
+		List<Employee> employees = new ArrayList<Employee>();
+		employeeRelationRepository.findByIdEmployeeId(employeeId).forEach(f -> {
+			employees.add(f.getEmployee());
+		});
+		return employees;
 	}
 
 	@Override
-	public void updateOrganization(String employeeId, String organizationId) {
-		// TODO Auto-generated method stub
-		
+	public List<PositionLevel> getLevels(String employeeId) {
+		List<PositionLevel> positionLevels = new ArrayList<PositionLevel>();
+		employeeOrganizationLevelRepository.findByIdEmployeeId(employeeId).forEach(f -> {
+			positionLevels.add(f.getOrganizationLevel().getPositionLevel());
+		});
+		return positionLevels;
+	}
+
+	@Override
+	public List<Role> getRoles(String employeeId) {
+		List<Role> roles = new ArrayList<Role>();
+		employeeOrganizationRoleRepository.findByIdEmployeeId(employeeId).forEach(f -> {
+			roles.add(f.getOrganizationRole().getRole());
+		});
+		return roles;
 	}
 
 	@Override
 	public SparrowTree<Employee, String> tree(String parentId) {
-		// TODO Auto-generated method stub
-		return null;
+		return getTree(parentId);
 	}
 
 	@Override
-	public void add(List<Employee> employees) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void update(List<Employee> employees) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
+	@Transactional
 	public void delete(String[] ids) {
-		// TODO Auto-generated method stub
-		
+		employeeRepository.deleteByIdIn(ids);
 	}
-	
+
 }

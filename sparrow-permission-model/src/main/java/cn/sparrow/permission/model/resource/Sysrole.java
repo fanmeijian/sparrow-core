@@ -14,8 +14,12 @@ import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
+import org.hibernate.envers.Audited;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 import cn.sparrow.permission.model.common.AbstractSparrowEntity;
 import cn.sparrow.permission.model.group.GroupSysrole;
@@ -30,6 +34,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Table(name = "spr_sysrole")
+@JsonIgnoreProperties(value = {"dataPermissionToken","id"},allowGetters = true)
 public class Sysrole extends AbstractSparrowEntity {
 	private static final long serialVersionUID = 1L;
 
@@ -37,11 +42,15 @@ public class Sysrole extends AbstractSparrowEntity {
 	@Id
 	@GenericGenerator(name = "id-generator", strategy = "uuid")
 	@GeneratedValue(generator = "id-generator")
+	@Audited
 	protected String id;
 
+	@Audited
 	private String name;
+	@Audited
 	@Column(unique = true)
 	private String code;
+	@Audited
 	private Boolean isSystem;
 
 	@JsonIgnore
@@ -52,6 +61,7 @@ public class Sysrole extends AbstractSparrowEntity {
 	@OneToMany(targetEntity = GroupSysrole.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "sysrole")
 	private Set<GroupSysrole> groupSysroles;
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "sysrole", cascade = CascadeType.ALL)
 	private Set<UserSysrole> userSysroles;
 

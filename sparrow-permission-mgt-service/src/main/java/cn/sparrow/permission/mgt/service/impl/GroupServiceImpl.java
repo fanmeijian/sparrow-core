@@ -1,11 +1,17 @@
 package cn.sparrow.permission.mgt.service.impl;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.validation.constraints.NotBlank;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.ExampleMatcher.StringMatcher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -70,76 +76,91 @@ public class GroupServiceImpl implements GroupService {
 	@Autowired
 	GroupRepository groupRepository;
 
-	public void addRelations(Set<GroupRelation> ids) {
-		groupRelationRepository.saveAll(ids);
-	}
+	// @Override
+	// public void addRelations(Set<GroupRelationPK> ids) {
+	// 	ids.forEach(f->{
+	// 		groupRelationRepository.save(new GroupRelation(f));
+	// 	});
+	// }
 
-	public void delRelations(Set<GroupRelationPK> ids) {
-		ids.forEach(f -> {
-			groupRelationRepository.deleteById(f);
-		});
-	}
+	// @Override
+	// public void delRelations(Set<GroupRelationPK> ids) {
+	// 	ids.forEach(f -> {
+	// 		groupRelationRepository.deleteById(f);
+	// 	});
+	// }
 
-	public void addOrganizations(Set<GroupOrganizationPK> ids) {
-		ids.forEach(f -> {
-			groupOrganizationRepository.save(new GroupOrganization(f));
-		});
-	}
+	// @Override
+	// public void addOrganizations(Set<GroupOrganizationPK> ids) {
+	// 	ids.forEach(f -> {
+	// 		groupOrganizationRepository.save(new GroupOrganization(f));
+	// 	});
+	// }
 
-	public void delOrganizations(Set<GroupOrganizationPK> ids) {
-		ids.forEach(f -> {
-			groupOrganizationRepository.delete(new GroupOrganization(f));
-		});
-	}
+	// @Override
+	// public void delOrganizations(Set<GroupOrganizationPK> ids) {
+	// 	ids.forEach(f -> {
+	// 		groupOrganizationRepository.delete(new GroupOrganization(f));
+	// 	});
+	// }
 
-	public void addRoles(Set<GroupRolePK> ids) {
-		ids.forEach(f -> {
-			groupRoleRepository.save(new GroupRole(f));
-		});
-	}
+	// @Override
+	// public void addRoles(Set<GroupRolePK> ids) {
+	// 	ids.forEach(f -> {
+	// 		groupRoleRepository.save(new GroupRole(f));
+	// 	});
+	// }
 
-	public void delRoles(Set<GroupRolePK> ids) {
-		ids.forEach(f -> {
-			groupRoleRepository.delete(new GroupRole(f));
-		});
-	}
+	// @Override
+	// public void delRoles(Set<GroupRolePK> ids) {
+	// 	ids.forEach(f -> {
+	// 		groupRoleRepository.delete(new GroupRole(f));
+	// 	});
+	// }
 
-	public void addLevels(Set<GroupPositionLevelPK> ids) {
-		ids.forEach(f -> {
-			groupLevelRepository.save(new GroupPositionLevel(f));
-		});
-	}
+	// @Override
+	// public void addLevels(Set<GroupPositionLevelPK> ids) {
+	// 	ids.forEach(f -> {
+	// 		groupLevelRepository.save(new GroupPositionLevel(f));
+	// 	});
+	// }
 
-	public void delLevels(Set<GroupPositionLevelPK> ids) {
-		ids.forEach(f -> {
-			groupLevelRepository.delete(new GroupPositionLevel(f));
-		});
-	}
+	// @Override
+	// public void delLevels(Set<GroupPositionLevelPK> ids) {
+	// 	ids.forEach(f -> {
+	// 		groupLevelRepository.delete(new GroupPositionLevel(f));
+	// 	});
+	// }
 
-	public void addSysroles(Set<GroupSysrolePK> ids) {
-		ids.forEach(f -> {
-			groupSysroleRepository.save(new GroupSysrole(f));
-		});
-	}
+	// @Override
+	// public void addSysroles(Set<GroupSysrolePK> ids) {
+	// 	ids.forEach(f -> {
+	// 		groupSysroleRepository.save(new GroupSysrole(f));
+	// 	});
+	// }
 
-	public void delSysroles(Set<GroupSysrolePK> ids) {
-		ids.forEach(f -> {
-			groupSysroleRepository.delete(new GroupSysrole(f));
-		});
-	}
+	// @Override
+	// public void delSysroles(Set<GroupSysrolePK> ids) {
+	// 	ids.forEach(f -> {
+	// 		groupSysroleRepository.delete(new GroupSysrole(f));
+	// 	});
+	// }
 
-	public void addUsers(Set<GroupUserPK> ids) {
-		ids.forEach(f -> {
-			groupUserRepository.save(new GroupUser(f));
-		});
-	}
+	// @Override
+	// public void addUsers(Set<GroupUserPK> ids) {
+	// 	ids.forEach(f -> {
+	// 		groupUserRepository.save(new GroupUser(f));
+	// 	});
+	// }
 
-	public void delUsers(Set<GroupUserPK> ids) {
-		ids.forEach(f -> {
-			groupUserRepository.delete(new GroupUser(f));
-		});
-	}
+	// @Override
+	// public void delUsers(Set<GroupUserPK> ids) {
+	// 	ids.forEach(f -> {
+	// 		groupUserRepository.delete(new GroupUser(f));
+	// 	});
+	// }
 
+	@Override
 	public SparrowTree<Group, String> getTree(String parentId) {
 		SparrowTree<Group, String> myTree = new SparrowTree<Group, String>(
 				parentId == null ? null : groupRepository.findById(parentId).orElse(null));
@@ -147,6 +168,7 @@ public class GroupServiceImpl implements GroupService {
 		return myTree;
 	}
 
+	
 	public void buildTree(SparrowTree<Group, String> myTree) {
 		groupRelationRepository.findByIdParentId(myTree.getMe() == null ? null : myTree.getMe().getId()).forEach(f -> {
 			SparrowTree<Group, String> leaf = new SparrowTree<Group, String>(f.getGroup());
@@ -158,7 +180,8 @@ public class GroupServiceImpl implements GroupService {
 		});
 	}
 
-	public Group save(Group group) {
+	@Override
+	public Group add(Group group) {
 		Group savedGroup = groupRepository.save(group);
 		// save relation
 		savedGroup.getOrganizationIds().forEach(f->{
@@ -168,7 +191,8 @@ public class GroupServiceImpl implements GroupService {
 	}
 
 	@Transactional
-	public void saveGroupMember(GroupMember groupMember) {
+	@Override
+	public void addMembers(GroupMember groupMember) {
 		if(groupMember.getGroupRelations()!=null) {
 			// save sub group
 			groupRelationRepository.saveAll(groupMember.getGroupRelations());
@@ -195,7 +219,8 @@ public class GroupServiceImpl implements GroupService {
 		}
 	}
 
-	public GroupMember getGroupMember(@NotBlank String groupId) {
+	@Override
+	public GroupMember getGroupMember(String groupId) {
 		GroupMember groupMember = new GroupMember();
 		groupMember.setGroupEmployees(groupEmployeeRepository.findByIdGroupId(groupId));
 		groupMember.setGroupRelations(groupRelationRepository.findByIdParentId(groupId));
@@ -207,6 +232,7 @@ public class GroupServiceImpl implements GroupService {
 		return groupMember;
 	}
 
+	@Override
 	public List<Employee> getFinalEmployees(@NotBlank String groupId) {
 		// get the actual employees from all group member except organization for organization member are too large
 		
@@ -214,33 +240,28 @@ public class GroupServiceImpl implements GroupService {
 	}
 
 	@Override
-	public void addMembers(GroupMember groupMember) {
-		// TODO Auto-generated method stub
-		
+	public Group update(String groupId, Map<String, Object> map) {
+		Group source = groupRepository.getById(groupId);
+		PatchUpdateHelper.merge(source, map);
+		return groupRepository.save(source);
 	}
 
 	@Override
-	public void add(List<Group> groups) {
-		// TODO Auto-generated method stub
-		
+	public void delete(List<String> ids) {
+		groupRepository.deleteAllByIdInBatch(ids);
 	}
 
 	@Override
-	public void update(List<Group> groups) {
-		// TODO Auto-generated method stub
-		
+	public Page<Group> all(Pageable pageable, Group group){
+		ExampleMatcher matcher = ExampleMatcher.matching().withIgnoreCase().withStringMatcher(StringMatcher.CONTAINING);
+		return groupRepository.findAll(Example.of(group, matcher), pageable);
 	}
 
-	@Override
-	public void delete(String[] ids) {
-		// TODO Auto-generated method stub
-		
-	}
 
 	@Override
-	public SparrowTree<Group, String> tree(String parentId) {
+	public void removeMembers(GroupMember groupMember) {
 		// TODO Auto-generated method stub
-		return null;
+		
 	}
 
 

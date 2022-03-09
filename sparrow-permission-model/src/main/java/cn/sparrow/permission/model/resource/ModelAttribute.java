@@ -8,6 +8,10 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
 
 import cn.sparrow.permission.model.common.AbstractSparrowEntity;
 import cn.sparrow.permission.model.token.SparrowPermissionToken;
@@ -18,6 +22,8 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
 @Entity
 @Table(name = "spr_model_attribute")
+@Audited
+@JsonIgnoreProperties(value = {"sparrowPermissionToken","dataPermissionToken"},allowGetters = true)
 public class ModelAttribute extends AbstractSparrowEntity {
   /**
    * 
@@ -32,10 +38,12 @@ public class ModelAttribute extends AbstractSparrowEntity {
   private String nameTxt;
   private String remark;
   
+  @NotAudited
   @OneToOne
   @JoinColumn(name = "permission_token_id")
-  private SparrowPermissionToken permissionToken;
+  private SparrowPermissionToken sparrowPermissionToken;
   
+  @NotAudited
   @JsonIgnore
   @ManyToOne
   @JoinColumn(name = "model_name", referencedColumnName = "name", insertable = false, updatable = false)

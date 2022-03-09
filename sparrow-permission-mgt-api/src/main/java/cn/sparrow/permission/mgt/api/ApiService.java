@@ -1,9 +1,7 @@
 package cn.sparrow.permission.mgt.api;
 
 import java.util.List;
-
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Null;
+import java.util.Map;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,11 +16,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import cn.sparrow.permission.model.resource.Menu;
 import cn.sparrow.permission.model.resource.SparrowApi;
 import cn.sparrow.permission.model.resource.Sysrole;
 import cn.sparrow.permission.model.resource.SysroleApiPK;
-import cn.sparrow.permission.model.resource.SysroleApiPermission;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @Tag(name = "接口管理")
@@ -32,28 +32,29 @@ public interface ApiService {
 	@PostMapping("")
 	@Operation(summary = "新增接口")
 	@ResponseBody
-	public int saveApis(@RequestBody List<SparrowApi> sparrowApis);
+	public SparrowApi create(@RequestBody SparrowApi sparrowApi);
 
 	@PatchMapping("/{apiId}")
 	@Operation(summary = "更新接口")
+	@io.swagger.v3.oas.annotations.parameters.RequestBody(content = @Content(schema = @Schema(implementation = SparrowApi.class)))
 	@ResponseBody
-	public SparrowApi updateApi(@PathVariable("apiId") String apiId,@RequestBody SparrowApi sparrowApi);
+	public SparrowApi update(@PathVariable("apiId") String apiId,@RequestBody Map<String, Object> map);
 
 	@GetMapping("/{apiId}")
 	@Operation(summary = "获取接口详情")
 	@ResponseBody
-	public SparrowApi getUrl(@PathVariable("apiId") String id);
+	public SparrowApi getApi(@PathVariable("apiId") String id);
 
 	@DeleteMapping("")
 	@Operation(summary = "删除接口")
 	@ResponseBody
-	public void deleteByIds(@RequestBody List<String> ids);
+	public void delete(@RequestBody List<String> ids);
 
 	@GetMapping("")
 	@Operation(summary = "浏览接口")
 	@ResponseBody
-	public Page<SparrowApi> all(@Nullable Pageable pageable);
-	
+	public Page<SparrowApi> all(@Nullable Pageable pageable, @Nullable SparrowApi sparrowApi);
+
 	@GetMapping("/permissions")
 	@Operation(summary = "可访问角色列表")
 	@ResponseBody
@@ -68,22 +69,4 @@ public interface ApiService {
 	@Operation(summary = "移除授权")
 	@ResponseBody
 	public void delPermissions(@RequestBody List<SysroleApiPK> sysroleApiPKs);
-
-	@PostMapping("/getPermissionByUrlId")
-	public Page<SparrowApi> getPermissionByUrlId(@RequestBody final String[] ids);
-
-	@PostMapping("/sparrowApis/batch")
-	public List<SparrowApi> add(@NotNull @RequestBody final List<SparrowApi> urls);
-
-	@DeleteMapping("/sparrowApis/batch")
-	public void delete(@NotNull @RequestBody final String[] ids);
-
-	@GetMapping("/sparrowApis/permissions")
-	public Page<?> getPermission(@Null @RequestParam("apiId") String urlId, Pageable pageable);
-
-	@PostMapping("/sparrowApis/permissions")
-	public void addPermission(@NotNull @RequestBody final List<SysroleApiPK> sysroleUrlPermissionPKs);
-
-	@DeleteMapping("/sparrowApis/permissions")
-	public void delPermission(@NotNull @RequestBody final List<SysroleApiPK> sysroleUrlPermissionPKs);
 }
