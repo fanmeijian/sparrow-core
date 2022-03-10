@@ -24,7 +24,11 @@ import lombok.NoArgsConstructor;
 	@NamedQuery(name = "GroupEmployee.findByEmployeeId", query = "SELECT o FROM GroupEmployee o WHERE o.id.employeeId = :employeeId") })
 public class GroupEmployee extends AbstractSparrowEntity {
 
-	/**
+	public GroupEmployee(GroupEmployeePK groupEmployeePK) {
+		this.id = groupEmployeePK;
+    }
+
+    /**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;

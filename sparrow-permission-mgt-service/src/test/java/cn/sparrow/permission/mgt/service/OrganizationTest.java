@@ -36,6 +36,9 @@ import cn.sparrow.permission.mgt.service.repository.OrganizationRoleRelationRepo
 import cn.sparrow.permission.mgt.service.repository.PositionLevelRepository;
 import cn.sparrow.permission.mgt.service.repository.RoleRepository;
 import cn.sparrow.permission.model.group.Group;
+import cn.sparrow.permission.model.group.GroupEmployee;
+import cn.sparrow.permission.model.group.GroupEmployeePK;
+import cn.sparrow.permission.model.group.GroupMember;
 import cn.sparrow.permission.model.group.GroupRelation;
 import cn.sparrow.permission.model.organization.Employee;
 import cn.sparrow.permission.model.organization.EmployeeOrganizationRolePK;
@@ -154,7 +157,7 @@ public class OrganizationTest {
         assertEquals(10, organizationServiceImpl.getRoles(prev, Pageable.unpaged()).getTotalElements());
         assertEquals(10, organizationServiceImpl.getLevels(prev, Pageable.unpaged()).getTotalElements());
         assertEquals(10, organizationServiceImpl.getGroups(prev, Pageable.unpaged()).getTotalElements());
-        log.info("{}", organizationServiceImpl.getTreeByParentId(prev));
+        // log.info("{}", organizationServiceImpl.getTreeByParentId(prev));
         // assertEquals(110, menuServiceImpl.all(Pageable.unpaged(),
         // null).getTotalElements());
 
@@ -192,6 +195,7 @@ public class OrganizationTest {
         // log.info("------------------------{} {} {}" ,
         // organizationRoleRelationRepository.findAll(),role1.getId(),orgid);
 
+        // 设置员工岗位
         Employee employee2 = new Employee("sdfafd", "e333332", orgid);
         employeeServiceImpl.create(employee2);
         Set<EmployeeOrganizationRolePK> employeeOrganizationRolePKs = new HashSet<>();
@@ -214,7 +218,38 @@ public class OrganizationTest {
     }
 
     @Test
+    @Transactional
     void groupTest() {
+        Group group1 = new Group("g1", "g1");
+        groupService.add(group1);
 
+        Group group2= new Group("g2","g2");
+        groupService.add(group2);
+
+        Organization organization = new Organization("ooooooo1","ooooooo1", OrganizationTypeEnum.ORGANIZATION);
+        organizationServiceImpl.create(organization);
+        List<String> orgs= new ArrayList<>();
+        orgs.add(organization.getId());
+
+        // 设置所属组织
+        groupService.setParentOrgs(group1.getId(), orgs);
+        groupService.setParentOrgs(group2.getId(), orgs);
+
+        GroupMember groupMember = null;
+        // 设置员工
+        Employee employee1 = new Employee("eeeeee1", "eeeeeee1", organization.getId());
+        Employee employee2 = new Employee("eeeeee2", "eeeeeee2", organization.getId());
+        employeeServiceImpl.create(employee1);
+        employeeServiceImpl.create(employee2);
+        List<GroupEmployee> groupEmployees = new ArrayList<>(); 
+        groupEmployees.add(new GroupEmployee(new GroupEmployeePK(group1.getId(), employee1.getId())));
+        groupEmployees.add(new GroupEmployee(new GroupEmployeePK(group2.getId(), employee2.getId())));
+        groupMember = new GroupMember();
+        groupMember.setGroupEmployees(groupEmployees);
+        groupService.addMembers(groupMember);
+
+        log.info("+++++++++++{}", groupService.getGroupMember(group1.getId()));
+
+        // 设置子组
     }
 }
