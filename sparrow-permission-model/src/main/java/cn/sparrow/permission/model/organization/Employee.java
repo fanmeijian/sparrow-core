@@ -64,6 +64,7 @@ public class Employee extends AbstractSparrowEntity {
   @JsonProperty(access = Access.READ_ONLY)
   private long childCount;
 
+  @JsonIgnore
   @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "employee")
   private Set<EmployeeUser> employeeUsers;
 
