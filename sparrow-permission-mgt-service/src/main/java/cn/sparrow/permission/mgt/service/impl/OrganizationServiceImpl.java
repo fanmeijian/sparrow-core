@@ -10,6 +10,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,7 +41,7 @@ import cn.sparrow.permission.model.organization.OrganizationRolePK;
 import cn.sparrow.permission.model.resource.SparrowTree;
 
 @Service
-public class OrganizationServiceImpl implements OrganizationService{
+public class OrganizationServiceImpl implements OrganizationService {
 
 	@Autowired
 	OrganizationRelationRepository organizationRelationRepository;
@@ -68,13 +69,13 @@ public class OrganizationServiceImpl implements OrganizationService{
 	EmployeeService employeeService;
 
 	@Override
-	public List<OrganizationGroup> getGroups(@NotBlank String organizationId) {
-		return organizationGroupRepository.findByIdOrganizationId(organizationId);
+	public Page<OrganizationGroup> getGroups(String organizationId, Pageable pageable) {
+		return organizationGroupRepository.findByIdOrganizationId(organizationId, pageable);
 	}
 
 	@Override
-	public List<OrganizationRole> getRoles(@NotBlank String organizationId) {
-		List<OrganizationRole> roles = organizationRoleRepository.findByIdOrganizationId(organizationId);
+	public Page<OrganizationRole> getRoles(String organizationId, Pageable pageable) {
+		Page<OrganizationRole> roles = organizationRoleRepository.findByIdOrganizationId(organizationId, pageable);
 		roles.forEach(f -> {
 			f.setChildCount(organizationRoleRelationRepository.countByIdParentId(f.getId()));
 		});
@@ -82,9 +83,9 @@ public class OrganizationServiceImpl implements OrganizationService{
 	}
 
 	@Override
-	public List<OrganizationPositionLevel> getLevels(@NotBlank String organizationId) {
-		List<OrganizationPositionLevel> organizationPositionLevels = organizationLevelRepository
-				.findByIdOrganizationId(organizationId);
+	public Page<OrganizationPositionLevel> getLevels(String organizationId, Pageable pageable) {
+		Page<OrganizationPositionLevel> organizationPositionLevels = organizationLevelRepository
+				.findByIdOrganizationId(organizationId, pageable);
 		organizationPositionLevels.forEach(f -> {
 			f.setChildCount(organizationPositionLevelRelationRepository.countByIdParentId(f.getId()));
 		});
@@ -92,14 +93,15 @@ public class OrganizationServiceImpl implements OrganizationService{
 	}
 
 	@Override
-	public List<Employee> getEmployees(@NotBlank String organizationId, Pageable pageable) {
-		List<Employee> employees = employeeRepository.findByOrganizationId(organizationId, pageable);
+	public Page<Employee> getEmployees(@NotBlank String organizationId, Pageable pageable) {
+		Page<Employee> employees = employeeRepository.findByOrganizationId(organizationId, pageable);
 		employees.forEach(f -> {
 			f.setChildCount(employeeService.getChildCount(f.getId()));
 		});
 		return employees;
 	}
 
+	@Override
 	public List<Organization> getChildren(String parentId) {
 		List<OrganizationRelation> organizationRelations = new ArrayList<OrganizationRelation>();
 		if (parentId == null || parentId.isBlank()) {
@@ -112,22 +114,24 @@ public class OrganizationServiceImpl implements OrganizationService{
 
 		List<Organization> children = new ArrayList<Organization>();
 		organizationRelations.forEach(f -> {
-			f.getOrganization().setParentCount(
-					organizationRelationRepository.countByIdOrganizationId(f.getOrganization().getId()));
-			f.getOrganization()
-					.setChildCount(organizationRelationRepository.countByIdParentId(f.getOrganization().getId()));
-			f.getOrganization()
-					.setRoleCount(organizationRoleRepository.countByIdOrganizationId(f.getOrganization().getId()));
-			f.getOrganization()
-					.setLevelCount(organizationLevelRepository.countByIdOrganizationId(f.getOrganization().getId()));
-			f.getOrganization()
-					.setGroupCount(organizationGroupRepository.countByIdOrganizationId(f.getOrganization().getId()));
-			f.getOrganization().setEmployeeCount(employeeRepository.countByOrganizationId(f.getOrganization().getId()));
-			children.add(f.getOrganization());
+			Organization organization = organizationRepository.findById(f.getId().getOrganizationId()).get();
+			organization.setParentCount(
+					organizationRelationRepository.countByIdOrganizationId(organization.getId()));
+			organization
+					.setChildCount(organizationRelationRepository.countByIdParentId(organization.getId()));
+			organization
+					.setRoleCount(organizationRoleRepository.countByIdOrganizationId(organization.getId()));
+			organization
+					.setLevelCount(organizationLevelRepository.countByIdOrganizationId(organization.getId()));
+			organization
+					.setGroupCount(organizationGroupRepository.countByIdOrganizationId(organization.getId()));
+			organization.setEmployeeCount(employeeRepository.countByOrganizationId(organization.getId()));
+			children.add(organization);
 		});
 		return children;
 	}
 
+	@Override
 	public List<Organization> getParents(String organizationId) {
 		List<Organization> parents = new ArrayList<Organization>();
 		organizationRelationRepository.findByIdOrganizationId(organizationId).forEach(f -> {
@@ -143,55 +147,69 @@ public class OrganizationServiceImpl implements OrganizationService{
 		organizationRepository.deleteByIdIn(ids);
 	}
 
+	@Override
 	@Transactional
-	public void addRelations(Set<OrganizationRelation> organizationRelations) {
+	public void addRelations(Set<OrganizationRelationPK> organizationRelations) {
 		organizationRelations.forEach(f -> {
-			if (f.getId().getParentId().equals("-1")) {
-				Organization rootOrganization = organizationRepository.getOne(f.getId().getOrganizationId());
+			if (f.getParentId().equals("root")) {
+				Organization rootOrganization = organizationRepository.getById(f.getOrganizationId());
 				rootOrganization.setIsRoot(true);
 				organizationRepository.save(rootOrganization);
 			} else {
-				organizationRelationRepository.save(f);
+				organizationRelationRepository.save(new OrganizationRelation(f));
 			}
 		});
 
 	}
 
+	@Override
+	@Transactional
 	public void removeRelations(Set<OrganizationRelationPK> ids) {
-		organizationRelationRepository.deleteByIdIn(ids);
+		organizationRelationRepository.deleteAllById(ids);
 	}
 
+	@Override
 	@Transactional
-	public void updateParent(Set<OrganizationRelation> organizationRelations) {
+	public void updateParent(String organizationId, List<String> parentIds) {
+
+		parentIds.forEach(f -> {
+			if (f.equals("root")) {
+				Organization organization = organizationRepository.getById(organizationId);
+				organizationRepository.save(organization);
+			} else {
+				organizationRelationRepository
+						.save(new OrganizationRelation(new OrganizationRelationPK(organizationId, f)));
+			}
+		});
 
 		// if there's no parent, do not allow to remove relation.
-		Map<String, Boolean> mapIsRoot = new HashMap<String, Boolean>();
-		Map<String, Boolean> mapHasParent = new HashMap<String, Boolean>();
+		// Map<String, Boolean> mapIsRoot = new HashMap<String, Boolean>();
+		// Map<String, Boolean> mapHasParent = new HashMap<String, Boolean>();
 
-		organizationRelations.forEach(f -> {
-			if (f.getId().getParentId().equals("-1")) {
-				mapIsRoot.put(f.getId().getOrganizationId(), true);
-			} else {
-				mapHasParent.put(f.getId().getOrganizationId(), true);
-			}
-		});
+		// organizationRelations.forEach(f -> {
+		// if (f.getId().getParentId().equals("-1")) {
+		// mapIsRoot.put(f.getId().getOrganizationId(), true);
+		// } else {
+		// mapHasParent.put(f.getId().getOrganizationId(), true);
+		// }
+		// });
 
-		organizationRelations.forEach(f -> {
-			if (mapIsRoot.containsKey(f.getId().getOrganizationId())
-					|| mapHasParent.containsKey(f.getId().getOrganizationId())) {
-				organizationRelationRepository.deleteByIdOrganizationId(f.getId().getOrganizationId());
-			}
-		});
+		// organizationRelations.forEach(f -> {
+		// if (mapIsRoot.containsKey(f.getId().getOrganizationId())
+		// || mapHasParent.containsKey(f.getId().getOrganizationId())) {
+		// organizationRelationRepository.deleteByIdOrganizationId(f.getId().getOrganizationId());
+		// }
+		// });
 
-		// set non root organization
-		mapHasParent.forEach((k, v) -> {
-			if (!mapIsRoot.containsKey(k)) {
-				Organization rootOrganization = organizationRepository.getOne(k);
-				rootOrganization.setIsRoot(false);
-				organizationRepository.save(rootOrganization);
-			}
-		});
-		addRelations(organizationRelations);
+		// // set non root organization
+		// mapHasParent.forEach((k, v) -> {
+		// if (!mapIsRoot.containsKey(k)) {
+		// Organization rootOrganization = organizationRepository.getOne(k);
+		// rootOrganization.setIsRoot(false);
+		// organizationRepository.save(rootOrganization);
+		// }
+		// });
+		// addRelations(organizationRelations);
 	}
 
 	public void addRoles(Set<OrganizationRolePK> ids) {
@@ -254,7 +272,8 @@ public class OrganizationServiceImpl implements OrganizationService{
 	public void buildTree(SparrowTree<Organization, String> myTree) {
 		organizationRelationRepository.findByIdParentId(myTree.getMe() == null ? null : myTree.getMe().getId())
 				.forEach(f -> {
-					SparrowTree<Organization, String> leaf = new SparrowTree<Organization, String>(f.getOrganization());
+					Organization organization = organizationRepository.findById(f.getId().getOrganizationId()).get();
+					SparrowTree<Organization, String> leaf = new SparrowTree<Organization, String>(organization);
 					// 防止死循环
 					if (organizationRelationRepository
 							.findById(
@@ -271,11 +290,38 @@ public class OrganizationServiceImpl implements OrganizationService{
 	}
 
 	@Override
-	public Organization update(String id, Map<String,Object> map) {
+	public Organization update(String id, Map<String, Object> map) {
 		Organization source = organizationRepository.getById(id);
 		PatchUpdateHelper.merge(source, map);
 		return organizationRepository.save(source);
 	}
 
+	@Override
+	@Transactional
+	public void removeParent(String organizationId, List<String> parentIds) {
+		parentIds.forEach(f -> {
+			if (f.equals("root")) {
+				Organization organization = organizationRepository.getById(organizationId);
+				organization.setIsRoot(false);
+				organizationRepository.save(organization);
+			} else {
+				organizationRelationRepository
+						.deleteById(new OrganizationRelationPK(organizationId, f));
+			}
+		});
+
+		// 防止称为孤儿
+		if (organizationRelationRepository.findByIdOrganizationId(organizationId).size() == 0) {
+			Organization organization = organizationRepository.getById(organizationId);
+			organization.setIsRoot(true);
+			organizationRepository.save(organization);
+		}
+
+	}
+
+	@Override
+	public Organization get(String organizationId) {
+		return organizationRepository.findById(organizationId).get();
+	}
 
 }

@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.validation.constraints.NotBlank;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import cn.sparrow.permission.model.organization.OrganizationPositionLevel;
@@ -11,7 +13,7 @@ import cn.sparrow.permission.model.organization.OrganizationPositionLevelPK;
 
 public interface OrganizationLevelRepository extends JpaRepository<OrganizationPositionLevel, OrganizationPositionLevelPK> {
 
-	List<OrganizationPositionLevel> findByIdOrganizationId(@NotBlank String organizationId);
+	Page<OrganizationPositionLevel> findByIdOrganizationId(String organizationId, Pageable pageable);
 
 	long countByIdOrganizationId(String id);
 

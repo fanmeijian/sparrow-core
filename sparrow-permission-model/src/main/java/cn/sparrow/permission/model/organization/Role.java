@@ -33,7 +33,7 @@ public class Role extends AbstractSparrowUuidEntity {
 	@Column(unique = true)
 	private String code;
 	private String name;
-	private Boolean isRoot;
+	private Boolean isRoot = true;
 	private String stat;
 
 	// use for create relation at batch
@@ -53,5 +53,10 @@ public class Role extends AbstractSparrowUuidEntity {
 	@JsonIgnore
 	@OneToMany(targetEntity = GroupRole.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "role")
 	private Set<GroupRole> groupRoles;
+
+	public Role(String name, String code){
+		this.name = name;
+		this.code = code;
+	}
 
 }

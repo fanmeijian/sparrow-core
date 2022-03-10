@@ -32,6 +32,7 @@ import cn.sparrow.permission.model.group.GroupRolePK;
 import cn.sparrow.permission.model.group.GroupSysrolePK;
 import cn.sparrow.permission.model.group.GroupUserPK;
 import cn.sparrow.permission.model.organization.Employee;
+import cn.sparrow.permission.model.organization.Organization;
 import cn.sparrow.permission.model.resource.SparrowTree;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -81,6 +82,21 @@ public interface GroupService {
 	@GetMapping("/allEmployees")
 	@ResponseBody
 	public List<Employee> getFinalEmployees(String groupId);
+
+	@Operation(summary = "获取所属组织")
+	@GetMapping("/{groupId}/parentOrganizations")
+	@ResponseBody
+	public List<Organization> getParentOrgs(@PathVariable("groupId") String groupId);
+
+	@Operation(summary = "设置所属组织")
+	@PostMapping("/{groupId}/parentOrganizations")
+	@ResponseBody
+	public void setParentOrgs(@PathVariable("groupId") String groupId, @RequestBody List<String> orgs);
+
+	@Operation(summary = "移除所属组织")
+	@DeleteMapping("/{groupId}/parentOrganizations")
+	@ResponseBody
+	public void removeParentOrgs(@PathVariable("groupId") String groupId, @RequestBody List<String> orgs);
 
 	// @Operation(summary = "添加子群组")
 	// @PostMapping("/relations")

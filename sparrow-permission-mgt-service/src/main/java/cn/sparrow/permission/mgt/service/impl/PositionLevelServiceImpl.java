@@ -87,6 +87,7 @@ public class PositionLevelServiceImpl implements PositionLevelService{
 		return positionLevels;
 	}
 
+	@Override
 	public List<Organization> getParentOrganizations(@NotBlank String positionLevelId) {
 		List<Organization> organizations = new ArrayList<Organization>();
 		organizationLevelRepository.findByIdPositionLevelId(positionLevelId).forEach(f -> {
@@ -108,6 +109,22 @@ public class PositionLevelServiceImpl implements PositionLevelService{
 		PositionLevel source = levelRepository.getById(positionLevelId);
 		PatchUpdateHelper.merge(source, map);
 		return levelRepository.save(source);
+	}
+
+	@Override
+	@Transactional
+	public void setParentOrg(String positionLevelId, List<String> orgs) {
+		orgs.forEach(f->{
+			organizationLevelRepository.save(new OrganizationPositionLevel(f,positionLevelId));
+		});
+	}
+
+	@Override
+	@Transactional
+	public void removeParentOrg(String positionLevelId, List<String> orgs) {
+		orgs.forEach(f->{
+			organizationLevelRepository.deleteById(new OrganizationPositionLevelPK(f, positionLevelId));
+		});
 	}
 
 }

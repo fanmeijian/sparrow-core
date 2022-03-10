@@ -37,7 +37,7 @@ public class Group extends AbstractSparrowUuidEntity {
 	private String name;
 	private String owner;
 	private String stat;
-	private Boolean isRoot;
+	private Boolean isRoot = true;
 	@Enumerated
 	private GroupTypeEnum type;
 
@@ -65,4 +65,8 @@ public class Group extends AbstractSparrowUuidEntity {
 	@OneToMany(targetEntity = GroupSysrole.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "group")
 	private Set<GroupSysrole> groupSysroles;
 
+	public Group(String name, String code){
+		this.name = name;
+		this.code = code;
+	}
 }

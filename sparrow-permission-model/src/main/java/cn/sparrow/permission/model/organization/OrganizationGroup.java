@@ -35,4 +35,8 @@ public class OrganizationGroup extends AbstractSparrowEntity {
 	public OrganizationGroup(OrganizationGroupPK f) {
 		this.id = f;
 	}
+
+    public OrganizationGroup(String f, String groupId) {
+		this.id = new OrganizationGroupPK(f, groupId);
+    }
 }

@@ -18,9 +18,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import cn.sparrow.permission.mgt.api.RoleService;
 import cn.sparrow.permission.mgt.service.repository.EmployeeOrganizationRoleRepository;
+import cn.sparrow.permission.mgt.service.repository.EmployeeRepository;
 import cn.sparrow.permission.mgt.service.repository.OrganizationRoleRelationRepository;
 import cn.sparrow.permission.mgt.service.repository.OrganizationRoleRepository;
 import cn.sparrow.permission.mgt.service.repository.RoleRepository;
+import cn.sparrow.permission.model.organization.Employee;
 import cn.sparrow.permission.model.organization.EmployeeOrganizationRole;
 import cn.sparrow.permission.model.organization.Organization;
 import cn.sparrow.permission.model.organization.OrganizationRole;
@@ -40,7 +42,7 @@ public class RoleServiceImpl implements RoleService{
 	OrganizationRoleRepository organizationRoleRepository;
 	@Autowired
 	OrganizationRoleRelationRepository organizationRoleRelationRepository;
-
+	@Autowired EmployeeRepository employeeRepository;
 	
 	@Override
 	@Transactional
@@ -126,5 +128,31 @@ public class RoleServiceImpl implements RoleService{
 		ExampleMatcher matcher = ExampleMatcher.matching().withIgnoreCase().withStringMatcher(StringMatcher.CONTAINING);
 		return roleRepository.findAll(Example.of(role, matcher), pageable);
 	}
+
+	@Override
+	@Transactional
+	public void setParentOrg(String roleId, List<String> orgs) {
+		orgs.forEach(f->{
+			organizationRoleRepository.save(new OrganizationRole(f,roleId));
+		});
+	}
+
+	@Override
+	@Transactional
+	public void removeParentOrg(String roleId, List<String> orgs) {
+		orgs.forEach(f->{
+			organizationRoleRepository.deleteById(new OrganizationRolePK(f, roleId));
+		});
+	}
+
+	@Override
+	public List<Employee> getEmployees(String organizationId, String roleId) {
+		List<Employee> employees = new ArrayList<>();
+		this.getEmployees(new OrganizationRolePK(organizationId, roleId)).forEach(f->{
+			employees.add(employeeRepository.findById(f.getId().getEmployeeId()).get());
+		});
+		return employees;
+	}
+
 
 }

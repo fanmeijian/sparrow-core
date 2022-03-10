@@ -43,9 +43,19 @@ public interface PositionLevelService {
 	public List<OrganizationPositionLevel> getParents(OrganizationPositionLevelPK organizationLevelId);
 
 	@Operation(summary = "获取所属组织")
-	@GetMapping("/parentOrganizations")
+	@GetMapping("/{levelId}/parentOrganizations")
 	@ResponseBody
-	public List<Organization> getParentOrganizations(String positionLevelId);
+	public List<Organization> getParentOrganizations(@PathVariable("levelId") String positionLevelId);
+
+	@Operation(summary = "设置所属组织")
+	@PostMapping("/{levelId}/parentOrganizations")
+	@ResponseBody
+	public void setParentOrg(@PathVariable("levelId") String positionLevelId, @RequestBody List<String> orgs);
+
+	@Operation(summary = "移除所属组织")
+	@DeleteMapping("/{levelId}/parentOrganizations")
+	@ResponseBody
+	public void removeParentOrg(@PathVariable("levelId") String positionLevelId, @RequestBody List<String> orgs);
 
 	@Operation(summary = "创建职级")
 	@PostMapping("")

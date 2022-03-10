@@ -64,4 +64,8 @@ public class OrganizationRole extends AbstractSparrowEntity{
 		this.id = f;
 	}
 
+	public OrganizationRole(String organizationId, String roleId){
+		this.id = new OrganizationRolePK(organizationId, roleId);
+	}
+
 }

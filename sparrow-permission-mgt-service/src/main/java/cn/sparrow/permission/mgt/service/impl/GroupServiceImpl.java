@@ -1,5 +1,6 @@
 package cn.sparrow.permission.mgt.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import cn.sparrow.permission.mgt.api.GroupService;
+import cn.sparrow.permission.mgt.api.OrganizationService;
 import cn.sparrow.permission.mgt.service.repository.GroupEmployeeRepository;
 import cn.sparrow.permission.mgt.service.repository.GroupLevelRepository;
 import cn.sparrow.permission.mgt.service.repository.GroupOrganizationRepository;
@@ -25,6 +27,7 @@ import cn.sparrow.permission.mgt.service.repository.GroupRoleRepository;
 import cn.sparrow.permission.mgt.service.repository.GroupSysroleRepository;
 import cn.sparrow.permission.mgt.service.repository.GroupUserRepository;
 import cn.sparrow.permission.mgt.service.repository.OrganizationGroupRepository;
+import cn.sparrow.permission.mgt.service.repository.OrganizationRepository;
 import cn.sparrow.permission.model.group.Group;
 import cn.sparrow.permission.model.group.GroupMember;
 import cn.sparrow.permission.model.group.GroupOrganization;
@@ -40,6 +43,7 @@ import cn.sparrow.permission.model.group.GroupSysrolePK;
 import cn.sparrow.permission.model.group.GroupUser;
 import cn.sparrow.permission.model.group.GroupUserPK;
 import cn.sparrow.permission.model.organization.Employee;
+import cn.sparrow.permission.model.organization.Organization;
 import cn.sparrow.permission.model.organization.OrganizationGroup;
 import cn.sparrow.permission.model.organization.OrganizationGroupPK;
 import cn.sparrow.permission.model.resource.SparrowTree;
@@ -75,6 +79,7 @@ public class GroupServiceImpl implements GroupService {
 
 	@Autowired
 	GroupRepository groupRepository;
+	@Autowired OrganizationRepository organizationRepository;
 
 	// @Override
 	// public void addRelations(Set<GroupRelationPK> ids) {
@@ -184,9 +189,9 @@ public class GroupServiceImpl implements GroupService {
 	public Group add(Group group) {
 		Group savedGroup = groupRepository.save(group);
 		// save relation
-		savedGroup.getOrganizationIds().forEach(f->{
-			organizationGroupRepository.save(new OrganizationGroup(new OrganizationGroupPK(f,savedGroup.getId())));
-		});
+		// savedGroup.getOrganizationIds().forEach(f->{
+		// 	organizationGroupRepository.save(new OrganizationGroup(new OrganizationGroupPK(f,savedGroup.getId())));
+		// });
 		return savedGroup;
 	}
 
@@ -262,6 +267,34 @@ public class GroupServiceImpl implements GroupService {
 	public void removeMembers(GroupMember groupMember) {
 		// TODO Auto-generated method stub
 		
+	}
+
+
+	@Override
+	public List<Organization> getParentOrgs(String groupId) {
+		List<Organization> organizations = new ArrayList<>();
+		organizationGroupRepository.findByIdGroupId(groupId).forEach(f->{
+			organizations.add(organizationRepository.findById(f.getId().getOrganizationId()).get());
+		});
+		return organizations;
+	}
+
+
+	@Override
+	@Transactional
+	public void setParentOrgs(String groupId, List<String> orgs) {
+		orgs.forEach(f->{
+			organizationGroupRepository.save(new OrganizationGroup(f,groupId));
+		});
+	}
+
+
+	@Override
+	@Transactional
+	public void removeParentOrgs(String groupId, List<String> orgs) {
+		orgs.forEach(f->{
+			organizationGroupRepository.deleteById(new OrganizationGroupPK(f, groupId));
+		});
 	}
 
 

@@ -54,4 +54,9 @@ public class PositionLevel extends AbstractSparrowUuidEntity {
       fetch = FetchType.LAZY, mappedBy = "positionLevel")
   private Set<GroupPositionLevel> groupLevels;
 
+  public PositionLevel(String name, String code){
+    this.name = name;
+    this.code = code;
+  }
+
 }

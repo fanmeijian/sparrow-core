@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import cn.sparrow.permission.model.organization.Employee;
 import cn.sparrow.permission.model.organization.Organization;
 import cn.sparrow.permission.model.organization.OrganizationRoleRelation;
 import cn.sparrow.permission.model.organization.OrganizationRoleRelationPK;
@@ -47,6 +48,16 @@ public interface RoleService {
 	@ResponseBody
 	public List<Organization> getParentOrganizations(String roleId);
 
+	@Operation(summary = "设置岗位所属组织")
+	@PostMapping("/{roleId}/parentOrganizations")
+	@ResponseBody
+	public void setParentOrg(@PathVariable("roleId") String roleId, @RequestBody List<String> orgs);
+
+	@Operation(summary = "移除岗位所属组织")
+	@DeleteMapping("/{roleId}/parentOrganizations")
+	@ResponseBody
+	public void removeParentOrg(@PathVariable("roleId") String roleId, @RequestBody List<String> orgs);
+
 	@Operation(summary = "岗位列表")
 	@GetMapping("")
 	@ResponseBody
@@ -74,4 +85,8 @@ public interface RoleService {
 	@Operation(summary = "移除岗位关系")
 	@DeleteMapping("/relation")
 	public void delRelations(@NotNull @RequestBody List<OrganizationRoleRelationPK> ids);
+
+	@Operation(summary = "岗位员工列表")
+	@GetMapping("/{organizationId}/{roleId}/employees")
+	public List<Employee> getEmployees(@PathVariable("organizationId") String organizationId, @PathVariable("roleId") String roleId);
 }

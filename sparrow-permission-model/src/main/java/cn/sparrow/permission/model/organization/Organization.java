@@ -56,7 +56,7 @@ public class Organization extends AbstractSparrowEntity {
 	@Audited
 	private String stat;
 	@Audited
-	private Boolean isRoot;
+	private Boolean isRoot = true;
 	// use for create relation at batch
 //  @Transient
 //  @JsonProperty

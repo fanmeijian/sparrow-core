@@ -60,4 +60,8 @@ public class OrganizationPositionLevel extends AbstractSparrowEntity {
 		this.id = f;
 	}
 
+    public OrganizationPositionLevel(String organizationId, String positionLevelId) {
+		this.id = new OrganizationPositionLevelPK(organizationId, positionLevelId);
+    }
+
 }
