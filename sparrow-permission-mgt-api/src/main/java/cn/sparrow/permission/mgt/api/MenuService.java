@@ -1,6 +1,7 @@
 package cn.sparrow.permission.mgt.api;
 
 import java.security.Principal;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.sparrow.permission.model.resource.Menu;
 import cn.sparrow.permission.model.resource.SparrowTree;
+import cn.sparrow.permission.model.resource.Sysrole;
 import cn.sparrow.permission.model.resource.SysroleMenu;
 import cn.sparrow.permission.model.token.MenuPermission;
 import io.swagger.v3.oas.annotations.Operation;
@@ -77,7 +79,12 @@ public interface MenuService {
 	@GetMapping("/sysroles")
 	@Operation(summary = "获取菜单的授权角色")
 	@ResponseBody
-	public Set<SysroleMenu> getSysroleMenus(@NotBlank @RequestParam("menuId") String menuId);
+	public List<Sysrole> getSysroles(String menuId);
+
+	@GetMapping("/users")
+	@Operation(summary = "获取菜单的授权用户")
+	@ResponseBody
+	public List<String> getUsers(String menuId);
 
 	@PostMapping("/permissions")
 	@Operation(summary = "设置菜单权限")
@@ -85,7 +92,7 @@ public interface MenuService {
 	public void addPermission(@NotNull @RequestBody final MenuPermission menuPermission);
 
 	@DeleteMapping("/permissions")
-	@Operation(summary = "移除用户菜单树")
+	@Operation(summary = "取消菜单权限")
 	@ResponseBody
 	public void delPermission(@NotNull @RequestBody final MenuPermission menuPermission);
 

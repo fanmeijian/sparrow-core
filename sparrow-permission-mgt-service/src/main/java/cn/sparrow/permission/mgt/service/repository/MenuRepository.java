@@ -10,6 +10,7 @@ import cn.sparrow.permission.model.resource.Menu;
 public interface MenuRepository extends JpaRepository<Menu, String> {
 
   List<Menu> findByParentId(String parentId);
+  Menu findByCode(String code);
 
   @Transactional
   void deleteByIdIn(String[] ids);

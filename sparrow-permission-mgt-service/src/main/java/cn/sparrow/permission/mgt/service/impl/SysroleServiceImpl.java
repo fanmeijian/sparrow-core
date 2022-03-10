@@ -183,6 +183,11 @@ public Sysrole update(String sysroleId, Map<String, Object> map) {
   return sysroleRepository.save(source);
 }
 
+@Override
+public Sysrole get(String sysroleId) {
+  return sysroleRepository.findById(sysroleId).get();
+}
+
 
   // public void addPermissions(SysrolePermission permission) {
   // if(permission.getUserSysrolePKs()!=null) {

@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.transaction.Transactional;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,7 @@ import cn.sparrow.permission.mgt.service.repository.SysroleMenuRepository;
 import cn.sparrow.permission.mgt.service.repository.UserMenuRepository;
 import cn.sparrow.permission.model.resource.Menu;
 import cn.sparrow.permission.model.resource.SparrowTree;
+import cn.sparrow.permission.model.resource.Sysrole;
 import cn.sparrow.permission.model.resource.SysroleMenu;
 import cn.sparrow.permission.model.resource.UserMenu;
 import cn.sparrow.permission.model.token.MenuPermission;
@@ -108,7 +110,7 @@ public class MenuServiceImpl implements MenuService {
 		List<Menu> menusSet = new ArrayList<Menu>();
 		getSysroleMenusWithParentAndChildren(sysroleId, menusSet);
 
-		// 构建用户的菜单树
+		// 构建上级菜单树
 		List<Menu> menus = menuRepository.findByParentId(menuTree.getMe().getId());
 		for (Menu menu : menus) {
 			SparrowTree<Menu, String> leaf = new SparrowTree<Menu, String>(menu, menu.getId(), menu.getNextNodeId(),
@@ -143,10 +145,10 @@ public class MenuServiceImpl implements MenuService {
 	public void getUserMenusWithParentAndChildren(String username, List<Menu> menus) {
 		// menus.addAll(userRepository.findById(username).get().getMenus()) ;
 		userMenuRepository.findByIdUsername(username).forEach(f -> {
-			menus.add(f.getMenu());
-			buildParents(f.getMenu().getParentId(), menus);
+			menus.add(menuRepository.findById(f.getId().getMenuId()).get());
+			buildParents(menuRepository.findById(f.getId().getMenuId()).get().getParentId(), menus);
 			if (f.getIncludeSubMenu()) {
-				buildChildren(f.getMenu().getId(), menus);
+				buildChildren(f.getId().getMenuId(), menus);
 			}
 		});
 	}
@@ -155,11 +157,11 @@ public class MenuServiceImpl implements MenuService {
 	public void getSysroleMenusWithParentAndChildren(String sysroleId, List<Menu> menus) {
 //      menus.addAll(userRepository.findById(username).get().getMenus());
 		sysroleMenuRepository.findByIdSysroleId(sysroleId).forEach(f -> {
-			menus.add(f.getMenu());
-			buildParents(f.getMenu().getParentId(), menus);
+			menus.add(menuRepository.findById(f.getId().getMenuId()).get());
+			buildParents(menuRepository.findById(f.getId().getMenuId()).get().getParentId(), menus);
 			if (f.getIncludeSubMenu()) {
 				// 当勾选了包含子菜单后，则取所有的子菜单，新增的子菜单也自动授权了。如果没勾选，则后面新加的权限不会出现，需要手工授权
-				buildChildren(f.getMenu().getId(), menus);
+				buildChildren(f.getId().getMenuId(), menus);
 			}
 		});
 	}
@@ -212,8 +214,13 @@ public class MenuServiceImpl implements MenuService {
 		sparrowSortedService.saveSort(menuRepository, menu);
 	}
 
-	public Set<SysroleMenu> getSysroleMenus(String menuId) {
-		return sysroleMenuRepository.findByIdMenuId(menuId);
+	@Override
+	public List<Sysrole> getSysroles(String menuId) {
+		List<Sysrole> sysroles = new ArrayList<>();
+		sysroleMenuRepository.findByIdMenuId(menuId).forEach(f->{
+			sysroles.add(sysroleService.get(f.getId().getSysroleId()));
+		});
+		return sysroles;
 	}
 
 	@Override
@@ -229,10 +236,16 @@ public class MenuServiceImpl implements MenuService {
 	@Override
 	public Page<Menu> all(Pageable pageable, Menu menu) {
 		ExampleMatcher matcher = ExampleMatcher.matching().withIgnoreCase().withStringMatcher(StringMatcher.CONTAINING);
-		return menuRepository.findAll(Example.of(menu, matcher), pageable);
+		if(menu==null){
+			return menuRepository.findAll(pageable);
+		}else{
+			return menuRepository.findAll(Example.of(menu, matcher), pageable);
+		}
+		
 	}
 
 	@Override
+	@Transactional
 	public void setPosition(String menuId, String prevId, String nextId) {
 		Menu menu = menuRepository.getById(menuId);
 		menu.setPreviousNodeId(prevId);
@@ -250,6 +263,15 @@ public class MenuServiceImpl implements MenuService {
 		Menu source = menuRepository.getById(menuId);
 		PatchUpdateHelper.merge(source, map);
 		return menuRepository.save(source);
+	}
+
+	@Override
+	public List<String> getUsers(String menuId) {
+		List<String> users = new ArrayList<>();
+		userMenuRepository.findByIdMenuId(menuId).forEach(f->{
+			users.add(f.getId().getUsername());
+		});
+		return users;
 	}
 
 }

@@ -40,6 +40,11 @@ public interface SysroleService {
 	@ResponseBody
 	public Sysrole create( @RequestBody Sysrole sysrole);
 
+	@Operation(summary = "角色详情")
+	@GetMapping("/{sysroleId}")
+	@ResponseBody
+	public Sysrole get(@PathVariable("sysroleId") String sysroleId);
+
 	@Operation(summary = "更新角色")
 	@PatchMapping("/{sysroleId}")
 	@ResponseBody

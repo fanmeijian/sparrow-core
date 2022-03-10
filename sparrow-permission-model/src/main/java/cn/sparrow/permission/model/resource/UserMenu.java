@@ -31,7 +31,7 @@ public class UserMenu extends AbstractSparrowEntity {
 	private Menu menu;
 	
 	//是否包含所有子单，如果勾选了，则如果有新加子菜单，则会自动授予该用户
-	private Boolean includeSubMenu;
+	private Boolean includeSubMenu = false;
 
 	public UserMenu(UserMenuPK id) {
 		super();

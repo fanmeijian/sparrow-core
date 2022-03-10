@@ -8,6 +8,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
+
 import cn.sparrow.permission.model.common.AbstractSparrowEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -20,6 +23,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name="spr_sysrole_menu")
 @NamedQuery(name="SysroleMenu.findAll", query="SELECT s FROM SysroleMenu s")
+@Audited
 public class SysroleMenu extends AbstractSparrowEntity {
 	
 
@@ -29,16 +33,18 @@ public class SysroleMenu extends AbstractSparrowEntity {
 	@EmbeddedId
 	private SysroleMenuPK id;
 
+	@NotAudited
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "menu_id", insertable = false, updatable = false)
 	private Menu menu;
 	
+	@NotAudited
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "sysrole_id", insertable = false, updatable = false)
 	private Sysrole sysrole;
 	
 	//是否包含所有子单，如果勾选了，则如果有新加子菜单，则会自动授予该角色
-	private Boolean includeSubMenu;
+	private Boolean includeSubMenu = false;
 	
 	public SysroleMenu(SysroleMenuPK sysroleMenuPK) {
 		this.id = sysroleMenuPK;

@@ -12,7 +12,7 @@ import cn.sparrow.permission.model.resource.UserSysrole;
 import cn.sparrow.permission.model.resource.UserSysrolePK;
 
 public interface UserSysroleRepository extends JpaRepository<UserSysrole, UserSysrolePK> {
-	@Transactional(propagation=Propagation.NOT_SUPPORTED)
+	// @Transactional(propagation=Propagation.NOT_SUPPORTED)
 	List<UserSysrole> findByIdUsername(String username);
 	List<UserSysrole> findByIdSysroleId(String sysroleId);
 	

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import cn.sparrow.permission.constant.PreserveSysroleEnum;
+import cn.sparrow.permission.mgt.service.repository.SysroleRepository;
 import cn.sparrow.permission.mgt.service.repository.UserMenuRepository;
 import cn.sparrow.permission.mgt.service.repository.UserSysroleRepository;
 import cn.sparrow.permission.model.resource.Sysrole;
@@ -20,6 +21,7 @@ public class UserService {
 
   @Autowired UserMenuRepository userMenuRepository;
   @Autowired UserSysroleRepository userSysroleRepository;
+  @Autowired SysroleRepository sysroleRepository;
 //  @Autowired UserModelPermissionRepository userModelPermissionRepository;
 //  @Autowired UserDataPermissionRepository userDataPermissionRepository;
   
@@ -55,7 +57,7 @@ public class UserService {
   public List<Sysrole> getSysroles(String username){
     List<Sysrole> sysroles = new ArrayList<Sysrole>();
     userSysroleRepository.findByIdUsername(username).forEach(f->{
-      sysroles.add(f.getSysrole());
+      sysroles.add(sysroleRepository.findById(f.getId().getSysroleId()).get());
     });
     return sysroles;
   }
