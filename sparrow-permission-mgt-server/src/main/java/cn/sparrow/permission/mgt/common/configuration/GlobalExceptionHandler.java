@@ -1,8 +1,10 @@
 package cn.sparrow.permission.mgt.common.configuration;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
@@ -118,4 +120,20 @@ public class GlobalExceptionHandler{
       Map<String,Object> error = Collections.singletonMap("error", errorMessages);
       return ResponseEntity.status(HttpStatus.PARTIAL_CONTENT).body(error);
   }
+
+/**
+   * 无法找到记录，即主键不存在
+   * @param req
+   * @param e
+   * @return
+   */
+  @ExceptionHandler(NoSuchElementException.class)
+  public ResponseEntity<Map<String,Object>> handleNoSuchElementException(HttpServletRequest req, NoSuchElementException e) {
+      logger.error(e.getMessage(), e);
+      List<String> errorMessages = new ArrayList<>();
+      errorMessages.add(e.getMessage());
+      Map<String,Object> error = Collections.singletonMap("error", errorMessages);
+      return ResponseEntity.status(HttpStatus.PARTIAL_CONTENT).body(error);
+  }
+  
 }

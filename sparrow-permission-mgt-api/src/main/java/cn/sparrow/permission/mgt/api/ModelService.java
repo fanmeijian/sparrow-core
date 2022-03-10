@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.sparrow.permission.model.resource.Model;
 import cn.sparrow.permission.model.resource.ModelPermission;
+import cn.sparrow.permission.model.token.PermissionToken;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -58,13 +59,18 @@ public interface ModelService {
 	public void delete( @RequestBody List<String> ids);
 
 	@Operation(summary = "设置模型权限")
+	@PostMapping("/{modelId}/permissions")
+	@ResponseBody
+	public void addPermission(@PathVariable("modelId") String modelId ,@RequestBody PermissionToken permissionToken);
+
+	@Operation(summary = "设置模型权限")
 	@PostMapping("/permissions")
 	@ResponseBody
-	public void addPermission( @RequestBody ModelPermission modelPermission);
+	public void addPermissions( @RequestBody ModelPermission modelPermission);
 
 	@Operation(summary = "删除模型权限")
-	@DeleteMapping("/permissions")
-	public void removePermission( @RequestBody ModelPermission modelPermission);
+	@DeleteMapping("/{modelId}/permissions")
+	public void removePermission(@PathVariable("modelId") String modelId);
 	
 	public void init();
 }

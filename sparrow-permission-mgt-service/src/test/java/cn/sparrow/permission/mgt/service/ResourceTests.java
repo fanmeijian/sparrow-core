@@ -5,7 +5,9 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
@@ -18,20 +20,38 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Pageable;
+import org.springframework.test.context.TestExecutionListeners;
+import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 
 import cn.sparrow.permission.constant.ApiPermissionEnum;
 import cn.sparrow.permission.constant.HttpMethodEnum;
+import cn.sparrow.permission.constant.OrganizationTypeEnum;
+import cn.sparrow.permission.constant.PermissionEnum;
+import cn.sparrow.permission.constant.PermissionExpressionEnum;
+import cn.sparrow.permission.constant.PermissionTargetEnum;
 import cn.sparrow.permission.core.api.PermissionService;
 import cn.sparrow.permission.core.service.PermissionServiceImpl;
 import cn.sparrow.permission.mgt.service.impl.ApiServiceImpl;
+import cn.sparrow.permission.mgt.service.impl.EmployeeServiceImpl;
 import cn.sparrow.permission.mgt.service.impl.MenuServiceImpl;
+import cn.sparrow.permission.mgt.service.impl.ModelAttributeServiceImpl;
+import cn.sparrow.permission.mgt.service.impl.ModelServiceImpl;
+import cn.sparrow.permission.mgt.service.impl.OrganizationServiceImpl;
+import cn.sparrow.permission.mgt.service.impl.SparrowPermissionTokenServiceImpl;
 import cn.sparrow.permission.mgt.service.impl.SysroleServiceImpl;
 import cn.sparrow.permission.mgt.service.repository.ApiRepository;
 import cn.sparrow.permission.mgt.service.repository.MenuRepository;
 import cn.sparrow.permission.mgt.service.repository.SysroleRepository;
 import cn.sparrow.permission.mgt.service.repository.UserSysroleRepository;
+import cn.sparrow.permission.model.organization.Employee;
+import cn.sparrow.permission.model.organization.Organization;
 import cn.sparrow.permission.model.resource.Menu;
+import cn.sparrow.permission.model.resource.Model;
+import cn.sparrow.permission.model.resource.ModelAttribute;
+import cn.sparrow.permission.model.resource.ModelAttributePK;
+import cn.sparrow.permission.model.resource.ModelPermission;
 import cn.sparrow.permission.model.resource.SparrowApi;
 import cn.sparrow.permission.model.resource.SparrowTree;
 import cn.sparrow.permission.model.resource.Sysrole;
@@ -41,6 +61,9 @@ import cn.sparrow.permission.model.resource.UserMenuPK;
 import cn.sparrow.permission.model.resource.UserSysrole;
 import cn.sparrow.permission.model.resource.UserSysrolePK;
 import cn.sparrow.permission.model.token.MenuPermission;
+import cn.sparrow.permission.model.token.PermissionExpression;
+import cn.sparrow.permission.model.token.PermissionToken;
+import cn.sparrow.permission.model.token.SparrowPermissionToken;
 import lombok.extern.slf4j.Slf4j;
 
 // @SpringJUnitConfig
@@ -53,6 +76,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @SpringBootTest
 @TestInstance(Lifecycle.PER_CLASS)
+// @TestExecutionListeners({TransactionalTestExecutionListener.class})
 public class ResourceTests {
 	@Autowired
 	private static TestEntityManager entityManager;
@@ -78,6 +102,7 @@ public class ResourceTests {
 
 	@Autowired UserSysroleRepository userSysroleRepository;
 
+	
 
 	@TestConfiguration
     static class PermissionServiceImplTestContextConfiguration {
@@ -176,5 +201,106 @@ public class ResourceTests {
 		sparrowTree = menuServiceImpl.getTreeBySysroleId(sysrole.getId());
 		assertEquals(0, sparrowTree.getChildren().size());
 		assertEquals(0,menuServiceImpl.getSysroles(menu.getId()).size());
+
+	}
+
+	@Autowired
+	ModelServiceImpl modelServiceImpl;
+	@Autowired
+	EmployeeServiceImpl employeeServiceImpl;
+	@Autowired
+	OrganizationServiceImpl organizationServiceImpl;
+	@Autowired
+	SparrowPermissionTokenServiceImpl sparrowPermissionTokenServiceImpl;
+
+	@Test
+	@Transactional
+	void modelTest(){
+		Model model = new Model(Organization.class.getName(), true);
+		assertNotNull( modelServiceImpl.create(model));
+		PermissionToken permissionToken = new PermissionToken();
+		
+		for (int i = 0; i <= 1; i++) {
+			Employee employee = new Employee("testEmp" + i, "testEmp" +i,organizationServiceImpl.create(new Organization("testOrg" + i, "orgCode" + i, OrganizationTypeEnum.ORGANIZATION)).getId());
+			employeeServiceImpl.create(employee);
+			Map<PermissionEnum, Map<PermissionTargetEnum, List<PermissionExpression<?>>>> allowPermissions = new HashMap<PermissionEnum, Map<PermissionTargetEnum, List<PermissionExpression<?>>>>();
+			Map<PermissionTargetEnum, List<PermissionExpression<?>>> targetMap = new HashMap<PermissionTargetEnum, List<PermissionExpression<?>>>();
+			List<PermissionExpression<?>> expressions = new ArrayList<PermissionExpression<?>>();
+			PermissionExpression<String> expression = new PermissionExpression<String>();
+			List<String> ids = new ArrayList<String>();
+			expression.setExpression(PermissionExpressionEnum.IN);
+			ids.add(employee.getId());
+			expression.setIds(ids);
+			expressions.add(expression);
+			targetMap.put(PermissionTargetEnum.EMPLOYEE, expressions);
+			for (PermissionEnum permissionEnum : PermissionEnum.values()) {
+				if (!permissionEnum.toString().contains("ALL")) {
+					allowPermissions.put(permissionEnum, targetMap);
+				}
+			}
+			if (i == 0) {
+				permissionToken.setAllowPermissions(allowPermissions);
+			} else {
+				permissionToken.setDenyPermissions(allowPermissions);
+			}
+		}
+
+		SparrowPermissionToken sparrowPermissionToken = sparrowPermissionTokenServiceImpl.create(permissionToken);
+		model.setSparrowPermissionToken(sparrowPermissionToken);
+		// List<String> modelNames = new ArrayList<>();
+		// modelNames.add(model.getName());
+		// ModelPermission modelPermission = new ModelPermission(modelNames, permissionToken);
+		modelServiceImpl.addPermission(model.getName(),permissionToken);
+		assertNotNull(modelServiceImpl.getModel(model.getName()).getSparrowPermissionToken());
+		modelServiceImpl.removePermission(model.getName());
+		assertNull(modelServiceImpl.getModel(model.getName()).getSparrowPermissionToken());
+	}
+
+	@Autowired
+	ModelAttributeServiceImpl modelAttributeServiceImpl;
+
+	@Test
+	@Transactional
+	void modelAttributeTest(){
+		Model model = new Model(Organization.class.getName(), true);
+		ModelAttribute modelAttribute = new ModelAttribute(new ModelAttributePK("attributeName", model.getName()));
+		assertNotNull( modelServiceImpl.create(model));
+		assertNotNull( modelAttributeServiceImpl.create(modelAttribute));
+		PermissionToken permissionToken = new PermissionToken();
+		
+		for (int i = 0; i <= 1; i++) {
+			Employee employee = new Employee("testEmp" + i, "testEmp" +i,organizationServiceImpl.create(new Organization("testOrg" + i, "orgCode" + i, OrganizationTypeEnum.ORGANIZATION)).getId());
+			employeeServiceImpl.create(employee);
+			Map<PermissionEnum, Map<PermissionTargetEnum, List<PermissionExpression<?>>>> allowPermissions = new HashMap<PermissionEnum, Map<PermissionTargetEnum, List<PermissionExpression<?>>>>();
+			Map<PermissionTargetEnum, List<PermissionExpression<?>>> targetMap = new HashMap<PermissionTargetEnum, List<PermissionExpression<?>>>();
+			List<PermissionExpression<?>> expressions = new ArrayList<PermissionExpression<?>>();
+			PermissionExpression<String> expression = new PermissionExpression<String>();
+			List<String> ids = new ArrayList<String>();
+			expression.setExpression(PermissionExpressionEnum.IN);
+			ids.add(employee.getId());
+			expression.setIds(ids);
+			expressions.add(expression);
+			targetMap.put(PermissionTargetEnum.EMPLOYEE, expressions);
+			for (PermissionEnum permissionEnum : PermissionEnum.values()) {
+				if (!permissionEnum.toString().contains("ALL")) {
+					allowPermissions.put(permissionEnum, targetMap);
+				}
+			}
+			if (i == 0) {
+				permissionToken.setAllowPermissions(allowPermissions);
+			} else {
+				permissionToken.setDenyPermissions(allowPermissions);
+			}
+		}
+
+		SparrowPermissionToken sparrowPermissionToken = sparrowPermissionTokenServiceImpl.create(permissionToken);
+		modelAttribute.setSparrowPermissionToken(sparrowPermissionToken);
+		// List<String> modelNames = new ArrayList<>();
+		// modelNames.add(model.getName());
+		// ModelPermission modelPermission = new ModelPermission(modelNames, permissionToken);
+		modelAttributeServiceImpl.addPermission(modelAttribute.getId(),permissionToken);
+		assertNotNull(modelAttributeServiceImpl.get(modelAttribute.getId()).getSparrowPermissionToken());
+		modelAttributeServiceImpl.removePermission(modelAttribute.getId());
+		assertNull(modelAttributeServiceImpl.get(modelAttribute.getId()).getSparrowPermissionToken());
 	}
 }

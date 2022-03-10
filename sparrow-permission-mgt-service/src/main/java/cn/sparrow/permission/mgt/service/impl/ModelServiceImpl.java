@@ -28,6 +28,7 @@ import cn.sparrow.permission.model.resource.Model;
 import cn.sparrow.permission.model.resource.ModelAttribute;
 import cn.sparrow.permission.model.resource.ModelAttributePK;
 import cn.sparrow.permission.model.resource.ModelPermission;
+import cn.sparrow.permission.model.token.PermissionToken;
 import cn.sparrow.permission.model.token.SparrowPermissionToken;
 
 @Service
@@ -54,25 +55,18 @@ public class ModelServiceImpl implements ModelService {
 
 	@Override
 	@Transactional
-	public void addPermission(ModelPermission modelPermission) {
+	public void addPermissions(ModelPermission modelPermission) {
 		modelPermission.getModelName().forEach(modelName -> {
-			Model model = modelRepository.findById(modelName).get();
-			SparrowPermissionToken sparrowPermissionToken = model.getSparrowPermissionToken();
-			if (sparrowPermissionToken == null) {
-				sparrowPermissionToken = new SparrowPermissionToken(modelPermission.getPermissionToken());
-				model.setSparrowPermissionToken(permissionTokenRepository.save(sparrowPermissionToken));
-				modelRepository.save(model);
-			} else {
-				sparrowPermissionToken.setPermissionToken(modelPermission.getPermissionToken());
-				permissionTokenRepository.save(sparrowPermissionToken);
-			}
+			this.addPermission(modelName, modelPermission.getPermissionToken());
 		});
 	}
 
 	@Override
 	@Transactional
-	public void removePermission(ModelPermission modelPermission) {
-
+	public void removePermission(String modelId) {
+		Model model = modelRepository.getById(modelId);
+		model.setSparrowPermissionToken(null);
+		modelRepository.save(model);
 	}
 
 	public void init() {
@@ -116,6 +110,20 @@ public class ModelServiceImpl implements ModelService {
 	@Override
 	public void delete(List<String> ids) {
 		modelRepository.deleteAllByIdInBatch(ids);
+	}
+
+	@Override
+	public void addPermission(String modelId, PermissionToken permissionToken) {
+		Model model = modelRepository.findById(modelId).get();
+		SparrowPermissionToken sparrowPermissionToken = model.getSparrowPermissionToken();
+		if (sparrowPermissionToken == null) {
+			sparrowPermissionToken = new SparrowPermissionToken(permissionToken);
+			model.setSparrowPermissionToken(permissionTokenRepository.save(sparrowPermissionToken));
+			modelRepository.save(model);
+		} else {
+			sparrowPermissionToken.setPermissionToken(permissionToken);
+			permissionTokenRepository.save(sparrowPermissionToken);
+		}
 	}
 
 }

@@ -58,7 +58,7 @@ public class Model extends AbstractSparrowEntity {
 	@OneToMany(targetEntity = ModelAttribute.class, cascade = CascadeType.ALL, mappedBy = "model")
 	private List<ModelAttribute> modelAttributes;
 
-	@OneToOne(cascade = CascadeType.ALL,optional=false)
+	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "permission_token_id")
 	private SparrowPermissionToken sparrowPermissionToken;
 
