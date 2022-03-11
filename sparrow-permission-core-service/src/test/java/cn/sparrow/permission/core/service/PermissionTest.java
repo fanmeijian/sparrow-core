@@ -1,8 +1,10 @@
-package cn.sparrow.permission;
+package cn.sparrow.permission.core.service;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.io.InputStream;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -14,6 +16,11 @@ import javax.persistence.PersistenceContext;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
 
 import cn.sparrow.permission.constant.OrganizationTypeEnum;
 import cn.sparrow.permission.constant.PermissionEnum;
@@ -33,13 +40,14 @@ import cn.sparrow.permission.model.token.SparrowPermissionToken;
 import eu.drus.jpa.unit.api.JpaUnit;
 import eu.drus.jpa.unit.api.TransactionMode;
 import eu.drus.jpa.unit.api.Transactional;
+import eu.drus.jpa.unit.core.PersistenceUnitDescriptorImpl;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @ExtendWith(JpaUnit.class)
 @Transactional(TransactionMode.DISABLED)
 public class PermissionTest {
-	@PersistenceContext(unitName = "cn.sparrow.permission.domain")
+	@PersistenceContext(unitName = "cn.sparrow.permission.domain1")
 	private EntityManager entityManager;
 
 	private String hasPermissionEmployeeId;
@@ -48,8 +56,7 @@ public class PermissionTest {
 	private String tokenId;
 
 	@BeforeEach
-	public void before() {
-
+	public void before() {		
 		// 初始化组织架构
 		String orgId1 = "";
 		String orgId2 = "";
