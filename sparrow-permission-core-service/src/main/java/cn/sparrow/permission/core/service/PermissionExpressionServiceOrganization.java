@@ -4,7 +4,7 @@ import javax.persistence.EntityManager;
 
 import cn.sparrow.permission.model.token.PermissionExpression;
 
-public class PermissionExpressionServiceOrganization{
+public class PermissionExpressionServiceOrganization {
 
 	private OrganizationHelper organizationHelper;
 
@@ -39,6 +39,12 @@ public class PermissionExpressionServiceOrganization{
 		case IS_AND_BELOW:
 			if (organizationHelper.isBelow(permissionExpression.getIds().get(0).toString(), id)
 					|| permissionExpression.getIds().get(0).toString().equals(id)) {
+				return true;
+			}
+			break;
+		case IS_BETWEEN:
+			if (organizationHelper.isAbove(permissionExpression.getIds().get(0).toString(), id)
+					&& organizationHelper.isBelow(permissionExpression.getIds().get(0).toString(), id)) {
 				return true;
 			}
 			break;
