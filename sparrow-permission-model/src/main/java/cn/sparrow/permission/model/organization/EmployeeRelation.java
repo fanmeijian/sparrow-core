@@ -43,6 +43,10 @@ public class EmployeeRelation extends AbstractSparrowEntity{
 	public EmployeeRelation(EmployeeRelationPK f) {
 		this.id = f;
 	}
+	
+	public EmployeeRelation(String employeeId, String parentId) {
+		this.id = new EmployeeRelationPK(employeeId, parentId);
+	}
 
 	@PrePersist
 	@PreUpdate

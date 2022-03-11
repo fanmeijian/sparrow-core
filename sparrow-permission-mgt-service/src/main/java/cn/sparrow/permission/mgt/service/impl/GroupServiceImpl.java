@@ -3,21 +3,19 @@ package cn.sparrow.permission.mgt.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.validation.constraints.NotBlank;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.domain.ExampleMatcher.StringMatcher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.ExampleMatcher.StringMatcher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import cn.sparrow.permission.mgt.api.GroupService;
-import cn.sparrow.permission.mgt.api.OrganizationService;
 import cn.sparrow.permission.mgt.service.repository.GroupEmployeeRepository;
 import cn.sparrow.permission.mgt.service.repository.GroupLevelRepository;
 import cn.sparrow.permission.mgt.service.repository.GroupOrganizationRepository;
@@ -30,18 +28,7 @@ import cn.sparrow.permission.mgt.service.repository.OrganizationGroupRepository;
 import cn.sparrow.permission.mgt.service.repository.OrganizationRepository;
 import cn.sparrow.permission.model.group.Group;
 import cn.sparrow.permission.model.group.GroupMember;
-import cn.sparrow.permission.model.group.GroupOrganization;
-import cn.sparrow.permission.model.group.GroupOrganizationPK;
-import cn.sparrow.permission.model.group.GroupPositionLevel;
-import cn.sparrow.permission.model.group.GroupPositionLevelPK;
-import cn.sparrow.permission.model.group.GroupRelation;
 import cn.sparrow.permission.model.group.GroupRelationPK;
-import cn.sparrow.permission.model.group.GroupRole;
-import cn.sparrow.permission.model.group.GroupRolePK;
-import cn.sparrow.permission.model.group.GroupSysrole;
-import cn.sparrow.permission.model.group.GroupSysrolePK;
-import cn.sparrow.permission.model.group.GroupUser;
-import cn.sparrow.permission.model.group.GroupUserPK;
 import cn.sparrow.permission.model.organization.Employee;
 import cn.sparrow.permission.model.organization.Organization;
 import cn.sparrow.permission.model.organization.OrganizationGroup;
@@ -186,7 +173,7 @@ public class GroupServiceImpl implements GroupService {
 	}
 
 	@Override
-	public Group add(Group group) {
+	public Group create(Group group) {
 		Group savedGroup = groupRepository.save(group);
 		// save relation
 		// savedGroup.getOrganizationIds().forEach(f->{
@@ -295,6 +282,111 @@ public class GroupServiceImpl implements GroupService {
 		orgs.forEach(f->{
 			organizationGroupRepository.deleteById(new OrganizationGroupPK(f, groupId));
 		});
+	}
+
+
+	@Override
+	public void getRelations(String groupId, Pageable pageable) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void addRelations(String groupId, List<String> subGroupIds) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void removeRelations(String groupId, List<String> subGroupIds) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void addOrganizations(String groupId, List<String> organizationIds) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void removeOrganizations(String groupId, List<String> organizationIds) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void getOrganizations(String groupId, Pageable pageable) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void addRoles(String groupId, List<String> organizationRoleIds) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void removeRoles(String groupId, List<String> organizationRoleIds) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void getRoles(String groupId, Pageable pageable) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void addLevels(String groupId, List<String> organizationLevelIds) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void removeLevels(String groupId, List<String> organizationLevelIds) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void getLevels(String groupId, Pageable pageable) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void addSysroles(String groupId, List<String> sysroleIds) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void removeSysroles(String groupId, List<String> sysroleIds) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void getSysroles(String groupId, Pageable pageable) {
+		// TODO Auto-generated method stub
+		
 	}
 
 

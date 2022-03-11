@@ -13,13 +13,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import cn.sparrow.permission.model.resource.Menu;
 import cn.sparrow.permission.model.resource.SparrowApi;
 import cn.sparrow.permission.model.resource.Sysrole;
-import cn.sparrow.permission.model.resource.SysroleApiPK;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -38,12 +35,12 @@ public interface ApiService {
 	@Operation(summary = "更新接口")
 	@io.swagger.v3.oas.annotations.parameters.RequestBody(content = @Content(schema = @Schema(implementation = SparrowApi.class)))
 	@ResponseBody
-	public SparrowApi update(@PathVariable("apiId") String apiId,@RequestBody Map<String, Object> map);
+	public SparrowApi update(@PathVariable("apiId") String apiId, @RequestBody Map<String, Object> map);
 
 	@GetMapping("/{apiId}")
 	@Operation(summary = "获取接口详情")
 	@ResponseBody
-	public SparrowApi getApi(@PathVariable("apiId") String id);
+	public SparrowApi get(@PathVariable("apiId") String id);
 
 	@DeleteMapping("")
 	@Operation(summary = "删除接口")
@@ -55,18 +52,18 @@ public interface ApiService {
 	@ResponseBody
 	public Page<SparrowApi> all(@Nullable Pageable pageable, @Nullable SparrowApi sparrowApi);
 
-	@GetMapping("/permissions")
+	@GetMapping("/{apiId}/permissions")
 	@Operation(summary = "可访问角色列表")
 	@ResponseBody
-	public Page<Sysrole> getPermissions(@Nullable @RequestParam("apiId") String apiId, @Nullable Pageable pageable);
+	public Page<Sysrole> getPermissions(@PathVariable("apiId") String apiId, @Nullable Pageable pageable);
 
-	@PostMapping("/permissions")
+	@PostMapping("/{apiId}/permissions")
 	@Operation(summary = "增加授权")
 	@ResponseBody
-	public void addPermissions(@RequestBody List<SysroleApiPK> sysroleApiPKs);
+	public void addPermissions(@PathVariable("apiId") String apiId, @RequestBody List<String> sysroleIds);
 
-	@DeleteMapping("/permissions")
+	@DeleteMapping("/{apiId}/permissions")
 	@Operation(summary = "移除授权")
 	@ResponseBody
-	public void delPermissions(@RequestBody List<SysroleApiPK> sysroleApiPKs);
+	public void removePermissions(@PathVariable("apiId") String apiId, @RequestBody List<String> sysroleIds);
 }

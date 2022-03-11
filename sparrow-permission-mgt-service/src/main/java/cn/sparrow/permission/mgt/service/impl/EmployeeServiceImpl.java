@@ -3,7 +3,6 @@ package cn.sparrow.permission.mgt.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +20,8 @@ import cn.sparrow.permission.model.organization.EmployeeOrganizationRole;
 import cn.sparrow.permission.model.organization.EmployeeOrganizationRolePK;
 import cn.sparrow.permission.model.organization.EmployeeRelation;
 import cn.sparrow.permission.model.organization.EmployeeRelationPK;
+import cn.sparrow.permission.model.organization.OrganizationPositionLevelPK;
+import cn.sparrow.permission.model.organization.OrganizationRolePK;
 import cn.sparrow.permission.model.organization.PositionLevel;
 import cn.sparrow.permission.model.organization.Role;
 import cn.sparrow.permission.model.resource.SparrowTree;
@@ -47,55 +48,55 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 	@Override
 	@Transactional
-	public Employee create(Employee employee) {	
+	public Employee create(Employee employee) {
 		return employeeRepository.save(employee);
 	}
 
 	@Override
 	@Transactional
-	public void addRelation(Set<EmployeeRelationPK> ids) {
-		ids.forEach(f -> {
-			employeeRelationRepository.save(new EmployeeRelation(f));
+	public void addParent(String employeeId, List<String> parentIds) {
+		parentIds.forEach(f -> {
+			employeeRelationRepository.save(new EmployeeRelation(employeeId, f));
 		});
 	}
 
 	@Override
 	@Transactional
-	public void removeRelation(Set<EmployeeRelationPK> ids) {
-		ids.forEach(f -> {
-			employeeRelationRepository.deleteById(f);
+	public void removeParent(String employeeId, List<String> parentIds) {
+		parentIds.forEach(f -> {
+			employeeRelationRepository.deleteById(new EmployeeRelationPK(employeeId, f));
 		});
 	}
 
 	@Override
 	@Transactional
-	public void addRole(Set<EmployeeOrganizationRolePK> ids) {
+	public void addRole(String employeeId, List<OrganizationRolePK> ids) {
 		ids.forEach(f -> {
-			employeeOrganizationRoleRepository.save(new EmployeeOrganizationRole(f));
+			employeeOrganizationRoleRepository.save(new EmployeeOrganizationRole(employeeId, f));
 		});
 	}
 
 	@Override
 	@Transactional
-	public void removeRole(Set<EmployeeOrganizationRolePK> ids) {
+	public void removeRole(String employeeId, List<OrganizationRolePK> ids) {
 		ids.forEach(f -> {
-			employeeOrganizationRoleRepository.delete(new EmployeeOrganizationRole(f));
+			employeeOrganizationRoleRepository.deleteById(new EmployeeOrganizationRolePK(f, employeeId));
 		});
 	}
 
 	@Override
 	@Transactional
-	public void addLevel(List<EmployeeOrganizationLevelPK> ids) {
+	public void addLevel(String employeeId, List<OrganizationPositionLevelPK> ids) {
 		ids.forEach(f -> {
-			employeeOrganizationLevelRepository.save(new EmployeeOrganizationLevel(f));
+			employeeOrganizationLevelRepository.save(new EmployeeOrganizationLevel(employeeId, f));
 		});
 	}
 
 	@Override
 	@Transactional
-	public void removeLevel(Set<EmployeeOrganizationLevelPK> ids) {
+	public void removeLevel(String employeeId, List<OrganizationPositionLevelPK> ids) {
 		ids.forEach(f -> {
-			employeeOrganizationLevelRepository.delete(new EmployeeOrganizationLevel(f));
+			employeeOrganizationLevelRepository.deleteById(new EmployeeOrganizationLevelPK(f, employeeId));
 		});
 	}
 

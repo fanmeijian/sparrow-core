@@ -52,4 +52,8 @@ public class EmployeeOrganizationLevel extends AbstractSparrowEntity{
 		this.id = f;
 	}
 
+	public EmployeeOrganizationLevel(String employeeId, OrganizationPositionLevelPK f) {
+		this.id = new EmployeeOrganizationLevelPK(f, employeeId);
+	}
+
 }

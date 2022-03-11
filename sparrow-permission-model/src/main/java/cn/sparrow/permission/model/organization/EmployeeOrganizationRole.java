@@ -50,4 +50,8 @@ public class EmployeeOrganizationRole extends AbstractSparrowEntity{
 		this.id = f;
 	}
 
+	public EmployeeOrganizationRole(String employeeId, OrganizationRolePK f) {
+		this.id = new EmployeeOrganizationRolePK(f, employeeId);
+	}
+
 }

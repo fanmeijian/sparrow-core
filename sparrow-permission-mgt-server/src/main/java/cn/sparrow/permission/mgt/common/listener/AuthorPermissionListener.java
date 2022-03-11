@@ -53,11 +53,11 @@ public final class AuthorPermissionListener extends AbstractPermissionListener {
 		// 检查是否有新建权限
 		// 用户是否在拒绝权限列表
 
-		if (!permissionService.hasPermission(username,
-				permissionTokenService.getModelPermissionToken(abstractEntity.getClass().getName()),
-				PermissionEnum.AUTHOR)) {
-			throw new ValidationException(
-					"SPR_MD_C_DN-40" + "模型拒绝新建权限" + abstractEntity.getClass().getName() + username);
-		}
+//		if (!permissionService.hasPermission(username,
+//				permissionTokenService.getModelPermissionToken(abstractEntity.getClass().getName()),
+//				PermissionEnum.AUTHOR)) {
+//			throw new ValidationException(
+//					"SPR_MD_C_DN-40" + "模型拒绝新建权限" + abstractEntity.getClass().getName() + username);
+//		}
 	}
 }

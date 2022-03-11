@@ -18,10 +18,8 @@ import cn.sparrow.permission.constant.PermissionTargetEnum;
 import cn.sparrow.permission.core.api.EmployeeTokenService;
 import cn.sparrow.permission.core.api.PermissionService;
 import cn.sparrow.permission.mgt.common.listener.CurrentEntityManagerFactory;
-import cn.sparrow.permission.mgt.dataconfig.model.DataList;
 import cn.sparrow.permission.mgt.dataconfig.repository.DataListRepository;
 import cn.sparrow.permission.mgt.dataconfig.service.DataListService;
-import cn.sparrow.permission.mgt.service.impl.ViewFilter;
 import cn.sparrow.permission.model.resource.SparrowTree;
 import cn.sparrow.permission.model.token.EmployeeToken;
 import cn.sparrow.permission.model.token.PermissionExpression;
@@ -76,10 +74,10 @@ public class DataListController {
 	@Autowired
 	DataListRepository dataListRepository;
 
-	@GetMapping("/dataLists/getList")
-	@ViewFilter
-	public List<DataList> getList() {
-		return dataListRepository.findAll();
-	}
+//	@GetMapping("/dataLists/getList")
+//	@ViewFilter
+//	public List<DataList> getList() {
+//		return dataListRepository.findAll();
+//	}
 
 }

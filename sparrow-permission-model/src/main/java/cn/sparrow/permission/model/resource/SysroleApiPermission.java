@@ -13,33 +13,34 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-
 @Data
 @EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor
 @Entity
 @Table(name = "spr_sysrole_api")
 public class SysroleApiPermission extends AbstractSparrowEntity {
-  public SysroleApiPermission(SysroleApiPK f) {
+	public SysroleApiPermission(SysroleApiPK f) {
 		this.id = f;
 	}
 
-private static final long serialVersionUID = 1L;
+	public SysroleApiPermission(String apiId, String f) {
+		this.id = new SysroleApiPK(f, apiId);
+	}
 
-  @EmbeddedId
-  @NotNull
-  private SysroleApiPK id;
+	private static final long serialVersionUID = 1L;
 
-  @EqualsAndHashCode.Exclude
-  @ManyToOne(fetch = FetchType.EAGER)
-  @JoinColumn(name = "api_id", insertable = false, updatable = false)
-  private SparrowApi sparrowApi;
-  
-  @EqualsAndHashCode.Exclude
-  @ManyToOne(fetch = FetchType.EAGER)
-  @JoinColumn(name = "sysrole_id", insertable = false, updatable = false)
-  private Sysrole sysrole;
+	@EmbeddedId
+	@NotNull
+	private SysroleApiPK id;
 
-  
+	@EqualsAndHashCode.Exclude
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "api_id", insertable = false, updatable = false)
+	private SparrowApi sparrowApi;
+
+	@EqualsAndHashCode.Exclude
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "sysrole_id", insertable = false, updatable = false)
+	private Sysrole sysrole;
 
 }

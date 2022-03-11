@@ -1,23 +1,17 @@
 package cn.sparrow.permission.mgt;
 
-import java.beans.PropertyVetoException;
 import java.util.HashMap;
 import java.util.Map;
-
-import javax.persistence.EntityManagerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
-import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 
 import cn.sparrow.permission.core.api.EmployeeTokenService;
 import cn.sparrow.permission.core.api.PermissionService;
-import cn.sparrow.permission.core.api.PermissionTokenService;
 import cn.sparrow.permission.core.service.EmployeeTokenServiceImpl;
 import cn.sparrow.permission.core.service.PermissionServiceImpl;
-import cn.sparrow.permission.core.service.PermissionTokenServiceImpl;
 
 @Configuration
 public class EntityManagerFactoryConfiguration {
@@ -64,11 +58,11 @@ public class EntityManagerFactoryConfiguration {
 //	}
 	
 
-	@Bean
-	public PermissionTokenService permissionTokenService() {
-		return new PermissionTokenServiceImpl();
-
-	}
+//	@Bean
+//	public PermissionTokenService permissionTokenService() {
+//		return new PermissionTokenServiceImpl();
+//
+//	}
 
 	@Bean
 	public PermissionService permissionService() {

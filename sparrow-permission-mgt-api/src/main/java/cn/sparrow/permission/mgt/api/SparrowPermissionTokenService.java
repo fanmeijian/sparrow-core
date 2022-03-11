@@ -1,9 +1,5 @@
 package cn.sparrow.permission.mgt.api;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,13 +7,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 
-import cn.sparrow.permission.constant.PermissionEnum;
-import cn.sparrow.permission.core.api.PermissionService;
-import cn.sparrow.permission.core.api.PermissionTokenService;
 import cn.sparrow.permission.model.token.PermissionToken;
 import cn.sparrow.permission.model.token.SparrowPermissionToken;
 import io.swagger.v3.oas.annotations.Operation;

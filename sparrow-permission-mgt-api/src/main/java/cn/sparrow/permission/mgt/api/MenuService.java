@@ -3,9 +3,7 @@ package cn.sparrow.permission.mgt.api;
 import java.security.Principal;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.data.domain.Page;
@@ -24,7 +22,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import cn.sparrow.permission.model.resource.Menu;
 import cn.sparrow.permission.model.resource.SparrowTree;
 import cn.sparrow.permission.model.resource.Sysrole;
-import cn.sparrow.permission.model.resource.SysroleMenu;
 import cn.sparrow.permission.model.token.MenuPermission;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;

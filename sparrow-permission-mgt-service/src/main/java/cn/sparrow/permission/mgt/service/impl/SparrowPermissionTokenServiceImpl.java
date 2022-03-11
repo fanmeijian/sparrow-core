@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import cn.sparrow.permission.constant.PermissionEnum;
 import cn.sparrow.permission.core.api.PermissionService;
-import cn.sparrow.permission.core.api.PermissionTokenService;
 import cn.sparrow.permission.mgt.api.SparrowPermissionTokenService;
 import cn.sparrow.permission.mgt.service.repository.SparrowPermissionTokenRepository;
 import cn.sparrow.permission.model.token.PermissionToken;

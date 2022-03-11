@@ -37,7 +37,7 @@ public class ApiServiceImpl implements ApiService {
 	}
 
 	@Override
-	public SparrowApi getApi(String id) {
+	public SparrowApi get(String id) {
 		return apiRepository.findById(id).get();
 	}
 
@@ -49,22 +49,25 @@ public class ApiServiceImpl implements ApiService {
 	@Override
 	public Page<Sysrole> getPermissions(String apiId, Pageable pageable) {
 		List<Sysrole> sysroles = new ArrayList<Sysrole>();
-		sysroleApiPermissionRepository.findByIdApiId(apiId, pageable).forEach(f->{
+		sysroleApiPermissionRepository.findByIdApiId(apiId, pageable).forEach(f -> {
 			sysroles.add(f.getSysrole());
 		});
 		return new PageImpl<>(sysroles);
 	}
 
 	@Override
-	public void addPermissions(List<SysroleApiPK> sysroleUrlPermissionPKs) {
-		sysroleUrlPermissionPKs.forEach(f -> {
-			sysroleApiPermissionRepository.save(new SysroleApiPermission(f));
+	public void addPermissions(String apiId, List<String> sysroleIds) {
+		sysroleIds.forEach(f -> {
+			sysroleApiPermissionRepository.save(new SysroleApiPermission(apiId, f));
 		});
 	}
 
 	@Override
-	public void delPermissions(List<SysroleApiPK> sysroleUrlPermissionPKs) {
-		sysroleApiPermissionRepository.deleteByIdIn(sysroleUrlPermissionPKs);
+	public void removePermissions(String apiId, List<String> sysroleIds) {
+		sysroleIds.forEach(f -> {
+			sysroleApiPermissionRepository.deleteById(new SysroleApiPK(f, apiId));
+		});
+
 	}
 
 	@Override

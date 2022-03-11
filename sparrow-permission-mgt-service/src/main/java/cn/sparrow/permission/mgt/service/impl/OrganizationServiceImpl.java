@@ -1,13 +1,11 @@
 package cn.sparrow.permission.mgt.service.impl;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -147,30 +145,30 @@ public class OrganizationServiceImpl implements OrganizationService {
 		organizationRepository.deleteByIdIn(ids);
 	}
 
+//	@Override
+//	@Transactional
+//	public void addRelations(Set<OrganizationRelationPK> organizationRelations) {
+//		organizationRelations.forEach(f -> {
+//			if (f.getParentId().equals("root")) {
+//				Organization rootOrganization = organizationRepository.getById(f.getOrganizationId());
+//				rootOrganization.setIsRoot(true);
+//				organizationRepository.save(rootOrganization);
+//			} else {
+//				organizationRelationRepository.save(new OrganizationRelation(f));
+//			}
+//		});
+//
+//	}
+//
+//	@Override
+//	@Transactional
+//	public void removeRelations(Set<OrganizationRelationPK> ids) {
+//		organizationRelationRepository.deleteAllById(ids);
+//	}
+
 	@Override
 	@Transactional
-	public void addRelations(Set<OrganizationRelationPK> organizationRelations) {
-		organizationRelations.forEach(f -> {
-			if (f.getParentId().equals("root")) {
-				Organization rootOrganization = organizationRepository.getById(f.getOrganizationId());
-				rootOrganization.setIsRoot(true);
-				organizationRepository.save(rootOrganization);
-			} else {
-				organizationRelationRepository.save(new OrganizationRelation(f));
-			}
-		});
-
-	}
-
-	@Override
-	@Transactional
-	public void removeRelations(Set<OrganizationRelationPK> ids) {
-		organizationRelationRepository.deleteAllById(ids);
-	}
-
-	@Override
-	@Transactional
-	public void updateParent(String organizationId, List<String> parentIds) {
+	public void addParent(String organizationId, List<String> parentIds) {
 
 		parentIds.forEach(f -> {
 			if (f.equals("root")) {
