@@ -37,7 +37,12 @@ public interface GroupService {
 	@Operation(summary = "群组列表")
 	@GetMapping("")
 	@ResponseBody
-	public Page<Group> all(@Nullable Pageable pageable, @Nullable Group group);
+	public Page<Group> all(@Nullable Pageable pageable,@Nullable Group group);
+	
+	@Operation(summary = "群组列表")
+	@GetMapping("/search")
+	@ResponseBody
+	public Page<Group> search(@Nullable Pageable pageable,Group group);
 
 	@Operation(summary = "更新群组")
 	@PatchMapping("/{groupId}")

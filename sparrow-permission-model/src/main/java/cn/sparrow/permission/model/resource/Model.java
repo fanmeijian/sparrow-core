@@ -7,17 +7,13 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
-import cn.sparrow.permission.model.app.SparrowApp;
 import cn.sparrow.permission.model.common.AbstractSparrowEntity;
 import cn.sparrow.permission.model.token.SparrowPermissionToken;
 import lombok.AllArgsConstructor;
@@ -49,10 +45,10 @@ public class Model extends AbstractSparrowEntity {
 	// @JoinColumn(name = "catalog_id")
 	// private Catalog catalog;
 
-	@JsonIgnore
-	@ManyToOne
-	@JoinColumn(name = "app_id", insertable = false, updatable = false)
-	private SparrowApp sparrowApp;
+//	@JsonIgnore
+//	@ManyToOne
+//	@JoinColumn(name = "app_id", insertable = false, updatable = false)
+//	private SparrowApp sparrowApp;
 
 	@JsonIgnore
 	@OneToMany(targetEntity = ModelAttribute.class, cascade = CascadeType.ALL, mappedBy = "model")

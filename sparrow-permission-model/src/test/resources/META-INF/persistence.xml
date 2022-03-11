@@ -4,28 +4,6 @@
 		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 		<class>cn.sparrow.permission.model.common.AbstractSparrowEntity</class>
 		<class>cn.sparrow.permission.model.common.AbstractSparrowUuidEntity</class>
-		<class>cn.sparrow.permission.model.token.DataPermissionToken</class>
-		<class>cn.sparrow.permission.model.token.FieldPermissionToken</class>
-		<class>cn.sparrow.permission.model.resource.Menu</class>
-		<class>cn.sparrow.permission.model.resource.Model</class>
-		<class>cn.sparrow.permission.model.resource.ModelAttribute</class>
-		<class>cn.sparrow.permission.model.resource.ModelAttributePK</class>
-		<class>cn.sparrow.permission.model.resource.OpMenu</class>
-		<class>cn.sparrow.permission.model.resource.SparrowApi</class>
-		<class>cn.sparrow.permission.model.resource.SparrowFile</class>
-		<class>cn.sparrow.permission.model.token.SparrowPermissionToken</class>
-		<class>cn.sparrow.permission.model.resource.Sysrole</class>
-		<class>cn.sparrow.permission.model.resource.SysroleApiPK</class>
-		<class>cn.sparrow.permission.model.resource.SysroleApiPermission</class>
-		<class>cn.sparrow.permission.model.resource.SysroleMenu</class>
-		<class>cn.sparrow.permission.model.resource.SysroleMenuPK</class>
-		<class>cn.sparrow.permission.model.resource.UserFilePK</class>
-		<class>cn.sparrow.permission.model.resource.UserMenu</class>
-		<class>cn.sparrow.permission.model.resource.UserMenuPK</class>
-		<class>cn.sparrow.permission.model.resource.UserSysrole</class>
-		<class>cn.sparrow.permission.model.resource.UserSysrolePK</class>
-		<class>cn.sparrow.permission.model.app.FlowNo</class>
-		<class>cn.sparrow.permission.model.app.SparrowApp</class>
 		<class>cn.sparrow.permission.model.group.Group</class>
 		<class>cn.sparrow.permission.model.group.GroupEmployee</class>
 		<class>cn.sparrow.permission.model.group.GroupEmployeePK</class>
@@ -65,7 +43,28 @@
 		<class>cn.sparrow.permission.model.organization.OrganizationRoleRelationPK</class>
 		<class>cn.sparrow.permission.model.organization.PositionLevel</class>
 		<class>cn.sparrow.permission.model.organization.Role</class>
+		<class>cn.sparrow.permission.model.resource.Menu</class>
+		<class>cn.sparrow.permission.model.resource.Model</class>
+		<class>cn.sparrow.permission.model.resource.ModelAttribute</class>
+		<class>cn.sparrow.permission.model.resource.ModelAttributePK</class>
+		<class>cn.sparrow.permission.model.resource.OpMenu</class>
+		<class>cn.sparrow.permission.model.resource.Scope</class>
+		<class>cn.sparrow.permission.model.resource.SparrowApi</class>
+		<class>cn.sparrow.permission.model.resource.SparrowFile</class>
+		<class>cn.sparrow.permission.model.resource.Sysrole</class>
+		<class>cn.sparrow.permission.model.resource.SysroleApiPK</class>
+		<class>cn.sparrow.permission.model.resource.SysroleApiPermission</class>
+		<class>cn.sparrow.permission.model.resource.SysroleMenu</class>
+		<class>cn.sparrow.permission.model.resource.SysroleMenuPK</class>
+		<class>cn.sparrow.permission.model.resource.UserFilePK</class>
+		<class>cn.sparrow.permission.model.resource.UserMenu</class>
+		<class>cn.sparrow.permission.model.resource.UserMenuPK</class>
+		<class>cn.sparrow.permission.model.resource.UserSysrole</class>
+		<class>cn.sparrow.permission.model.resource.UserSysrolePK</class>
+		<class>cn.sparrow.permission.model.token.DataPermissionToken</class>
+		<class>cn.sparrow.permission.model.token.FieldPermissionToken</class>
 		<class>cn.sparrow.permission.model.token.SparrowEmployeeToken</class>
+		<class>cn.sparrow.permission.model.token.SparrowPermissionToken</class>
 		<properties>
             <property name="javax.persistence.jdbc.driver" value="org.h2.Driver" />
             <property name="javax.persistence.jdbc.url" value="jdbc:h2:mem:spr;DB_CLOSE_DELAY=-1" />

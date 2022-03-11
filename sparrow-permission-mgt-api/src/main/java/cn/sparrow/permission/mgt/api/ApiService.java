@@ -22,9 +22,9 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-@Tag(name = "接口管理")
+@Tag(name = "接口服务")
 @RequestMapping("/apis")
-public interface ApiService {
+public interface ApiService{
 
 	@PostMapping("")
 	@Operation(summary = "新增接口")

@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,8 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.sparrow.permission.model.resource.Sysrole;
-import cn.sparrow.permission.model.resource.User;
-import cn.sparrow.permission.model.resource.UserSysrole;
 import cn.sparrow.permission.model.resource.UserSysrolePK;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;

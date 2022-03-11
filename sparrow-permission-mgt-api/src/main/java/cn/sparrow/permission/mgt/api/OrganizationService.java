@@ -2,7 +2,6 @@ package cn.sparrow.permission.mgt.api;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.validation.constraints.NotNull;
 
@@ -21,7 +20,6 @@ import cn.sparrow.permission.model.organization.Employee;
 import cn.sparrow.permission.model.organization.Organization;
 import cn.sparrow.permission.model.organization.OrganizationGroup;
 import cn.sparrow.permission.model.organization.OrganizationPositionLevel;
-import cn.sparrow.permission.model.organization.OrganizationRelationPK;
 import cn.sparrow.permission.model.organization.OrganizationRole;
 import cn.sparrow.permission.model.resource.SparrowTree;
 import io.swagger.v3.oas.annotations.Operation;

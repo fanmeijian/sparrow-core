@@ -24,8 +24,6 @@
 		<class>cn.sparrow.permission.model.resource.UserMenuPK</class>
 		<class>cn.sparrow.permission.model.resource.UserSysrole</class>
 		<class>cn.sparrow.permission.model.resource.UserSysrolePK</class>
-		<class>cn.sparrow.permission.model.app.FlowNo</class>
-		<class>cn.sparrow.permission.model.app.SparrowApp</class>
 		<class>cn.sparrow.permission.model.group.Group</class>
 		<class>cn.sparrow.permission.model.group.GroupEmployee</class>
 		<class>cn.sparrow.permission.model.group.GroupEmployeePK</class>

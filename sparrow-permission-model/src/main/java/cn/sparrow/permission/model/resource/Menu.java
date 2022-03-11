@@ -9,15 +9,14 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.envers.Audited;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.envers.Audited;
-
 import cn.sparrow.permission.model.common.AbstractSparrowEntity;
-import cn.sparrow.permission.model.common.AbstractSparrowUuidEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -27,40 +26,40 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor
 @Table(name = "spr_menu")
-@JsonIgnoreProperties(value="dataPermissionToken", allowGetters=true)
+@JsonIgnoreProperties(value = "dataPermissionToken", allowGetters = true)
 public class Menu extends AbstractSparrowEntity {
 
-  private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-  @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-  @EqualsAndHashCode.Include
+	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
+	@EqualsAndHashCode.Include
 	@Id
 	@GenericGenerator(name = "id-generator", strategy = "uuid")
 	@GeneratedValue(generator = "id-generator")
 	@Audited
 	private String id;
 
-  @Column(unique = true,nullable = false)
-  private String code;
-  private String name;
-  private String parentId;
-  private String url;
-  private Boolean isSystem;
-  private String previousNodeId;
-  private String nextNodeId;
-  private String icon;
+	@Column(unique = true, nullable = false)
+	private String code;
+	private String name;
+	private String parentId;
+	private String url;
+	private Boolean isSystem;
+	private String previousNodeId;
+	private String nextNodeId;
+	private String icon;
 
-  @JsonIgnore
-  @OneToMany(mappedBy = "menu")
-  private Set<UserMenu> userMenus;
-  
-  @JsonIgnore
-  @OneToMany(mappedBy = "menu")
-  private Set<SysroleMenu> sysroleMenus;
+	@JsonIgnore
+	@OneToMany(mappedBy = "menu")
+	private Set<UserMenu> userMenus;
 
-  public Menu(String code, String parentId) {
-	  this.code = code;
-	  this.parentId = parentId;
-  }
+	@JsonIgnore
+	@OneToMany(mappedBy = "menu")
+	private Set<SysroleMenu> sysroleMenus;
+
+	public Menu(String code, String parentId) {
+		this.code = code;
+		this.parentId = parentId;
+	}
 
 }

@@ -22,6 +22,7 @@ public class AuditLogTest {
 	@PersistenceContext(unitName = "cn.sparrow.permission.domain")
 	EntityManager entityManager;
 
+	@SuppressWarnings("unchecked")
 	@Test
 	public void test() {
 		Organization organization = new Organization("test", "001", OrganizationTypeEnum.UNIT);

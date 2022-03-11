@@ -29,6 +29,7 @@ public interface EmployeeService {
 
 	@Operation(summary = "新增员工")
 	@PostMapping("")
+	@ResponseBody
 	public Employee create(Employee employee);
 
 	@Operation(summary = "更新员工")

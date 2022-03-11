@@ -1,20 +1,29 @@
 package cn.sparrow.permission.mgt.service.impl;
 
+import java.rmi.activation.ActivationGroup_Stub;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import javax.validation.constraints.NotBlank;
 
+import org.aspectj.weaver.NewConstructorTypeMunger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.ExampleMatcher.StringMatcher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import cn.sparrow.permission.mgt.api.GroupSearch;
 import cn.sparrow.permission.mgt.api.GroupService;
 import cn.sparrow.permission.mgt.service.repository.GroupEmployeeRepository;
 import cn.sparrow.permission.mgt.service.repository.GroupLevelRepository;
@@ -29,11 +38,13 @@ import cn.sparrow.permission.mgt.service.repository.OrganizationRepository;
 import cn.sparrow.permission.model.group.Group;
 import cn.sparrow.permission.model.group.GroupMember;
 import cn.sparrow.permission.model.group.GroupRelationPK;
+import cn.sparrow.permission.model.group.Group_;
 import cn.sparrow.permission.model.organization.Employee;
 import cn.sparrow.permission.model.organization.Organization;
 import cn.sparrow.permission.model.organization.OrganizationGroup;
 import cn.sparrow.permission.model.organization.OrganizationGroupPK;
 import cn.sparrow.permission.model.resource.SparrowTree;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 群组服务
@@ -41,7 +52,7 @@ import cn.sparrow.permission.model.resource.SparrowTree;
  * @author fanmj
  *
  */
-
+@Slf4j
 @Service
 public class GroupServiceImpl implements GroupService {
 
@@ -245,10 +256,35 @@ public class GroupServiceImpl implements GroupService {
 
 	@Override
 	public Page<Group> all(Pageable pageable, Group group){
-		ExampleMatcher matcher = ExampleMatcher.matching().withIgnoreCase().withStringMatcher(StringMatcher.CONTAINING);
-		return groupRepository.findAll(Example.of(group, matcher), pageable);
+		if(group.getName()==null) {
+			return groupRepository.findAll(pageable);
+		}else {
+			return groupRepository.findByNameContaining(group.getName(), pageable);
+		}
 	}
+	
+	@Override
+	public Page<Group> search(Pageable pageable,@Nullable Group group){
+		Specification<Group> specification = new Specification<Group>() {
 
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public Predicate toPredicate(Root<Group> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
+				Predicate namePredicate = criteriaBuilder.like(root.get(Group_.name), "%"+ group.getName()+"%");
+				Predicate codePredicate = criteriaBuilder.like(root.get(Group_.owner), "%"+ group.getOwner()+"%");
+
+				return criteriaBuilder.and(namePredicate,codePredicate);
+			}
+			
+		};
+		return groupRepository.findAll(specification, pageable);
+//		ExampleMatcher matcher = ExampleMatcher.matching().withIgnoreCase().withStringMatcher(StringMatcher.CONTAINING);
+//		return groupRepository.findAll(Example.of(group, matcher), pageable);
+	}
 
 	@Override
 	public void removeMembers(GroupMember groupMember) {

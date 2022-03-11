@@ -3,7 +3,6 @@ package cn.sparrow.permission.mgt.api;
 import java.util.List;
 import java.util.Map;
 
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.data.domain.Page;
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.sparrow.permission.model.organization.Employee;
@@ -25,9 +23,9 @@ import cn.sparrow.permission.model.organization.OrganizationRoleRelation;
 import cn.sparrow.permission.model.organization.OrganizationRoleRelationPK;
 import cn.sparrow.permission.model.organization.Role;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 @Tag(name = "岗位服务")
 @RequestMapping("/roles")
