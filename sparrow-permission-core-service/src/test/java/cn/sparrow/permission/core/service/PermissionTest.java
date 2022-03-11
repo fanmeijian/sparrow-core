@@ -3,8 +3,6 @@ package cn.sparrow.permission.core.service;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import java.io.InputStream;
-import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,18 +14,12 @@ import javax.persistence.PersistenceContext;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xml.sax.InputSource;
 
 import cn.sparrow.permission.constant.OrganizationTypeEnum;
 import cn.sparrow.permission.constant.PermissionEnum;
 import cn.sparrow.permission.constant.PermissionExpressionEnum;
 import cn.sparrow.permission.constant.PermissionTargetEnum;
 import cn.sparrow.permission.core.api.PermissionService;
-import cn.sparrow.permission.core.service.PermissionServiceImpl;
 import cn.sparrow.permission.model.organization.Employee;
 import cn.sparrow.permission.model.organization.EmployeeUser;
 import cn.sparrow.permission.model.organization.EmployeeUserPK;
@@ -40,7 +32,6 @@ import cn.sparrow.permission.model.token.SparrowPermissionToken;
 import eu.drus.jpa.unit.api.JpaUnit;
 import eu.drus.jpa.unit.api.TransactionMode;
 import eu.drus.jpa.unit.api.Transactional;
-import eu.drus.jpa.unit.core.PersistenceUnitDescriptorImpl;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -193,7 +184,6 @@ public class PermissionTest {
 		tokenId = sparrowPermissionToken.getId();
 //		String permissionTokenId = permissionTokenRepository.save(new SparrowPermissionToken(new PermissionToken(allowPermissions,null))).getId();
 
-		String modelName = model.getName();
 		EmployeeUser employeeUser = new EmployeeUser(new EmployeeUserPK("user1", emp));
 		entityManager.persist(employeeUser);
 		entityManager.getTransaction().commit();
