@@ -8,6 +8,7 @@
 	<properties>
 		<hibernate.version>5.6.5.Final</hibernate.version>
 		<junit-platform.version>5.3.1</junit-platform.version>
+		<typescript-generator.version>2.35.1025</typescript-generator.version>
 	</properties>
 
 	<dependencies>
@@ -129,6 +130,80 @@
                     </argLine>
 				</configuration>
 			</plugin>
+			<!-- 生成angular的对象-->
+			<plugin>
+				<groupId>cz.habarta.typescript-generator</groupId>
+				<artifactId>typescript-generator-maven-plugin</artifactId>
+				<version>${typescript-generator.version}</version>
+				<executions>
+					<execution>
+						<id>generate</id>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<phase>process-classes</phase>
+					</execution>
+				</executions>
+				<configuration>
+					<jsonLibrary>jackson2</jsonLibrary>
+					<classes>
+						<class>cn.sparrow.permission.model.resource.Menu</class>
+					</classes>
+					<outputKind>module</outputKind>
+				</configuration>
+			</plugin>
+			<!-- 生成angular的调用客户端
+			<plugin>
+				<groupId>cz.habarta.typescript-generator</groupId>
+				<artifactId>typescript-generator-maven-plugin</artifactId>
+				<version>${typescript-generator.version}</version>
+				<configuration>
+					<generateSpringApplicationClient>true</generateSpringApplicationClient>
+				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>cz.habarta.typescript-generator</groupId>
+						<artifactId>typescript-generator-spring</artifactId>
+						<version>${typescript-generator.version}</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+			-->
 		</plugins>
+		<pluginManagement>
+			<plugins>
+				<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>
+											cz.habarta.typescript-generator
+										</groupId>
+										<artifactId>
+											typescript-generator-maven-plugin
+										</artifactId>
+										<versionRange>
+											[2.35.1025,)
+										</versionRange>
+										<goals>
+											<goal>generate</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
 	</build>
 </project>

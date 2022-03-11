@@ -10,5 +10,4 @@ mvn clean install
 cd ../sparrow-permission-gmt-service
 mvn clean install
 cd ../sparrow-permission-mgt-server
-mvn spring-boot:run
-	
+mvn spring-boot:run -Dspring-boot.run.profiles=h2

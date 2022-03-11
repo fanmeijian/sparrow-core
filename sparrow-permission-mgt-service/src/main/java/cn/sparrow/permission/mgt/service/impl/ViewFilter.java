@@ -1,4 +1,4 @@
-package cn.sparrow.permission.core.service;
+package cn.sparrow.permission.mgt.service.impl;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

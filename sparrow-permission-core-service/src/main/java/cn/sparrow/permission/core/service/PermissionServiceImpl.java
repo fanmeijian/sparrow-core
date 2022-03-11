@@ -17,9 +17,14 @@ import cn.sparrow.permission.model.organization.OrganizationRolePK;
 import cn.sparrow.permission.model.token.EmployeeToken;
 import cn.sparrow.permission.model.token.PermissionExpression;
 import cn.sparrow.permission.model.token.PermissionToken;
+import cn.sparrow.permission.model.token.SparrowPermissionToken;
 
 public class PermissionServiceImpl implements PermissionService {
 	private EntityManager entityManager;
+	PermissionExpressionService<String> permissionExpressionService;
+	PermissionExpressionService<OrganizationRolePK> permissionExpressionServiceRole;
+	PermissionExpressionService<OrganizationPositionLevelPK> permissionExpressionServicePositionLevel;
+	PermissionExpressionServiceOrganization permissionExpressionServiceOrganization ;
 	
 	public PermissionServiceImpl() {
 		
@@ -27,12 +32,13 @@ public class PermissionServiceImpl implements PermissionService {
 	
 	public PermissionServiceImpl(EntityManager entityManager) {
 		this.entityManager = entityManager;
+		this.permissionExpressionService = new PermissionExpressionServiceImpl<String>();
+		this.permissionExpressionServiceRole = new PermissionExpressionServiceImpl<OrganizationRolePK>();
+		this.permissionExpressionServicePositionLevel = new PermissionExpressionServiceImpl<OrganizationPositionLevelPK>();
+		this.permissionExpressionServiceOrganization = new PermissionExpressionServiceOrganization(entityManager);
 	}
 
-	PermissionExpressionService<String> permissionExpressionService = new PermissionExpressionServiceImpl<String>();
-	PermissionExpressionService<OrganizationRolePK> permissionExpressionServiceRole = new PermissionExpressionServiceImpl<OrganizationRolePK>();
-	PermissionExpressionService<OrganizationPositionLevelPK> permissionExpressionServicePositionLevel = new PermissionExpressionServiceImpl<OrganizationPositionLevelPK>();
-	PermissionExpressionServiceOrganization permissionExpressionServiceOrganization;
+	
 
 	@Override
 	public boolean hasPermission(@NotNull EmployeeToken employeeToken, @NotNull PermissionToken permissionToken,
@@ -227,7 +233,7 @@ public class PermissionServiceImpl implements PermissionService {
 	@Override
 	public boolean hasPermission(String employeeId, String tokenId, PermissionEnum permissionEnum) {
 		EmployeeToken employeeToken = new EmployeeTokenServiceImpl(entityManager).getEmployeeTokenByEmployeeId(employeeId);
-		PermissionToken permissionToken = new PermissionTokenServiceImpl(entityManager).buildToken(tokenId).getPermissionToken();
+		PermissionToken permissionToken = entityManager.find(SparrowPermissionToken.class, tokenId).getPermissionToken();
 		return hasPermission(employeeToken, permissionToken, permissionEnum);
 	}
 

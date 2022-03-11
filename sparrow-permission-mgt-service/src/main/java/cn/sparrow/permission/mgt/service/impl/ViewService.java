@@ -1,4 +1,4 @@
-package cn.sparrow.permission.core.service;
+package cn.sparrow.permission.mgt.service.impl;
 
 import cn.sparrow.permission.model.common.AbstractSparrowEntity;
 

@@ -4,7 +4,7 @@ import javax.persistence.EntityManager;
 
 import cn.sparrow.permission.model.token.PermissionExpression;
 
-public class PermissionExpressionServiceOrganization {
+public class PermissionExpressionServiceOrganization{
 
 	private OrganizationHelper organizationHelper;
 

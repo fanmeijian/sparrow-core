@@ -1,4 +1,4 @@
-package cn.sparrow.permission.core.util;
+package cn.sparrow.permission.mgt.service.impl;
 
 import java.util.HashMap;
 import java.util.Map;

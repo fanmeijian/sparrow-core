@@ -6,7 +6,7 @@ import javax.persistence.EntityManager;
 
 import cn.sparrow.permission.model.organization.OrganizationRelation;
 
-public class OrganizationHelper {
+public final class OrganizationHelper {
 
 	private EntityManager entityManager;
 
