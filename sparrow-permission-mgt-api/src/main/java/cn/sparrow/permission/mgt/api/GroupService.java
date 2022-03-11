@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import cn.sparrow.permission.constant.GroupTypeEnum;
 import cn.sparrow.permission.model.group.Group;
 import cn.sparrow.permission.model.group.GroupMember;
 import cn.sparrow.permission.model.organization.Employee;
@@ -24,6 +25,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.constraints.NotNull;
 
 @Tag(name = "群组服务")
 @RequestMapping("/groups")
@@ -54,19 +56,19 @@ public interface GroupService {
 	@DeleteMapping("")
 	public void delete(@RequestBody List<String> ids);
 
-	@Operation(summary = "设置群组成员")
-	@PostMapping("/members")
-	@ResponseBody
+//	@Operation(summary = "设置群组成员")
+//	@PostMapping("/members")
+//	@ResponseBody
 	public void addMembers(@RequestBody GroupMember groupMember);
 
-	@Operation(summary = "移除群组成员")
-	@DeleteMapping("/members")
-	@ResponseBody
+//	@Operation(summary = "移除群组成员")
+//	@DeleteMapping("/members")
+//	@ResponseBody
 	public void removeMembers(@RequestBody GroupMember groupMember);
 
-	@Operation(summary = "获取群组成员")
-	@GetMapping("/members")
-	@ResponseBody
+//	@Operation(summary = "获取群组成员")
+//	@GetMapping("/members")
+//	@ResponseBody
 	public GroupMember getGroupMember(String groupId);
 
 	@Operation(summary = "递归获取群组成员，最终为员工列表")
@@ -89,80 +91,95 @@ public interface GroupService {
 	@ResponseBody
 	public void removeParentOrgs(@PathVariable("groupId") String groupId, @RequestBody List<String> orgs);
 
-	@Operation(summary = "子群组列表")
-	@GetMapping("/{groupId}/relations")
+	@Operation(summary = "组成员列表")
+	@GetMapping("/{groupId}/members")
 	@ResponseBody
-	public void getRelations(@PathVariable("groupId") String groupId, Pageable pageable);
+	public List<?> getMembers(@PathVariable("groupId") String groupId, @NotNull GroupTypeEnum type , Pageable pageable);
 
-	@Operation(summary = "添加子群组")
-	@PostMapping("/{groupId}/relations")
+	@Operation(summary = "添加组成员")
+	@PostMapping("/{groupId}/members")
 	@ResponseBody
-	public void addRelations(@PathVariable("groupId") String groupId, @RequestBody List<String> subGroupIds);
-
-	@Operation(summary = "移除子群组")
-	@DeleteMapping("/{groupId}/relations")
+	public void addMembers(@PathVariable("groupId") String groupId, @NotNull GroupTypeEnum type, @RequestBody List<Object> memberIds);
+	
+	@Operation(summary = "移除组成员")
+	@DeleteMapping("/{groupId}/members")
 	@ResponseBody
-	public void removeRelations(@PathVariable("groupId") String groupId, @RequestBody List<String> subGroupIds);
-
-	@Operation(summary = "添加组织成员")
-	@PostMapping("/{groupId}/organizations")
-	@ResponseBody
-	public void addOrganizations(@PathVariable("groupId") String groupId, @RequestBody List<String> organizationIds);
-
-	@Operation(summary = "移除组织成员")
-	@DeleteMapping("/{groupId}/organizations")
-	@ResponseBody
-	public void removeOrganizations(@PathVariable("groupId") String groupId, @RequestBody List<String> organizationIds);
-
-	@Operation(summary = "浏览组织成员")
-	@GetMapping("/{groupId}/organizations")
-	@ResponseBody
-	public void getOrganizations(@PathVariable("groupId") String groupId, Pageable pageable);
-
-	@Operation(summary = "添加岗位成员")
-	@PostMapping("/{groupId}/roles")
-	@ResponseBody
-	public void addRoles(@PathVariable("groupId") String groupId, @RequestBody List<String> organizationRoleIds);
-
-	@Operation(summary = "移除岗位成员")
-	@DeleteMapping("/{groupId}/roles")
-	@ResponseBody
-	public void removeRoles(@PathVariable("groupId") String groupId, @RequestBody List<String> organizationRoleIds);
-
-	@Operation(summary = "浏览岗位成员")
-	@GetMapping("/{groupId}/roles")
-	@ResponseBody
-	public void getRoles(@PathVariable("groupId") String groupId, Pageable pageable);
-
-	@Operation(summary = "添加职级成员")
-	@PostMapping("/{groupId}/levels")
-	@ResponseBody
-	public void addLevels(@PathVariable("groupId") String groupId, @RequestBody List<String> organizationLevelIds);
-
-	@Operation(summary = "移除职级成员")
-	@DeleteMapping("/{groupId}/levels")
-	@ResponseBody
-	public void removeLevels(@PathVariable("groupId") String groupId, @RequestBody List<String> organizationLevelIds);
-
-	@Operation(summary = "浏览职级成员")
-	@GetMapping("/{groupId}/levels")
-	@ResponseBody
-	public void getLevels(@PathVariable("groupId") String groupId, Pageable pageable);
-
-	@Operation(summary = "添加角色成员")
-	@PostMapping("/{groupId}/sysroles")
-	@ResponseBody
-	public void addSysroles(@PathVariable("groupId") String groupId, @RequestBody List<String> sysroleIds);
-
-	@Operation(summary = "移除角色成员")
-	@DeleteMapping("/{groupId}/sysroles")
-	@ResponseBody
-	public void removeSysroles(@PathVariable("groupId") String groupId, @RequestBody List<String> sysroleIds);
-
-	@Operation(summary = "浏览职级成员")
-	@GetMapping("/{groupId}/sysroles")
-	@ResponseBody
-	public void getSysroles(@PathVariable("groupId") String groupId, Pageable pageable);
+	public void removeMembers(@PathVariable("groupId") String groupId, @NotNull GroupTypeEnum type, @RequestBody List<Object> memberIds);
+	
+//	@Operation(summary = "子群组列表")
+//	@GetMapping("/{groupId}/relations")
+//	@ResponseBody
+//	public void getRelations(@PathVariable("groupId") String groupId, Pageable pageable);
+//
+//	@Operation(summary = "添加子群组")
+//	@PostMapping("/{groupId}/relations")
+//	@ResponseBody
+//	public void addRelations(@PathVariable("groupId") String groupId, @RequestBody List<String> subGroupIds);
+//
+//	@Operation(summary = "移除子群组")
+//	@DeleteMapping("/{groupId}/relations")
+//	@ResponseBody
+//	public void removeRelations(@PathVariable("groupId") String groupId, @RequestBody List<String> subGroupIds);
+//
+//	@Operation(summary = "添加组织成员")
+//	@PostMapping("/{groupId}/organizations")
+//	@ResponseBody
+//	public void addOrganizations(@PathVariable("groupId") String groupId, @RequestBody List<String> organizationIds);
+//
+//	@Operation(summary = "移除组织成员")
+//	@DeleteMapping("/{groupId}/organizations")
+//	@ResponseBody
+//	public void removeOrganizations(@PathVariable("groupId") String groupId, @RequestBody List<String> organizationIds);
+//
+//	@Operation(summary = "浏览组织成员")
+//	@GetMapping("/{groupId}/organizations")
+//	@ResponseBody
+//	public void getOrganizations(@PathVariable("groupId") String groupId, Pageable pageable);
+//
+//	@Operation(summary = "添加岗位成员")
+//	@PostMapping("/{groupId}/roles")
+//	@ResponseBody
+//	public void addRoles(@PathVariable("groupId") String groupId, @RequestBody List<String> organizationRoleIds);
+//
+//	@Operation(summary = "移除岗位成员")
+//	@DeleteMapping("/{groupId}/roles")
+//	@ResponseBody
+//	public void removeRoles(@PathVariable("groupId") String groupId, @RequestBody List<String> organizationRoleIds);
+//
+//	@Operation(summary = "浏览岗位成员")
+//	@GetMapping("/{groupId}/roles")
+//	@ResponseBody
+//	public void getRoles(@PathVariable("groupId") String groupId, Pageable pageable);
+//
+//	@Operation(summary = "添加职级成员")
+//	@PostMapping("/{groupId}/levels")
+//	@ResponseBody
+//	public void addLevels(@PathVariable("groupId") String groupId, @RequestBody List<String> organizationLevelIds);
+//
+//	@Operation(summary = "移除职级成员")
+//	@DeleteMapping("/{groupId}/levels")
+//	@ResponseBody
+//	public void removeLevels(@PathVariable("groupId") String groupId, @RequestBody List<String> organizationLevelIds);
+//
+//	@Operation(summary = "浏览职级成员")
+//	@GetMapping("/{groupId}/levels")
+//	@ResponseBody
+//	public void getLevels(@PathVariable("groupId") String groupId, Pageable pageable);
+//
+//	@Operation(summary = "添加角色成员")
+//	@PostMapping("/{groupId}/sysroles")
+//	@ResponseBody
+//	public void addSysroles(@PathVariable("groupId") String groupId, @RequestBody List<String> sysroleIds);
+//
+//	@Operation(summary = "移除角色成员")
+//	@DeleteMapping("/{groupId}/sysroles")
+//	@ResponseBody
+//	public void removeSysroles(@PathVariable("groupId") String groupId, @RequestBody List<String> sysroleIds);
+//
+//	@Operation(summary = "浏览职级成员")
+//	@GetMapping("/{groupId}/sysroles")
+//	@ResponseBody
+//	public void getSysroles(@PathVariable("groupId") String groupId, Pageable pageable);
 
 	// @Operation(summary = "添加用户成员")
 	// @PostMapping("/users")

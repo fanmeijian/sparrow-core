@@ -1,6 +1,5 @@
 package cn.sparrow.permission.mgt.service.impl;
 
-import java.rmi.activation.ActivationGroup_Stub;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -11,11 +10,7 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.validation.constraints.NotBlank;
 
-import org.aspectj.weaver.NewConstructorTypeMunger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.ExampleMatcher;
-import org.springframework.data.domain.ExampleMatcher.StringMatcher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -23,7 +18,7 @@ import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import cn.sparrow.permission.mgt.api.GroupSearch;
+import cn.sparrow.permission.constant.GroupTypeEnum;
 import cn.sparrow.permission.mgt.api.GroupService;
 import cn.sparrow.permission.mgt.service.repository.GroupEmployeeRepository;
 import cn.sparrow.permission.mgt.service.repository.GroupLevelRepository;
@@ -44,6 +39,7 @@ import cn.sparrow.permission.model.organization.Organization;
 import cn.sparrow.permission.model.organization.OrganizationGroup;
 import cn.sparrow.permission.model.organization.OrganizationGroupPK;
 import cn.sparrow.permission.model.resource.SparrowTree;
+import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -320,107 +316,129 @@ public class GroupServiceImpl implements GroupService {
 		});
 	}
 
+//
+//	@Override
+//	public void getRelations(String groupId, Pageable pageable) {
+//		// TODO Auto-generated method stub
+//		
+//	}
+//
+//
+//	@Override
+//	public void addRelations(String groupId, List<String> subGroupIds) {
+//		// TODO Auto-generated method stub
+//		
+//	}
+//
+//
+//	@Override
+//	public void removeRelations(String groupId, List<String> subGroupIds) {
+//		// TODO Auto-generated method stub
+//		
+//	}
+//
+//
+//	@Override
+//	public void addOrganizations(String groupId, List<String> organizationIds) {
+//		// TODO Auto-generated method stub
+//		
+//	}
+//
+//
+//	@Override
+//	public void removeOrganizations(String groupId, List<String> organizationIds) {
+//		// TODO Auto-generated method stub
+//		
+//	}
+//
+//
+//	@Override
+//	public void getOrganizations(String groupId, Pageable pageable) {
+//		// TODO Auto-generated method stub
+//		
+//	}
+//
+//
+//	@Override
+//	public void addRoles(String groupId, List<String> organizationRoleIds) {
+//		// TODO Auto-generated method stub
+//		
+//	}
+//
+//
+//	@Override
+//	public void removeRoles(String groupId, List<String> organizationRoleIds) {
+//		// TODO Auto-generated method stub
+//		
+//	}
+//
+//
+//	@Override
+//	public void getRoles(String groupId, Pageable pageable) {
+//		// TODO Auto-generated method stub
+//		
+//	}
+//
+//
+//	@Override
+//	public void addLevels(String groupId, List<String> organizationLevelIds) {
+//		// TODO Auto-generated method stub
+//		
+//	}
+//
+//
+//	@Override
+//	public void removeLevels(String groupId, List<String> organizationLevelIds) {
+//		// TODO Auto-generated method stub
+//		
+//	}
+//
+//
+//	@Override
+//	public void getLevels(String groupId, Pageable pageable) {
+//		// TODO Auto-generated method stub
+//		
+//	}
+//
+//
+//	@Override
+//	public void addSysroles(String groupId, List<String> sysroleIds) {
+//		// TODO Auto-generated method stub
+//		
+//	}
+//
+//
+//	@Override
+//	public void removeSysroles(String groupId, List<String> sysroleIds) {
+//		// TODO Auto-generated method stub
+//		
+//	}
+//
+//
+//	@Override
+//	public void getSysroles(String groupId, Pageable pageable) {
+//		// TODO Auto-generated method stub
+//		
+//	}
+
 
 	@Override
-	public void getRelations(String groupId, Pageable pageable) {
+	public List<?> getMembers(String groupId, @NotNull GroupTypeEnum type, Pageable pageable) {
+		return null;
 		// TODO Auto-generated method stub
 		
 	}
 
 
 	@Override
-	public void addRelations(String groupId, List<String> subGroupIds) {
+	public void addMembers(String groupId, @NotNull GroupTypeEnum type, List<Object> memberIds) {
 		// TODO Auto-generated method stub
 		
 	}
 
 
 	@Override
-	public void removeRelations(String groupId, List<String> subGroupIds) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-	@Override
-	public void addOrganizations(String groupId, List<String> organizationIds) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-	@Override
-	public void removeOrganizations(String groupId, List<String> organizationIds) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-	@Override
-	public void getOrganizations(String groupId, Pageable pageable) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-	@Override
-	public void addRoles(String groupId, List<String> organizationRoleIds) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-	@Override
-	public void removeRoles(String groupId, List<String> organizationRoleIds) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-	@Override
-	public void getRoles(String groupId, Pageable pageable) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-	@Override
-	public void addLevels(String groupId, List<String> organizationLevelIds) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-	@Override
-	public void removeLevels(String groupId, List<String> organizationLevelIds) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-	@Override
-	public void getLevels(String groupId, Pageable pageable) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-	@Override
-	public void addSysroles(String groupId, List<String> sysroleIds) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-	@Override
-	public void removeSysroles(String groupId, List<String> sysroleIds) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-	@Override
-	public void getSysroles(String groupId, Pageable pageable) {
+	public void removeMembers(String groupId, @NotNull GroupTypeEnum type, List<Object> memberIds) {
 		// TODO Auto-generated method stub
 		
 	}

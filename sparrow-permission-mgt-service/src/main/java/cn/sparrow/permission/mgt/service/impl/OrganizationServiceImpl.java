@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import cn.sparrow.permission.constant.OrganizationChildTypeEnum;
 import cn.sparrow.permission.mgt.api.EmployeeService;
 import cn.sparrow.permission.mgt.api.GroupService;
 import cn.sparrow.permission.mgt.api.OrganizationService;
@@ -320,6 +321,12 @@ public class OrganizationServiceImpl implements OrganizationService {
 	@Override
 	public Organization get(String organizationId) {
 		return organizationRepository.findById(organizationId).get();
+	}
+
+	@Override
+	public List<?> getChildren(String organizationId, OrganizationChildTypeEnum type) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

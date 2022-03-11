@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import cn.sparrow.permission.constant.OrganizationChildTypeEnum;
 import cn.sparrow.permission.model.organization.Employee;
 import cn.sparrow.permission.model.organization.Organization;
 import cn.sparrow.permission.model.organization.OrganizationGroup;
@@ -31,29 +33,34 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @RequestMapping("/organizations")
 public interface OrganizationService {
 
-	@Operation(summary = "获取下级组织")
-	@GetMapping("/{organizationId}/children")
+//	@Operation(summary = "获取下级组织")
+//	@GetMapping("/{organizationId}/children")
 	public List<Organization> getChildren(@PathVariable("organizationId") String organizationId);
 
+	@Operation(summary = "获取下级")
+	@GetMapping("/{organizationId}/children")
+	@ResponseBody
+	public List<?> getChildren(@PathVariable("organizationId") String organizationId,@NotNull OrganizationChildTypeEnum type);
+	
 	@Operation(summary = "获取上级组织")
 	@GetMapping("/{organizationId}/parents")
 	public List<Organization> getParents(@PathVariable("organizationId") String organizationId);
 
-	@Operation(summary = "获取组织下的岗位")
-	@GetMapping("/{organizationId}/roles")
+//	@Operation(summary = "获取组织下的岗位")
+//	@GetMapping("/{organizationId}/roles")
 	public Page<OrganizationRole> getRoles(@PathVariable("organizationId") String organizationId, Pageable pageable);
 
-	@Operation(summary = "获取组织下的职级")
-	@GetMapping("/{organizationId}/levels")
+//	@Operation(summary = "获取组织下的职级")
+//	@GetMapping("/{organizationId}/levels")
 	public Page<OrganizationPositionLevel> getLevels(@PathVariable("organizationId") String organizationId,
 			Pageable pageable);
 
-	@Operation(summary = "获取组织下的群组")
-	@GetMapping("/{organizationId}/groups")
+//	@Operation(summary = "获取组织下的群组")
+//	@GetMapping("/{organizationId}/groups")
 	public Page<OrganizationGroup> getGroups(@PathVariable("organizationId") String organizationId, Pageable pageable);
 
-	@Operation(summary = "获取组织下的员工")
-	@GetMapping("/{organizationId}/employees")
+//	@Operation(summary = "获取组织下的员工")
+//	@GetMapping("/{organizationId}/employees")
 	public Page<Employee> getEmployees(@PathVariable("organizationId") String organizationId, Pageable pageable);
 
 	@Operation(summary = "新增组织")
