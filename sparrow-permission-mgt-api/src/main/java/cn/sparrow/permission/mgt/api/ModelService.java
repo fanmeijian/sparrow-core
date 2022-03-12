@@ -24,7 +24,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @Tag(name = "数据模型服务")
-@RequestMapping("/dataModels")
+@RequestMapping("/models")
 public interface ModelService{
 	
 	@Operation(summary = "浏览模型")

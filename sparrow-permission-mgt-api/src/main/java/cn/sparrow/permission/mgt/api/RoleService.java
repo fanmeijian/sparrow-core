@@ -29,22 +29,17 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 @Tag(name = "岗位服务")
 @RequestMapping("/roles")
-public interface RoleService {
+public interface RoleService extends RoleRestService{
 	
-	@Operation(summary = "获取下属岗位")
-	@GetMapping("/children")
-	@ResponseBody
+//	@Operation(summary = "获取下属岗位")
+//	@GetMapping("/children")
+//	@ResponseBody
 	public List<OrganizationRoleRelation> getChildren(String organizationId, String roleId);
 
-	@Operation(summary = "获取上级岗位")
-	@GetMapping("/parents")
-	@ResponseBody
+//	@Operation(summary = "获取上级岗位")
+//	@GetMapping("/parents")
+//	@ResponseBody
 	public List<OrganizationRoleRelation> getParents(String organizationId,String roleId);
-
-	@Operation(summary = "岗位所属的组织")
-	@GetMapping("/parentOrganizations")
-	@ResponseBody
-	public List<Organization> getParentOrganizations(String roleId);
 
 	@Operation(summary = "设置岗位所属组织")
 	@PostMapping("/{roleId}/parentOrganizations")
@@ -76,15 +71,15 @@ public interface RoleService {
 	@DeleteMapping("")
 	public void delete(@NotNull @RequestBody final String[] ids);
 
-	@Operation(summary = "设置岗位关系")
-	@PostMapping("/relation")
+//	@Operation(summary = "设置岗位关系")
+//	@PostMapping("/relation")
 	public void addRelations(@NotNull @RequestBody List<OrganizationRoleRelationPK> ids);
 
-	@Operation(summary = "移除岗位关系")
-	@DeleteMapping("/relation")
+//	@Operation(summary = "移除岗位关系")
+//	@DeleteMapping("/relation")
 	public void delRelations(@NotNull @RequestBody List<OrganizationRoleRelationPK> ids);
 
-	@Operation(summary = "岗位员工列表")
-	@GetMapping("/{organizationId}/{roleId}/employees")
+//	@Operation(summary = "岗位员工列表")
+//	@GetMapping("/{organizationId}/{roleId}/employees")
 	public List<Employee> getEmployees(@PathVariable("organizationId") String organizationId, @PathVariable("roleId") String roleId);
 }

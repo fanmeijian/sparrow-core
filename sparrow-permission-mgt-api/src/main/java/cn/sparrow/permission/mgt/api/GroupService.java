@@ -20,7 +20,6 @@ import cn.sparrow.permission.model.group.Group;
 import cn.sparrow.permission.model.group.GroupMember;
 import cn.sparrow.permission.model.organization.Employee;
 import cn.sparrow.permission.model.organization.Organization;
-import cn.sparrow.permission.model.resource.SparrowTree;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -29,23 +28,19 @@ import jakarta.validation.constraints.NotNull;
 
 @Tag(name = "群组服务")
 @RequestMapping("/groups")
-public interface GroupService {
+public interface GroupService extends GroupRestService{
 
 	@Operation(summary = "新增群组")
 	@PostMapping("")
 	@ResponseBody
 	public Group create(@RequestBody Group group);
 
-	@Operation(summary = "群组列表")
-	@GetMapping("")
-	@ResponseBody
+//	@Operation(summary = "群组列表")
+//	@GetMapping("")
+//	@ResponseBody
 	public Page<Group> all(@Nullable Pageable pageable,@Nullable Group group);
 	
-	@Operation(summary = "群组列表")
-	@GetMapping("/search")
-	@ResponseBody
-	public Page<Group> search(@Nullable Pageable pageable,Group group);
-
+	
 	@Operation(summary = "更新群组")
 	@PatchMapping("/{groupId}")
 	@ResponseBody
@@ -191,8 +186,5 @@ public interface GroupService {
 	// @ResponseBody
 	// public void delUsers(@RequestBody Set<GroupUserPK> ids);
 
-	@Operation(summary = "获取组织树")
-	@GetMapping("/getTreeByParentId")
-	@ResponseBody
-	public SparrowTree<Group, String> getTree(String groupId);
+	
 }

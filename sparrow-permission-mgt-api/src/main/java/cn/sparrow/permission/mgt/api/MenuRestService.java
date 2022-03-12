@@ -18,8 +18,6 @@ import cn.sparrow.permission.constant.MenuPermissionTargetEnum;
 import cn.sparrow.permission.constant.MenuTreeTypeEnum;
 import cn.sparrow.permission.model.resource.Menu;
 import cn.sparrow.permission.model.resource.SparrowTree;
-import cn.sparrow.permission.model.resource.Sysrole;
-import cn.sparrow.permission.model.token.MenuPermission;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 

@@ -7,6 +7,7 @@ import javax.validation.constraints.NotNull;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -123,8 +124,8 @@ public interface OrganizationService {
 	// public void delGroups(@NotNull @RequestBody Set<OrganizationGroupPK> ids);
 
 	@Operation(summary = "获取组织树")
-	@GetMapping("/getTreeByParentId")
-	public SparrowTree<Organization, String> getTreeByParentId(@RequestParam("parentId") String parentId);
+	@GetMapping("/tree")
+	public SparrowTree<Organization, String> getTreeByParentId(@Nullable @RequestParam("parentId") String parentId);
 
 	@Operation(summary = "组织详情")
 	@GetMapping("/{organizationId}")

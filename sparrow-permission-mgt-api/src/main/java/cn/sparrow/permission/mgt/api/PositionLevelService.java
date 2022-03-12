@@ -23,17 +23,17 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @Tag(name = "职级服务")
-@RequestMapping("/positionLevels")
-public interface PositionLevelService {
+@RequestMapping("/jobLevels")
+public interface PositionLevelService extends JobLevelRestService{
 
-	@Operation(summary = "获取下属职级")
-	@GetMapping("/children")
-	@ResponseBody
+//	@Operation(summary = "获取下属职级")
+//	@GetMapping("/children")
+//	@ResponseBody
 	public List<OrganizationPositionLevel> getChildren(OrganizationPositionLevelPK organizationLevelId);
 
-	@Operation(summary = "获取上级职级")
-	@GetMapping("/parents")
-	@ResponseBody
+//	@Operation(summary = "获取上级职级")
+//	@GetMapping("/parents")
+//	@ResponseBody
 	public List<OrganizationPositionLevel> getParents(OrganizationPositionLevelPK organizationLevelId);
 
 	@Operation(summary = "获取所属组织")
@@ -57,18 +57,18 @@ public interface PositionLevelService {
 	public PositionLevel create(@RequestBody PositionLevel level);
 
 	@Operation(summary = "更新职级")
-	@PatchMapping("/{posistionLevelId}")
+	@PatchMapping("/{levelId}")
 	@ResponseBody
-	public PositionLevel update(@PathVariable("posistionLevelId") String positionLevelId, @RequestBody Map<String, Object> map);
+	public PositionLevel update(@PathVariable("levelId") String positionLevelId, @RequestBody Map<String, Object> map);
 
-	@Operation(summary = "设置职级关系")
-	@PostMapping("/relation")
-	@ResponseBody
+//	@Operation(summary = "设置职级关系")
+//	@PostMapping("/relation")
+//	@ResponseBody
 	public void addRelation(@RequestBody List<OrganizationPositionLevelRelation> organizationLevelRelations);
 
-	@Operation(summary = "移除职级关系")
-	@DeleteMapping("/relation")
-	@ResponseBody
+//	@Operation(summary = "移除职级关系")
+//	@DeleteMapping("/relation")
+//	@ResponseBody
 	public void removeRelation(@RequestBody List<OrganizationPositionLevelRelationPK> ids);
 
 	@Operation(summary = "删除职级")
@@ -76,8 +76,8 @@ public interface PositionLevelService {
 	@ResponseBody
 	public void delete(@RequestBody String[] ids);
 
-	@Operation(summary = "获取拥有此岗位员工")
-	@GetMapping("/employees")
-	@ResponseBody
+//	@Operation(summary = "获取拥有此岗位员工")
+//	@GetMapping("/employees")
+//	@ResponseBody
 	public List<Employee> getEmployees(OrganizationPositionLevelPK organizationLevelId);
 }
