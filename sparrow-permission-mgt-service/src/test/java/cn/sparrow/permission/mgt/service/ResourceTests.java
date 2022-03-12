@@ -243,12 +243,12 @@ public class ResourceTests {
 		SparrowPermissionToken sparrowPermissionToken = sparrowPermissionTokenServiceImpl.create(permissionToken);
 		model.setSparrowPermissionToken(sparrowPermissionToken);
 		// List<String> modelNames = new ArrayList<>();
-		// modelNames.add(model.getName());
+		// modelNames.add(model.getId());
 		// ModelPermission modelPermission = new ModelPermission(modelNames, permissionToken);
-		modelServiceImpl.addPermission(model.getName(),permissionToken);
-		assertNotNull(modelServiceImpl.getModel(model.getName()).getSparrowPermissionToken());
-		modelServiceImpl.removePermission(model.getName());
-		assertNull(modelServiceImpl.getModel(model.getName()).getSparrowPermissionToken());
+		modelServiceImpl.addPermission(model.getId(),permissionToken);
+		assertNotNull(modelServiceImpl.getModel(model.getId()).getSparrowPermissionToken());
+		modelServiceImpl.removePermission(model.getId());
+		assertNull(modelServiceImpl.getModel(model.getId()).getSparrowPermissionToken());
 	}
 
 	@Autowired
@@ -258,7 +258,7 @@ public class ResourceTests {
 	@Transactional
 	void modelAttributeTest(){
 		Model model = new Model(Organization.class.getName(), true);
-		ModelAttribute modelAttribute = new ModelAttribute(new ModelAttributePK("attributeName", model.getName()));
+		ModelAttribute modelAttribute = new ModelAttribute(new ModelAttributePK("attributeName", model.getId()));
 		assertNotNull( modelServiceImpl.create(model));
 		assertNotNull( modelAttributeServiceImpl.create(modelAttribute));
 		PermissionToken permissionToken = new PermissionToken();
@@ -291,7 +291,7 @@ public class ResourceTests {
 		SparrowPermissionToken sparrowPermissionToken = sparrowPermissionTokenServiceImpl.create(permissionToken);
 		modelAttribute.setSparrowPermissionToken(sparrowPermissionToken);
 		// List<String> modelNames = new ArrayList<>();
-		// modelNames.add(model.getName());
+		// modelNames.add(model.getId());
 		// ModelPermission modelPermission = new ModelPermission(modelNames, permissionToken);
 		modelAttributeServiceImpl.addPermission(modelAttribute.getId(),permissionToken);
 		assertNotNull(modelAttributeServiceImpl.get(modelAttribute.getId()).getSparrowPermissionToken());

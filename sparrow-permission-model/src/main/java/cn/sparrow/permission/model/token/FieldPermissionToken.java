@@ -38,8 +38,8 @@ public class FieldPermissionToken implements Serializable {
 	protected String id;
 
 	@OneToOne
-	@JoinColumns({ @JoinColumn(name = "model_id", referencedColumnName = "model_name"),
-			@JoinColumn(name = "attribute_id", referencedColumnName = "attribute_name") })
+	@JoinColumns({ @JoinColumn(name = "model_id", referencedColumnName = "model_id"),
+			@JoinColumn(name = "attribute_id", referencedColumnName = "attribute_id") })
 	private ModelAttribute modelAttribute;
 
 	@OneToOne

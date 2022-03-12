@@ -50,4 +50,8 @@ public class SysroleMenu extends AbstractSparrowEntity {
 		this.id = sysroleMenuPK;
 	}
 
+	public SysroleMenu(String menuId, String f) {
+		this.id = new SysroleMenuPK(f, menuId);
+	}
+
 }

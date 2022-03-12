@@ -20,9 +20,10 @@ public class ModelAttributePK implements Serializable {
    */
   private static final long serialVersionUID = 1L;
 
-  @Column(name = "attribute_name")
-  protected String attributeName;
-  @Column(name = "model_name")
-  protected String modelName;
+  @Column(name = "model_id")
+  private String modelId;
+  @Column(name = "attribute_id")
+  private String attributeId;
+  
 
 }

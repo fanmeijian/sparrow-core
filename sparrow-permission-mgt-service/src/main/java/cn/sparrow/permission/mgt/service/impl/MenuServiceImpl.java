@@ -13,6 +13,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import cn.sparrow.permission.constant.MenuPermissionTargetEnum;
+import cn.sparrow.permission.constant.MenuTreeTypeEnum;
 import cn.sparrow.permission.mgt.api.MenuService;
 import cn.sparrow.permission.mgt.api.SysroleService;
 import cn.sparrow.permission.mgt.api.TreeService;
@@ -23,7 +25,9 @@ import cn.sparrow.permission.model.resource.Menu;
 import cn.sparrow.permission.model.resource.SparrowTree;
 import cn.sparrow.permission.model.resource.Sysrole;
 import cn.sparrow.permission.model.resource.SysroleMenu;
+import cn.sparrow.permission.model.resource.SysroleMenuPK;
 import cn.sparrow.permission.model.resource.UserMenu;
+import cn.sparrow.permission.model.resource.UserMenuPK;
 import cn.sparrow.permission.model.token.MenuPermission;
 import lombok.extern.slf4j.Slf4j;
 
@@ -263,6 +267,73 @@ public class MenuServiceImpl implements MenuService {
 			users.add(f.getId().getUsername());
 		});
 		return users;
+	}
+
+	@Override
+	public SparrowTree<Menu, String> getTree(MenuTreeTypeEnum type, String sysroleId, String username, String parentId,
+			Principal principal) {
+		switch (type) {
+		case MY:
+			return this.getMyTree(principal);
+		case MENU:
+			return this.getTreeByParentId(parentId);
+		case USER:
+			return this.getTreeByUsername(username);
+		case SYSROLE:
+			return this.getTreeBySysroleId(sysroleId);
+		default:
+			break;
+		}
+		return null;
+	}
+
+	@Override
+	public List<?> getPermissions(String menuId, MenuPermissionTargetEnum type) {
+		switch (type) {
+		case SYSROLE:
+			return this.getSysroles(menuId);
+		case USER:
+			return this.getUsers(menuId);
+		default:
+			break;
+		}
+		return null;
+	}
+
+	@Override
+	@Transactional
+	public void addPermission(String menuId, MenuPermissionTargetEnum type, @NotNull List<?> permissions) {
+		permissions.forEach(f->{
+			switch (type) {
+			case USER:
+				userMenuRepository.save(new UserMenu(menuId, (String) f));	
+				break;
+			case SYSROLE:
+				sysroleMenuRepository.save(new SysroleMenu(menuId, (String)f));
+			default:
+				break;
+			}
+			
+		});
+		
+		
+	}
+
+	@Override
+	@Transactional
+	public void delPermission(String menuId, MenuPermissionTargetEnum type, @NotNull List<?> permissions) {
+		permissions.forEach(f->{
+			switch (type) {
+			case USER:
+				userMenuRepository.deleteById(new UserMenuPK((String)f,menuId));	
+				break;
+			case SYSROLE:
+				sysroleMenuRepository.deleteById(new SysroleMenuPK((String)f,menuId));
+			default:
+				break;
+			}
+			
+		});
 	}
 
 }

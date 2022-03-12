@@ -37,5 +37,10 @@ public class UserMenu extends AbstractSparrowEntity {
 		super();
 		this.id = id;
 	}
+	
+	public UserMenu(String menuId, String username) {
+		super();
+		this.id = new UserMenuPK(username, menuId);
+	}
 
 }

@@ -23,9 +23,9 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-@Tag(name = "模型服务")
-@RequestMapping("/models")
-public interface ModelService {
+@Tag(name = "数据模型服务")
+@RequestMapping("/dataModels")
+public interface ModelService{
 	
 	@Operation(summary = "浏览模型")
 	@GetMapping("")
@@ -58,9 +58,9 @@ public interface ModelService {
 	@ResponseBody
 	public void addPermission(@PathVariable("modelId") String modelId ,@RequestBody PermissionToken permissionToken);
 
-	@Operation(summary = "设置模型权限")
-	@PostMapping("/permissions")
-	@ResponseBody
+//	@Operation(summary = "设置模型权限")
+//	@PostMapping("/permissions")
+//	@ResponseBody
 	public void addPermissions( @RequestBody ModelPermission modelPermission);
 
 	@Operation(summary = "删除模型权限")

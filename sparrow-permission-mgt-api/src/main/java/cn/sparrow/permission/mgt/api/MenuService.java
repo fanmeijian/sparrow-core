@@ -32,8 +32,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @RequestMapping("/menus")
 public interface MenuService extends MenuRestService{
 
-	public Menu save(@RequestBody Menu menu);
-
 	@DeleteMapping("")
 	@Operation(summary = "删除菜单")
 	@ResponseBody
@@ -50,44 +48,41 @@ public interface MenuService extends MenuRestService{
 	@ResponseBody
 	public Page<Menu> all(@Nullable Pageable pageable,@Nullable Menu menu);
 
-	@GetMapping("/getTreeByParentId")
-	@Operation(summary = "获取菜单树")
-	@ResponseBody
+//	@GetMapping("/getTreeByParentId")
+//	@Operation(summary = "获取菜单树")
+//	@ResponseBody
 	public SparrowTree<Menu, String> getTreeByParentId(@Nullable @RequestParam("parentId") String parentId);
 
-	@GetMapping("/getTreeByUsername")
-	@Operation(summary = "获取用户菜单树")
-	@ResponseBody
+//	@GetMapping("/getTreeByUsername")
+//	@Operation(summary = "获取用户菜单树")
+//	@ResponseBody
 	public SparrowTree<Menu, String> getTreeByUsername(@NotNull @RequestParam("username") String username);
 
-	@GetMapping("/getTreeBySysroleId")
-	@Operation(summary = "获取角色菜单树")
-	@ResponseBody
+//	@GetMapping("/getTreeBySysroleId")
+//	@Operation(summary = "获取角色菜单树")
+//	@ResponseBody
 	public SparrowTree<Menu, String> getTreeBySysroleId(@NotNull @RequestParam("sysroleId") String sysroleId);
 
-	@Operation(summary = "获取当前用户菜单树")
-	@ResponseBody
-	@GetMapping("/getMyTree")
 	public SparrowTree<Menu, String> getMyTree(Principal principal);
 
-	@GetMapping("/sysroles")
-	@Operation(summary = "获取菜单的授权角色")
-	@ResponseBody
-	public List<Sysrole> getSysroles(String menuId);
+//	@GetMapping("/{menuId}/sysroles")
+//	@Operation(summary = "获取菜单的授权角色")
+//	@ResponseBody
+	public List<Sysrole> getSysroles(@PathVariable("menuId") String menuId);
 
-	@GetMapping("/users")
-	@Operation(summary = "获取菜单的授权用户")
-	@ResponseBody
-	public List<String> getUsers(String menuId);
+//	@GetMapping("/{menuId}/users")
+//	@Operation(summary = "获取菜单的授权用户")
+//	@ResponseBody
+	public List<String> getUsers(@PathVariable("menuId")String menuId);
 
-	@PostMapping("/permissions")
-	@Operation(summary = "设置菜单权限")
-	@ResponseBody
+//	@PostMapping("/permissions")
+//	@Operation(summary = "设置菜单权限")
+//	@ResponseBody
 	public void addPermission(@NotNull @RequestBody final MenuPermission menuPermission);
 
-	@DeleteMapping("/permissions")
-	@Operation(summary = "取消菜单权限")
-	@ResponseBody
+//	@DeleteMapping("/permissions")
+//	@Operation(summary = "取消菜单权限")
+//	@ResponseBody
 	public void delPermission(@NotNull @RequestBody final MenuPermission menuPermission);
 
 	@PatchMapping("/{menuId}/sort")

@@ -3,7 +3,6 @@ package cn.sparrow.permission.model.resource;
 import java.util.List;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -34,21 +33,10 @@ public class Model extends AbstractSparrowEntity {
 
 	@EqualsAndHashCode.Include
 	@Id
+	private String id;
 	private String name;
-	private String nameTxt;
 	private String remark;
 	private Boolean isSystem;
-	@Column(name = "app_id")
-	private String appId;
-
-	// @ManyToOne
-	// @JoinColumn(name = "catalog_id")
-	// private Catalog catalog;
-
-//	@JsonIgnore
-//	@ManyToOne
-//	@JoinColumn(name = "app_id", insertable = false, updatable = false)
-//	private SparrowApp sparrowApp;
 
 	@JsonIgnore
 	@OneToMany(targetEntity = ModelAttribute.class, cascade = CascadeType.ALL, mappedBy = "model")
@@ -58,12 +46,12 @@ public class Model extends AbstractSparrowEntity {
 	@JoinColumn(name = "permission_token_id")
 	private SparrowPermissionToken sparrowPermissionToken;
 
-	public Model(String name) {
-		this.name = name;
+	public Model(String id) {
+		this.id = id;
 	}
 
-	public Model(String name, boolean isSystem) {
-		this.name = name;
+	public Model(String id, Boolean isSystem) {
+		this.id = id;
 		this.isSystem = isSystem;
 	}
 

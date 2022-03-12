@@ -22,7 +22,6 @@ public interface MenuRepository extends JpaRepository<Menu, String> ,JpaSpecific
 
   List<Menu> findByParentId(String parentId);
   Menu findByCode(String code);
-  Page<Menu> findByNameContainingAndCodeContainingAndUrlContaining(String name, String Code, String url, Pageable pageable);
   
   default Page<Menu> search(Menu menu, Pageable pageable){
 	  Specification<Menu> specification = new Specification<Menu>() {

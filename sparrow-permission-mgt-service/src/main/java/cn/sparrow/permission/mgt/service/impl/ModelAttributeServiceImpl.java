@@ -80,6 +80,48 @@ public class ModelAttributeServiceImpl implements ModelAttributeService {
 		return modelAttributeRepository.findById(attributePK).get();
 	}
 
+	@Override
+	public Page<ModelAttribute> allAttributes(String modelId, Pageable pageable, ModelAttribute modelAttribute) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ModelAttribute createAttribute(ModelAttribute modelAttribute) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ModelAttribute getAttribute(String modelId, String attributeId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ModelAttribute updateAttribute(String modelId, String attributeId, Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void addAttributePermission(String modelId, String attributeId, PermissionToken permissionToken) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void removeAttributePermission(String modelId, String attributeId) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void deleteAttribute(List<String> attributeIds) {
+		// TODO Auto-generated method stub
+		
+	}
+
 	// @PostMapping("/modelAttributes/permissions")
 	// public void addPermission(@NotNull @RequestBody final
 	// ModelAttributePermission modelAttributePermission) {

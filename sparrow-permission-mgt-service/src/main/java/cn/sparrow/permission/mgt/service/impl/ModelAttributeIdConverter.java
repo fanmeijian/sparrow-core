@@ -16,8 +16,8 @@ public class ModelAttributeIdConverter implements Converter<String, ModelAttribu
     public ModelAttributePK convert(String source) {
         String[] parts = source.split("_");
         ModelAttributePK pk = new ModelAttributePK();
-        pk.setModelName(parts[0]);
-        pk.setAttributeName(parts[1]);
+        pk.setModelId(parts[0]);
+        pk.setAttributeId(parts[1]);
 
         return pk;
     }
