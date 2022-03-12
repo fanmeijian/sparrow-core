@@ -30,6 +30,7 @@ import cn.sparrow.permission.model.organization.OrganizationRolePK;
 import cn.sparrow.permission.model.organization.OrganizationRoleRelation;
 import cn.sparrow.permission.model.organization.OrganizationRoleRelationPK;
 import cn.sparrow.permission.model.organization.Role;
+import cn.sparrow.permission.model.organization.Role_;
 
 @Service
 public class RoleServiceImpl implements RoleService {
@@ -124,7 +125,7 @@ public class RoleServiceImpl implements RoleService {
 
 	@Override
 	public Page<Role> all(Pageable pageable, Role role) {
-		ExampleMatcher matcher = ExampleMatcher.matching().withIgnoreCase().withStringMatcher(StringMatcher.CONTAINING);
+		ExampleMatcher matcher = ExampleMatcher.matching().withIgnorePaths(Role_.IS_ROOT).withIgnoreCase().withStringMatcher(StringMatcher.CONTAINING);
 		return roleRepository.findAll(Example.of(role, matcher), pageable);
 	}
 
