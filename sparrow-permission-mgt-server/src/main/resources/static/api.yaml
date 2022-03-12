@@ -1,0 +1,3192 @@
+swagger: "2.0"
+info:
+  description: "一个针对企业内部的组织架构、系统权限的管理平台。 业务原理可参考文章 [组织权限管理平台的设计与实现](https://mp.weixin.qq.com/s/h8aS_i3CTvkACsBYgqUipw)。可以使用Authorization `Authorization-token`来测试本应用。"
+  version: "1.0.0"
+  title: "组织权限管理"
+  contact:
+    email: "fanmeijian@aliyun.com"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "localhost:8091/api"
+basePath: "/"
+tags:
+- name: "URL资源及权限管理"
+- name: "菜单"
+- name: "系统角色"
+- name: "页面元素"
+- name: "文件权限"
+- name: "数据权限"
+- name: "字段权限"
+- name: "认证"
+- name: "组织"
+- name: "组织单元"
+- name: "岗位"
+- name: "职级"
+- name: "群组"
+- name: "员工"
+
+schemes:
+- "http"
+paths:
+  /oauth/password:
+    post:
+      tags:
+      - "认证"
+      summary: "修改密码"
+      parameters:
+      - name: "body"
+        in: "body"
+        schema:
+          allOf: 
+          - $ref: "#/definitions/Oauth"
+          type: "object"
+          properties:
+            oldPassword:
+              type: "string"
+            secondPassword:
+              type: "string"
+      responses:
+        "200":
+          description: "成功"
+          schema:
+            $ref: "#/definitions/ApiResponse"
+      security:
+      - Authorization: []
+    put:
+      tags:
+      - "认证"
+      summary: "重置密码"
+      parameters:
+      - name: "body"
+        in: "body"
+        schema:
+          $ref: "#/definitions/Oauth"
+      responses:
+        "200":
+          description: "成功"
+          schema:
+            $ref: "#/definitions/ApiResponse"
+      security:
+      - Authorization: []
+  /:
+    get:
+      tags:
+      - "认证"
+      summary: "浏览所有spring data rest接口"
+      responses:
+        "200":
+          description: "成功"
+      security:
+      - Authorization: []
+  /swdOrganizations:
+    get:
+      tags: 
+      - "组织"
+      summary: "返回所有组织列表"
+      parameters:
+      - name: "page"
+        in: "query"
+        type: "integer"
+      - name: "size"
+        in: "query"
+        type: "integer"
+      - name: "sort"
+        in: "query"
+        type: "string"
+        description: "字段名,方向[asc|desc]"
+      responses:
+        "200":
+          description: "成功"
+          schema:
+            $ref: "#/definitions/arrayOfOrganization"
+        "403":
+          description: "未登录，token过期，无权限"
+          schema:
+            $ref: "#/definitions/Forbidden"
+      security:
+      - Authorization: []
+    post:
+      tags:
+      - "组织"
+      summary: "创建一个组织"
+      parameters:
+      - in: "body"
+        name: "body"
+        required: true
+        schema:
+          $ref: "#/definitions/SwdOrganization"
+      responses:
+        "201":
+          description: "成功"
+          schema:
+            $ref: "#/definitions/SwdOrganization"
+      security:
+      - Authorization: []
+  /swdOrganizations/{id}:
+    patch:
+      tags:
+      - "组织"
+      summary: "更新组织"
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        type: "integer"
+        format: "int64"
+      - in: "body"
+        name: "body"
+        required: true
+        schema:
+          $ref: "#/definitions/SwdOrganization"
+      responses:
+        "200":
+          description: "成功"
+          schema:
+            $ref: "#/definitions/SwdOrganization"
+      security:
+      - Authorization: []
+    get:
+      tags:
+      - "组织"
+      summary: "获取组织详情"
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        "200":
+          description: "成功"
+          schema:
+            $ref: "#/definitions/SwdOrganizationRep"
+      security:
+      - Authorization: []
+    delete:
+      tags:
+      - "组织"
+      summary: "删除组织"
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        "204":
+          description: "成功"
+      security:
+      - Authorization: []
+  /swdOrganizationRelations:
+    post:
+      tags: 
+      - "组织"
+      summary: "建立组织关系"
+      parameters:
+      - in: "body"
+        name: "body"
+        required: true
+        schema:
+          $ref: "#/definitions/SwdOrganizationRelation"
+      responses:
+        "200":
+          description: "成功"
+          schema:
+            $ref: "#/definitions/SwdOrganizationRelation"
+      security:
+      - Authorization: []
+  /swdOrganizationRelations/{id}:
+    patch:
+      tags: 
+      - "组织"
+      summary: "更新组织关系"
+      parameters:
+      - in: "path"
+        name: "id"
+        required: true
+        type: "string"
+        format: "organizationId,targetId"
+      - in: "body"
+        name: "body"
+        required: true
+        schema:
+          type: "object"
+          properties:
+            relation:
+              type: "integer"
+      responses:
+        "204":
+          description: "成功"
+      security:
+      - Authorization: []
+    delete:
+      tags: 
+      - "组织"
+      summary: "删除组织关系"
+      parameters:
+      - in: "path"
+        name: "id"
+        required: true
+        type: "string"
+        format: "organizationId,targetId"
+      responses:
+        "204":
+          description: "成功"
+      security:
+      - Authorization: []
+  /relatedOrganization/{id}:
+    get:
+      tags: 
+      - "组织"
+      summary: "获取指定组织的关联组织"
+      description: "以树的形式返回，分source和target双向的树"
+      parameters:
+      - in: "path"
+        name: "id"
+        type: "string"
+        required: true
+      responses:
+        "200":
+          description: "添加成功"
+          schema:
+            $ref: "#/definitions/relatedOrganizationRep"
+      security:
+      - Authorization: []
+  /swdUnits:
+    post:
+      tags:
+      - "组织单元"
+      summary: "创建或更新组织单元"
+      description: "swdOrganization字段用这个形式传/1，这个同时也可以更新"
+      parameters:
+      - in: "body"
+        name: "body"
+        required: true
+        schema:
+          $ref: "#/definitions/SwdUnit"
+      responses:
+        "201":
+          description: "成功"
+          schema:
+            $ref: "#/definitions/SwdUnitRep"
+      security:
+      - Authorization: []
+    get:
+      tags:
+      - "组织单元"
+      summary: "获取组织单元列表"
+      parameters:
+      - name: "page"
+        in: "query"
+        type: "integer"
+      - name: "size"
+        in: "query"
+        type: "integer"
+      - name: "sort"
+        in: "query"
+        type: "string"
+        description: "字段名,方向[asc|desc]"
+      responses:
+        "200":
+          description: "成功"
+          schema:
+            $ref: "#/definitions/arrayOfSwdUnit"
+      security:
+      - Authorization: []
+  /unitTree/{organizationId}:
+    get:
+      tags:
+      - "组织单元"
+      summary: "获取组织下组织单元树"
+      parameters:
+      - name: "organizationId"
+        in: "path"
+        type: "integer"
+        required: true
+      responses:
+        "200":
+          description: "成功"
+          schema:
+            $ref: "#/definitions/unitTree"
+      security:
+      - Authorization: []
+  /swdUnits/{id}:
+    patch:
+      tags:
+      - "组织单元"
+      summary: "更新组织单元"
+      description: "可以更新部分信息，除了更新swdOrganization字段外"
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        required: true
+        schema:
+          $ref: "#/definitions/SwdUnit"
+      responses:
+        "200":
+          description: "成功"
+          schema:
+            $ref: "#/definitions/SwdUnitRep"
+      security:
+      - Authorization: []
+    get:
+      tags:
+      - "组织单元"
+      summary: "获取组织单元详情"
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "成功"
+          schema:
+            $ref: "#/definitions/SwdUnitRep"
+      security:
+      - Authorization: []
+    delete:
+      tags:
+      - "组织单元"
+      summary: "删除组织单元"
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        type: "string"
+      responses:
+        "204":
+          description: "成功"
+      security:
+      - Authorization: []
+
+  /swdRoles:
+    post:
+      tags:
+      - "岗位"
+      summary: "创建或更新一个岗位"
+      description: "swdOrganization 为linkToSwdOrganization"
+      parameters:
+      - in: "body"
+        name: "body"
+        required: true
+        schema:
+          $ref: "#/definitions/SwdRole"
+      responses:
+        "201":
+          description: "成功"
+          schema:
+            $ref: "#/definitions/SwdRoleRep"
+      security:
+      - Authorization: []
+    get:
+      tags:
+      - "岗位"
+      summary: "获取所有岗位列表"
+      parameters:
+      - name: "page"
+        in: "query"
+        type: "integer"
+      - name: "size"
+        in: "query"
+        type: "integer"
+      - name: "sort"
+        in: "query"
+        type: "string"
+        description: "字段名,方向{asc,desc}"
+      responses:
+        "200":
+          description: "成功"
+          schema:
+            $ref: "#/definitions/arrayOfSwdRole"
+      security:
+      - Authorization: []
+  /swdRoles/search/findBySwdOrganizationId:
+    get:
+      tags:
+      - "岗位"
+      summary: "获取指定组织下的所有岗位列表"
+      parameters:
+      - name: "organizationId"
+        in: "query"
+        type: "string"
+        required: true
+      - name: "page"
+        in: "query"
+        type: "integer"
+      - name: "size"
+        in: "query"
+        type: "integer"
+      - name: "sort"
+        in: "query"
+        type: "string"
+        description: "字段名,方向[asc|desc]"
+      responses:
+        "200":
+          description: "成功"
+          schema:
+            $ref: "#/definitions/arrayOfSwdRole"
+      security:
+      - Authorization: []
+  /swdRoles/{id}:
+    patch:
+      tags:
+      - "岗位"
+      summary: "更新指定岗位"
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        type: "integer"
+        format: "int64"
+      - in: "body"
+        name: "body"
+        required: true
+        schema:
+          $ref: "#/definitions/SwdRole"
+      responses:
+        "200":
+          description: "成功"
+      security:
+      - Authorization: []
+    get:
+      tags:
+      - "岗位"
+      summary: "获取指定岗位信息"
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        "200":
+          description: "成功"
+          schema:
+            $ref: "#/definitions/SwdRoleRep"
+      security:
+      - Authorization: []
+    delete:
+      tags:
+      - "岗位"
+      summary: "删除指定岗位"
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        "204":
+          description: "成功"
+      security:
+      - Authorization: []
+  /swdLevels:
+    post:
+      tags:
+      - "职级"
+      summary: "创建或更新职级"
+      parameters:
+      - in: "body"
+        name: "body"
+        required: true
+        schema:
+          $ref: "#/definitions/SwdLevel"
+      responses:
+        "201":
+          description: "成功"
+          schema:
+            $ref: "#/definitions/SwdLevelRep"
+      security:
+      - Authorization: []
+    get:
+      tags:
+      - "职级"
+      summary: "获取所有职级列表"
+      parameters:
+      - name: "page"
+        in: "query"
+        type: "integer"
+      - name: "size"
+        in: "query"
+        type: "integer"
+      - name: "sort"
+        in: "query"
+        type: "string"
+        description: "字段名,方向{asc,desc}"
+      responses:
+        "201":
+          description: "成功"
+          schema:
+            $ref: "#/definitions/arrayOfSwdLevel"
+      security:
+      - Authorization: []
+  /swdLevels/search/findBySwdOrganization:
+    get:
+      tags:
+      - "职级"
+      summary: "获取指定组织下的所有职级列表"
+      parameters:
+      - name: "organization"
+        in: "query"
+        type: "string"
+        format: "linkToSwdOrganization"
+      - name: "page"
+        in: "query"
+        type: "integer"
+      - name: "size"
+        in: "query"
+        type: "integer"
+      - name: "sort"
+        in: "query"
+        type: "string"
+        description: "字段名,方向[asc|desc]"
+      responses:
+        "200":
+          description: "成功"
+          schema:
+            $ref: "#/definitions/arrayOfSwdLevel"
+      security:
+      - Authorization: []
+  /swdLevels/{id}:
+    patch:
+      tags:
+      - "职级"
+      summary: "更新指定职级"
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        type: "integer"
+        format: "int64"
+      - in: "body"
+        name: "body"
+        required: true
+        schema:
+          $ref: "#/definitions/SwdLevel"
+      responses:
+        "200":
+          description: "成功"
+          schema:
+            $ref: "#/definitions/SwdLevelRep"
+      security:
+      - Authorization: []
+    get:
+      tags:
+      - "职级"
+      summary: "获取指定职级信息"
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        "200":
+          description: "成功"
+          schema:
+            $ref: "#/definitions/SwdLevelRep"
+      security:
+      - Authorization: []
+    delete:
+      tags:
+      - "职级"
+      summary: "删除指定职级"
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        "204":
+          description: "成功"
+      security:
+      - Authorization: []
+  /swdGroups:
+    get:
+      tags:
+      - "群组"
+      summary: "获取所有群组列表"
+      parameters:
+      - name: "page"
+        in: "query"
+        type: "integer"
+      - name: "size"
+        in: "query"
+        type: "integer"
+      - name: "sort"
+        in: "query"
+        type: "string"
+        description: "字段名,方向{asc,desc}"
+      responses:
+        "200":
+          description: "成功"
+          schema:
+            $ref: "#/definitions/arrayOfSwdGroup"
+      security:
+      - Authorization: []
+    post:
+      tags:
+      - "群组"
+      summary: "创建或更新群组"
+      parameters:
+      - in: "body"
+        name: "body"
+        required: true
+        schema:
+          $ref: "#/definitions/SwdGroupLink"
+      responses:
+        "201":
+          description: "成功"
+          schema:
+            $ref: "#/definitions/SwdGroupRep"
+      security:
+      - Authorization: []
+  /swdGroups/{id}:
+    get:
+      tags:
+      - "群组"
+      summary: "获取指定群组信息"
+      parameters:
+      - name: "id"
+        in: "path"
+        type: "integer"
+        required: true
+      responses:
+        "200":
+          description: "成功"
+          schema:
+            $ref: "#/definitions/SwdGroupRep"
+      security:
+      - Authorization: []
+    patch:
+      tags:
+      - "群组"
+      summary: "更新指定群组"
+      parameters:
+      - name: "id"
+        in: "path"
+        type: "integer"
+        required: true
+      - name: "body"
+        in: "body"
+        required: true
+        schema:
+          $ref: "#/definitions/SwdGroupLink"
+      responses:
+        "200":
+          description: "成功"
+          schema:
+            $ref: "#/definitions/SwdGroupRep"
+      security:
+      - Authorization: []
+    delete:
+      tags:
+      - "群组"
+      summary: "删除指定群组"
+      parameters:
+      - name: "id"
+        in: "path"
+        type: "integer"
+        required: true
+      responses:
+        "200":
+          description: "成功"
+      security:
+      - Authorization: []
+  /swdSubGroups/search/findByIdGroupId:
+    get:
+      tags:
+      - "群组"
+      summary: "返回指定组的子组"
+      parameters:
+      - name: "groupId"
+        in: "query"
+        type: "integer"
+        required: true
+      - name: "page"
+        in: "query"
+        type: "integer"
+      - name: "size"
+        in: "query"
+        type: "integer"
+      - name: "sort"
+        in: "query"
+        type: "string"
+        description: "字段名,方向[asc|desc]"
+      responses:
+        "200":
+          description: "成功"
+          schema:
+            $ref: "#/definitions/arrayOfSubGroup"
+      security:
+      - Authorization: []
+  /subGroups/tree:
+    get:
+      tags:
+      - "群组"
+      summary: "获取指定群组的子组树"
+      parameters:
+      - name: "id"
+        in: "query"
+        type: "integer"
+        required: true
+      responses:
+        "200":
+          description: "成功"
+          schema:
+            type: "object"
+            allOf:
+              - $ref: "#/definitions/ApiResponse"
+            properties:
+              data: 
+                type: "object"
+                allOf:
+                  - $ref: "#/definitions/SwdGroupLink"
+                properties:
+                  subGroups:
+                    type: "array"
+                    items:
+                      type: "object"
+      security:
+      - Authorization: []
+  /swdGroupUsers/search/findByGroupId:
+    get:
+      tags:
+      - "群组"
+      summary: "返回指定组的组成员"
+      parameters:
+      - name: "id"
+        in: "query"
+        type: "integer"
+        required: true
+      - name: "page"
+        in: "query"
+        type: "integer"
+      - name: "size"
+        in: "query"
+        type: "integer"
+      - name: "sort"
+        in: "query"
+        type: "string"
+        description: "字段名,方向[asc|desc]"
+      responses:
+        "200":
+          description: "成功"
+          schema:
+            type: "object"
+            properties:
+              _embedded: 
+                type: "object"
+                properties:
+                  swdUsers:
+                    type: "array"
+                    items:
+                      $ref: "#/definitions/SwdUserRep"
+                  _links:
+                    $ref: "#/definitions/_links"
+                  page:
+                    $ref: "#/definitions/page"
+      security:
+      - Authorization: []
+  /subGroups/add:  
+    put:
+      tags:
+      - "群组"
+      summary: "设置指定群组的子组"
+      parameters:
+      - name: "id"
+        in: "query"
+        type: "integer"
+        required: true
+      - name: "body"
+        in: "body"
+        required: true
+        schema:
+          type: "array"
+          items:
+            type: "string"
+      responses:
+        "200":
+          description: "成功"
+          schema:
+            $ref: "#/definitions/ApiResponse"
+      security:
+      - Authorization: []
+  /subGroups/remove:  
+    put:
+      tags:
+      - "群组"
+      summary: "移除指定群组的子组"
+      parameters:
+      - name: "id"
+        in: "query"
+        type: "integer"
+        required: true
+      - name: "body"
+        in: "body"
+        required: true
+        schema:
+          type: "array"
+          items:
+            type: "string"
+      responses:
+        "200":
+          description: "成功"
+          schema:
+            $ref: "#/definitions/ApiResponse"
+      security:
+      - Authorization: []  
+  /groupUsers/add:  
+    put:
+      tags:
+      - "群组"
+      summary: "设置指定群组的成员"
+      parameters:
+      - name: "id"
+        in: "query"
+        type: "integer"
+        required: true
+      - name: "body"
+        in: "body"
+        required: true
+        schema:
+          type: "array"
+          items:
+            type: "string"
+      responses:
+        "200":
+          description: "成功"
+          schema:
+            $ref: "#/definitions/ApiResponse"
+      security:
+      - Authorization: []
+  /groupUsers/remove:  
+    put:
+      tags:
+      - "群组"
+      summary: "移除指定群组的成员"
+      parameters:
+      - name: "id"
+        in: "query"
+        type: "integer"
+        required: true
+      - name: "body"
+        in: "body"
+        required: true
+        schema:
+          type: "array"
+          items:
+            type: "string"
+      responses:
+        "200":
+          description: "成功"
+          schema:
+            $ref: "#/definitions/ApiResponse"
+      security:
+      - Authorization: []
+  /swdEmployees:
+    post:
+      tags:
+      - "员工"
+      summary: "创建或更新员工"
+      parameters:
+      - in: "body"
+        name: "body"
+        required: true
+        schema:
+          $ref: "#/definitions/SwdEmployee"
+      responses:
+        "201":
+          description: "成功"
+          schema:
+            $ref: "#/definitions/SwdEmployeeRep"
+      security:
+      - Authorization: []
+    get:
+      tags:
+      - "员工"
+      summary: "获取所有员工列表"
+      parameters:
+      - name: "page"
+        in: "query"
+        type: "integer"
+      - name: "size"
+        in: "query"
+        type: "integer"
+      - name: "sort"
+        in: "query"
+        type: "string"
+        description: "字段名,方向{asc,desc}"
+      responses:
+        "200":
+          description: "成功"
+          schema:
+            type: "object"
+            properties:
+              _embedded: 
+                type: "object"
+                properties:
+                  swdEmployees:
+                    type: "array"
+                    items:
+                      $ref: "#/definitions/SwdEmployeeRep"
+                  _links:
+                    $ref: "#/definitions/_links"
+                  page:
+                    $ref: "#/definitions/page"
+      security:
+      - Authorization: []
+  /swdEmployees/{username}:
+    patch:
+      tags:
+      - "员工"
+      summary: "更新员工信息"
+      parameters:
+      - name: "username"
+        in: "path"
+        required: true
+        type: "string"
+        format: "int64"
+      - in: "body"
+        name: "body"
+        required: true
+        schema:
+          $ref: "#/definitions/SwdEmployee"
+      responses:
+        "200":
+          description: "成功"
+      security:
+      - Authorization: []
+    get:
+      tags:
+      - "员工"
+      summary: "获取指定员工信息"
+      parameters:
+      - name: "username"
+        in: "path"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "成功"
+          schema:
+            $ref: "#/definitions/SwdEmployeeRep"
+      security:
+      - Authorization: []
+    delete:
+      tags:
+      - "员工"
+      summary: "删除员工"
+      parameters:
+      - name: "username"
+        in: "path"
+        required: true
+        type: "string"
+      responses:
+        "204":
+          description: "成功"
+      security:
+      - Authorization: []
+  /swdMenus:
+    post:
+      tags:
+      - "菜单"
+      summary: "新增菜单"
+      parameters:
+      - in: "body"
+        name: "body"
+        required: true
+        schema:
+          $ref: "#/definitions/SwdMenu"
+      responses:
+        "201":
+          description: "成功"
+          schema:
+            $ref: "#/definitions/SwdMenuRep"
+      security:
+      - Authorization: []
+    get:
+      tags:
+      - "菜单"
+      summary: "获取所有菜单"
+      parameters:
+      - name: "page"
+        in: "query"
+        type: "integer"
+      - name: "size"
+        in: "query"
+        type: "integer"
+      - name: "sort"
+        in: "query"
+        type: "string"
+        description: "字段名,方向{asc,desc}"
+      responses:
+        "200":
+          description: "成功"
+          schema:
+            $ref: "#/definitions/arrayOfSwdMenu"
+      security:
+      - Authorization: []
+  /swdMenus/{id}:
+    patch:
+      tags:
+      - "菜单"
+      summary: "更新菜单"
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        type: "integer"
+        format: "int64"
+      - in: "body"
+        name: "body"
+        required: true
+        schema:
+          $ref: "#/definitions/SwdMenu"
+      responses:
+        "200":
+          description: "成功"
+          schema:
+            $ref: "#/definitions/SwdMenuRep"
+      security:
+      - Authorization: []
+    get:
+      tags:
+      - "菜单"
+      summary: "获取菜单详情"
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        "200":
+          description: "成功"
+          schema:
+            $ref: "#/definitions/SwdMenuRep"
+      security:
+      - Authorization: []
+    delete:
+      tags:
+      - "菜单"
+      summary: "删除菜单"
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        type: "integer"
+      responses:
+        "204":
+          description: "Invalid ID supplied"
+      security:
+      - Authorization: []
+  /menuTrees : 
+    get:
+      tags:
+      - "菜单"
+      summary: "获取所有菜单树"
+      description: "以树的形式返回所有菜单，children为menuTree本身的递归"
+      responses:
+        "200":
+          description: "成功"
+          schema:
+            type: "object"
+            allOf:
+              - $ref: "#/definitions/ApiResponse"
+            properties:
+              data:
+                type: "array"
+                items:
+                  $ref: "#/definitions/arrayOfMenuTree"
+      security:
+      - Authorization: []
+  /userMenuTrees : 
+    get:
+      tags:
+      - "菜单"
+      summary: "获取用户菜单树"
+      description: "返回当前登录用户的所有菜单,children为menutree对象"
+      responses:
+        "200":
+          description: "成功"
+          schema:
+            type: "object"
+            allOf:
+              - $ref: "#/definitions/ApiResponse"
+            properties:
+              data:
+                type: "array"
+                items:
+                  $ref: "#/definitions/arrayOfMenuTree"
+      security:
+      - Authorization: []
+  /sysroleMenuTrees : 
+    get:
+      tags:
+      - "菜单"
+      summary: "返回指定角色的菜单树"
+      description: "返回指定系统角色的所有菜单，children为menutree对象"
+      parameters:
+      - in: "query"
+        name: "sysroleId"
+        type: "string"
+        required: true
+      responses:
+        "200":
+          description: "成功"
+          schema:
+            type: "object"
+            allOf:
+              - $ref: "#/definitions/ApiResponse"
+            properties:
+              data:
+                type: "array"
+                items:
+                  $ref: "#/definitions/arrayOfMenuTree"
+        "403":
+          description: "无权限"
+      security:
+      - Authorization: []
+  /sparrowUrls:
+    post:
+      tags:
+      - "URL资源及权限管理"
+      summary: "新建功能"
+      parameters:
+      - in: "body"
+        name: "body"
+        required: true
+        schema:
+          $ref: "#/definitions/sparrowUrls"
+      responses:
+        "201":
+          description: "成功"
+          schema:
+            $ref: "#/definitions/SwdAuthorityRep"
+      security:
+      - Authorization: []
+    get:
+      tags:
+      - "URL资源及权限管理"
+      summary: "获取所有功能列表"
+      parameters:
+      - name: "page"
+        in: "query"
+        type: "integer"
+      - name: "size"
+        in: "query"
+        type: "integer"
+      - name: "sort"
+        in: "query"
+        type: "string"
+        description: "字段名,方向{asc,desc}"
+      responses:
+        "200":
+          description: "成功"
+          schema:
+            $ref: "#/definitions/arrayOfAuthority"
+      security:
+      - Authorization: []
+  /authoritiesWithCheckBySysrole : 
+    get:
+      tags:
+      - "URL资源及权限管理"
+      summary: "获取指定角色下的功能列表，含checked值"
+      description: "返回指定系统角色所拥有的功能权限，含checked值"
+      parameters:
+      - name: "sysroleId"
+        in: "query"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        "200":
+          description: "成功"
+          schema:
+            type: "object"
+            allOf:
+              - $ref: "#/definitions/ApiResponse"
+            properties:
+              data:
+                type: "array"
+                items:
+                  $ref: "#/definitions/arrayOfAuthorityCheck"
+      security:
+      - Authorization: []
+  /authoritiesWithCheckByUser : 
+    get:
+      tags:
+      - "URL资源及权限管理"
+      summary: "获取指定用户下的功能列表，含checked值"
+      parameters:
+      - name: "username"
+        in: "query"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "成功"
+          schema:
+            type: "object"
+            allOf:
+              - $ref: "#/definitions/ApiResponse"
+            properties:
+              data:
+                type: "array"
+                items:
+                  $ref: "#/definitions/arrayOfAuthorityCheck"
+      security:
+      - Authorization: []
+  /swdAuthorities/{id}:
+    patch:
+      tags:
+      - "URL资源及权限管理"
+      summary: "更新功能"
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        type: "integer"
+      - in: "body"
+        name: "body"
+        required: true
+        schema:
+          $ref: "#/definitions/SwdAuthority"
+      responses:
+        "200":
+          description: "成功"
+          schema:
+            $ref: "#/definitions/SwdAuthorityRep"
+      security:
+      - Authorization: []
+    get:
+      tags:
+      - "URL资源及权限管理"
+      summary: "获取指定功能信息"
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        type: "integer"
+      responses:
+        "200":
+          description: "成功"
+          schema:
+            $ref: "#/definitions/SwdAuthorityRep"
+      security:
+      - Authorization: []
+    delete:
+      tags:
+      - "URL资源及权限管理"
+      summary: "删除功能"
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        type: "integer"
+      responses:
+        "204":
+          description: "成功"
+      security:
+      - Authorization: []
+  /swdSysroles:
+    post:
+      tags:
+      - "系统角色"
+      summary: "创建系统角色"
+      parameters:
+      - in: "body"
+        name: "body"
+        required: true
+        schema:
+          $ref: "#/definitions/SwdSysrole"
+      responses:
+        "201":
+          description: "成功"
+          schema:
+            $ref: "#/definitions/SwdSysroleRep"
+      security:
+      - Authorization: []
+    get:
+      tags:
+      - "系统角色"
+      summary: "获取所有系统角色"
+      parameters:
+      - name: "page"
+        in: "query"
+        type: "integer"
+      - name: "size"
+        in: "query"
+        type: "integer"
+      - name: "sort"
+        in: "query"
+        type: "string"
+        description: "字段名,方向[asc|desc]"
+      responses:
+        "200":
+          description: "成功"
+          schema:
+            $ref: "#/definitions/arrayOfSwdSysrole"
+      security:
+      - Authorization: []
+  /swdSysroles/{id}:
+    patch:
+      tags:
+      - "系统角色"
+      summary: "更新系统角色"
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        type: "integer"
+      - in: "body"
+        name: "body"
+        required: true
+        schema:
+          $ref: "#/definitions/SwdSysrole"
+      responses:
+        "200":
+          description: "成功"
+          schema: 
+            $ref: "#/definitions/SwdSysroleRep"
+      security:
+      - Authorization: []
+    get:
+      tags:
+      - "系统角色"
+      summary: "获取系统角色信息"
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        type: "integer"
+      responses:
+        "200":
+          description: "成功"
+          schema:
+            $ref: "#/definitions/SwdSysroleRep"
+      security:
+      - Authorization: []
+    delete:
+      tags:
+      - "系统角色"
+      summary: "删除系统角色"
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        type: "integer"
+      responses:
+        "204":
+          description: "成功"
+      security:
+      - Authorization: []
+  /swdSysroles/{sysroleId}/swdMenus : 
+    get:
+      tags:
+      - "系统角色"
+      summary: "返回指定角色下的菜单列表"
+      description: "返回指定系统角色的所有菜单,不是树的形式"
+      parameters:
+      - in: "path"
+        name: "sysroleId"
+        type: "string"
+        required: true
+      responses:
+        "200":
+          description: "成功"
+          schema:
+            $ref: "#/definitions/arrayOfSwdMenu"
+        "403":
+          description: "无权限"
+      security:
+      - Authorization: []
+  /swdSysroles/{sysroleId}/swdAuthorities : 
+    get:
+      tags:
+      - "系统角色"
+      summary: "返回指定角色下的功能列表"
+      parameters:
+      - in: "path"
+        name: "sysroleId"
+        type: "string"
+        required: true
+      responses:
+        "200":
+          description: "成功"
+          schema:
+            type: "object"
+            properties:
+              _embbeded:
+                type: "object"
+                properties:
+                  swdAuthorities:
+                    type: "object"
+                    $ref: "#/definitions/SwdAuthorityRep"
+        "403":
+          description: "无权限"
+      security:
+      - Authorization: []
+  /sysroleAuthorities:
+    put:
+      tags:
+      - "系统角色"
+      summary: "更新系统角色功能列表"
+      parameters:
+      - in: "body"
+        name: "body"
+        required: true
+        schema:
+          type: "array"
+          items:
+            $ref: "#/definitions/SwdSysroleAuthority"
+      responses:
+        "200":
+          description: "成功"
+          schema: 
+            $ref: "#/definitions/ApiResponse"
+      security:
+      - Authorization: []
+  /sysroleMenus:
+    put:
+      tags:
+      - "系统角色"
+      summary: "更新系统菜单功能列表"
+      parameters:
+      - in: "body"
+        name: "body"
+        required: true
+        schema:
+          type: "array"
+          items:
+            $ref: "#/definitions/SwdSysroleMenu"
+      responses:
+        "200":
+          description: "成功"
+          schema: 
+            $ref: "#/definitions/ApiResponse"
+      security:
+      - Authorization: []
+  /files:
+    get:
+      tags:
+      - "文件权限"
+      summary: "返回所有文件列表"
+      responses:
+        "200":
+          description: "成功"
+          schema:
+            $ref: "#/definitions/arrayOfSwdFile"
+      security:
+      - Authorization: []
+    post:
+      tags:
+      - "文件权限"
+      summary: "上传文件"
+      consumes:
+      - multipart/form-data
+      parameters:
+        - name: "file"
+          in: "formData"
+          type: "file"
+          required: true
+      responses:
+        "200":
+          description: "成功"
+          schema:
+            $ref: "#/definitions/SwdFile"
+      security:
+      - Authorization: []
+  /myFiles:
+    get:
+      tags:
+      - "文件权限"
+      summary: "我的文件列表"
+      description: "返回当前用户所有的含有LIST权限，和匿名及认证用户可以查看的文件"
+      responses:
+        "200":
+          description: "成功"
+          schema:
+            $ref: "#/definitions/arrayOfSwdFile"
+      security:
+      - Authorization: []
+  /filePermission:
+    post:
+      tags: 
+      - "文件权限"
+      summary: "为某个用户授予文件权限"
+      parameters:
+        - name: "body"
+          in: "body"
+          required: true
+          schema:
+            $ref: "#/definitions/SwdUserFilePK"
+      responses:
+        "200":
+          description: "成功"
+      security:
+      - Authorization: []
+  /userFilePermission/{fileId}:
+    get:
+      tags: 
+      - "文件权限"
+      summary: "返回指定文件所授予的用户的权限列表"
+      parameters:
+        - name: "fileId"
+          in: "path"
+          type: "integer"
+          required: true
+      responses:
+        "200":
+          description: "成功"
+          schema:
+            $ref: "#/definitions/arrayOfUserFile"
+      security:
+      - Authorization: []
+  /sysroleFilePermission/{fileId}:
+    get:
+      tags:
+      - "文件权限"
+      summary: "返回指定文件所授予权限的角色列表"
+      parameters:
+        - name: "fileId"
+          in: "path"
+          type: "integer"
+          required: true
+      responses:
+        "200":
+          description: "成功"
+          schema:
+            $ref: "#/definitions/arrayOfSysroleFile"
+      security:
+      - Authorization: []
+  /files/{fileId}:
+    get:
+      tags:
+      - "文件权限"
+      summary: "获取指定文件内容"
+      description: "下载指定文件，同时会检查当前用户是否有下载权限"
+      parameters:
+        - name: "fileId"
+          in: "path"
+          type: "integer"
+          required: true
+      responses:
+        "200":
+          description: "成功"
+      security:
+      - Authorization: []
+  /swdDataPermissions:
+    get:
+      tags: 
+      - "数据权限"
+      summary: "列出所有的数据权限"
+      responses:
+        "200":
+          description: "成功"
+          schema:
+            $ref: "#/definitions/arrayOfSwdDataPermission"
+      security:
+      - Authorization: []
+    post:
+      tags: 
+      - "数据权限"
+      summary: "创建数据权限"
+      parameters:
+        - name: "body"
+          in: "body"
+          schema:
+            $ref: "#/definitions/SwdDataPermission"
+          required: true
+      responses:
+        "201":
+          description: "成功"
+          schema:
+            $ref: "#/definitions/SwdDataPermission"
+      security:
+      - Authorization: []
+  /swdDataPermissions/{id}:
+    get:
+      tags: 
+      - "数据权限"
+      summary: "获取数据权限详情"
+      parameters:
+        - name: "id"
+          in: "path"
+          type: "string"
+          format: "model,pkey,permission"
+          required: true
+      responses:
+        "200":
+          description: "成功"
+      security:
+      - Authorization: []
+    patch:
+      tags: 
+      - "数据权限"
+      summary: "更新数据权限"
+      parameters:
+        - name: "id"
+          in: "path"
+          type: "string"
+          format: "model,pkey,permission"
+          required: true
+        - name: "body"
+          in: "body"
+          schema:
+            type: "object"
+            properties:
+              permissionEl:
+                type: "string"
+          required: true
+      responses:
+        "200":
+          description: "成功"
+          schema:
+            $ref: "#/definitions/SwdDataPermission"
+      security:
+      - Authorization: []
+    delete:
+      tags: 
+      - "数据权限"
+      summary: "删除数据权限"
+      parameters:
+        - name: "id"
+          in: "path"
+          type: "string"
+          format: "model,pkey,permission"
+          required: true
+      responses:
+        "204":
+          description: "成功"
+      security:
+      - Authorization: []
+  /swdUserDataPermissions:
+    get:
+      tags: 
+      - "数据权限"
+      summary: "列出所有的用户数据权限"
+      responses:
+        "200":
+          description: "成功"
+          schema:
+            type: "object"
+            properties:
+              _embedded: 
+                type: "object"
+                properties:
+                  swdUserDataPermissions:
+                    type: "array"
+                    items:
+                      $ref: "#/definitions/SwdUserDataPermissionRep"
+                  _links:
+                    $ref: "#/definitions/_links"
+                  page:
+                    $ref: "#/definitions/page"
+      security:
+      - Authorization: []
+    post:
+      tags: 
+      - "数据权限"
+      summary: "创建用户数据权限"
+      parameters:
+        - name: "body"
+          in: "body"
+          schema:
+            $ref: "#/definitions/SwdUserDataPermission"
+          required: true
+      responses:
+        "201":
+          description: "成功"
+          schema:
+            $ref: "#/definitions/SwdUserDataPermissionRep"
+      security:
+      - Authorization: []
+  /swdUserDataPermissions/{id}:
+    get:
+      tags: 
+      - "数据权限"
+      summary: "获取用户数据权限详情"
+      parameters:
+        - name: "id"
+          in: "path"
+          type: "string"
+          format: "model,pkey,permission,username"
+          required: true
+      responses:
+        "200":
+          description: "成功"
+      security:
+      - Authorization: []
+    delete:
+      tags: 
+      - "数据权限"
+      summary: "删除用户数据权限"
+      parameters:
+        - name: "id"
+          in: "path"
+          type: "string"
+          format: "model,pkey,permission,username"
+          required: true
+      responses:
+        "204":
+          description: "成功"
+      security:
+      - Authorization: []
+  /swdSysroleDataPermissions:
+    get:
+      tags: 
+      - "数据权限"
+      summary: "列出所有的系统角色数据权限"
+      responses:
+        "200":
+          description: "成功"
+          schema:
+            type: "object"
+            properties:
+              _embedded: 
+                type: "object"
+                properties:
+                  swdSysroleDataPermissions:
+                    type: "array"
+                    items:
+                      $ref: "#/definitions/SwdSysroleDataPermissionRep"
+                  _links:
+                    $ref: "#/definitions/_links"
+                  page:
+                    $ref: "#/definitions/page"
+      security:
+      - Authorization: []
+    post:
+      tags: 
+      - "数据权限"
+      summary: "创建系统角色数据权限"
+      parameters:
+        - name: "body"
+          in: "body"
+          schema:
+            $ref: "#/definitions/SwdSysroleDataPermission"
+          required: true
+      responses:
+        "201":
+          description: "成功"
+          schema:
+            $ref: "#/definitions/SwdSysroleDataPermissionRep"
+      security:
+      - Authorization: []
+  /swdSysroleDataPermissions/{id}:
+    get:
+      tags: 
+      - "数据权限"
+      summary: "获取系统角色数据权限详情"
+      parameters:
+        - name: "id"
+          in: "path"
+          type: "string"
+          format: "model,pkey,permission,sysroleId"
+          required: true
+      responses:
+        "200":
+          description: "成功"
+      security:
+      - Authorization: []
+    delete:
+      tags: 
+      - "数据权限"
+      summary: "删除系统角色数据权限"
+      parameters:
+        - name: "id"
+          in: "path"
+          type: "string"
+          format: "model,pkey,permission,sysroleId"
+          required: true
+      responses:
+        "204":
+          description: "成功"
+      security:
+      - Authorization: []
+  /dataPermission:
+    post:
+      tags: 
+      - "数据权限"
+      summary: "判断当前用户是否有数据权限"
+      parameters:
+        - name: "body"
+          in: "body"
+          schema:
+            $ref: "#/definitions/SwdDataPermissionPK"
+          required: true
+      responses:
+        "200":
+          description: "成功"
+          schema:
+            allOf: 
+            - $ref: "#/definitions/ApiResponse"
+            properties:
+              data:
+                type: "boolean"
+      security:
+      - Authorization: []
+  /swdFieldPermissions:
+    get:
+      tags: 
+      - "字段权限"
+      summary: "列出所有字段"
+      responses:
+        "200":
+          description: "成功"
+          schema:
+            type: "object"
+            properties:
+              _embedded: 
+                type: "object"
+                properties:
+                  swdFieldPermissions:
+                    type: "array"
+                    items:
+                      $ref: "#/definitions/SwdFieldPermissionRep"
+                  _links:
+                    $ref: "#/definitions/_links"
+                  page:
+                    $ref: "#/definitions/page"
+      security:
+      - Authorization: []
+    post:
+      tags: 
+      - "字段权限"
+      summary: "创建字段权限"
+      parameters:
+        - name: "body"
+          in: "body"
+          schema:
+            $ref: "#/definitions/SwdFieldPermission"
+          required: true
+      responses:
+        "200":
+          description: "成功"
+          schema:
+            $ref: "#/definitions/SwdFieldPermissionRep"
+      security:
+      - Authorization: []
+  /swdFieldPermissions/{id}:
+    get:
+      tags: 
+      - "字段权限"
+      summary: "获取字段详情"
+      parameters:
+        - name: "id"
+          in: "path"
+          type: "string"
+          format: "model,field"
+          required: true
+      responses:
+        "200":
+          description: "成功"
+          schema:
+            $ref: "#/definitions/SwdFieldPermissionRep"
+      security:
+      - Authorization: []
+    patch:
+      tags: 
+      - "字段权限"
+      summary: "更新字段"
+      parameters:
+        - name: "id"
+          in: "path"
+          type: "string"
+          format: "model,field,permission"
+          required: true
+        - name: "body"
+          in: "body"
+          schema:
+            $ref: "#/definitions/SwdFieldPermission"
+          required: true
+      responses:
+        "200":
+          description: "成功"
+          schema:
+            $ref: "#/definitions/SwdFieldPermissionRep"
+      security:
+      - Authorization: []
+    delete:
+      tags: 
+      - "字段权限"
+      summary: "删除字段"
+      parameters:
+        - name: "id"
+          in: "path"
+          type: "string"
+          format: "model,field,permission"
+          required: true
+      responses:
+        "200":
+          description: "成功"
+      security:
+      - Authorization: []
+  /fieldPermission:
+    post:
+      tags: 
+      - "字段权限"
+      summary: "判断当前用户是否有字段权限"
+      parameters:
+        - name: "body"
+          in: "body"
+          schema:
+            $ref: "#/definitions/SwdFieldPermissionPK"
+          required: true
+      responses:
+        "200":
+          description: "成功"
+          schema:
+            allOf: 
+            - $ref: "#/definitions/ApiResponse"
+            properties:
+              data:
+                type: "boolean"
+      security:
+      - Authorization: []
+      
+  /swdUsers:
+    post:
+      tags:
+      - "用户"
+      summary: "创建或更新一个用户"
+      description: "swdOrganization 为linkToSwdOrganization"
+      parameters:
+      - in: "body"
+        name: "body"
+        required: true
+        schema:
+          $ref: "#/definitions/SwdUser"
+      responses:
+        "201":
+          description: "成功"
+          schema:
+            $ref: "#/definitions/SwdUserRep"
+      security:
+      - Authorization: []
+    get:
+      tags:
+      - "用户"
+      summary: "获取所有用户列表"
+      parameters:
+      - name: "page"
+        in: "query"
+        type: "integer"
+      - name: "size"
+        in: "query"
+        type: "integer"
+      - name: "sort"
+        in: "query"
+        type: "string"
+        description: "字段名,方向[asc|desc]"
+      responses:
+        "200":
+          description: "成功"
+          schema:
+            type: "object"
+            properties:
+              _embedded:
+                type: "object"
+                properties:
+                  swdUsers:
+                    type: "array"
+                    items:
+                      $ref: "#/definitions/SwdUserRep"
+              _links:
+                $ref: "#/definitions/_links"
+              page:
+                $ref: "#/definitions/page"
+      security:
+      - Authorization: []
+  /swdUsers/{username}:
+    patch:
+      tags:
+      - "用户"
+      summary: "更新指定用户"
+      parameters:
+      - name: "username"
+        in: "path"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        required: true
+        schema:
+          type: "object"
+          properties:
+            enabled: 
+              type: integer
+      responses:
+        "200":
+          description: "成功"
+      security:
+      - Authorization: []
+    get:
+      tags:
+      - "用户"
+      summary: "获取指定用户信息"
+      parameters:
+      - name: "username"
+        in: "path"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "成功"
+          schema:
+            $ref: "#/definitions/SwdUserRep"
+      security:
+      - Authorization: []
+    delete:
+      tags:
+      - "用户"
+      summary: "删除指定用户"
+      parameters:
+      - name: "username"
+        in: "path"
+        required: true
+        type: "string"
+      responses:
+        "204":
+          description: "成功"
+      security:
+      - Authorization: []
+  /swdUsers/{username}/swdAuthorities:
+    get:
+      tags:
+      - "用户"
+      summary: "获取指定用户功能列表"
+      parameters:
+      - name: "username"
+        in: "path"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "成功"
+          schema:
+            type: "object"
+            properties:
+              _embedded:
+                type: "object"
+                properties:
+                  swdAuthorities:
+                    type: "array"
+                    items:
+                      $ref: "#/definitions/SwdAuthorityRep"
+      security:
+      - Authorization: []
+  /swdUsers/{username}/swdMenus:
+    get:
+      tags:
+      - "用户"
+      summary: "获取指定用户菜单列表"
+      parameters:
+      - name: "username"
+        in: "path"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "成功"
+          schema:
+            type: "object"
+            properties:
+              _embedded:
+                type: "object"
+                properties:
+                  swdMenus:
+                    type: "array"
+                    items:
+                      $ref: "#/definitions/SwdMenuRep"
+      security:
+      - Authorization: []
+  /swdUsers/{username}/swdSysroles:
+    get:
+      tags:
+      - "用户"
+      summary: "获取指定用户系统角色列表"
+      parameters:
+      - name: "username"
+        in: "path"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "成功"
+          schema:
+            type: "object"
+            properties:
+              _embedded:
+                type: "object"
+                properties:
+                  swdSysroles:
+                    type: "array"
+                    items:
+                      $ref: "#/definitions/SwdSysroleRep"
+      security:
+      - Authorization: []
+  /userMenus:
+    put:
+      tags: 
+      - "用户"
+      summary: "菜单授权"
+      parameters:
+        - name: "body"
+          in: "body"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/SwdUserMenu"
+          required: true
+      responses:
+        "200":
+          description: "成功"
+          schema:
+            $ref: "#/definitions/ApiResponse"
+      security:
+      - Authorization: []
+  /userAuthorities:
+    put:
+      tags: 
+      - "用户"
+      summary: "功能授权"
+      parameters:
+        - name: "body"
+          in: "body"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/SwdUserAuthority"
+          required: true
+      responses:
+        "200":
+          description: "成功"
+          schema:
+            $ref: "#/definitions/ApiResponse"
+      security:
+      - Authorization: []
+  /userSysroles:
+    put:
+      tags: 
+      - "用户"
+      summary: "系统角色授权"
+      parameters:
+        - name: "body"
+          in: "body"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/SwdUserSysrole"
+          required: true
+      responses:
+        "200":
+          description: "成功"
+          schema:
+            $ref: "#/definitions/ApiResponse"
+      security:
+      - Authorization: []
+securityDefinitions:
+  Authorization:
+    type: "apiKey"
+    name: "Authorization"
+    in: "header"
+definitions:
+  SwdOrganization:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+      code:
+        type: "string"
+      name:
+        type: "string"
+      stat:
+        type: "integer"
+        description: "1:未生效\n2:生效\n3:失效"
+  SwdOrganizationRep:
+    type: object
+    properties:
+      code:
+        type: string
+      name:
+        type: string
+      stat:
+        type: number
+      _links:
+        type: object
+        properties:
+          self:
+            type: object
+            properties:
+              href:
+                type: string
+          swdOrganization:
+            type: object
+            properties:
+              href:
+                type: string
+  arrayOfRelatedOrganization:
+    type: array
+    items:
+      type: object
+      properties:
+        id:
+          type: object
+          properties:
+            organizationId:
+              type: string
+            tartgetId:
+              type: string
+        relation:
+          type: number
+  arrayOfOrganization:
+    type: object
+    properties:
+      _embedded:
+        type: object
+        properties:
+          swdOrganizations:
+            type: array
+            items:
+              $ref: "#/definitions/SwdOrganizationRep"
+      _links:
+        $ref: "#/definitions/_links"
+      page:
+        $ref: "#/definitions/page"
+  SwdOrganizationRelation:
+    type: "object"
+    properties:
+      id:
+        $ref: "#/definitions/SwdOrganizationRelationPK"
+      relation:
+        type: "integer"
+        description: "1:全资子公司\n2:股权投资"
+  SwdOrganizationRelationPK:
+    type: "object"
+    properties:
+      organizationId:
+        type: "string"
+      tartgetId:
+        type: "string"
+  relatedOrganizationRep:
+    allOf:
+      - $ref: "#/definitions/ApiResponse"
+    properties:
+      data:
+        $ref: "#/definitions/OrganizationExt"
+  OrganizationExt:
+    type: object
+    allOf:
+      - $ref: "#/definitions/SwdOrganization"
+    properties:
+      sources:
+        type: array
+        items:
+          $ref: "#/definitions/OrganizationRelationExt"
+      targets:
+        type: array
+        items:
+          $ref: "#/definitions/OrganizationRelationExt"
+  OrganizationRelationExt:
+    type: "object"
+    properties:
+      organizationExt:
+        $ref: "#/definitions/OrganizationExt"
+      targetExt:
+        $ref: "#/definitions/OrganizationExt"
+      relation:
+        type: "integer"
+  SwdUnit:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+      parentId:
+        type: "integer"
+      name:
+        type: "string"
+      stat:
+        type: "integer"
+      swdOrganization:
+        type: "string"
+        format: "/{organizationId}"
+  unitTree:
+    allOf:
+      - $ref: "#/definitions/ApiResponse"
+    type: object
+    properties:
+      data:
+        type: array
+        items:
+          $ref: "#/definitions/SwdUnitExt"
+  SwdUnitExt:
+    allOf:
+      - $ref: "#/definitions/SwdUnit"
+    properties:
+      children:
+        type: "array"
+        items:
+          $ref: "#/definitions/SwdUnitExt"
+  arrayOfSwdUnit:
+    type: object
+    properties:
+      _embedded:
+        type: object
+        properties:
+          swdUnits:
+            type: array
+            items:
+              $ref: "#/definitions/SwdUnitRep"
+      _links:
+        $ref: "#/definitions/_links"
+      page:
+        $ref: "#/definitions/page"
+  SwdUnitRep:
+    type: object
+    properties:
+      name:
+        type: "string"
+      parentId:
+        type: "integer"
+      stat:
+        type: number
+      _links:
+        type: object
+        properties:
+          self:
+            type: object
+            properties:
+              href:
+                type: string
+          swdUnit:
+            type: object
+            properties:
+              href:
+                type: string
+          swdOrganization:
+            type: object
+            properties:
+              href:
+                type: string
+  SwdRole:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+      code:
+        type: "string"
+      name:
+        type: "string"
+      stat:
+        type: "integer"
+      swdOrganization:
+        type: "string"
+        format: "/{organizationId}"
+  SwdRoleRep:
+    type: object
+    properties:
+      code:
+        type: string
+      name:
+        type: string
+      stat:
+        type: number
+      _links:
+        type: object
+        properties:
+          self:
+            type: object
+            properties:
+              href:
+                type: string
+          swdRole:
+            type: object
+            properties:
+              href:
+                type: string
+          swdOrganization:
+            type: object
+            properties:
+              href:
+                type: string
+  arrayOfSwdRole:
+    type: object
+    properties:
+      _embedded:
+        type: object
+        properties:
+          swdRoles:
+            type: array
+            items:
+              $ref: "#/definitions/SwdRoleRep"
+      _links:
+        $ref: "#/definitions/_links"
+      page: 
+        $ref: "#/definitions/page"
+  SwdLevel:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+      code:
+        type: "string"
+      name:
+        type: "string"
+      stat:
+        type: "integer"
+      swdOrganization:
+        type: "string"
+        format: "/{organizationId}"
+  SwdLevelRep:
+    type: object
+    properties:
+      code:
+        type: string
+      name:
+        type: string
+      stat:
+        type: number
+      _links:
+        type: object
+        properties:
+          self:
+            type: object
+            properties:
+              href:
+                type: string
+          swdLevel:
+            type: object
+            properties:
+              href:
+                type: string
+          swdOrganization:
+            type: object
+            properties:
+              href:
+                type: string
+  arrayOfSwdLevel:
+    type: object
+    properties:
+      _embedded:
+        type: object
+        properties:
+          swdLevels:
+            type: array
+            items:
+              $ref: "#/definitions/SwdLevelRep"
+      _links:
+        $ref: "#/definitions/_links"
+      page: 
+        $ref: "#/definitions/page"
+  SwdEmployee:
+    type: "object"
+    properties:
+      username:
+        type: "string"
+      employeeno:
+        type: "string"
+      stat:
+        type: "string"
+      swdUnit:
+        type: "string"
+        format: "/{unitId}"
+  SwdEmployeeRep:
+    type: object
+    properties:
+      employeeno:
+        type: string
+      stat:
+        type: "string"
+      uplineManager:
+        type: "string"
+      _links:
+        type: object
+        properties:
+          self:
+            type: object
+            properties:
+              href:
+                type: string
+          swdEmployee:
+            type: object
+            properties:
+              href:
+                type: string
+          swdUnit:
+            type: object
+            properties:
+              href:
+                type: string
+  arrayOfSwdEmployee:
+    type: "object"
+    properties:
+      _embedded:
+        type: object
+        properties:
+          swdEmployees:
+            type: array
+            items:
+              $ref: "#/definitions/SwdEmployee"
+      _links:
+        $ref: "#/definitions/_links"
+      page: 
+        $ref: "#/definitions/page"
+  SwdMenu:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+      name:
+        type: "string"
+      parentId:
+        type: "integer"
+      sort:
+        type: "integer"
+      url: 
+        type : "string"
+  SwdMenuRep:
+    type: object
+    properties:
+      name:
+        type: string
+      parentId:
+        type: number
+      sort:
+        type: number
+      url:
+        type: string
+      _links:
+        type: object
+        properties:
+          self:
+            type: object
+            properties:
+              href:
+                type: string
+          swdMenu:
+            type: object
+            properties:
+              href:
+                type: string
+  arrayOfSwdMenu:
+    type: object
+    properties:
+      _embedded:
+        type: object
+        properties:
+          swdMenus:
+            type: array
+            items:
+              $ref: "#/definitions/SwdMenuRep"
+      _links:
+        $ref: "#/definitions/_links"
+      page:
+        $ref: "#/definitions/page"
+  menuTree:
+    type: object
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      parentId:
+        type: number
+      sort:
+        type: number
+      url:
+        type: string
+      parentString:
+          type: "string"
+      parentIdString:
+        type: "string"
+      children:
+        type: "array"
+        items:
+          $ref: "#/definitions/menuTree"
+  arrayOfMenuTree:
+    type: "array"
+    items:
+      $ref: "#/definitions/menuTree"
+  SwdAuthority:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+      authority:
+        type: "string"
+      uri: 
+        type : "string"
+  SwdAuthorityCheck:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+      authority:
+        type: "string"
+      uri: 
+        type : "string"
+      checked:
+        type : "boolean"
+  arrayOfAuthorityCheck:
+    type: "array"
+    items:
+      $ref: "#/definitions/SwdAuthorityCheck"
+  SwdAuthorityRep:
+    type: object
+    properties:
+      authority:
+        type: string
+      uri:
+        type: string
+      permission:
+        type: "string"
+      _links:
+        type: object
+        properties:
+          self:
+            type: object
+            properties:
+              href:
+                type: string
+          swdAuthority:
+            type: object
+            properties:
+              href:
+                type: string
+  arrayOfAuthority:
+    type: object
+    properties:
+      _embedded:
+        type: object
+        properties:
+          swdAuthorities:
+            type: array
+            items:
+              $ref: "#/definitions/SwdAuthorityRep"
+      _links:
+        $ref: "#/definitions/_links"
+      page:
+        $ref: "#/definitions/page"
+
+  SwdSysrole:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+      name:
+        type: "string"
+  SwdSysroleRep:
+    type: object
+    properties:
+      name:
+        type: string
+      _links:
+        type: object
+        properties:
+          self:
+            type: object
+            properties:
+              href:
+                type: string
+          swdSysrole:
+            type: object
+            properties:
+              href:
+                type: string
+          swdDataPermissions:
+            type: object
+            properties:
+              href:
+                type: string
+          swdAuthorities:
+            type: object
+            properties:
+              href:
+                type: string
+          swdMenus:
+            type: object
+            properties:
+              href:
+                type: string
+  arrayOfSwdSysrole:
+    type: object
+    properties:
+      _embedded:
+        type: object
+        properties:
+          swdSysroles:
+            type: array
+            items:
+              $ref: "#/definitions/SwdSysroleRep"
+          _links:
+            $ref: "#/definitions/_links"
+          page: 
+            $ref: "#/definitions/page"
+  SwdSysroleAuthority:
+    type: "object"
+    properties:
+      id:
+        $ref: "#/definitions/SwdSysroleAuthorityPK"
+  SwdSysroleAuthorityPK:
+    type: "object"
+    properties:
+      sysroleId:
+        type: "string"
+      authorityId: 
+        type: "string"
+  SwdSysroleMenu:
+    type: "object"
+    properties:
+      id:
+        $ref: "#/definitions/SwdSysroleMenuPK"
+  SwdSysroleMenuPK:
+    type: "object"
+    properties:
+      sysroleId:
+        type: "string"
+      menuId: 
+        type: "string" 
+  SwdFile:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+      hash:
+        type: "string"
+      name:
+        type: "string"
+      url:
+        type: "string"
+  arrayOfSwdFile:
+    type: "array"
+    items:
+      $ref: "#/definitions/SwdFile"
+    
+  SwdUserFilePK:
+    type: "object"
+    properties:
+      username:
+        type: "string"
+      fileId:
+        type: "string"
+      permission:
+        type: "string"
+        description: "permission{LIST, EDIT, READ, DELETE, DOWNLOAD}"
+  arrayOfUserFile:
+    type: "array"
+    items:
+      $ref: "#/definitions/SwdUserFilePK"
+  SwdSysroleFile:
+    type: "object"
+    properties:
+      sysroleName:
+        type: "string"
+      id:
+        $ref: "#/definitions/SwdSysroleFilePK"
+  SwdSysroleFilePK:
+    type: "object"
+    properties:
+      sysroleId:
+        type: "string"
+      fileId:
+        type: "string"
+      permission:
+        type: "string"
+  arrayOfSysroleFile:
+    type: "array"
+    items:
+      $ref: "#/definitions/SwdSysroleFile"
+  SwdDataPermission:
+    type: "object"
+    properties:
+      id:
+        $ref: "#/definitions/SwdDataPermissionPK"
+      permissionEl:
+        type: "string"
+  SwdDataPermissionPK:
+    type: "object"
+    properties:
+      permission:
+        type: "string"
+      pkey:
+        type: "string"
+      model:
+        type: "string"
+  SwdUserDataPermission:
+    type: "object"
+    properties:
+      id: 
+        $ref: "#/definitions/SwdUserDataPermissionPK"
+  SwdUserDataPermissionPK:
+    type: "object"
+    properties:
+      permission:
+        type: "string"
+      pkey:
+        type: "string"
+      model:
+        type: "string"
+      username:
+        type: "string"
+  SwdUserDataPermissionRep:
+    type: object
+    properties:
+      _links:
+        type: object
+        properties:
+          self:
+            type: object
+            properties:
+              href:
+                type: string
+          swdUserDataPermission:
+            type: object
+            properties:
+              href:
+                type: string
+  SwdSysroleDataPermission:
+    type: "object"
+    properties:
+      id: 
+        $ref: "#/definitions/SwdSysroleDataPermissionPK"
+  SwdSysroleDataPermissionPK:
+    type: "object"
+    properties:
+      permission:
+        type: "string"
+      pkey:
+        type: "string"
+      model:
+        type: "string"
+      sysroleId:
+        type: "string"
+  SwdSysroleDataPermissionRep:
+    type: object
+    properties:
+      _links:
+        type: object
+        properties:
+          self:
+            type: object
+            properties:
+              href:
+                type: string
+          swdSysroleDataPermission:
+            type: object
+            properties:
+              href:
+                type: string
+  arrayOfSwdDataPermission:
+    type: "array"
+    items:
+      $ref: "#/definitions/SwdDataPermission"
+  SwdFieldPermission:
+    type: "object"
+    properties:
+      id:
+        $ref: "#/definitions/SwdFieldPermissionPK"
+      fieldName:
+        type: "string"
+      modelName:
+        type: "string"
+  SwdFieldPermissionPK:
+    type: "object"
+    properties:
+      model:
+        type: "string"
+      field:
+        type: "string"
+      permission:
+        type: "string"
+  SwdFieldPermissionRep:
+    type: "object"
+    properties:
+      fieldName:
+        type: "string"
+      modelName:
+        type: "string"
+      _links:
+        type: object
+        properties:
+          self:
+            type: object
+            properties:
+              href:
+                type: string
+          swdFieldPermission:
+            type: object
+            properties:
+              href:
+                type: string
+  SwdGroup:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+      name:
+        type: "string"
+      stat:
+        type: "string"
+      owner:
+        $ref: "#/definitions/SwdEmployee"
+  SwdGroupLink:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+        format: "only for update"
+      name:
+        type: "string"
+      stat:
+        type: "string"
+      owner:
+        type: "string"
+        format: "/{username}"
+  arrayOfSubGroup:
+    type: object
+    properties:
+      _embedded:
+        type: object
+        properties:
+          swdGroups:
+            type: array
+            items:
+              $ref: "#/definitions/SwdGroupLink"
+      _links:
+        $ref: "#/definitions/_links"
+      page:
+        $ref: "#/definitions/page"
+  SwdGroupRep:
+    type: object
+    properties:
+      name:
+        type: string
+      stat:
+        type: string
+      _links:
+        type: object
+        properties:
+          self:
+            type: object
+            properties:
+              href:
+                type: string
+          swdGroup:
+            type: object
+            properties:
+              href:
+                type: string
+          owner:
+            type: object
+            properties:
+              href:
+                type: string
+  arrayOfSwdGroup:
+    type: object
+    properties:
+      _embedded:
+        type: object
+        properties:
+          swdGroups:
+            type: array
+            items:
+              $ref: "#/definitions/SwdGroupRep"
+      _links:
+        $ref: "#/definitions/_links"
+      page: 
+        $ref: "#/definitions/page"
+  groupMembers:
+    type: object
+    properties:
+      id:
+        type: "string"
+      name:
+        type: "string"
+      stat:
+        type: "string"
+      owner:
+        $ref: "#/definitions/SwdEmployee"
+      subGroups:
+        type: array
+        items:
+          $ref: "#/definitions/SwdGroup"
+      groupUser:
+        type: array
+        items:
+          $ref: "#/definitions/SwdUser"
+  SwdUser:
+    type: "object"
+    properties:
+      username:
+        type: "string"
+      enabled:
+        type: "boolean"
+      password:
+        type: "string"
+  SwdUserRep:
+    type: object
+    properties:
+      enabled: 
+        type: "integer"
+      _links:
+        type: object
+        properties:
+          self:
+            type: object
+            properties:
+              href:
+                type: string
+          swdUser:
+            type: object
+            properties:
+              href:
+                type: string
+          swdMenus:
+            type: object
+            properties:
+              href:
+                type: string
+          swdDataPermissions:
+            type: object
+            properties:
+              href:
+                type: string
+          swdAuthorities:
+            type: object
+            properties:
+              href:
+                type: string
+          swdSysroles:
+            type: object
+            properties:
+              href:
+                type: string
+  SwdUserMenu:
+    type: "object"
+    properties: 
+      id:
+        $ref: "#/definitions/SwdUserMenuPK"
+  SwdUserMenuPK:
+    type: "object"
+    properties: 
+      username:
+        type: "string"
+      menuId:
+        type: "string"
+  SwdUserAuthority:
+    type: "object"
+    properties: 
+      id:
+        $ref: "#/definitions/SwdUserAuthorityPK"
+  SwdUserAuthorityPK:
+    type: "object"
+    properties: 
+      username:
+        type: "string"
+      authorityId:
+        type: "string" 
+  SwdUserSysrole:
+    type: "object"
+    properties: 
+      id:
+        $ref: "#/definitions/SwdUserSysrolePK"
+  SwdUserSysrolePK:
+    type: "object"
+    properties: 
+      username:
+        type: "string"
+      sysroleId:
+        type: "string" 
+  _links:
+    type: object
+    properties:
+      first:
+        type: object
+        properties:
+          href:
+            type: string
+      prev:
+        type: object
+        properties:
+          href:
+            type: string
+      self:
+        type: object
+        properties:
+          href:
+            type: string
+          templated:
+            type: boolean
+      next:
+        type: object
+        properties:
+          href:
+            type: string
+      last:
+        type: object
+        properties:
+          href:
+            type: string
+      profile:
+        type: object
+        properties:
+          href:
+            type: string
+      search:
+        type: object
+        properties:
+          href:
+            type: string
+  page:
+    type: object
+    properties:
+      size:
+        type: number
+      totalElements:
+        type: number
+      totalPages:
+        type: number
+      number:
+        type: number
+  Oauth:
+    type: "object"
+    properties: 
+      username:
+        type: "string"
+      password:
+        type: "string"
+  Forbidden:
+    type: object
+    properties:
+      timestamp:
+        type: string
+      status:
+        type: number
+      error:
+        type: string
+      message:
+        type: string
+      path:
+        type: string
+  ApiResponse:
+    type: "object"
+    properties:
+      code:
+        type: "integer"
+      type:
+        type: "string"
+      message:
+        type: "string"
+externalDocs:
+  description: "更多关于本平台详情请参考github wiki"
+  url: "https://github.com/fanmeijian/sparrow-platform/wiki"
