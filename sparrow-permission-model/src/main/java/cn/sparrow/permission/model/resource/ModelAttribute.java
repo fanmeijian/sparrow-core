@@ -33,6 +33,7 @@ public class ModelAttribute extends AbstractSparrowEntity {
 
 	@EqualsAndHashCode.Include
 	@EmbeddedId
+	@NotAudited
 	ModelAttributePK id;
 
 	private String type;
@@ -58,6 +59,12 @@ public class ModelAttribute extends AbstractSparrowEntity {
 	public ModelAttribute(ModelAttributePK id, String type) {
 		super();
 		this.id = id;
+		this.type = type;
+	}
+	
+	public ModelAttribute(String modelId, String attributeId, String type) {
+		super();
+		this.id = new ModelAttributePK(modelId, attributeId);
 		this.type = type;
 	}
 

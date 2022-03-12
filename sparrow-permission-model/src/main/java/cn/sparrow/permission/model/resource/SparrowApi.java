@@ -47,17 +47,6 @@ public class SparrowApi extends AbstractSparrowEntity {
 	@Column(name = "client_id")
 	private String clientId;
 
-//  @OneToMany(mappedBy = "sparrowUrl")
-//  Set<UserUrlPermission> userUrlPermissions;
-
-//  @EqualsAndHashCode.Exclude
-//  @OneToMany(mappedBy = "sparrowUrl",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-//  Set<SysroleUrlPermission> sysroleUrPermissions;
-
-//  @ManyToOne
-//  @JoinColumn(name = "app_id")
-//  private SparrowApp sparrowApp;
-
 	public SparrowApi(String name, String uri, HttpMethodEnum method, String clientId, ApiPermissionEnum permission) {
 		this.name = name;
 		this.uri = uri;

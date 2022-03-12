@@ -1,30 +1,33 @@
 package cn.sparrow.permission.model;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Persistence;
 import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
 
 import org.hibernate.envers.AuditReader;
 import org.hibernate.envers.AuditReaderFactory;
 import org.hibernate.envers.query.AuditEntity;
 import org.hibernate.envers.query.AuditQuery;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 
 import cn.sparrow.permission.constant.OrganizationTypeEnum;
 import cn.sparrow.permission.model.organization.Organization;
-import eu.drus.jpa.unit.api.JpaUnit;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@ExtendWith(JpaUnit.class)
+//@ExtendWith(JpaUnit.class)
 public class AuditLogTest {
 
 	@PersistenceContext(unitName = "cn.sparrow.permission.domain")
 	EntityManager entityManager;
 
 	@SuppressWarnings("unchecked")
+	@Transactional
 	@Test
 	public void test() {
+		entityManager = Persistence.createEntityManagerFactory("cn.sparrow.permission.domain").createEntityManager();
+		entityManager.getTransaction().begin();
 		Organization organization = new Organization("test", "001", OrganizationTypeEnum.UNIT);
 		entityManager.persist(organization);
 		entityManager.getTransaction().commit();

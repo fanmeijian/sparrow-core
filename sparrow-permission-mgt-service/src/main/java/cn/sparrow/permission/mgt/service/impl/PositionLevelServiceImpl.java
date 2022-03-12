@@ -16,7 +16,6 @@ import cn.sparrow.permission.mgt.service.repository.OrganizationLevelRelationRep
 import cn.sparrow.permission.mgt.service.repository.OrganizationLevelRepository;
 import cn.sparrow.permission.mgt.service.repository.PositionLevelRepository;
 import cn.sparrow.permission.model.organization.Employee;
-import cn.sparrow.permission.model.organization.EmployeeOrganizationLevel;
 import cn.sparrow.permission.model.organization.Organization;
 import cn.sparrow.permission.model.organization.OrganizationPositionLevel;
 import cn.sparrow.permission.model.organization.OrganizationPositionLevelPK;
@@ -25,7 +24,7 @@ import cn.sparrow.permission.model.organization.OrganizationPositionLevelRelatio
 import cn.sparrow.permission.model.organization.PositionLevel;
 
 @Service
-public class PositionLevelServiceImpl implements PositionLevelService{
+public class PositionLevelServiceImpl implements PositionLevelService {
 
 	@Autowired
 	PositionLevelRepository levelRepository;
@@ -33,17 +32,18 @@ public class PositionLevelServiceImpl implements PositionLevelService{
 	OrganizationLevelRelationRepository organizationLevelRelationRepository;
 	@Autowired
 	OrganizationLevelRepository organizationLevelRepository;
-	@Autowired EmployeeOrganizationLevelRepository employeeOrganizationLevelRepository;
+	@Autowired
+	EmployeeOrganizationLevelRepository employeeOrganizationLevelRepository;
 
 	@Override
 	public List<Employee> getEmployees(OrganizationPositionLevelPK organizationLevelId) {
 		List<Employee> employees = new ArrayList<Employee>();
-		employeeOrganizationLevelRepository.findByIdOrganizationLevelId(organizationLevelId).forEach(f->{
+		employeeOrganizationLevelRepository.findByIdOrganizationLevelId(organizationLevelId).forEach(f -> {
 			employees.add(f.getEmployee());
 		});
 		return employees;
 	}
-	
+
 	@Override
 	@Transactional
 	public PositionLevel create(PositionLevel lvel) {
@@ -51,7 +51,8 @@ public class PositionLevelServiceImpl implements PositionLevelService{
 		// 保存岗位所在的组织
 		if (lvel.getOrganizationIds() != null) {
 			lvel.getOrganizationIds().forEach(f -> {
-				organizationLevelRepository.save(new OrganizationPositionLevel(new OrganizationPositionLevelPK(f, savedLevel.getId())));
+				organizationLevelRepository
+						.save(new OrganizationPositionLevel(new OrganizationPositionLevelPK(f, savedLevel.getId())));
 			});
 		}
 		return savedLevel;
@@ -72,16 +73,16 @@ public class PositionLevelServiceImpl implements PositionLevelService{
 	@Override
 	public List<OrganizationPositionLevel> getChildren(OrganizationPositionLevelPK parentId) {
 		List<OrganizationPositionLevel> positionLevels = new ArrayList<OrganizationPositionLevel>();
-		organizationLevelRelationRepository.findByIdParentId(parentId).forEach(f->{
+		organizationLevelRelationRepository.findByIdParentId(parentId).forEach(f -> {
 			positionLevels.add(f.getOrganizationLevel());
 		});
 		return positionLevels;
 	}
-	
+
 	@Override
 	public List<OrganizationPositionLevel> getParents(OrganizationPositionLevelPK id) {
 		List<OrganizationPositionLevel> positionLevels = new ArrayList<OrganizationPositionLevel>();
-		organizationLevelRelationRepository.findByIdId(id).forEach(f->{
+		organizationLevelRelationRepository.findByIdId(id).forEach(f -> {
 			positionLevels.add(f.getOrganizationLevel());
 		});
 		return positionLevels;
@@ -96,11 +97,11 @@ public class PositionLevelServiceImpl implements PositionLevelService{
 		return organizations;
 	}
 
-
 	@Override
 	@Transactional
 	public void removeRelation(List<OrganizationPositionLevelRelationPK> ids) {
-		organizationLevelRelationRepository.deleteAllByIdInBatch(ids);;
+		organizationLevelRelationRepository.deleteAllByIdInBatch(ids);
+		;
 	}
 
 	@Override
@@ -114,16 +115,33 @@ public class PositionLevelServiceImpl implements PositionLevelService{
 	@Override
 	@Transactional
 	public void setParentOrg(String positionLevelId, List<String> orgs) {
-		orgs.forEach(f->{
-			organizationLevelRepository.save(new OrganizationPositionLevel(f,positionLevelId));
+		orgs.forEach(f -> {
+			organizationLevelRepository.save(new OrganizationPositionLevel(f, positionLevelId));
 		});
 	}
 
 	@Override
 	@Transactional
 	public void removeParentOrg(String positionLevelId, List<String> orgs) {
-		orgs.forEach(f->{
+		orgs.forEach(f -> {
 			organizationLevelRepository.deleteById(new OrganizationPositionLevelPK(f, positionLevelId));
+		});
+	}
+
+	@Override
+	@Transactional
+	public void addRelation(OrganizationPositionLevelPK organizationLevelId, List<OrganizationPositionLevelPK> ids) {
+		ids.forEach(f -> {
+			organizationLevelRelationRepository.save(new OrganizationPositionLevelRelation(organizationLevelId, f));
+		});
+	}
+
+	@Override
+	@Transactional
+	public void removeRelation(OrganizationPositionLevelPK organizationLevelId, List<OrganizationPositionLevelPK> ids) {
+		ids.forEach(f -> {
+			organizationLevelRelationRepository
+					.deleteById(new OrganizationPositionLevelRelationPK(organizationLevelId, f));
 		});
 	}
 

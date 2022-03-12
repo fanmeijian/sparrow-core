@@ -8,6 +8,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
+import org.hibernate.envers.Audited;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import cn.sparrow.permission.model.common.AbstractSparrowEntity;
@@ -37,6 +39,7 @@ public class EmployeeUser extends AbstractSparrowEntity{
 
 	@EqualsAndHashCode.Include
 	@EmbeddedId
+//	@Audited
 	private EmployeeUserPK id;
 
 	@JsonIgnore

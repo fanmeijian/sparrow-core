@@ -20,7 +20,7 @@ import cn.sparrow.permission.mgt.service.repository.SysroleRepository;
 import cn.sparrow.permission.model.resource.SparrowApi;
 import cn.sparrow.permission.model.resource.Sysrole;
 import cn.sparrow.permission.model.resource.SysroleApiPK;
-import cn.sparrow.permission.model.resource.SysroleApiPermission;
+import cn.sparrow.permission.model.resource.SysroleApi;
 
 @Service
 public class ApiServiceImpl implements ApiService {
@@ -58,7 +58,7 @@ public class ApiServiceImpl implements ApiService {
 	@Override
 	public void addPermissions(String apiId, List<String> sysroleIds) {
 		sysroleIds.forEach(f -> {
-			sysroleApiPermissionRepository.save(new SysroleApiPermission(apiId, f));
+			sysroleApiPermissionRepository.save(new SysroleApi(apiId, f));
 		});
 	}
 

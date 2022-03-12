@@ -53,13 +53,13 @@ public class ModelServiceImpl implements ModelService {
 		return modelRepository.findById(modelId).orElse(null);
 	}
 
-	@Override
-	@Transactional
-	public void addPermissions(ModelPermission modelPermission) {
-		modelPermission.getModelName().forEach(modelName -> {
-			this.addPermission(modelName, modelPermission.getPermissionToken());
-		});
-	}
+//	@Override
+//	@Transactional
+//	public void addPermissions(ModelPermission modelPermission) {
+//		modelPermission.getModelName().forEach(modelName -> {
+//			this.addPermission(modelName, modelPermission.getPermissionToken());
+//		});
+//	}
 
 	@Override
 	@Transactional

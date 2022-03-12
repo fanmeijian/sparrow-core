@@ -1,6 +1,5 @@
 package cn.sparrow.permission.model.group;
 
-import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -8,15 +7,19 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
+
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.envers.Audited;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import cn.sparrow.permission.constant.GroupTypeEnum;
-import cn.sparrow.permission.model.common.AbstractSparrowUuidEntity;
+import cn.sparrow.permission.model.common.AbstractSparrowEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -26,24 +29,37 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Table(name = "spr_group")
-public class Group extends AbstractSparrowUuidEntity {
+public class Group extends AbstractSparrowEntity {
 
 	/**
 	 * 
 	 */
+	@EqualsAndHashCode.Include
+	@Id
+	@GenericGenerator(name = "id-generator", strategy = "uuid")
+	@GeneratedValue(generator = "id-generator")
+	@Audited
+	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
+	private String id;
 	private static final long serialVersionUID = 1L;
 	@Column(unique = true)
+	@Audited
 	private String code;
+	@Audited
 	private String name;
+	@Audited
 	private String owner;
+	@Audited
 	private String stat;
+	@Audited
 	private Boolean isRoot = true;
+	@Audited
 	@Enumerated
 	private GroupTypeEnum type;
 
-	@Transient
-	@JsonProperty
-	private List<String> organizationIds;
+//	@Transient
+//	@JsonProperty
+//	private List<String> organizationIds;
 	
 	@JsonIgnore
 	@OneToMany(targetEntity = GroupRelation.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "group")

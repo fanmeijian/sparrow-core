@@ -17,9 +17,9 @@ public class SysroleMenuPK implements Serializable {
 	// default serial version id, required for serializable classes.
 	private static final long serialVersionUID = 1L;
 
-	@Column(name = "SYSROLE_ID", insertable = false, updatable = false)
+	@Column(name = "sysrole_id", insertable = false, updatable = false)
 	private String sysroleId;
 
-	@Column(name = "MENU_ID", insertable = false, updatable = false)
+	@Column(name = "menu_id", insertable = false, updatable = false)
 	private String menuId;
 }

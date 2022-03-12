@@ -12,7 +12,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.envers.Audited;
@@ -62,32 +61,34 @@ public class Organization extends AbstractSparrowEntity {
 //  @JsonProperty
 //  private List<String> parentIds;
 	@Enumerated(EnumType.STRING)
+	@Audited
 	private OrganizationTypeEnum type; // 公司还是部门
 
-	@Transient
-	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
-	private long parentCount;
+//	@Transient
+//	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
+//	private long parentCount;
+//
+//	@Transient
+//	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
+//	private long childCount;
+//
+//	@Transient
+//	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
+//	private long levelCount;
+//
+//	@Transient
+//	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
+//	private long groupCount;
+//
+//	@Transient
+//	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
+//	private long roleCount;
 
-	@Transient
-	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
-	private long childCount;
+//	@Transient
+//	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
+//	private long employeeCount;
 
-	@Transient
-	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
-	private long levelCount;
-
-	@Transient
-	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
-	private long groupCount;
-
-	@Transient
-	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
-	private long roleCount;
-
-	@Transient
-	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
-	private long employeeCount;
-
+	@JsonIgnore
 	@OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Set<OrganizationRelation> children;
 

@@ -11,10 +11,10 @@ import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
+
+import org.hibernate.envers.Audited;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import cn.sparrow.permission.model.common.AbstractSparrowEntity;
 import lombok.Data;
@@ -34,12 +34,14 @@ public class OrganizationPositionLevel extends AbstractSparrowEntity {
 	private static final long serialVersionUID = 1L;
 	@EqualsAndHashCode.Include
 	@EmbeddedId
+//	@Audited
 	private OrganizationPositionLevelPK id;
+	@Audited
 	private String stat;
 	
-	@Transient
-	@JsonProperty
-	private long childCount;
+//	@Transient
+//	@JsonProperty
+//	private long childCount;
 
 	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
@@ -47,7 +49,8 @@ public class OrganizationPositionLevel extends AbstractSparrowEntity {
 			@JoinColumn(name = "position_level_id", referencedColumnName = "position_level_id") })
 	private List<EmployeeOrganizationLevel> employeeOrganizationLevels;
 
-	@ManyToOne(fetch = FetchType.EAGER)
+	@JsonIgnore
+	@ManyToOne
 	@JoinColumn(name = "position_level_id", insertable = false, updatable = false)
 	private PositionLevel positionLevel;
 

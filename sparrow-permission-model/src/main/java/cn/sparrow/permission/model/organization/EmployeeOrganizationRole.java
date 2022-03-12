@@ -10,6 +10,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
+import org.hibernate.envers.Audited;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import cn.sparrow.permission.model.common.AbstractSparrowEntity;
@@ -32,9 +34,11 @@ public class EmployeeOrganizationRole extends AbstractSparrowEntity{
 	private static final long serialVersionUID = 1L;
 	@EqualsAndHashCode.Include
 	@EmbeddedId
+//	@Audited
 	private EmployeeOrganizationRolePK id;
 	private String stat;
 
+	@JsonIgnore
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumns({
 			@JoinColumn(name = "organization_id", referencedColumnName = "organization_id", insertable = false, updatable = false),

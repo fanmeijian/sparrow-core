@@ -17,8 +17,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import cn.sparrow.permission.model.organization.Employee;
-import cn.sparrow.permission.model.organization.Organization;
 import cn.sparrow.permission.model.organization.OrganizationRoleRelation;
 import cn.sparrow.permission.model.organization.OrganizationRoleRelationPK;
 import cn.sparrow.permission.model.organization.Role;
@@ -79,7 +77,4 @@ public interface RoleService extends RoleRestService{
 //	@DeleteMapping("/relation")
 	public void delRelations(@NotNull @RequestBody List<OrganizationRoleRelationPK> ids);
 
-//	@Operation(summary = "岗位员工列表")
-//	@GetMapping("/{organizationId}/{roleId}/employees")
-	public List<Employee> getEmployees(@PathVariable("organizationId") String organizationId, @PathVariable("roleId") String roleId);
 }

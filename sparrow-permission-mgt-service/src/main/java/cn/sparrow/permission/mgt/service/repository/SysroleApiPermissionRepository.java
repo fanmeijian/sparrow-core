@@ -10,13 +10,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import cn.sparrow.permission.model.resource.Sysrole;
 import cn.sparrow.permission.model.resource.SysroleApiPK;
-import cn.sparrow.permission.model.resource.SysroleApiPermission;
+import cn.sparrow.permission.model.resource.SysroleApi;
 
-public interface SysroleApiPermissionRepository extends JpaRepository<SysroleApiPermission, SysroleApiPK> {
+public interface SysroleApiPermissionRepository extends JpaRepository<SysroleApi, SysroleApiPK> {
 
-	Page<SysroleApiPermission> findByIdApiId(String apiId, Pageable pageable);
+	Page<SysroleApi> findByIdApiId(String apiId, Pageable pageable);
 
-	Page<SysroleApiPermission> findByIdApiIdIn(String[] ApiIds, Pageable pageable);
+	Page<SysroleApi> findByIdApiIdIn(String[] ApiIds, Pageable pageable);
 
 	@Query(value = "SELECT s.* FROM spr_sysrole_api sa left join spr_sysrole s on sa.sysrole_id = s.id WHERE sa.api_id = ?1", countQuery = "SELECT count(*) FROM spr_sysrole_api sp WHERE sa.api_id = ?1", nativeQuery = true)
 	Page<Sysrole> findByApiId(String ApiId, Pageable pageable);

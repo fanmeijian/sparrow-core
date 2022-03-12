@@ -4,16 +4,15 @@ import java.util.Set;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
+
+import org.hibernate.envers.Audited;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import cn.sparrow.permission.model.common.AbstractSparrowEntity;
 import lombok.Data;
@@ -30,28 +29,31 @@ public class OrganizationRole extends AbstractSparrowEntity{
 	private static final long serialVersionUID = 1L;
 	@EqualsAndHashCode.Include
 	@EmbeddedId
+//	@Audited
 	private OrganizationRolePK id;
+	@Audited
 	private String stat;
 	
-	@Transient
-	@JsonProperty
-	private long childCount;
+//	@Transient
+//	@JsonProperty
+//	private long childCount;
 
 	@JsonIgnore
-	@OneToMany(fetch = FetchType.LAZY)
+	@OneToMany
 	@JoinColumns({ @JoinColumn(name = "organization_id", referencedColumnName = "organization_id"),
 			@JoinColumn(name = "role_id", referencedColumnName = "role_id") })
 	private Set<EmployeeOrganizationRole> employeeOrganizationRoles;
 	
-	@Transient
-	@JsonProperty
-	private Set<OrganizationRelation> reportRoles;
-	
-	@Transient
-	@JsonProperty
-	private Set<OrganizationRelation> reportByRoles;
+//	@Transient
+//	@JsonProperty
+//	private Set<OrganizationRelation> reportRoles;
+//	
+//	@Transient
+//	@JsonProperty
+//	private Set<OrganizationRelation> reportByRoles;
 
-	@ManyToOne(fetch = FetchType.EAGER)
+	@JsonIgnore
+	@ManyToOne
 	@JoinColumn(name = "role_id", insertable = false, updatable = false)
 	private Role role;
 	

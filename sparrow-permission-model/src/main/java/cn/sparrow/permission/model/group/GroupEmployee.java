@@ -2,12 +2,15 @@ package cn.sparrow.permission.model.group;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+
+import org.hibernate.envers.Audited;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import cn.sparrow.permission.model.common.AbstractSparrowEntity;
 import cn.sparrow.permission.model.organization.Employee;
@@ -27,21 +30,28 @@ public class GroupEmployee extends AbstractSparrowEntity {
 	public GroupEmployee(GroupEmployeePK groupEmployeePK) {
 		this.id = groupEmployeePK;
     }
+	
+	public GroupEmployee(String groupId, String employeeId) {
+		this.id = new GroupEmployeePK(groupId, employeeId);
+    }
 
     /**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
+//	@Audited
 	@EqualsAndHashCode.Include
 	@EmbeddedId
 	private GroupEmployeePK id;
 
-	@ManyToOne(fetch = FetchType.EAGER)
+	@JsonIgnore
+	@ManyToOne
 	@JoinColumn(name = "group_id", insertable = false, updatable = false)
 	private Group group;
 
-	@ManyToOne(fetch = FetchType.EAGER)
+	@JsonIgnore
+	@ManyToOne
 	@JoinColumn(name = "employee_id", insertable = false, updatable = false)
 	private Employee employee;
 

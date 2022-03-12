@@ -12,7 +12,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.envers.Audited;
@@ -49,17 +48,20 @@ public class Employee extends AbstractSparrowEntity {
 	@JsonProperty(access = Access.READ_ONLY)
 	private String id;
 
+	@Audited
 	private String name;
 	@Column(unique = true)
+	@Audited
 	private String code;
+	@Audited
 	private Boolean isRoot;
-
+	@Audited
 	@Column(name = "organization_id")
 	private String organizationId;
 
-	@Transient
-	@JsonProperty(access = Access.READ_ONLY)
-	private long childCount;
+//	@Transient
+//	@JsonProperty(access = Access.READ_ONLY)
+//	private long childCount;
 
 	@JsonIgnore
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "employee")

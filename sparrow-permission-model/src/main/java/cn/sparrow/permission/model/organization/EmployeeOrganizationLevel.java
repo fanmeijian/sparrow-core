@@ -10,6 +10,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
+import org.hibernate.envers.Audited;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import cn.sparrow.permission.model.common.AbstractSparrowEntity;
@@ -33,6 +35,7 @@ public class EmployeeOrganizationLevel extends AbstractSparrowEntity{
 	private EmployeeOrganizationLevelPK id;
 	private String stat;
 
+	@JsonIgnore
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumns({
 			@JoinColumn(name = "organization_id", referencedColumnName = "organization_id", insertable = false, updatable = false),

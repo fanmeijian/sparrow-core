@@ -44,6 +44,10 @@ public class OrganizationPositionLevelRelation extends AbstractSparrowEntity {
 			@JoinColumn(name = "parent_position_level_id", referencedColumnName = "position_level_id", insertable = false, updatable = false) })
 	private OrganizationPositionLevel parentOrganizationLevel;
 
+	public OrganizationPositionLevelRelation(OrganizationPositionLevelPK id, OrganizationPositionLevelPK parentId) {
+		this.id = new OrganizationPositionLevelRelationPK(id, parentId);
+	}
+	
 	public OrganizationPositionLevelRelation(OrganizationPositionLevelRelationPK id) {
 		this.id = id;
 	}

@@ -7,6 +7,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.envers.Audited;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import cn.sparrow.permission.model.common.AbstractSparrowEntity;
 import cn.sparrow.permission.model.organization.PositionLevel;
 import lombok.Data;
@@ -20,25 +24,33 @@ import lombok.NoArgsConstructor;
 @Table(name = "spr_group_position_level")
 public class GroupPositionLevel extends AbstractSparrowEntity {
 
-  /**
-   * 
-   */
-  private static final long serialVersionUID = 1L;
-  @EqualsAndHashCode.Include
-  @EmbeddedId
-  private GroupPositionLevelPK id;
-  private String stat;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	@EqualsAndHashCode.Include
+	@EmbeddedId
+//	@Audited
+	private GroupPositionLevelPK id;
+	@Audited
+	private String stat;
 
-  @ManyToOne(fetch = FetchType.EAGER)
-  @JoinColumn(name = "group_id", insertable = false, updatable = false)
-  private Group group;
-  
-  @ManyToOne(fetch = FetchType.EAGER)
-  @JoinColumn(name = "position_level_id", insertable = false, updatable = false)
-  private PositionLevel positionLevel;
+	@JsonIgnore
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "group_id", insertable = false, updatable = false)
+	private Group group;
 
-  public GroupPositionLevel(GroupPositionLevelPK f) {
-    this.id = f;
-  }
+	@JsonIgnore
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "position_level_id", insertable = false, updatable = false)
+	private PositionLevel positionLevel;
+
+	public GroupPositionLevel(GroupPositionLevelPK f) {
+		this.id = f;
+	}
+
+	public GroupPositionLevel(String groupId, String positionLevelId) {
+		this.id = new GroupPositionLevelPK(groupId, positionLevelId);
+	}
 
 }

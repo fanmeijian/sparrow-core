@@ -18,6 +18,8 @@ import org.hibernate.envers.Audited;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 import cn.sparrow.permission.model.common.AbstractSparrowEntity;
 import cn.sparrow.permission.model.group.GroupSysrole;
@@ -41,6 +43,7 @@ public class Sysrole extends AbstractSparrowEntity {
 	@GenericGenerator(name = "id-generator", strategy = "uuid")
 	@GeneratedValue(generator = "id-generator")
 	@Audited
+	@JsonProperty(access = Access.READ_ONLY)
 	private String id;
 
 	@Audited
@@ -66,7 +69,7 @@ public class Sysrole extends AbstractSparrowEntity {
 	@JsonIgnore
 	@OneToMany
 	@LazyCollection(LazyCollectionOption.TRUE)
-	private Set<SysroleApiPermission> sysroleApiPermissions;
+	private Set<SysroleApi> sysroleApiPermissions;
 
 	public Sysrole(String name, String code) {
 		super();

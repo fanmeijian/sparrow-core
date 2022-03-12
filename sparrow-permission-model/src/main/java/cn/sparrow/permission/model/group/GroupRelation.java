@@ -10,6 +10,10 @@ import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.validation.ValidationException;
 
+import org.hibernate.envers.Audited;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import cn.sparrow.permission.model.common.AbstractSparrowEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -30,18 +34,25 @@ public class GroupRelation extends AbstractSparrowEntity {
 	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId
+//	@Audited
 	private GroupRelationPK id;
 
+	@JsonIgnore
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "group_id", insertable = false, updatable = false)
 	private Group group;
 
+	@JsonIgnore
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "parent_id", insertable = false, updatable = false)
 	private Group parentGroup;
 
 	public GroupRelation(GroupRelationPK id) {
 		this.id = id;
+	}
+
+	public GroupRelation(String groupId, String parentId) {
+		this.id = new GroupRelationPK(groupId, parentId);
 	}
 
 	@PrePersist

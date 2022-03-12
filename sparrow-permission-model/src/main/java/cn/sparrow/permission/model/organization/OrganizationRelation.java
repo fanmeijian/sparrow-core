@@ -12,6 +12,8 @@ import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.validation.ValidationException;
 
+import org.hibernate.envers.Audited;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import cn.sparrow.permission.model.common.AbstractSparrowEntity;
@@ -38,6 +40,7 @@ public class OrganizationRelation extends AbstractSparrowEntity {
 
 	@EqualsAndHashCode.Include
 	@EmbeddedId
+//	@Audited
 	private OrganizationRelationPK id;
 
 	@JsonIgnore

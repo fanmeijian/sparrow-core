@@ -9,6 +9,8 @@ import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.validation.ValidationException;
 
+import org.hibernate.envers.Audited;
+
 import cn.sparrow.permission.model.common.AbstractSparrowEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -30,6 +32,7 @@ public class EmployeeRelation extends AbstractSparrowEntity{
 
 	@EqualsAndHashCode.Include
 	@EmbeddedId
+//	@Audited
 	private EmployeeRelationPK id;
 
 	@ManyToOne

@@ -191,7 +191,7 @@ public class OrganizationTest {
 		employeeServiceImpl.addRole(employee2.getId(), organizationRolePKs);
 
 		assertEquals(1, roleServiceImpl.getChildren(orgid, role1.getId()).size());
-		assertEquals(1, roleServiceImpl.getEmployees(orgid, role1.getId()).size());
+		assertEquals(1, roleServiceImpl.getEmployees(new OrganizationRolePK(orgid, role1.getId())).size());
 	}
 
 	@Test

@@ -61,7 +61,7 @@ public interface ModelService{
 //	@Operation(summary = "设置模型权限")
 //	@PostMapping("/permissions")
 //	@ResponseBody
-	public void addPermissions( @RequestBody ModelPermission modelPermission);
+//	public void addPermissions( @RequestBody ModelPermission modelPermission);
 
 	@Operation(summary = "删除模型权限")
 	@DeleteMapping("/{modelId}/permissions")

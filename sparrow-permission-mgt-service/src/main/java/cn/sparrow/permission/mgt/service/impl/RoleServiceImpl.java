@@ -10,9 +10,9 @@ import javax.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.domain.ExampleMatcher.StringMatcher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.ExampleMatcher.StringMatcher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,7 +23,6 @@ import cn.sparrow.permission.mgt.service.repository.OrganizationRoleRelationRepo
 import cn.sparrow.permission.mgt.service.repository.OrganizationRoleRepository;
 import cn.sparrow.permission.mgt.service.repository.RoleRepository;
 import cn.sparrow.permission.model.organization.Employee;
-import cn.sparrow.permission.model.organization.EmployeeOrganizationRole;
 import cn.sparrow.permission.model.organization.Organization;
 import cn.sparrow.permission.model.organization.OrganizationRole;
 import cn.sparrow.permission.model.organization.OrganizationRolePK;
@@ -32,7 +31,7 @@ import cn.sparrow.permission.model.organization.OrganizationRoleRelationPK;
 import cn.sparrow.permission.model.organization.Role;
 
 @Service
-public class RoleServiceImpl implements RoleService{
+public class RoleServiceImpl implements RoleService {
 
 	@Autowired
 	RoleRepository roleRepository;
@@ -42,8 +41,9 @@ public class RoleServiceImpl implements RoleService{
 	OrganizationRoleRepository organizationRoleRepository;
 	@Autowired
 	OrganizationRoleRelationRepository organizationRoleRelationRepository;
-	@Autowired EmployeeRepository employeeRepository;
-	
+	@Autowired
+	EmployeeRepository employeeRepository;
+
 	@Override
 	@Transactional
 	public Role create(Role role) {
@@ -81,7 +81,7 @@ public class RoleServiceImpl implements RoleService{
 	}
 
 	@Override
-	public Role update(String roleId, Map<String,Object> map) {
+	public Role update(String roleId, Map<String, Object> map) {
 		Role source = roleRepository.getById(roleId);
 		PatchUpdateHelper.merge(source, map);
 		return roleRepository.save(source);
@@ -95,10 +95,6 @@ public class RoleServiceImpl implements RoleService{
 	@Override
 	public List<OrganizationRoleRelation> getParents(String organizationId, String roleId) {
 		return getParents(new OrganizationRolePK(organizationId, roleId));
-	}
-
-	public List<EmployeeOrganizationRole> getEmployees(OrganizationRolePK organizationRoleId) {
-		return employeeOrganizationRoleRepository.findByIdOrganizationRoleId(organizationRoleId);
 	}
 
 	public List<OrganizationRoleRelation> getChildren(@NotNull OrganizationRolePK parentId) {
@@ -132,27 +128,42 @@ public class RoleServiceImpl implements RoleService{
 	@Override
 	@Transactional
 	public void setParentOrg(String roleId, List<String> orgs) {
-		orgs.forEach(f->{
-			organizationRoleRepository.save(new OrganizationRole(f,roleId));
+		orgs.forEach(f -> {
+			organizationRoleRepository.save(new OrganizationRole(f, roleId));
 		});
 	}
 
 	@Override
 	@Transactional
 	public void removeParentOrg(String roleId, List<String> orgs) {
-		orgs.forEach(f->{
+		orgs.forEach(f -> {
 			organizationRoleRepository.deleteById(new OrganizationRolePK(f, roleId));
 		});
 	}
 
 	@Override
-	public List<Employee> getEmployees(String organizationId, String roleId) {
-		List<Employee> employees = new ArrayList<>();
-		this.getEmployees(new OrganizationRolePK(organizationId, roleId)).forEach(f->{
+	@Transactional
+	public void addParents(OrganizationRolePK organizationRoleId, @NotNull List<OrganizationRolePK> ids) {
+		ids.forEach(f -> {
+			organizationRoleRelationRepository.save(new OrganizationRoleRelation(organizationRoleId, f));
+		});
+	}
+
+	@Override
+	@Transactional
+	public void delParents(OrganizationRolePK organizationRoleId, @NotNull List<OrganizationRolePK> ids) {
+		ids.forEach(f -> {
+			organizationRoleRelationRepository.deleteById(new OrganizationRoleRelationPK(organizationRoleId, f));
+		});
+	}
+
+	@Override
+	public List<Employee> getEmployees(OrganizationRolePK organizationRoleId) {
+		List<Employee> employees = new ArrayList<Employee>();
+		employeeOrganizationRoleRepository.findByIdOrganizationRoleId(organizationRoleId).forEach(f -> {
 			employees.add(employeeRepository.findById(f.getId().getEmployeeId()).get());
 		});
 		return employees;
 	}
-
 
 }

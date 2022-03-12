@@ -31,7 +31,6 @@ import cn.sparrow.permission.mgt.service.repository.GroupUserRepository;
 import cn.sparrow.permission.mgt.service.repository.OrganizationGroupRepository;
 import cn.sparrow.permission.mgt.service.repository.OrganizationRepository;
 import cn.sparrow.permission.model.group.Group;
-import cn.sparrow.permission.model.group.GroupMember;
 import cn.sparrow.permission.model.group.GroupRelationPK;
 import cn.sparrow.permission.model.group.Group_;
 import cn.sparrow.permission.model.organization.Employee;
@@ -189,47 +188,47 @@ public class GroupServiceImpl implements GroupService {
 		return savedGroup;
 	}
 
-	@Transactional
-	@Override
-	public void addMembers(GroupMember groupMember) {
-		if(groupMember.getGroupRelations()!=null) {
-			// save sub group
-			groupRelationRepository.saveAll(groupMember.getGroupRelations());
-		}
-		
-		if(groupMember.getGroupOrganizations()!=null) {
-			groupOrganizationRepository.saveAll(groupMember.getGroupOrganizations());
-		}
-		
-		if(groupMember.getGroupRoles()!=null) {
-			groupRoleRepository.saveAll(groupMember.getGroupRoles());
-		}
-		
-		if(groupMember.getGroupLevels()!=null) {
-			groupLevelRepository.saveAll(groupMember.getGroupLevels());
-		}
-		
-		if(groupMember.getGroupSysroles()!=null) {
-			groupSysroleRepository.saveAll(groupMember.getGroupSysroles());
-		}
-		
-		if(groupMember.getGroupEmployees()!=null) {
-			groupEmployeeRepository.saveAll(groupMember.getGroupEmployees());
-		}
-	}
-
-	@Override
-	public GroupMember getGroupMember(String groupId) {
-		GroupMember groupMember = new GroupMember();
-		groupMember.setGroupEmployees(groupEmployeeRepository.findByIdGroupId(groupId));
-		groupMember.setGroupRelations(groupRelationRepository.findByIdParentId(groupId));
-		groupMember.setGroupOrganizations(groupOrganizationRepository.findByIdGroupId(groupId));
-		groupMember.setGroupRoles(groupRoleRepository.findByIdGroupId(groupId));
-		groupMember.setGroupLevels(groupLevelRepository.findByIdGroupId(groupId));
-		groupMember.setGroupSysroles(groupSysroleRepository.findByIdGroupId(groupId));
-
-		return groupMember;
-	}
+//	@Transactional
+//	@Override
+//	public void addMembers(GroupMember groupMember) {
+//		if(groupMember.getGroupRelations()!=null) {
+//			// save sub group
+//			groupRelationRepository.saveAll(groupMember.getGroupRelations());
+//		}
+//		
+//		if(groupMember.getGroupOrganizations()!=null) {
+//			groupOrganizationRepository.saveAll(groupMember.getGroupOrganizations());
+//		}
+//		
+//		if(groupMember.getGroupRoles()!=null) {
+//			groupRoleRepository.saveAll(groupMember.getGroupRoles());
+//		}
+//		
+//		if(groupMember.getGroupLevels()!=null) {
+//			groupLevelRepository.saveAll(groupMember.getGroupLevels());
+//		}
+//		
+//		if(groupMember.getGroupSysroles()!=null) {
+//			groupSysroleRepository.saveAll(groupMember.getGroupSysroles());
+//		}
+//		
+//		if(groupMember.getGroupEmployees()!=null) {
+//			groupEmployeeRepository.saveAll(groupMember.getGroupEmployees());
+//		}
+//	}
+//
+//	@Override
+//	public GroupMember getGroupMember(String groupId) {
+//		GroupMember groupMember = new GroupMember();
+//		groupMember.setGroupEmployees(groupEmployeeRepository.findByIdGroupId(groupId));
+//		groupMember.setGroupRelations(groupRelationRepository.findByIdParentId(groupId));
+//		groupMember.setGroupOrganizations(groupOrganizationRepository.findByIdGroupId(groupId));
+//		groupMember.setGroupRoles(groupRoleRepository.findByIdGroupId(groupId));
+//		groupMember.setGroupLevels(groupLevelRepository.findByIdGroupId(groupId));
+//		groupMember.setGroupSysroles(groupSysroleRepository.findByIdGroupId(groupId));
+//
+//		return groupMember;
+//	}
 
 	@Override
 	public List<Employee> getFinalEmployees(@NotBlank String groupId) {
@@ -282,11 +281,11 @@ public class GroupServiceImpl implements GroupService {
 //		return groupRepository.findAll(Example.of(group, matcher), pageable);
 	}
 
-	@Override
-	public void removeMembers(GroupMember groupMember) {
-		// TODO Auto-generated method stub
-		
-	}
+//	@Override
+//	public void removeMembers(GroupMember groupMember) {
+//		// TODO Auto-generated method stub
+//		
+//	}
 
 
 	@Override

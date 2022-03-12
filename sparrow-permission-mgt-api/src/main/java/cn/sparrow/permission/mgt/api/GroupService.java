@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.sparrow.permission.constant.GroupTypeEnum;
 import cn.sparrow.permission.model.group.Group;
-import cn.sparrow.permission.model.group.GroupMember;
 import cn.sparrow.permission.model.organization.Employee;
 import cn.sparrow.permission.model.organization.Organization;
 import io.swagger.v3.oas.annotations.Operation;
@@ -54,17 +53,17 @@ public interface GroupService extends GroupRestService{
 //	@Operation(summary = "设置群组成员")
 //	@PostMapping("/members")
 //	@ResponseBody
-	public void addMembers(@RequestBody GroupMember groupMember);
+//	public void addMembers(@RequestBody GroupMember groupMember);
 
 //	@Operation(summary = "移除群组成员")
 //	@DeleteMapping("/members")
 //	@ResponseBody
-	public void removeMembers(@RequestBody GroupMember groupMember);
+//	public void removeMembers(@RequestBody GroupMember groupMember);
 
 //	@Operation(summary = "获取群组成员")
 //	@GetMapping("/members")
 //	@ResponseBody
-	public GroupMember getGroupMember(String groupId);
+//	public GroupMember getGroupMember(String groupId);
 
 	@Operation(summary = "递归获取群组成员，最终为员工列表")
 	@GetMapping("/allEmployees")
