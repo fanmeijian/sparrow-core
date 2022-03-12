@@ -12,6 +12,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import cn.sparrow.permission.model.common.AbstractSparrowEntity;
@@ -44,6 +45,7 @@ public class Scope extends AbstractSparrowEntity {
 	@Column(unique = true, nullable = false)
 	private String code; // app:module:action
 	
+	@JsonIgnore
 	@NotAudited
 	@OneToOne
 	@JoinColumn(name = "permission_token_id")

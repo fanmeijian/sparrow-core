@@ -12,10 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import cn.sparrow.permission.model.organization.Employee;
 import cn.sparrow.permission.model.organization.Organization;
-import cn.sparrow.permission.model.organization.OrganizationPositionLevel;
-import cn.sparrow.permission.model.organization.OrganizationPositionLevelPK;
 import cn.sparrow.permission.model.organization.OrganizationPositionLevelRelation;
 import cn.sparrow.permission.model.organization.OrganizationPositionLevelRelationPK;
 import cn.sparrow.permission.model.organization.PositionLevel;
@@ -29,12 +26,12 @@ public interface PositionLevelService extends JobLevelRestService{
 //	@Operation(summary = "获取下属职级")
 //	@GetMapping("/children")
 //	@ResponseBody
-	public List<OrganizationPositionLevel> getChildren(OrganizationPositionLevelPK organizationLevelId);
+//	public List<OrganizationPositionLevel> getChildren(OrganizationPositionLevelPK organizationLevelId);
 
 //	@Operation(summary = "获取上级职级")
 //	@GetMapping("/parents")
 //	@ResponseBody
-	public List<OrganizationPositionLevel> getParents(OrganizationPositionLevelPK organizationLevelId);
+//	public List<OrganizationPositionLevel> getParents(OrganizationPositionLevelPK organizationLevelId);
 
 	@Operation(summary = "获取所属组织")
 	@GetMapping("/{levelId}/parentOrganizations")
@@ -79,5 +76,5 @@ public interface PositionLevelService extends JobLevelRestService{
 //	@Operation(summary = "获取拥有此岗位员工")
 //	@GetMapping("/employees")
 //	@ResponseBody
-	public List<Employee> getEmployees(OrganizationPositionLevelPK organizationLevelId);
+//	public List<Employee> getEmployees(OrganizationPositionLevelPK organizationLevelId);
 }

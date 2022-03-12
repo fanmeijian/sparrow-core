@@ -15,6 +15,7 @@ import cn.sparrow.permission.model.organization.OrganizationPositionLevel;
 import cn.sparrow.permission.model.organization.OrganizationPositionLevelPK;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @Tag(name = "职级服务")
@@ -24,31 +25,31 @@ public interface JobLevelRestService {
 	@GetMapping("/{organizationLevelId}/children")
 	@ResponseBody
 	public List<OrganizationPositionLevel> getChildren(
-			@Parameter(description = "organizationId_levelId") @PathVariable("organizationLevelId") OrganizationPositionLevelPK organizationLevelId);
+			@Parameter(example = "organizationId_levelId", schema = @Schema(implementation = String.class)) @PathVariable("organizationLevelId") OrganizationPositionLevelPK organizationLevelId);
 
 	@Operation(summary = "获取上级")
 	@GetMapping("/{organizationLevelId}/parents")
 	@ResponseBody
 	public List<OrganizationPositionLevel> getParents(
-			@Parameter(description = "organizationId_levelId") @PathVariable("organizationLevelId") OrganizationPositionLevelPK organizationLevelId);
+			@Parameter(example = "organizationId_levelId", schema = @Schema(implementation = String.class)) @PathVariable("organizationLevelId") OrganizationPositionLevelPK organizationLevelId);
 
 	@Operation(summary = "设置上级")
 	@PostMapping("/{organizationLevelId}/parents")
 	@ResponseBody
 	public void addRelation(
-			@Parameter(description = "organizationId_levelId") @PathVariable("organizationLevelId") OrganizationPositionLevelPK organizationLevelId,
+			@Parameter(example = "organizationId_levelId", schema = @Schema(implementation = String.class)) @PathVariable("organizationLevelId") OrganizationPositionLevelPK organizationLevelId,
 			@RequestBody List<OrganizationPositionLevelPK> ids);
 
 	@Operation(summary = "移除上级")
 	@DeleteMapping("/{organizationLevelId}/parents")
 	@ResponseBody
 	public void removeRelation(
-			@Parameter(description = "organizationId_levelId") @PathVariable("organizationLevelId") OrganizationPositionLevelPK organizationLevelId,
+			@Parameter(example = "organizationId_levelId", schema = @Schema(implementation = String.class)) @PathVariable("organizationLevelId") OrganizationPositionLevelPK organizationLevelId,
 			@RequestBody List<OrganizationPositionLevelPK> ids);
 
 	@Operation(summary = "获取拥有此级别员工")
 	@GetMapping("/{organizationLevelId}/employees")
 	@ResponseBody
 	public List<Employee> getEmployees(
-			@Parameter(description = "organizationId_levelId") @PathVariable("organizationLevelId") OrganizationPositionLevelPK organizationLevelId);
+			@Parameter(example = "organizationId_levelId", schema = @Schema(implementation = String.class)) @PathVariable("organizationLevelId") OrganizationPositionLevelPK organizationLevelId);
 }

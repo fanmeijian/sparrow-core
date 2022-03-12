@@ -10,8 +10,6 @@ import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.validation.ValidationException;
 
-import org.hibernate.envers.Audited;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import cn.sparrow.permission.model.common.AbstractSparrowEntity;

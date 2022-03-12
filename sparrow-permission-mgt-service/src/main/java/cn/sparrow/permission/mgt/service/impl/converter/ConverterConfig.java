@@ -1,4 +1,4 @@
-package cn.sparrow.permission.mgt.service.impl;
+package cn.sparrow.permission.mgt.service.impl.converter;
 
 import org.springframework.format.FormatterRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;

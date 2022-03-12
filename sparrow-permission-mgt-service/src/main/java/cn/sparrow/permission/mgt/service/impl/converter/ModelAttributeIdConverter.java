@@ -1,4 +1,4 @@
-package cn.sparrow.permission.mgt.service.impl;
+package cn.sparrow.permission.mgt.service.impl.converter;
 
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;

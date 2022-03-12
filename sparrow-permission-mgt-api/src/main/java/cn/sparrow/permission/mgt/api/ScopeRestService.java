@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.sparrow.permission.model.resource.Scope;
-import cn.sparrow.permission.model.resource.SparrowApi;
+import cn.sparrow.permission.model.resource.SysroleScope;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -28,7 +28,7 @@ public interface ScopeRestService {
 	@PostMapping("")
 	@Operation(summary = "新增功能")
 	@ResponseBody
-	public Scope create(@RequestBody SparrowApi sparrowApi);
+	public Scope create(@RequestBody Scope sparrowApi);
 
 	@PatchMapping("/{scopeId}")
 	@Operation(summary = "更新功能")
@@ -54,7 +54,7 @@ public interface ScopeRestService {
 	@GetMapping("/{scopeId}/permissions")
 	@Operation(summary = "可访问角色列表")
 	@ResponseBody
-	public Page<Scope> getPermissions(@PathVariable("scopeId") String scopeId, @Nullable Pageable pageable);
+	public Page<SysroleScope> getPermissions(@PathVariable("scopeId") String scopeId, @Nullable Pageable pageable);
 
 	@PostMapping("/{scopeId}/permissions")
 	@Operation(summary = "增加授权")
