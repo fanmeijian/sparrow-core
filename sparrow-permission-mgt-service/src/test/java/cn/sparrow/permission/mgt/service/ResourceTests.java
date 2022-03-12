@@ -143,8 +143,9 @@ public class ResourceTests {
 				prev1=child.getId();
 			}
 		}
-
-		assertEquals(110, menuServiceImpl.all(Pageable.unpaged(), null).getTotalElements());
+		
+		assertEquals(11, menuServiceImpl.all(Pageable.unpaged(), new Menu("m1",null)).getTotalElements());
+		assertEquals(110, menuServiceImpl.all(Pageable.unpaged(), new Menu()).getTotalElements());
 
 		Sysrole sysrole = sysroleService.create(new Sysrole("testForMenu", "testForMenu"));
 		
@@ -173,9 +174,9 @@ public class ResourceTests {
 		assertEquals(username, menuServiceImpl.getUsers(menu.getId()).get(0));
 
 		// 授予用户角色
-		List<UserSysrolePK> userSysroles =new ArrayList<>();
-		userSysroles.add(new UserSysrolePK(username, sysrole.getId()));
-		sysroleServiceImpl.addPermissions(userSysroles);
+		List<String> userSysroles =new ArrayList<>();
+		userSysroles.add(username);
+		sysroleServiceImpl.addPermissions(sysrole.getId(),userSysroles);
 		assertEquals(username,sysroleServiceImpl.getUsers(sysrole.getId()).get(0));
 		
 		log.info("{}" , userSysroleRepository.findByIdUsername(username));

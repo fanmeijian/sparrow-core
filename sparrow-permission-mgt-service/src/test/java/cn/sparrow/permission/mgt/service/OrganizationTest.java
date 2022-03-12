@@ -84,7 +84,6 @@ public class OrganizationTest {
 	@Transactional
 	void orgTest() {
 		String prev = null;
-		String prev1 = null;
 
 		for (int i = 0; i < 10; i++) {
 			Organization parent = organizationServiceImpl

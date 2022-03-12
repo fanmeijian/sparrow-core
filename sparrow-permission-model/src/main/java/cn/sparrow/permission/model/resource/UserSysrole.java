@@ -41,5 +41,9 @@ public class UserSysrole extends AbstractSparrowEntity {
   public UserSysrole(UserSysrolePK id) {
     this.id = id;
   }
+  
+  public UserSysrole(String sysroleId, String username) {
+	    this.id = new UserSysrolePK(username, sysroleId);
+	  }
 
 }

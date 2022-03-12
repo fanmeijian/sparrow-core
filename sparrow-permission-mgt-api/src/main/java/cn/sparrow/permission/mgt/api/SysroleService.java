@@ -3,10 +3,9 @@ package cn.sparrow.permission.mgt.api;
 import java.util.List;
 import java.util.Map;
 
-import javax.validation.constraints.NotBlank;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.sparrow.permission.model.resource.Sysrole;
-import cn.sparrow.permission.model.resource.UserSysrolePK;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -30,7 +28,7 @@ public interface SysroleService {
 	@Operation(summary = "角色列表")
 	@GetMapping("")
 	@ResponseBody
-	public Page<Sysrole> all(Pageable pageable, Sysrole sysrole);
+	public Page<Sysrole> all(@Nullable Pageable pageable, @Nullable Sysrole sysrole);
 
 	@Operation(summary = "新增角色")
 	@PostMapping("")
@@ -54,18 +52,18 @@ public interface SysroleService {
 	public void delete( @RequestBody List<String> ids);
 
 	@Operation(summary = "授权用户")
-	@PostMapping("/users")
+	@PostMapping("/{sysroleId}/users")
 	@ResponseBody
-	public void addPermissions( @RequestBody List<UserSysrolePK> ids);
+	public void addPermissions(@PathVariable("sysroleId") String sysroleId, @RequestBody List<String> usernames);
 
 	@Operation(summary = "取消用户授权")
-	@DeleteMapping("/users")
+	@DeleteMapping("/{sysroleId}/users")
 	@ResponseBody
-	public void removePermissions( @RequestBody List<UserSysrolePK> ids);
+	public void removePermissions(@PathVariable("sysroleId") String sysroleId, @RequestBody List<String> usernames);
 	
 	@Operation(summary = "角色用户列表")
 	@GetMapping("/{sysroleId}/users")
 	@ResponseBody
-	public List<String> getUsers(@NotBlank String sysroleId);
+	public List<String> getUsers(@PathVariable String sysroleId);
 
 }

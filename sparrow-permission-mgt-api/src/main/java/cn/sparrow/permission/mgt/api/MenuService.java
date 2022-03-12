@@ -30,11 +30,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 @Tag(name = "菜单服务")
 @RequestMapping("/menus")
-public interface MenuService {
+public interface MenuService extends MenuRestService{
 
-	@PostMapping("")
-	@Operation(summary = "新增菜单")
-	@ResponseBody
 	public Menu save(@RequestBody Menu menu);
 
 	@DeleteMapping("")
@@ -51,7 +48,7 @@ public interface MenuService {
 	@GetMapping("")
 	@Operation(summary = "浏览菜单")
 	@ResponseBody
-	public Page<Menu> all(Pageable pageable, Menu menu);
+	public Page<Menu> all(@Nullable Pageable pageable,@Nullable Menu menu);
 
 	@GetMapping("/getTreeByParentId")
 	@Operation(summary = "获取菜单树")

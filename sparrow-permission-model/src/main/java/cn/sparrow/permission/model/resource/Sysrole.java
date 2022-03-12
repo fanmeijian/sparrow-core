@@ -41,7 +41,7 @@ public class Sysrole extends AbstractSparrowEntity {
 	@GenericGenerator(name = "id-generator", strategy = "uuid")
 	@GeneratedValue(generator = "id-generator")
 	@Audited
-	protected String id;
+	private String id;
 
 	@Audited
 	private String name;

@@ -4,17 +4,13 @@ import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.transaction.Transactional;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.ExampleMatcher.StringMatcher;
 import org.springframework.stereotype.Service;
 
 import cn.sparrow.permission.mgt.api.MenuService;
@@ -217,7 +213,7 @@ public class MenuServiceImpl implements MenuService {
 	@Override
 	public List<Sysrole> getSysroles(String menuId) {
 		List<Sysrole> sysroles = new ArrayList<>();
-		sysroleMenuRepository.findByIdMenuId(menuId).forEach(f->{
+		sysroleMenuRepository.findByIdMenuId(menuId).forEach(f -> {
 			sysroles.add(sysroleService.get(f.getId().getSysroleId()));
 		});
 		return sysroles;
@@ -235,13 +231,8 @@ public class MenuServiceImpl implements MenuService {
 
 	@Override
 	public Page<Menu> all(Pageable pageable, Menu menu) {
-		ExampleMatcher matcher = ExampleMatcher.matching().withIgnoreCase().withStringMatcher(StringMatcher.CONTAINING);
-		if(menu==null){
-			return menuRepository.findAll(pageable);
-		}else{
-			return menuRepository.findAll(Example.of(menu, matcher), pageable);
-		}
-		
+		log.debug("menu : {}", menu);
+		return menuRepository.search(menu, pageable);
 	}
 
 	@Override
@@ -268,7 +259,7 @@ public class MenuServiceImpl implements MenuService {
 	@Override
 	public List<String> getUsers(String menuId) {
 		List<String> users = new ArrayList<>();
-		userMenuRepository.findByIdMenuId(menuId).forEach(f->{
+		userMenuRepository.findByIdMenuId(menuId).forEach(f -> {
 			users.add(f.getId().getUsername());
 		});
 		return users;
