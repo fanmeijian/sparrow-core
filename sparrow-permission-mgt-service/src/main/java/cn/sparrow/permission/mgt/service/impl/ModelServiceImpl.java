@@ -10,14 +10,13 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.metamodel.EntityType;
 import javax.transaction.Transactional;
-import javax.validation.constraints.NotNull;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.domain.ExampleMatcher.StringMatcher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.ExampleMatcher.StringMatcher;
 import org.springframework.stereotype.Service;
 
 import cn.sparrow.permission.mgt.api.ModelService;
@@ -27,7 +26,6 @@ import cn.sparrow.permission.mgt.service.repository.PermissionTokenRepository;
 import cn.sparrow.permission.model.resource.Model;
 import cn.sparrow.permission.model.resource.ModelAttribute;
 import cn.sparrow.permission.model.resource.ModelAttributePK;
-import cn.sparrow.permission.model.resource.ModelPermission;
 import cn.sparrow.permission.model.token.PermissionToken;
 import cn.sparrow.permission.model.token.SparrowPermissionToken;
 

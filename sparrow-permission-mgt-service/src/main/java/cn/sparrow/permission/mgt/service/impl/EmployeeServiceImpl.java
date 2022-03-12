@@ -13,6 +13,8 @@ import cn.sparrow.permission.mgt.service.repository.EmployeeOrganizationLevelRep
 import cn.sparrow.permission.mgt.service.repository.EmployeeOrganizationRoleRepository;
 import cn.sparrow.permission.mgt.service.repository.EmployeeRelationRepository;
 import cn.sparrow.permission.mgt.service.repository.EmployeeRepository;
+import cn.sparrow.permission.mgt.service.repository.PositionLevelRepository;
+import cn.sparrow.permission.mgt.service.repository.RoleRepository;
 import cn.sparrow.permission.model.organization.Employee;
 import cn.sparrow.permission.model.organization.EmployeeOrganizationLevel;
 import cn.sparrow.permission.model.organization.EmployeeOrganizationLevelPK;
@@ -37,6 +39,10 @@ public class EmployeeServiceImpl implements EmployeeService {
 	EmployeeOrganizationRoleRepository employeeOrganizationRoleRepository;
 	@Autowired
 	EmployeeOrganizationLevelRepository employeeOrganizationLevelRepository;
+	@Autowired
+	RoleRepository roleRepository;
+	@Autowired
+	PositionLevelRepository positionLevelRepository;
 
 	@Override
 	@Transactional
@@ -141,7 +147,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 	public List<Employee> getChildren(String employeeId) {
 		List<Employee> employees = new ArrayList<Employee>();
 		employeeRelationRepository.findByIdParentId(employeeId).forEach(f -> {
-			f.getEmployee().setChildCount(this.getChildCount(f.getEmployee().getId()));
+//			f.getEmployee().setChildCount(this.getChildCount(f.getEmployee().getId()));
 			employees.add(f.getEmployee());
 		});
 		return employees;
@@ -164,7 +170,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 	public List<PositionLevel> getLevels(String employeeId) {
 		List<PositionLevel> positionLevels = new ArrayList<PositionLevel>();
 		employeeOrganizationLevelRepository.findByIdEmployeeId(employeeId).forEach(f -> {
-			positionLevels.add(f.getOrganizationLevel().getPositionLevel());
+			positionLevels.add(positionLevelRepository.findById(f.getId().getOrganizationLevelId().getPositionLevelId()).get());
 		});
 		return positionLevels;
 	}
@@ -173,7 +179,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 	public List<Role> getRoles(String employeeId) {
 		List<Role> roles = new ArrayList<Role>();
 		employeeOrganizationRoleRepository.findByIdEmployeeId(employeeId).forEach(f -> {
-			roles.add(f.getOrganizationRole().getRole());
+			roles.add(roleRepository.findById(f.getId().getOrganizationRoleId().getRoleId()).get());
 		});
 		return roles;
 	}

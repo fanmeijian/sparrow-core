@@ -1,12 +1,8 @@
 package cn.sparrow.permission.mgt.service.impl;
 
-import java.io.Serializable;
-
 import org.springframework.core.convert.converter.Converter;
-import org.springframework.data.rest.webmvc.spi.BackendIdConverter;
 import org.springframework.stereotype.Component;
 
-import cn.sparrow.permission.model.resource.ModelAttribute;
 import cn.sparrow.permission.model.resource.ModelAttributePK;
 
 @Component

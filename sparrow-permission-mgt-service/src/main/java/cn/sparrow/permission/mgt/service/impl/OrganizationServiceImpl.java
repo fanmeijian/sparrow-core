@@ -75,9 +75,9 @@ public class OrganizationServiceImpl implements OrganizationService {
 	@Override
 	public Page<OrganizationRole> getRoles(String organizationId, Pageable pageable) {
 		Page<OrganizationRole> roles = organizationRoleRepository.findByIdOrganizationId(organizationId, pageable);
-		roles.forEach(f -> {
-			f.setChildCount(organizationRoleRelationRepository.countByIdParentId(f.getId()));
-		});
+//		roles.forEach(f -> {
+//			f.setChildCount(organizationRoleRelationRepository.countByIdParentId(f.getId()));
+//		});
 		return roles;
 	}
 
@@ -85,18 +85,18 @@ public class OrganizationServiceImpl implements OrganizationService {
 	public Page<OrganizationPositionLevel> getLevels(String organizationId, Pageable pageable) {
 		Page<OrganizationPositionLevel> organizationPositionLevels = organizationLevelRepository
 				.findByIdOrganizationId(organizationId, pageable);
-		organizationPositionLevels.forEach(f -> {
-			f.setChildCount(organizationPositionLevelRelationRepository.countByIdParentId(f.getId()));
-		});
+//		organizationPositionLevels.forEach(f -> {
+//			f.setChildCount(organizationPositionLevelRelationRepository.countByIdParentId(f.getId()));
+//		});
 		return organizationPositionLevels;
 	}
 
 	@Override
 	public Page<Employee> getEmployees(@NotBlank String organizationId, Pageable pageable) {
 		Page<Employee> employees = employeeRepository.findByOrganizationId(organizationId, pageable);
-		employees.forEach(f -> {
-			f.setChildCount(employeeService.getChildCount(f.getId()));
-		});
+//		employees.forEach(f -> {
+//			f.setChildCount(employeeService.getChildCount(f.getId()));
+//		});
 		return employees;
 	}
 
@@ -114,17 +114,17 @@ public class OrganizationServiceImpl implements OrganizationService {
 		List<Organization> children = new ArrayList<Organization>();
 		organizationRelations.forEach(f -> {
 			Organization organization = organizationRepository.findById(f.getId().getOrganizationId()).get();
-			organization.setParentCount(
-					organizationRelationRepository.countByIdOrganizationId(organization.getId()));
-			organization
-					.setChildCount(organizationRelationRepository.countByIdParentId(organization.getId()));
-			organization
-					.setRoleCount(organizationRoleRepository.countByIdOrganizationId(organization.getId()));
-			organization
-					.setLevelCount(organizationLevelRepository.countByIdOrganizationId(organization.getId()));
-			organization
-					.setGroupCount(organizationGroupRepository.countByIdOrganizationId(organization.getId()));
-			organization.setEmployeeCount(employeeRepository.countByOrganizationId(organization.getId()));
+//			organization.setParentCount(
+//					organizationRelationRepository.countByIdOrganizationId(organization.getId()));
+//			organization
+//					.setChildCount(organizationRelationRepository.countByIdParentId(organization.getId()));
+//			organization
+//					.setRoleCount(organizationRoleRepository.countByIdOrganizationId(organization.getId()));
+//			organization
+//					.setLevelCount(organizationLevelRepository.countByIdOrganizationId(organization.getId()));
+//			organization
+//					.setGroupCount(organizationGroupRepository.countByIdOrganizationId(organization.getId()));
+//			organization.setEmployeeCount(employeeRepository.countByOrganizationId(organization.getId()));
 			children.add(organization);
 		});
 		return children;
@@ -134,7 +134,7 @@ public class OrganizationServiceImpl implements OrganizationService {
 	public List<Organization> getParents(String organizationId) {
 		List<Organization> parents = new ArrayList<Organization>();
 		organizationRelationRepository.findByIdOrganizationId(organizationId).forEach(f -> {
-			parents.add(f.getParent());
+			parents.add(organizationRepository.findById(f.getId().getParentId()).get());
 		});
 		return parents;
 	}

@@ -1,9 +1,7 @@
 package cn.sparrow.permission.mgt.service.repository;
 
-import java.util.List;
-
-import javax.validation.constraints.NotBlank;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import cn.sparrow.permission.model.group.GroupRole;
@@ -11,6 +9,6 @@ import cn.sparrow.permission.model.group.GroupRolePK;
 
 public interface GroupRoleRepository extends JpaRepository<GroupRole, GroupRolePK> {
 
-	List<GroupRole> findByIdGroupId(@NotBlank String groupId);
+	Page<GroupRole> findByIdGroupId(String groupId, Pageable pageable);
 
 }

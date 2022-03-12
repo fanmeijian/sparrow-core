@@ -14,6 +14,7 @@ import cn.sparrow.permission.mgt.api.PositionLevelService;
 import cn.sparrow.permission.mgt.service.repository.EmployeeOrganizationLevelRepository;
 import cn.sparrow.permission.mgt.service.repository.OrganizationLevelRelationRepository;
 import cn.sparrow.permission.mgt.service.repository.OrganizationLevelRepository;
+import cn.sparrow.permission.mgt.service.repository.OrganizationRepository;
 import cn.sparrow.permission.mgt.service.repository.PositionLevelRepository;
 import cn.sparrow.permission.model.organization.Employee;
 import cn.sparrow.permission.model.organization.Organization;
@@ -34,6 +35,9 @@ public class PositionLevelServiceImpl implements PositionLevelService {
 	OrganizationLevelRepository organizationLevelRepository;
 	@Autowired
 	EmployeeOrganizationLevelRepository employeeOrganizationLevelRepository;
+	@Autowired
+	OrganizationRepository organizationRepository;
+
 
 	@Override
 	public List<Employee> getEmployees(OrganizationPositionLevelPK organizationLevelId) {
@@ -49,12 +53,12 @@ public class PositionLevelServiceImpl implements PositionLevelService {
 	public PositionLevel create(PositionLevel lvel) {
 		PositionLevel savedLevel = levelRepository.save(lvel);
 		// 保存岗位所在的组织
-		if (lvel.getOrganizationIds() != null) {
-			lvel.getOrganizationIds().forEach(f -> {
-				organizationLevelRepository
-						.save(new OrganizationPositionLevel(new OrganizationPositionLevelPK(f, savedLevel.getId())));
-			});
-		}
+//		if (lvel.getOrganizationIds() != null) {
+//			lvel.getOrganizationIds().forEach(f -> {
+//				organizationLevelRepository
+//						.save(new OrganizationPositionLevel(new OrganizationPositionLevelPK(f, savedLevel.getId())));
+//			});
+//		}
 		return savedLevel;
 	}
 
@@ -83,7 +87,7 @@ public class PositionLevelServiceImpl implements PositionLevelService {
 	public List<OrganizationPositionLevel> getParents(OrganizationPositionLevelPK id) {
 		List<OrganizationPositionLevel> positionLevels = new ArrayList<OrganizationPositionLevel>();
 		organizationLevelRelationRepository.findByIdId(id).forEach(f -> {
-			positionLevels.add(f.getOrganizationLevel());
+			positionLevels.add(organizationLevelRepository.findById(f.getId().getId()).get());
 		});
 		return positionLevels;
 	}
@@ -92,7 +96,7 @@ public class PositionLevelServiceImpl implements PositionLevelService {
 	public List<Organization> getParentOrganizations(@NotBlank String positionLevelId) {
 		List<Organization> organizations = new ArrayList<Organization>();
 		organizationLevelRepository.findByIdPositionLevelId(positionLevelId).forEach(f -> {
-			organizations.add(f.getOrganization());
+			organizations.add(organizationRepository.findById(f.getId().getOrganizationId()).get());
 		});
 		return organizations;
 	}

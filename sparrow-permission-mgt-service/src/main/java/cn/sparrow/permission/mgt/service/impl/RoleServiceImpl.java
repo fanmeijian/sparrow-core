@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import cn.sparrow.permission.mgt.api.RoleService;
 import cn.sparrow.permission.mgt.service.repository.EmployeeOrganizationRoleRepository;
 import cn.sparrow.permission.mgt.service.repository.EmployeeRepository;
+import cn.sparrow.permission.mgt.service.repository.OrganizationRepository;
 import cn.sparrow.permission.mgt.service.repository.OrganizationRoleRelationRepository;
 import cn.sparrow.permission.mgt.service.repository.OrganizationRoleRepository;
 import cn.sparrow.permission.mgt.service.repository.RoleRepository;
@@ -43,25 +44,27 @@ public class RoleServiceImpl implements RoleService {
 	OrganizationRoleRelationRepository organizationRoleRelationRepository;
 	@Autowired
 	EmployeeRepository employeeRepository;
+	@Autowired
+	OrganizationRepository organizationRepository;
 
 	@Override
 	@Transactional
 	public Role create(Role role) {
 		Role savedRole = roleRepository.save(role);
 		// 保存岗位所在的组织
-		if (role.getOrganizationIds() != null) {
-			role.getOrganizationIds().forEach(f -> {
-				OrganizationRole organizationRole = organizationRoleRepository
-						.save(new OrganizationRole(new OrganizationRolePK(f, savedRole.getId())));
-				// 保存岗位之间的关系,注意这里的岗位关系指的是组织岗位之间的关系，因为岗位独立于组织没有意义
-				if (role.getParentIds() != null) {
-					role.getParentIds().forEach(parentId -> {
-						organizationRoleRelationRepository.save(new OrganizationRoleRelation(
-								new OrganizationRoleRelationPK(organizationRole.getId(), parentId)));
-					});
-				}
-			});
-		}
+//		if (role.getOrganizationIds() != null) {
+//			role.getOrganizationIds().forEach(f -> {
+//				OrganizationRole organizationRole = organizationRoleRepository
+//						.save(new OrganizationRole(new OrganizationRolePK(f, savedRole.getId())));
+//				// 保存岗位之间的关系,注意这里的岗位关系指的是组织岗位之间的关系，因为岗位独立于组织没有意义
+//				if (role.getParentIds() != null) {
+//					role.getParentIds().forEach(parentId -> {
+//						organizationRoleRelationRepository.save(new OrganizationRoleRelation(
+//								new OrganizationRoleRelationPK(organizationRole.getId(), parentId)));
+//					});
+//				}
+//			});
+//		}
 		return savedRole;
 	}
 
@@ -69,7 +72,7 @@ public class RoleServiceImpl implements RoleService {
 	public List<Organization> getParentOrganizations(@NotBlank String roleId) {
 		List<Organization> organizations = new ArrayList<Organization>();
 		organizationRoleRepository.findByIdRoleId(roleId).forEach(f -> {
-			organizations.add(f.getOrganization());
+			organizations.add(organizationRepository.findById(f.getId().getOrganizationId()).get());
 		});
 		return organizations;
 	}
@@ -164,6 +167,11 @@ public class RoleServiceImpl implements RoleService {
 			employees.add(employeeRepository.findById(f.getId().getEmployeeId()).get());
 		});
 		return employees;
+	}
+
+	@Override
+	public Role get(String roleId) {
+		return roleRepository.findById(roleId).get();
 	}
 
 }

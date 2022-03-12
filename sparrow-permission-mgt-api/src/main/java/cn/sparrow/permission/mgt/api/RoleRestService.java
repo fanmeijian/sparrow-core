@@ -16,6 +16,7 @@ import cn.sparrow.permission.model.organization.Employee;
 import cn.sparrow.permission.model.organization.Organization;
 import cn.sparrow.permission.model.organization.OrganizationRolePK;
 import cn.sparrow.permission.model.organization.OrganizationRoleRelation;
+import cn.sparrow.permission.model.organization.Role;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -59,4 +60,9 @@ public interface RoleRestService {
 	@GetMapping("/{roleId}/parentOrganizations")
 	@ResponseBody
 	public List<Organization> getParentOrganizations(@PathVariable("roleId") String roleId);
+	
+	@Operation(summary = "岗位详情")
+	@GetMapping("/{roleId}")
+	@ResponseBody
+	public Role get(@PathVariable("roleId") String roleId);
 }
