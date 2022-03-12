@@ -30,18 +30,15 @@ import cn.sparrow.permission.constant.PermissionExpressionEnum;
 import cn.sparrow.permission.constant.PermissionTargetEnum;
 import cn.sparrow.permission.core.api.PermissionService;
 import cn.sparrow.permission.core.service.PermissionServiceImpl;
-import cn.sparrow.permission.mgt.service.impl.ApiServiceImpl;
-import cn.sparrow.permission.mgt.service.impl.EmployeeServiceImpl;
-import cn.sparrow.permission.mgt.service.impl.MenuServiceImpl;
+import cn.sparrow.permission.mgt.api.ApiService;
+import cn.sparrow.permission.mgt.api.EmployeeService;
+import cn.sparrow.permission.mgt.api.MenuService;
+import cn.sparrow.permission.mgt.api.ModelAttributeService;
+import cn.sparrow.permission.mgt.api.ModelService;
+import cn.sparrow.permission.mgt.api.OrganizationService;
+import cn.sparrow.permission.mgt.api.SparrowPermissionTokenService;
+import cn.sparrow.permission.mgt.api.SysroleService;
 import cn.sparrow.permission.mgt.service.impl.ModelAttributeServiceImpl;
-import cn.sparrow.permission.mgt.service.impl.ModelServiceImpl;
-import cn.sparrow.permission.mgt.service.impl.OrganizationServiceImpl;
-import cn.sparrow.permission.mgt.service.impl.SparrowPermissionTokenServiceImpl;
-import cn.sparrow.permission.mgt.service.impl.SysroleServiceImpl;
-import cn.sparrow.permission.mgt.service.repository.ApiRepository;
-import cn.sparrow.permission.mgt.service.repository.MenuRepository;
-import cn.sparrow.permission.mgt.service.repository.SysroleRepository;
-import cn.sparrow.permission.mgt.service.repository.UserSysroleRepository;
 import cn.sparrow.permission.model.organization.Employee;
 import cn.sparrow.permission.model.organization.Organization;
 import cn.sparrow.permission.model.resource.Menu;
@@ -53,7 +50,6 @@ import cn.sparrow.permission.model.resource.SparrowTree;
 import cn.sparrow.permission.model.resource.Sysrole;
 import cn.sparrow.permission.model.resource.SysroleMenuPK;
 import cn.sparrow.permission.model.resource.UserMenuPK;
-import cn.sparrow.permission.model.resource.UserSysrolePK;
 import cn.sparrow.permission.model.token.MenuPermission;
 import cn.sparrow.permission.model.token.PermissionExpression;
 import cn.sparrow.permission.model.token.PermissionToken;
@@ -75,26 +71,17 @@ public class ResourceTests {
 	@Autowired
 	private static TestEntityManager entityManager;
 
-	@Autowired
-	ApiRepository apiRepository;
-	@Autowired
-	SysroleRepository sysroleRepository;
 
 	@Autowired
-	SysroleServiceImpl sysroleService;
-
+	ApiService apiService;
 	@Autowired
-	ApiServiceImpl apiService;
+	MenuService menuService;
 	@Autowired
-	MenuServiceImpl menuServiceImpl;
-
+	SysroleService sysroleService;
 	@Autowired
-	MenuRepository menuRepository;
-
+	ModelService modelService;
 	@Autowired
-	SysroleServiceImpl sysroleServiceImpl;
-
-	@Autowired UserSysroleRepository userSysroleRepository;
+	ModelAttributeService modelAttributeService;
 
 	
 
@@ -129,84 +116,87 @@ public class ResourceTests {
 		String prev= null;
 		String prev1=null;
 		for(int i =0;i<10;i++){
-			Menu parent= menuServiceImpl.save(new Menu("m" + i, null));
+			Menu parent= menuService.save(new Menu("m" + i, null));
 			if(i>0){
-				menuServiceImpl.setPosition(parent.getId(), prev, null);
+				menuService.setPosition(parent.getId(), prev, null);
 			}
 			prev=parent.getId();
 			for(int j =0;j<10;j++){
 				
-				Menu child =menuServiceImpl.save(new Menu("m" + i + "" +j, parent.getId()));
+				Menu child =menuService.save(new Menu("m" + i + "" +j, parent.getId()));
 				if(j>0){
-					menuServiceImpl.setPosition(prev, prev1, null);
+					menuService.setPosition(prev, prev1, null);
 				}
 				prev1=child.getId();
 			}
 		}
 		
-		assertEquals(11, menuServiceImpl.all(Pageable.unpaged(), new Menu("m1",null)).getTotalElements());
-		assertEquals(110, menuServiceImpl.all(Pageable.unpaged(), new Menu()).getTotalElements());
+		assertEquals(11, menuService.all(Pageable.unpaged(), new Menu("m1",null)).getTotalElements());
+		assertEquals(110, menuService.all(Pageable.unpaged(), new Menu()).getTotalElements());
 
 		Sysrole sysrole = sysroleService.create(new Sysrole("testForMenu", "testForMenu"));
 		
 		//角色授权
 		MenuPermission sysroleMenuPermission = new MenuPermission();
 		List<SysroleMenuPK> sysroleMenuPKs = new ArrayList<>();
-		Menu menu = menuRepository.findByCode("m0");
+		Menu menu1= new Menu();
+		menu1.setCode("m0");
+		Menu menu = menuService.all(Pageable.unpaged(), menu1).toList().get(0);
 		sysroleMenuPKs.add(new SysroleMenuPK(sysrole.getId(), menu.getId()));
 		sysroleMenuPermission.setSysroleMenuPKs(sysroleMenuPKs);
-		menuServiceImpl.addPermission(sysroleMenuPermission);
-		log.info("{} {}", menuServiceImpl, sysrole);
-		SparrowTree<Menu,String> sparrowTree = menuServiceImpl.getTreeBySysroleId(sysrole.getId());
+		menuService.addPermission(sysroleMenuPermission);
+		log.info("{} {}", menuService, sysrole);
+		SparrowTree<Menu,String> sparrowTree = menuService.getTreeBySysroleId(sysrole.getId());
 		assertEquals(1, sparrowTree.getChildren().size());
-		assertEquals(sysrole, menuServiceImpl.getSysroles(menu.getId()).get(0));
+		assertEquals(sysrole, menuService.getSysroles(menu.getId()).get(0));
 
 		// 用户授权
 		MenuPermission userMenuPermission = new MenuPermission();
 		String username = "testUser";
-		menu = menuRepository.findByCode("m1");
+		menu1.setCode("m1");
+		menu = menuService.all(Pageable.unpaged(), menu1).toList().get(0);
 		List<UserMenuPK> userMenuPKs = new ArrayList<>();
 		userMenuPKs.add(new UserMenuPK(username, menu.getId()));
 		userMenuPermission.setUserMenuPKs(userMenuPKs);
-		menuServiceImpl.addPermission(userMenuPermission);
-		sparrowTree = menuServiceImpl.getTreeByUsername(username);
+		menuService.addPermission(userMenuPermission);
+		sparrowTree = menuService.getTreeByUsername(username);
 		assertEquals(1, sparrowTree.getChildren().size());
-		assertEquals(username, menuServiceImpl.getUsers(menu.getId()).get(0));
+		assertEquals(username, menuService.getUsers(menu.getId()).get(0));
 
 		// 授予用户角色
 		List<String> userSysroles =new ArrayList<>();
 		userSysroles.add(username);
-		sysroleServiceImpl.addPermissions(sysrole.getId(),userSysroles);
-		assertEquals(username,sysroleServiceImpl.getUsers(sysrole.getId()).get(0));
+		sysroleService.addPermissions(sysrole.getId(),userSysroles);
+		assertEquals(username,sysroleService.getUsers(sysrole.getId()).get(0));
 		
-		log.info("{}" , userSysroleRepository.findByIdUsername(username));
+//		log.info("{}" , userSysroleRepository.findByIdUsername(username));
 		
 		// 用户整个树
-		sparrowTree = menuServiceImpl.getTreeByUsername(username);
+		sparrowTree = menuService.getTreeByUsername(username);
 		assertEquals(2, sparrowTree.getChildren().size());
 
 		//取消角色授权
-		menuServiceImpl.delPermission(sysroleMenuPermission);
-		sparrowTree = menuServiceImpl.getTreeBySysroleId(sysrole.getId());
+		menuService.delPermission(sysroleMenuPermission);
+		sparrowTree = menuService.getTreeBySysroleId(sysrole.getId());
 		assertEquals(0, sparrowTree.getChildren().size());
-		assertEquals(0,menuServiceImpl.getSysroles(menu.getId()).size());
+		assertEquals(0,menuService.getSysroles(menu.getId()).size());
 
 		// 取消用户授权
-		menuServiceImpl.delPermission(userMenuPermission);
-		sparrowTree = menuServiceImpl.getTreeBySysroleId(sysrole.getId());
+		menuService.delPermission(userMenuPermission);
+		sparrowTree = menuService.getTreeBySysroleId(sysrole.getId());
 		assertEquals(0, sparrowTree.getChildren().size());
-		assertEquals(0,menuServiceImpl.getSysroles(menu.getId()).size());
+		assertEquals(0,menuService.getSysroles(menu.getId()).size());
 
 	}
 
 	@Autowired
-	ModelServiceImpl modelServiceImpl;
+	ModelService modelServiceImpl;
 	@Autowired
-	EmployeeServiceImpl employeeServiceImpl;
+	EmployeeService employeeServiceImpl;
 	@Autowired
-	OrganizationServiceImpl organizationServiceImpl;
+	OrganizationService organizationServiceImpl;
 	@Autowired
-	SparrowPermissionTokenServiceImpl sparrowPermissionTokenServiceImpl;
+	SparrowPermissionTokenService sparrowPermissionTokenServiceImpl;
 
 	@Test
 	@Transactional
@@ -240,19 +230,18 @@ public class ResourceTests {
 			}
 		}
 
+		//设置模型权限
 		SparrowPermissionToken sparrowPermissionToken = sparrowPermissionTokenServiceImpl.create(permissionToken);
 		model.setSparrowPermissionToken(sparrowPermissionToken);
-		// List<String> modelNames = new ArrayList<>();
-		// modelNames.add(model.getId());
-		// ModelPermission modelPermission = new ModelPermission(modelNames, permissionToken);
 		modelServiceImpl.addPermission(model.getId(),permissionToken);
 		assertNotNull(modelServiceImpl.getModel(model.getId()).getSparrowPermissionToken());
+		// 删除模型权限
 		modelServiceImpl.removePermission(model.getId());
 		assertNull(modelServiceImpl.getModel(model.getId()).getSparrowPermissionToken());
 	}
 
 	@Autowired
-	ModelAttributeServiceImpl modelAttributeServiceImpl;
+	ModelAttributeService modelAttributeServiceImpl;
 
 	@Test
 	@Transactional
@@ -288,13 +277,12 @@ public class ResourceTests {
 			}
 		}
 
+		// 设置属性权限
 		SparrowPermissionToken sparrowPermissionToken = sparrowPermissionTokenServiceImpl.create(permissionToken);
 		modelAttribute.setSparrowPermissionToken(sparrowPermissionToken);
-		// List<String> modelNames = new ArrayList<>();
-		// modelNames.add(model.getId());
-		// ModelPermission modelPermission = new ModelPermission(modelNames, permissionToken);
 		modelAttributeServiceImpl.addPermission(modelAttribute.getId(),permissionToken);
 		assertNotNull(modelAttributeServiceImpl.get(modelAttribute.getId()).getSparrowPermissionToken());
+		// 移除属性权限
 		modelAttributeServiceImpl.removePermission(modelAttribute.getId());
 		assertNull(modelAttributeServiceImpl.get(modelAttribute.getId()).getSparrowPermissionToken());
 	}
