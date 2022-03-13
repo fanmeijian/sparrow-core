@@ -94,13 +94,8 @@ public class GlobalExceptionHandler{
    * @return
    */
   @ExceptionHandler(ResourceNotFoundException.class)
-  public ResponseEntity<Map<String,Object>> handleResourceNotFoundException(HttpServletRequest req, MethodArgumentNotValidException e) {
-      logger.error(e.getMessage(), e);
-      List<String> errorMessages = e.getBindingResult().getFieldErrors()
-              .stream()
-              .map(fieldError -> fieldError.getField() + " " + fieldError.getDefaultMessage()) // 記錄 "fieldName + validateFailMessage"
-              .collect(Collectors.toList());
-      Map<String,Object> error = Collections.singletonMap("error", errorMessages);
+  public ResponseEntity<Map<String,Object>> handleResourceNotFoundException(HttpServletRequest req, ResourceNotFoundException e) {
+      Map<String,Object> error = Collections.singletonMap("error", e.getMessage());
       return ResponseEntity.status(HttpStatus.PARTIAL_CONTENT).body(error);
   }
   
@@ -111,13 +106,9 @@ public class GlobalExceptionHandler{
    * @return
    */
   @ExceptionHandler(DataIntegrityViolationException.class)
-  public ResponseEntity<Map<String,Object>> handleDataIntegrityViolationException(HttpServletRequest req, MethodArgumentNotValidException e) {
-      logger.error(e.getMessage(), e);
-      List<String> errorMessages = e.getBindingResult().getFieldErrors()
-              .stream()
-              .map(fieldError -> fieldError.getField() + " " + fieldError.getDefaultMessage()) // 記錄 "fieldName + validateFailMessage"
-              .collect(Collectors.toList());
-      Map<String,Object> error = Collections.singletonMap("error", errorMessages);
+  public ResponseEntity<Map<String,Object>> handleDataIntegrityViolationException(HttpServletRequest req, DataIntegrityViolationException e) {
+      
+      Map<String,Object> error = Collections.singletonMap("error", e.getMessage());
       return ResponseEntity.status(HttpStatus.PARTIAL_CONTENT).body(error);
   }
 

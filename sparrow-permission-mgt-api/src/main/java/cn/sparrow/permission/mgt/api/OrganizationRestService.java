@@ -40,6 +40,7 @@ public interface OrganizationRestService {
 
 	@Operation(summary = "新增组织")
 	@PostMapping("")
+	@ResponseBody
 	public Organization create(@NotNull @RequestBody Organization organization);
 
 	@Operation(summary = "更新组织")
