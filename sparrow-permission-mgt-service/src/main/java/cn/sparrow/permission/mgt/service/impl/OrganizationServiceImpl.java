@@ -10,8 +10,10 @@ import javax.validation.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import cn.sparrow.permission.constant.OrganizationChildTypeEnum;
 import cn.sparrow.permission.mgt.api.EmployeeService;
@@ -141,6 +143,7 @@ public class OrganizationServiceImpl implements OrganizationService {
 
 	@Override
 	@Transactional
+	@ResponseStatus(code = HttpStatus.NO_CONTENT)
 	public void delete(String[] ids) {
 		organizationRelationRepository.deleteByIdOrganizationIdInOrIdParentIdIn(ids, ids);
 		organizationRepository.deleteByIdIn(ids);
@@ -169,6 +172,7 @@ public class OrganizationServiceImpl implements OrganizationService {
 
 	@Override
 	@Transactional
+	@ResponseStatus(code = HttpStatus.ACCEPTED)
 	public void addParent(String organizationId, List<String> parentIds) {
 
 		parentIds.forEach(f -> {
