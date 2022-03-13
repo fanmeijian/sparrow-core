@@ -39,6 +39,7 @@ public interface GroupService extends GroupRestService{
 
 	@Operation(summary = "删除群组")
 	@DeleteMapping("")
+	@ResponseBody
 	public void delete(@RequestBody List<String> ids);
 
 	@Operation(summary = "递归获取群组成员，最终为员工列表")

@@ -67,6 +67,7 @@ public interface RoleService extends RoleRestService{
 
 	@Operation(summary = "删除岗位")
 	@DeleteMapping("")
+	@ResponseBody
 	public void delete(@NotNull @RequestBody final String[] ids);
 
 //	@Operation(summary = "设置岗位关系")

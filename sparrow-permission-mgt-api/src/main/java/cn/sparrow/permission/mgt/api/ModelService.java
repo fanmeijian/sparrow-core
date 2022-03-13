@@ -64,6 +64,7 @@ public interface ModelService{
 
 	@Operation(summary = "删除模型权限")
 	@DeleteMapping("/{modelId}/permissions")
+	@ResponseBody
 	public void removePermission(@PathVariable("modelId") String modelId);
 	
 	public void init();
