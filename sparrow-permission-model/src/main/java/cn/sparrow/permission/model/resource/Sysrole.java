@@ -67,9 +67,9 @@ public class Sysrole extends AbstractSparrowEntity {
 	private Set<UserSysrole> userSysroles;
 
 	@JsonIgnore
-	@OneToMany
+	@OneToMany(mappedBy = "sysrole")
 	@LazyCollection(LazyCollectionOption.TRUE)
-	private Set<SysroleApi> sysroleApiPermissions;
+	private Set<SysroleApi> sysroleApi;
 
 	public Sysrole(String name, String code) {
 		super();

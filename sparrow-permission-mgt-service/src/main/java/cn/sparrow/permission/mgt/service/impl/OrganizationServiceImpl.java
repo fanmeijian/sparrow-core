@@ -288,6 +288,7 @@ public class OrganizationServiceImpl implements OrganizationService {
 	}
 
 	@Override
+	@ResponseStatus(code = HttpStatus.CREATED)
 	public Organization create(Organization organization) {
 		return organizationRepository.save(organization);
 	}

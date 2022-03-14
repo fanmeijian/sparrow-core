@@ -46,7 +46,7 @@ public class DataPermissionToken implements Serializable {
   @OneToOne
   private Model model;
 
-  @OneToMany
+  @OneToMany(mappedBy = "dataPermissionToken")
   @LazyCollection(LazyCollectionOption.FALSE)
   private List<FieldPermissionToken> fieldPermissionTokens;
 
