@@ -11,7 +11,9 @@ import org.springframework.data.domain.ExampleMatcher.StringMatcher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import cn.sparrow.permission.mgt.api.ApiService;
 import cn.sparrow.permission.mgt.service.repository.ApiRepository;
@@ -19,8 +21,8 @@ import cn.sparrow.permission.mgt.service.repository.SysroleApiPermissionReposito
 import cn.sparrow.permission.mgt.service.repository.SysroleRepository;
 import cn.sparrow.permission.model.resource.SparrowApi;
 import cn.sparrow.permission.model.resource.Sysrole;
-import cn.sparrow.permission.model.resource.SysroleApiPK;
 import cn.sparrow.permission.model.resource.SysroleApi;
+import cn.sparrow.permission.model.resource.SysroleApiPK;
 
 @Service
 public class ApiServiceImpl implements ApiService {
@@ -32,6 +34,7 @@ public class ApiServiceImpl implements ApiService {
 	SysroleRepository sysroleRepository;
 
 	@Override
+	@ResponseStatus(code = HttpStatus.CREATED)
 	public SparrowApi create(SparrowApi sparrowApi) {
 		return apiRepository.save(sparrowApi);
 	}
@@ -42,6 +45,7 @@ public class ApiServiceImpl implements ApiService {
 	}
 
 	@Override
+	@ResponseStatus(code = HttpStatus.NO_CONTENT)
 	public void delete(List<String> ids) {
 		apiRepository.deleteAllByIdInBatch(ids);
 	}
@@ -56,6 +60,7 @@ public class ApiServiceImpl implements ApiService {
 	}
 
 	@Override
+	@ResponseStatus(code = HttpStatus.NO_CONTENT)
 	public void addPermissions(String apiId, List<String> sysroleIds) {
 		sysroleIds.forEach(f -> {
 			sysroleApiPermissionRepository.save(new SysroleApi(apiId, f));
@@ -63,6 +68,7 @@ public class ApiServiceImpl implements ApiService {
 	}
 
 	@Override
+	@ResponseStatus(code = HttpStatus.NO_CONTENT)
 	public void removePermissions(String apiId, List<String> sysroleIds) {
 		sysroleIds.forEach(f -> {
 			sysroleApiPermissionRepository.deleteById(new SysroleApiPK(f, apiId));

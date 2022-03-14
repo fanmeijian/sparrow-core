@@ -1,9 +1,7 @@
 package cn.sparrow.permission.model.common;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.JoinColumn;
@@ -12,13 +10,12 @@ import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
-import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.envers.NotAudited;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import cn.sparrow.permission.model.token.DataPermissionToken;
@@ -28,7 +25,6 @@ import lombok.EqualsAndHashCode;
 @MappedSuperclass
 @Data
 @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
-@JsonIgnoreProperties(value="dataPermissionToken", allowGetters=true)
 public abstract class AbstractSparrowEntity implements Serializable{
 	/**
 	 * 
@@ -56,16 +52,21 @@ public abstract class AbstractSparrowEntity implements Serializable{
 
 //  @Transient
 //  private Model model;
+	
+	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
+	@Column(name = "data_permission_token_id")
+	private String dataPermissionTokenId;
 
 	@OneToOne(targetEntity = DataPermissionToken.class)
-	@JoinColumn(name = "data_permission_token_id")
+	@JoinColumn(name = "data_permission_token_id", insertable = false, updatable = false)
 	@NotAudited
+	@JsonIgnore
 	private DataPermissionToken dataPermissionToken;
 
-	@Transient
-	@Size(max = 0)
-	@NotAudited
-	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
-	private List<String> errorMessage = new ArrayList<String>();
+//	@Transient
+//	@Size(max = 0)
+//	@NotAudited
+//	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
+//	private List<String> errorMessage = new ArrayList<String>();
 
 }

@@ -11,7 +11,9 @@ import javax.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import cn.sparrow.permission.constant.MenuPermissionTargetEnum;
 import cn.sparrow.permission.constant.MenuTreeTypeEnum;
@@ -184,6 +186,7 @@ public class MenuServiceImpl implements MenuService {
 		});
 	}
 
+	@ResponseStatus(code = HttpStatus.NO_CONTENT)
 	@Override
 	public void addPermission(MenuPermission menuPermission) {
 		if (menuPermission.getUserMenuPKs() != null) {
@@ -200,6 +203,7 @@ public class MenuServiceImpl implements MenuService {
 	}
 
 	@Override
+	@ResponseStatus(code = HttpStatus.NO_CONTENT)
 	public void delPermission(MenuPermission menuPermission) {
 		if (menuPermission.getUserMenuPKs() != null) {
 			userMenuRepository.deleteByIdIn(menuPermission.getUserMenuPKs());
@@ -229,6 +233,7 @@ public class MenuServiceImpl implements MenuService {
 	}
 
 	@Override
+	@ResponseStatus(code = HttpStatus.NO_CONTENT)
 	public void delete(@NotNull String[] ids) {
 		menuRepository.deleteByIdIn(ids);
 	}
@@ -241,6 +246,7 @@ public class MenuServiceImpl implements MenuService {
 
 	@Override
 	@Transactional
+	@ResponseStatus(code = HttpStatus.NO_CONTENT)
 	public void setPosition(String menuId, String prevId, String nextId) {
 		Menu menu = menuRepository.getById(menuId);
 		menu.setPreviousNodeId(prevId);
@@ -249,6 +255,7 @@ public class MenuServiceImpl implements MenuService {
 	}
 
 	@Override
+	@ResponseStatus(code = HttpStatus.CREATED)
 	public Menu save(Menu menu) {
 		return menuRepository.save(menu);
 	}
@@ -302,7 +309,8 @@ public class MenuServiceImpl implements MenuService {
 
 	@Override
 	@Transactional
-	public void addPermission(String menuId, MenuPermissionTargetEnum type, @NotNull List<?> permissions) {
+	@ResponseStatus(code = HttpStatus.NO_CONTENT)
+	public void addPermission(String menuId, MenuPermissionTargetEnum type, @NotNull List<String> permissions) {
 		permissions.forEach(f->{
 			switch (type) {
 			case USER:
@@ -321,7 +329,8 @@ public class MenuServiceImpl implements MenuService {
 
 	@Override
 	@Transactional
-	public void delPermission(String menuId, MenuPermissionTargetEnum type, @NotNull List<?> permissions) {
+	@ResponseStatus(code = HttpStatus.NO_CONTENT)
+	public void delPermission(String menuId, MenuPermissionTargetEnum type, @NotNull List<String> permissions) {
 		permissions.forEach(f->{
 			switch (type) {
 			case USER:

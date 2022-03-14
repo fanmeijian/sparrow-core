@@ -59,7 +59,7 @@ public class WebLayerTest {
 		this.mockMvc
 				.perform(delete("/organizations").contentType(MediaType.APPLICATION_JSON)
 						.content(new ObjectMapper().writeValueAsString(new String[] { "test" })))
-				.andDo(print()).andExpect(status().isNoContent());
+				.andDo(print()).andExpect(status().isOk());
 
 	}
 

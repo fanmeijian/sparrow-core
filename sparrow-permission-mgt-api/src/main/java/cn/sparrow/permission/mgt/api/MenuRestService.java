@@ -45,11 +45,11 @@ public interface MenuRestService {
 	@Operation(summary = "设置菜单权限")
 	@ResponseBody
 	public void addPermission(@PathVariable("menuId") String menuId, MenuPermissionTargetEnum type,
-			@NotNull @RequestBody List<?> permissions);
+			@NotNull @RequestBody List<String> permissions);
 
 	@DeleteMapping("/{menuId}/permissions")
 	@Operation(summary = "取消菜单权限")
 	@ResponseBody
 	public void delPermission(@PathVariable("menuId") String menuId, MenuPermissionTargetEnum type,
-			@NotNull @RequestBody List<?> permissions);
+			@NotNull @RequestBody List<String> permissions);
 }
