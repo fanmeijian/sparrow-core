@@ -4,19 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
 import javax.validation.constraints.NotBlank;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
+import org.springframework.http.HttpStatus;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import cn.sparrow.permission.constant.GroupTypeEnum;
 import cn.sparrow.permission.mgt.api.GroupService;
@@ -49,7 +46,6 @@ import cn.sparrow.permission.model.group.GroupSysrole;
 import cn.sparrow.permission.model.group.GroupSysrolePK;
 import cn.sparrow.permission.model.group.GroupUser;
 import cn.sparrow.permission.model.group.GroupUserPK;
-import cn.sparrow.permission.model.group.Group_;
 import cn.sparrow.permission.model.organization.Employee;
 import cn.sparrow.permission.model.organization.Organization;
 import cn.sparrow.permission.model.organization.OrganizationGroup;
@@ -127,14 +123,9 @@ public class GroupServiceImpl implements GroupService {
 	}
 
 	@Override
+	@ResponseStatus(code = HttpStatus.CREATED)
 	public Group create(Group group) {
-		Group savedGroup = groupRepository.save(group);
-		// save relation
-		// savedGroup.getOrganizationIds().forEach(f->{
-		// organizationGroupRepository.save(new OrganizationGroup(new
-		// OrganizationGroupPK(f,savedGroup.getId())));
-		// });
-		return savedGroup;
+		return groupRepository.save(group);
 	}
 
 	@Override
@@ -153,31 +144,14 @@ public class GroupServiceImpl implements GroupService {
 	}
 
 	@Override
+	@ResponseStatus(code = HttpStatus.NO_CONTENT)
 	public void delete(List<String> ids) {
 		groupRepository.deleteAllByIdInBatch(ids);
 	}
 
 	@Override
-	public Page<Group> all(Pageable pageable, @Nullable Group group) {
-		Specification<Group> specification = new Specification<Group>() {
-
-			/**
-			 * 
-			 */
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public Predicate toPredicate(Root<Group> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
-				Predicate namePredicate = criteriaBuilder.like(root.get(Group_.name), "%" + group.getName() + "%");
-				Predicate codePredicate = criteriaBuilder.like(root.get(Group_.owner), "%" + group.getOwner() + "%");
-
-				return criteriaBuilder.and(namePredicate, codePredicate);
-			}
-
-		};
-		return groupRepository.findAll(specification, pageable);
-//		ExampleMatcher matcher = ExampleMatcher.matching().withIgnoreCase().withStringMatcher(StringMatcher.CONTAINING);
-//		return groupRepository.findAll(Example.of(group, matcher), pageable);
+	public Page<Group> all(@Nullable Pageable pageable, @Nullable Group group) {
+		return groupRepository.search(group, pageable);
 	}
 
 	@Override
@@ -191,6 +165,7 @@ public class GroupServiceImpl implements GroupService {
 
 	@Override
 	@Transactional
+	@ResponseStatus(code = HttpStatus.NO_CONTENT)
 	public void setParentOrgs(String groupId, List<String> orgs) {
 		orgs.forEach(f -> {
 			organizationGroupRepository.save(new OrganizationGroup(f, groupId));
@@ -199,6 +174,7 @@ public class GroupServiceImpl implements GroupService {
 
 	@Override
 	@Transactional
+	@ResponseStatus(code = HttpStatus.NO_CONTENT)
 	public void removeParentOrgs(String groupId, List<String> orgs) {
 		orgs.forEach(f -> {
 			organizationGroupRepository.deleteById(new OrganizationGroupPK(f, groupId));
@@ -244,6 +220,7 @@ public class GroupServiceImpl implements GroupService {
 
 	@Override
 	@Transactional
+	@ResponseStatus(code = HttpStatus.NO_CONTENT)
 	public void addMembers(String groupId, @NotNull GroupTypeEnum type, List<Object> memberIds) {
 		memberIds.forEach(f -> {
 			switch (type) {
@@ -266,7 +243,7 @@ public class GroupServiceImpl implements GroupService {
 				groupUserRepository.save(new GroupUser(groupId, f.toString()));
 				break;
 			case GROUP:
-				groupRelationRepository.save(new GroupRelation(groupId, f.toString()));
+				groupRelationRepository.save(new GroupRelation(f.toString(),groupId));
 				break;
 			default:
 				break;
@@ -276,6 +253,7 @@ public class GroupServiceImpl implements GroupService {
 
 	@Override
 	@Transactional
+	@ResponseStatus(code = HttpStatus.NO_CONTENT)
 	public void removeMembers(String groupId, @NotNull GroupTypeEnum type, List<Object> memberIds) {
 		memberIds.forEach(f -> {
 			switch (type) {
@@ -298,7 +276,7 @@ public class GroupServiceImpl implements GroupService {
 				groupUserRepository.deleteById(new GroupUserPK(groupId, f.toString()));
 				break;
 			case GROUP:
-				groupRelationRepository.deleteById(new GroupRelationPK(groupId, f.toString()));
+				groupRelationRepository.deleteById(new GroupRelationPK(f.toString(),groupId));
 			default:
 				break;
 			}

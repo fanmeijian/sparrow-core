@@ -14,7 +14,9 @@ import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.ExampleMatcher.StringMatcher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import cn.sparrow.permission.constant.PreserveSysroleEnum;
 import cn.sparrow.permission.mgt.api.SysroleService;
@@ -150,6 +152,7 @@ public class SysroleServiceImpl implements SysroleService {
 
 	@Override
 	@Transactional
+	@ResponseStatus(code = HttpStatus.NO_CONTENT)
 	public void addPermissions(String sysroleId, List<String> usernames) {
 		usernames.forEach(f -> {
 			userSysroleRepository.save(new UserSysrole(sysroleId, f));
@@ -158,6 +161,7 @@ public class SysroleServiceImpl implements SysroleService {
 
 	@Override
 	@Transactional
+	@ResponseStatus(code = HttpStatus.NO_CONTENT)
 	public void removePermissions(String sysroleId, List<String> usernames) {
 		usernames.forEach(f->{
 			userSysroleRepository.deleteById(new UserSysrolePK(f, sysroleId));
@@ -167,6 +171,7 @@ public class SysroleServiceImpl implements SysroleService {
 
 	@Override
 	@Transactional
+	@ResponseStatus(code = HttpStatus.NO_CONTENT)
 	public void delete(List<String> ids) {
 		sysroleRepository.deleteAllByIdInBatch(ids);
 	}
@@ -178,6 +183,7 @@ public class SysroleServiceImpl implements SysroleService {
 	}
 
 	@Override
+	@ResponseStatus(code = HttpStatus.CREATED)
 	public Sysrole create(Sysrole sysrole) {
 		return sysroleRepository.save(sysrole);
 	}

@@ -61,9 +61,9 @@ public class Group extends AbstractSparrowEntity {
 //	@JsonProperty
 //	private List<String> organizationIds;
 	
-	@JsonIgnore
-	@OneToMany(targetEntity = GroupRelation.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "group")
-	private Set<GroupRelation> groupRelations;
+//	@JsonIgnore
+//	@OneToMany(targetEntity = GroupRelation.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "group")
+//	private Set<GroupRelation> groupRelations;
 
 	@JsonIgnore
 	@OneToMany(targetEntity = GroupOrganization.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "group")
