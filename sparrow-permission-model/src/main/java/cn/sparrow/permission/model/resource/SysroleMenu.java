@@ -31,6 +31,7 @@ public class SysroleMenu extends AbstractSparrowEntity {
 	@EqualsAndHashCode.Include
 	@EmbeddedId
 	@JoinColumns({ @JoinColumn(name = "sysrole_id"), @JoinColumn(name = "menu_id"), })
+	@Audited
 	private SysroleMenuPK id;
 
 	@NotAudited

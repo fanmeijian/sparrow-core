@@ -33,7 +33,7 @@ public class OrganizationRoleRelation extends AbstractSparrowEntity {
 
 	@EqualsAndHashCode.Include
 	@EmbeddedId
-//	@Audited
+	@Audited
 	private OrganizationRoleRelationPK id;
 
 	@JsonIgnore

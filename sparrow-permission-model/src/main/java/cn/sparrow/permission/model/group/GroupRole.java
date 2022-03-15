@@ -24,33 +24,33 @@ import lombok.NoArgsConstructor;
 @Table(name = "spr_group_role")
 public class GroupRole extends AbstractSparrowEntity {
 
-  /**
-   * 
-   */
-  private static final long serialVersionUID = 1L;
-  @EqualsAndHashCode.Include
-  @EmbeddedId
-  @Audited
-  private GroupRolePK id;
-//  @Audited
-  private String stat;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	@EqualsAndHashCode.Include
+	@EmbeddedId
+	@Audited
+	private GroupRolePK id;
+	@Audited
+	private String stat;
 
-  @JsonIgnore
-  @ManyToOne(fetch = FetchType.EAGER)
-  @JoinColumn(name = "group_id", insertable = false, updatable = false)
-  private Group group;
-  
-  @JsonIgnore
-  @ManyToOne(fetch = FetchType.EAGER)
-  @JoinColumn(name = "role_id", insertable = false, updatable = false)
-  private Role role;
+	@JsonIgnore
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "group_id", insertable = false, updatable = false)
+	private Group group;
 
-  public GroupRole(GroupRolePK f) {
-    this.id = f;
-  }
-  
-  public GroupRole(String groupId, String roleId) {
-	    this.id = new GroupRolePK(groupId, roleId);
-	  }
+	@JsonIgnore
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "role_id", insertable = false, updatable = false)
+	private Role role;
+
+	public GroupRole(GroupRolePK f) {
+		this.id = f;
+	}
+
+	public GroupRole(String groupId, String roleId) {
+		this.id = new GroupRolePK(groupId, roleId);
+	}
 
 }

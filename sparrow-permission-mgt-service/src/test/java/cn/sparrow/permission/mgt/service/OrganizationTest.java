@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,25 +21,24 @@ import org.springframework.data.domain.Pageable;
 
 import cn.sparrow.permission.constant.GroupTypeEnum;
 import cn.sparrow.permission.constant.OrganizationTypeEnum;
+import cn.sparrow.permission.core.api.AuditLogService;
 import cn.sparrow.permission.core.api.PermissionService;
+import cn.sparrow.permission.core.service.AuditLogServiceImpl;
 import cn.sparrow.permission.core.service.PermissionServiceImpl;
 import cn.sparrow.permission.mgt.api.EmployeeService;
 import cn.sparrow.permission.mgt.api.GroupService;
 import cn.sparrow.permission.mgt.api.OrganizationService;
 import cn.sparrow.permission.mgt.api.PositionLevelService;
 import cn.sparrow.permission.mgt.api.RoleService;
-import cn.sparrow.permission.mgt.service.repository.OrganizationRoleRelationRepository;
 import cn.sparrow.permission.model.group.Group;
 import cn.sparrow.permission.model.organization.Employee;
 import cn.sparrow.permission.model.organization.Organization;
 import cn.sparrow.permission.model.organization.OrganizationPositionLevelPK;
 import cn.sparrow.permission.model.organization.OrganizationRolePK;
-import cn.sparrow.permission.model.organization.OrganizationRoleRelationPK;
 import cn.sparrow.permission.model.organization.PositionLevel;
 import cn.sparrow.permission.model.organization.Role;
 import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @SpringBootTest
 public class OrganizationTest {
 
@@ -52,6 +50,11 @@ public class OrganizationTest {
 		@Bean
 		public PermissionService permissionService() {
 			return new PermissionServiceImpl((EntityManager) entityManager);
+		}
+		
+		@Bean
+		public AuditLogService auditLogService() {
+			return new AuditLogServiceImpl((EntityManager) entityManager);
 		}
 	}
 
@@ -176,7 +179,9 @@ public class OrganizationTest {
 				employeeService.removeRole(employee2.getId(), Arrays.asList(
 						new OrganizationRolePK[] { new OrganizationRolePK(parent.getId(), roleParent.getId()) }));
 				assertEquals(0, employeeService.getRoles(employee2.getId()).size());
-
+//				employeeService.addRole(employee2.getId(), Arrays.asList(
+//						new OrganizationRolePK[] { new OrganizationRolePK(parent.getId(), roleParent.getId()) }));
+				
 				// 设置员工上级
 				employeeService.addParent(employee1.getId(), Arrays.asList(new String[] { employee2.getId() }));
 				// 员工上级列表
@@ -233,6 +238,8 @@ public class OrganizationTest {
 				assertEquals(0, positionLevelService
 						.getEmployees(new OrganizationPositionLevelPK(parent.getId(), positionLevel2.getId())).size());
 				assertEquals(0, employeeService.getLevels(employee1.getId()).size());
+//				employeeService.addLevel(employee1.getId(), Arrays.asList(new OrganizationPositionLevelPK[] {
+//						new OrganizationPositionLevelPK(parent.getId(), positionLevel2.getId()) }));
 
 				// 创建群组
 				Group group = new Group(j + "g" + i, j + "o" + i + "g" + i);
@@ -276,10 +283,10 @@ public class OrganizationTest {
 						.getTotalElements()>0);
 				// 设置子组
 				groupService.addMembers(group1.getId(), GroupTypeEnum.GROUP, Arrays.asList(new Object[] {group2.getId()}));
-				assertEquals(1, groupService.getMembers(group2.getId(), GroupTypeEnum.GROUP, Pageable.unpaged()).getTotalElements());
+				assertEquals(1, groupService.getMembers(group1.getId(), GroupTypeEnum.GROUP, Pageable.unpaged()).getTotalElements());
 				// 移除子组
 				groupService.removeMembers(group1.getId(), GroupTypeEnum.GROUP, Arrays.asList(new Object[] {group2.getId()}));
-				assertEquals(0, groupService.getMembers(group2.getId(), GroupTypeEnum.GROUP, Pageable.unpaged()).getTotalElements());
+				assertEquals(0, groupService.getMembers(group1.getId(), GroupTypeEnum.GROUP, Pageable.unpaged()).getTotalElements());
 
 				// 设置组织
 				groupService.addMembers(group1.getId(), GroupTypeEnum.ORGANIZATION,
@@ -301,7 +308,7 @@ public class OrganizationTest {
 				assertEquals(1, groupService.getMembers(group1.getId(), GroupTypeEnum.LEVEL, Pageable.unpaged()).getTotalElements());
 				groupService.removeMembers(group1.getId(), GroupTypeEnum.LEVEL, Arrays.asList(new Object[] {positionLevel.getId()}));
 				assertEquals(0, groupService.getMembers(group1.getId(), GroupTypeEnum.LEVEL, Pageable.unpaged()).getTotalElements());
-				
+
 				
 			
 			}
@@ -318,6 +325,7 @@ public class OrganizationTest {
 		assertEquals(12, organizationService.getRoles(prev, Pageable.unpaged()).getTotalElements());
 		assertEquals(12, organizationService.getLevels(prev, Pageable.unpaged()).getTotalElements());
 		assertEquals(6, organizationService.getGroups(prev, Pageable.unpaged()).getTotalElements());
+
 		
 		
 		// 测试群组树
@@ -335,7 +343,7 @@ public class OrganizationTest {
 				}
 			}
 //			log.info("=========={}",groupService.getTree(groupL1.getId()));
-			assertEquals(3, groupService.getTree(groupL1.getId()).getChildren().size());
+			assertEquals(0, groupService.getTree(groupL1.getId()).getChildren().size());
 
 		}
 		

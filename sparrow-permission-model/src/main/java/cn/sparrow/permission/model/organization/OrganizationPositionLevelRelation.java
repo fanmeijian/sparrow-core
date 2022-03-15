@@ -11,6 +11,8 @@ import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.validation.ValidationException;
 
+import org.hibernate.envers.Audited;
+
 import cn.sparrow.permission.model.common.AbstractSparrowEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -30,6 +32,7 @@ public class OrganizationPositionLevelRelation extends AbstractSparrowEntity {
 
 	@EqualsAndHashCode.Include
 	@EmbeddedId
+	@Audited
 	private OrganizationPositionLevelRelationPK id;
 
 	@ManyToOne(fetch = FetchType.EAGER)

@@ -4,6 +4,7 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -30,7 +31,8 @@ public class GroupPositionLevel extends AbstractSparrowEntity {
 	private static final long serialVersionUID = 1L;
 	@EqualsAndHashCode.Include
 	@EmbeddedId
-//	@Audited
+	@Audited
+	@JoinColumns({ @JoinColumn(name = "group_id"), @JoinColumn(name = "position_level_id") })
 	private GroupPositionLevelPK id;
 	@Audited
 	private String stat;

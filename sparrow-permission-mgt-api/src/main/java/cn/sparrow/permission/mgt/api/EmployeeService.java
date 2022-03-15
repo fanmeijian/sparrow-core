@@ -30,13 +30,13 @@ public interface EmployeeService {
 	@Operation(summary = "新增员工")
 	@PostMapping("")
 	@ResponseBody
-	public Employee create(Employee employee);
+	public Employee create(@RequestBody Employee employee);
 
 	@Operation(summary = "更新员工")
 	@PatchMapping("/{employeeId}")
 	@ResponseBody
 	@io.swagger.v3.oas.annotations.parameters.RequestBody(content = @Content(schema = @Schema(implementation = Employee.class)))
-	public Employee update(@PathVariable("employeeId") String employeeId, Map<String, Object> map);
+	public Employee update(@PathVariable("employeeId") String employeeId,@RequestBody Map<String, Object> map);
 
 	@Operation(summary = "删除员工")
 	@DeleteMapping("")

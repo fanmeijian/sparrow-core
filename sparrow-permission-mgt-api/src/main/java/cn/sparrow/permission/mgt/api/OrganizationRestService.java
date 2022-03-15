@@ -5,6 +5,8 @@ import java.util.Map;
 
 import javax.validation.constraints.NotNull;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,8 +33,9 @@ public interface OrganizationRestService {
 	@Operation(summary = "获取下级")
 	@GetMapping("/{organizationId}/children")
 	@ResponseBody
-	public List<?> getChildren(@PathVariable("organizationId") String organizationId,@NotNull OrganizationChildTypeEnum type);
-	
+	public Page<?> getChildren(@PathVariable("organizationId") String organizationId, OrganizationChildTypeEnum type,
+			@Nullable Pageable pageable);
+
 	@Operation(summary = "获取上级组织")
 	@GetMapping("/{organizationId}/parents")
 	@ResponseBody

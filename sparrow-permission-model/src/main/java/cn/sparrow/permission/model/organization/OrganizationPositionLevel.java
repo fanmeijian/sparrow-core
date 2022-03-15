@@ -34,7 +34,7 @@ public class OrganizationPositionLevel extends AbstractSparrowEntity {
 	private static final long serialVersionUID = 1L;
 	@EqualsAndHashCode.Include
 	@EmbeddedId
-//	@Audited
+	@Audited
 	private OrganizationPositionLevelPK id;
 	@Audited
 	private String stat;

@@ -11,10 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.ExampleMatcher.StringMatcher;
+import org.springframework.http.HttpStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import cn.sparrow.permission.mgt.api.RoleService;
 import cn.sparrow.permission.mgt.service.repository.EmployeeOrganizationRoleRepository;
@@ -50,6 +52,7 @@ public class RoleServiceImpl implements RoleService {
 
 	@Override
 	@Transactional
+	@ResponseStatus(code = HttpStatus.CREATED)
 	public Role create(Role role) {
 		Role savedRole = roleRepository.save(role);
 		// 保存岗位所在的组织
@@ -80,6 +83,7 @@ public class RoleServiceImpl implements RoleService {
 
 	@Override
 	@Transactional
+	@ResponseStatus(code = HttpStatus.NO_CONTENT)
 	public void delete(@NotNull String[] ids) {
 		roleRepository.deleteByIdIn(ids);
 	}
@@ -110,6 +114,7 @@ public class RoleServiceImpl implements RoleService {
 	}
 
 	@Transactional
+	@ResponseStatus(code = HttpStatus.NO_CONTENT)
 	public void addRelations(List<OrganizationRoleRelationPK> ids) {
 		ids.forEach(f -> {
 			organizationRoleRelationRepository.save(new OrganizationRoleRelation(f));
@@ -117,6 +122,7 @@ public class RoleServiceImpl implements RoleService {
 	}
 
 	@Transactional
+	@ResponseStatus(code = HttpStatus.NO_CONTENT)
 	public void delRelations(List<OrganizationRoleRelationPK> ids) {
 		ids.forEach(f -> {
 			organizationRoleRelationRepository.deleteById(f);
@@ -131,6 +137,7 @@ public class RoleServiceImpl implements RoleService {
 
 	@Override
 	@Transactional
+	@ResponseStatus(code = HttpStatus.NO_CONTENT)
 	public void setParentOrg(String roleId, List<String> orgs) {
 		orgs.forEach(f -> {
 			organizationRoleRepository.save(new OrganizationRole(f, roleId));
@@ -139,6 +146,7 @@ public class RoleServiceImpl implements RoleService {
 
 	@Override
 	@Transactional
+	@ResponseStatus(code = HttpStatus.NO_CONTENT)
 	public void removeParentOrg(String roleId, List<String> orgs) {
 		orgs.forEach(f -> {
 			organizationRoleRepository.deleteById(new OrganizationRolePK(f, roleId));
@@ -147,6 +155,7 @@ public class RoleServiceImpl implements RoleService {
 
 	@Override
 	@Transactional
+	@ResponseStatus(code = HttpStatus.NO_CONTENT)
 	public void addParents(OrganizationRolePK organizationRoleId, @NotNull List<OrganizationRolePK> ids) {
 		ids.forEach(f -> {
 			organizationRoleRelationRepository.save(new OrganizationRoleRelation(organizationRoleId, f));
@@ -155,6 +164,7 @@ public class RoleServiceImpl implements RoleService {
 
 	@Override
 	@Transactional
+	@ResponseStatus(code = HttpStatus.NO_CONTENT)
 	public void delParents(OrganizationRolePK organizationRoleId, @NotNull List<OrganizationRolePK> ids) {
 		ids.forEach(f -> {
 			organizationRoleRelationRepository.deleteById(new OrganizationRoleRelationPK(organizationRoleId, f));

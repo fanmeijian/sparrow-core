@@ -25,7 +25,7 @@ public class OrganizationGroup extends AbstractSparrowEntity {
 	private static final long serialVersionUID = 1L;
 	@EqualsAndHashCode.Include
 	@EmbeddedId
-//	@Audited
+	@Audited
 	private OrganizationGroupPK id;
 	@Audited
 	private String stat;

@@ -8,6 +8,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
+import org.hibernate.envers.Audited;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import cn.sparrow.permission.model.common.AbstractSparrowEntity;
@@ -38,9 +40,9 @@ public class GroupEmployee extends AbstractSparrowEntity {
 	 */
 	private static final long serialVersionUID = 1L;
 
-//	@Audited
 	@EqualsAndHashCode.Include
 	@EmbeddedId
+	@Audited
 	private GroupEmployeePK id;
 
 	@JsonIgnore

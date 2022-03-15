@@ -9,10 +9,12 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -23,6 +25,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+@Audited
 @Data
 @EqualsAndHashCode(callSuper = true, onlyExplicitlyIncluded = true)
 @NoArgsConstructor
@@ -46,7 +49,7 @@ public class Role extends AbstractSparrowEntity {
 	@Column(unique = true)
 	private String code;
 	private String name;
-	private Boolean isRoot = true;
+	private Boolean isRoot;
 	private String stat;
 
 	// use for create relation at batch
@@ -59,10 +62,12 @@ public class Role extends AbstractSparrowEntity {
 //	@JsonProperty
 //	private Set<String> organizationIds;
 
+	@NotAudited
 	@JsonIgnore
 	@OneToMany(targetEntity = OrganizationRole.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "role")
 	private Set<OrganizationRole> organizationRoles;
 
+	@NotAudited
 	@JsonIgnore
 	@OneToMany(targetEntity = GroupRole.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "role")
 	private Set<GroupRole> groupRoles;
@@ -70,6 +75,13 @@ public class Role extends AbstractSparrowEntity {
 	public Role(String name, String code) {
 		this.name = name;
 		this.code = code;
+	}
+
+	@PrePersist
+	private void preSave() {
+		if (isRoot == null) {
+			isRoot = true;
+		}
 	}
 
 }

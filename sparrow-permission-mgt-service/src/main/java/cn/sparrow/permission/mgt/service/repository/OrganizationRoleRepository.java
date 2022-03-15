@@ -2,8 +2,6 @@ package cn.sparrow.permission.mgt.service.repository;
 
 import java.util.List;
 
-import javax.validation.constraints.NotBlank;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

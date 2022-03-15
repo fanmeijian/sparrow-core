@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -88,6 +89,13 @@ public class Employee extends AbstractSparrowEntity {
 		this.name = name;
 		this.code = code;
 		this.organizationId = organizationId;
+	}
+	
+	@PrePersist
+	private void preSave() {
+		if (isRoot == null) {
+			isRoot = true;
+		}
 	}
 
 }

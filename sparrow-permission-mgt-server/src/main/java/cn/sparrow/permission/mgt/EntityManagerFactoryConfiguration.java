@@ -3,13 +3,17 @@ package cn.sparrow.permission.mgt;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.persistence.EntityManager;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 
+import cn.sparrow.permission.core.api.AuditLogService;
 import cn.sparrow.permission.core.api.EmployeeTokenService;
 import cn.sparrow.permission.core.api.PermissionService;
+import cn.sparrow.permission.core.service.AuditLogServiceImpl;
 import cn.sparrow.permission.core.service.EmployeeTokenServiceImpl;
 import cn.sparrow.permission.core.service.PermissionServiceImpl;
 
@@ -65,12 +69,17 @@ public class EntityManagerFactoryConfiguration {
 //	}
 
 	@Bean
-	public PermissionService permissionService() {
-		return new PermissionServiceImpl();
+	public PermissionService permissionService(EntityManager entityManager) {
+		return new PermissionServiceImpl(entityManager);
 	}
 
 	@Bean
-	public EmployeeTokenService employeeTokenService() {
-		return new EmployeeTokenServiceImpl();
+	public EmployeeTokenService employeeTokenService(EntityManager entityManager) {
+		return new EmployeeTokenServiceImpl(entityManager);
+	}
+	
+	@Bean
+	public AuditLogService auditLogService(EntityManager entityManager) {
+		return new AuditLogServiceImpl(entityManager);
 	}
 }

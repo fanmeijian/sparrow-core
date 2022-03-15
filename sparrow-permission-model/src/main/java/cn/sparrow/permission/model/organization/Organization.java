@@ -11,7 +11,10 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.envers.Audited;
@@ -49,19 +52,22 @@ public class Organization extends AbstractSparrowEntity {
 	private static final long serialVersionUID = 8581950429388182649L;
 	@Column(unique = true)
 	@Audited
+	@NotEmpty(message = "组织代码不能为空，且必须唯一！")
 	private String code;
 	@Audited
+	@NotEmpty(message = "组织名称不能为空！")
 	private String name;
 	@Audited
 	private String stat;
 	@Audited
-	private Boolean isRoot = true;
+	private Boolean isRoot;
 	// use for create relation at batch
 //  @Transient
 //  @JsonProperty
 //  private List<String> parentIds;
 	@Enumerated(EnumType.STRING)
 	@Audited
+	@NotNull(message = "组织类型不能为空！")
 	private OrganizationTypeEnum type; // 公司还是部门
 
 //	@Transient
@@ -116,5 +122,12 @@ public class Organization extends AbstractSparrowEntity {
 		this.code = code;
 		this.name = name;
 		this.type = type;
+	}
+	
+	@PrePersist
+	private void preSave() {
+		if (isRoot == null) {
+			isRoot = true;
+		}
 	}
 }

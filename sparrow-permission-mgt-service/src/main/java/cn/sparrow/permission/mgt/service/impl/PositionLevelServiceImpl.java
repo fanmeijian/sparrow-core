@@ -7,8 +7,10 @@ import java.util.Map;
 import javax.validation.constraints.NotBlank;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import cn.sparrow.permission.mgt.api.PositionLevelService;
 import cn.sparrow.permission.mgt.service.repository.EmployeeOrganizationLevelRepository;
@@ -38,7 +40,6 @@ public class PositionLevelServiceImpl implements PositionLevelService {
 	@Autowired
 	OrganizationRepository organizationRepository;
 
-
 	@Override
 	public List<Employee> getEmployees(OrganizationPositionLevelPK organizationLevelId) {
 		List<Employee> employees = new ArrayList<Employee>();
@@ -50,26 +51,21 @@ public class PositionLevelServiceImpl implements PositionLevelService {
 
 	@Override
 	@Transactional
+	@ResponseStatus(code = HttpStatus.CREATED)
 	public PositionLevel create(PositionLevel lvel) {
-		PositionLevel savedLevel = levelRepository.save(lvel);
-		// 保存岗位所在的组织
-//		if (lvel.getOrganizationIds() != null) {
-//			lvel.getOrganizationIds().forEach(f -> {
-//				organizationLevelRepository
-//						.save(new OrganizationPositionLevel(new OrganizationPositionLevelPK(f, savedLevel.getId())));
-//			});
-//		}
-		return savedLevel;
+		return levelRepository.save(lvel);
 	}
 
 	@Override
 	@Transactional
+	@ResponseStatus(code = HttpStatus.NO_CONTENT)
 	public void addRelation(List<OrganizationPositionLevelRelation> organizationLevelRelations) {
 		organizationLevelRelationRepository.saveAll(organizationLevelRelations);
 	}
 
 	@Override
 	@Transactional
+	@ResponseStatus(code = HttpStatus.NO_CONTENT)
 	public void delete(String[] ids) {
 		levelRepository.deleteByIdIn(ids);
 	}
@@ -103,6 +99,7 @@ public class PositionLevelServiceImpl implements PositionLevelService {
 
 	@Override
 	@Transactional
+	@ResponseStatus(code = HttpStatus.NO_CONTENT)
 	public void removeRelation(List<OrganizationPositionLevelRelationPK> ids) {
 		organizationLevelRelationRepository.deleteAllByIdInBatch(ids);
 		;
@@ -118,6 +115,7 @@ public class PositionLevelServiceImpl implements PositionLevelService {
 
 	@Override
 	@Transactional
+	@ResponseStatus(code = HttpStatus.NO_CONTENT)
 	public void setParentOrg(String positionLevelId, List<String> orgs) {
 		orgs.forEach(f -> {
 			organizationLevelRepository.save(new OrganizationPositionLevel(f, positionLevelId));
@@ -126,6 +124,7 @@ public class PositionLevelServiceImpl implements PositionLevelService {
 
 	@Override
 	@Transactional
+	@ResponseStatus(code = HttpStatus.NO_CONTENT)
 	public void removeParentOrg(String positionLevelId, List<String> orgs) {
 		orgs.forEach(f -> {
 			organizationLevelRepository.deleteById(new OrganizationPositionLevelPK(f, positionLevelId));
@@ -134,6 +133,7 @@ public class PositionLevelServiceImpl implements PositionLevelService {
 
 	@Override
 	@Transactional
+	@ResponseStatus(code = HttpStatus.NO_CONTENT)
 	public void addRelation(OrganizationPositionLevelPK organizationLevelId, List<OrganizationPositionLevelPK> ids) {
 		ids.forEach(f -> {
 			organizationLevelRelationRepository.save(new OrganizationPositionLevelRelation(organizationLevelId, f));
@@ -142,6 +142,7 @@ public class PositionLevelServiceImpl implements PositionLevelService {
 
 	@Override
 	@Transactional
+	@ResponseStatus(code = HttpStatus.NO_CONTENT)
 	public void removeRelation(OrganizationPositionLevelPK organizationLevelId, List<OrganizationPositionLevelPK> ids) {
 		ids.forEach(f -> {
 			organizationLevelRelationRepository

@@ -32,7 +32,7 @@ public class EmployeeRelation extends AbstractSparrowEntity{
 
 	@EqualsAndHashCode.Include
 	@EmbeddedId
-//	@Audited
+	@Audited
 	private EmployeeRelationPK id;
 
 	@ManyToOne

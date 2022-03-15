@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -172,7 +173,7 @@ public class OrganizationServiceImpl implements OrganizationService {
 
 	@Override
 	@Transactional
-	@ResponseStatus(code = HttpStatus.ACCEPTED)
+	@ResponseStatus(code = HttpStatus.NO_CONTENT)
 	public void addParent(String organizationId, List<String> parentIds) {
 
 		parentIds.forEach(f -> {
@@ -289,7 +290,7 @@ public class OrganizationServiceImpl implements OrganizationService {
 
 	@Override
 	@ResponseStatus(code = HttpStatus.CREATED)
-	public Organization create(Organization organization) {
+	public Organization create(@Valid Organization organization) {
 		return organizationRepository.save(organization);
 	}
 
@@ -302,6 +303,7 @@ public class OrganizationServiceImpl implements OrganizationService {
 
 	@Override
 	@Transactional
+	@ResponseStatus(code = HttpStatus.NO_CONTENT)
 	public void removeParent(String organizationId, List<String> parentIds) {
 		parentIds.forEach(f -> {
 			if (f.equals("root")) {
@@ -309,8 +311,7 @@ public class OrganizationServiceImpl implements OrganizationService {
 				organization.setIsRoot(false);
 				organizationRepository.save(organization);
 			} else {
-				organizationRelationRepository
-						.deleteById(new OrganizationRelationPK(organizationId, f));
+				organizationRelationRepository.deleteById(new OrganizationRelationPK(organizationId, f));
 			}
 		});
 
@@ -329,8 +330,22 @@ public class OrganizationServiceImpl implements OrganizationService {
 	}
 
 	@Override
-	public List<?> getChildren(String organizationId, OrganizationChildTypeEnum type) {
-		// TODO Auto-generated method stub
+	public Page<?> getChildren(String organizationId, OrganizationChildTypeEnum type, Pageable pageable) {
+
+		switch (type) {
+		case ORGANIZATION:
+			return organizationRelationRepository.findByIdParentId(organizationId, pageable);
+		case ROLE:
+			return organizationRoleRepository.findByIdOrganizationId(organizationId, pageable);
+		case LEVEL:
+			return organizationLevelRepository.findByIdOrganizationId(organizationId, pageable);
+		case GROUP:
+			return organizationGroupRepository.findByIdOrganizationId(organizationId, pageable);
+		case EMPLOYEE:
+			return employeeRepository.findAllByOrganizationId(organizationId, pageable);
+		default:
+			break;
+		}
 		return null;
 	}
 

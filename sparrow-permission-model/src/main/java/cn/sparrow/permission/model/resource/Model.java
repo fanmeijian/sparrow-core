@@ -10,6 +10,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -26,6 +29,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Table(name = "spr_model")
+@Audited
 @JsonIgnoreProperties(value = {"modelAttributes","sparrowPermissionToken","dataPermissionToken"},allowGetters = true)
 public class Model extends AbstractSparrowEntity {
 
@@ -38,10 +42,12 @@ public class Model extends AbstractSparrowEntity {
 	private String remark;
 	private Boolean isSystem;
 
+	@NotAudited
 	@JsonIgnore
 	@OneToMany(targetEntity = ModelAttribute.class, cascade = CascadeType.ALL, mappedBy = "model")
 	private List<ModelAttribute> modelAttributes;
 
+	@NotAudited
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "permission_token_id")
 	private SparrowPermissionToken sparrowPermissionToken;

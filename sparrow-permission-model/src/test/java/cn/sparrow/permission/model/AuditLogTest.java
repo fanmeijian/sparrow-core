@@ -1,5 +1,7 @@
 package cn.sparrow.permission.model;
 
+import static org.junit.Assert.assertEquals;
+
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
 import javax.persistence.PersistenceContext;
@@ -31,9 +33,11 @@ public class AuditLogTest {
 		Organization organization = new Organization("test", "001", OrganizationTypeEnum.UNIT);
 		entityManager.persist(organization);
 		entityManager.getTransaction().commit();
+		String idString =organization.getId();
 		log.info("organization: {}",organization);
 		entityManager.getTransaction().begin();
 		organization.setName("test2");
+		entityManager.persist(new Organization("test", "001223", OrganizationTypeEnum.UNIT));
 		entityManager.merge(organization);
 		entityManager.getTransaction().commit();
 		entityManager.getTransaction().begin();
@@ -45,9 +49,11 @@ public class AuditLogTest {
 //		query = reader.createQuery().forEntitiesAtRevision(Organization.class, 1);
 //		log.info("rev for {} {}", Organization.class, query.getSingleResult());
 		query.addOrder(AuditEntity.revisionNumber().desc());
-		query.getResultList().forEach(f->{
-			log.info("rev for {} {}", Organization.class, f);
-		});
+		query.add(AuditEntity.id().eq(idString));
+		assertEquals(3, query.getResultList().size());
+//		query.getResultList().forEach(f->{
+//			log.info("rev for {} {}", Organization.class, f);
+//		});
 //		
 		
 

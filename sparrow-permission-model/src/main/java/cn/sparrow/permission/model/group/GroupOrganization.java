@@ -6,6 +6,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.envers.Audited;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import cn.sparrow.permission.model.common.AbstractSparrowEntity;
@@ -14,36 +16,35 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-
 @Data
 @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
 @NoArgsConstructor
 @Entity
 @Table(name = "spr_group_organization")
-public class GroupOrganization extends AbstractSparrowEntity{
+public class GroupOrganization extends AbstractSparrowEntity {
 
-  private static final long serialVersionUID = 1L;
-  @EqualsAndHashCode.Include
-  @EmbeddedId
-//  @Audited
-  private GroupOrganizationPK id;
+	private static final long serialVersionUID = 1L;
+	@EqualsAndHashCode.Include
+	@EmbeddedId
+	@Audited
+	private GroupOrganizationPK id;
 
-  @JsonIgnore
-  @ManyToOne
-  @JoinColumn(name = "group_id", insertable = false, updatable = false)
-  private Group group;
-  
-  @JsonIgnore
-  @ManyToOne
-  @JoinColumn(name = "organization_id", insertable = false, updatable = false)
-  private Organization organization;
+	@JsonIgnore
+	@ManyToOne
+	@JoinColumn(name = "group_id", insertable = false, updatable = false)
+	private Group group;
 
-  public GroupOrganization(GroupOrganizationPK f) {
-    this.id = f;
-  }
-  
-  public GroupOrganization(String groupId, String organizationId) {
-	    this.id = new GroupOrganizationPK(groupId, organizationId);
-	  }
+	@JsonIgnore
+	@ManyToOne
+	@JoinColumn(name = "organization_id", insertable = false, updatable = false)
+	private Organization organization;
+
+	public GroupOrganization(GroupOrganizationPK f) {
+		this.id = f;
+	}
+
+	public GroupOrganization(String groupId, String organizationId) {
+		this.id = new GroupOrganizationPK(groupId, organizationId);
+	}
 
 }

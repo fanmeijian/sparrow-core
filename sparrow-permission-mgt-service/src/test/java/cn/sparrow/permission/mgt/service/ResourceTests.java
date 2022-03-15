@@ -28,7 +28,9 @@ import cn.sparrow.permission.constant.OrganizationTypeEnum;
 import cn.sparrow.permission.constant.PermissionEnum;
 import cn.sparrow.permission.constant.PermissionExpressionEnum;
 import cn.sparrow.permission.constant.PermissionTargetEnum;
+import cn.sparrow.permission.core.api.AuditLogService;
 import cn.sparrow.permission.core.api.PermissionService;
+import cn.sparrow.permission.core.service.AuditLogServiceImpl;
 import cn.sparrow.permission.core.service.PermissionServiceImpl;
 import cn.sparrow.permission.mgt.api.ApiService;
 import cn.sparrow.permission.mgt.api.EmployeeService;
@@ -91,6 +93,11 @@ public class ResourceTests {
         public PermissionService permissionService() {
             return new PermissionServiceImpl((EntityManager) entityManager);
         }
+        
+        @Bean
+		public AuditLogService auditLogService() {
+			return new AuditLogServiceImpl((EntityManager) entityManager);
+		}
     }
 
 	@Test

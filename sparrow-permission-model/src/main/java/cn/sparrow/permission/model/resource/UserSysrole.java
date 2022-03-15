@@ -9,6 +9,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
+import org.hibernate.envers.Audited;
+
 import cn.sparrow.permission.model.common.AbstractSparrowEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -28,6 +30,7 @@ public class UserSysrole extends AbstractSparrowEntity {
 
   @EqualsAndHashCode.Include
   @EmbeddedId
+  @Audited
   private UserSysrolePK id;
   
   @ManyToOne(fetch = FetchType.LAZY)

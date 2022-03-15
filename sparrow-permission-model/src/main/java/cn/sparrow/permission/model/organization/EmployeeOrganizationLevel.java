@@ -18,13 +18,14 @@ import cn.sparrow.permission.model.common.AbstractSparrowEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+
 @Data
-@EqualsAndHashCode(callSuper = false,onlyExplicitlyIncluded = true)
+@EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
 @Entity
 @Table(name = "spr_employee_organization_position_level")
 @NamedQueries({
-	@NamedQuery(name = "EmployeeOrganizationLevel.findByEmployeeId", query = "SELECT o FROM EmployeeOrganizationLevel o WHERE o.id.employeeId= :employeeId") })
-public class EmployeeOrganizationLevel extends AbstractSparrowEntity{
+		@NamedQuery(name = "EmployeeOrganizationLevel.findByEmployeeId", query = "SELECT o FROM EmployeeOrganizationLevel o WHERE o.id.employeeId= :employeeId") })
+public class EmployeeOrganizationLevel extends AbstractSparrowEntity {
 
 	/**
 	 * 
@@ -32,6 +33,7 @@ public class EmployeeOrganizationLevel extends AbstractSparrowEntity{
 	private static final long serialVersionUID = 1L;
 	@EqualsAndHashCode.Include
 	@EmbeddedId
+	@Audited
 	private EmployeeOrganizationLevelPK id;
 	private String stat;
 

@@ -10,6 +10,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -52,7 +53,7 @@ public class Group extends AbstractSparrowEntity {
 	@Audited
 	private String stat;
 	@Audited
-	private Boolean isRoot = true;
+	private Boolean isRoot;
 	@Audited
 	@Enumerated
 	private GroupTypeEnum type;
@@ -84,5 +85,12 @@ public class Group extends AbstractSparrowEntity {
 	public Group(String name, String code){
 		this.name = name;
 		this.code = code;
+	}
+	
+	@PrePersist
+	private void preSave() {
+		if (isRoot == null) {
+			isRoot = true;
+		}
 	}
 }

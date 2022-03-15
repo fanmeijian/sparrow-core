@@ -5,8 +5,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import cn.sparrow.permission.mgt.api.EmployeeService;
 import cn.sparrow.permission.mgt.service.repository.EmployeeOrganizationLevelRepository;
@@ -54,12 +56,14 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 	@Override
 	@Transactional
+	@ResponseStatus(code = HttpStatus.CREATED)
 	public Employee create(Employee employee) {
 		return employeeRepository.save(employee);
 	}
 
 	@Override
 	@Transactional
+	@ResponseStatus(code = HttpStatus.NO_CONTENT)
 	public void addParent(String employeeId, List<String> parentIds) {
 		parentIds.forEach(f -> {
 			employeeRelationRepository.save(new EmployeeRelation(employeeId, f));
@@ -68,6 +72,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 	@Override
 	@Transactional
+	@ResponseStatus(code = HttpStatus.NO_CONTENT)
 	public void removeParent(String employeeId, List<String> parentIds) {
 		parentIds.forEach(f -> {
 			employeeRelationRepository.deleteById(new EmployeeRelationPK(employeeId, f));
@@ -76,6 +81,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 	@Override
 	@Transactional
+	@ResponseStatus(code = HttpStatus.NO_CONTENT)
 	public void addRole(String employeeId, List<OrganizationRolePK> ids) {
 		ids.forEach(f -> {
 			employeeOrganizationRoleRepository.save(new EmployeeOrganizationRole(employeeId, f));
@@ -84,6 +90,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 	@Override
 	@Transactional
+	@ResponseStatus(code = HttpStatus.NO_CONTENT)
 	public void removeRole(String employeeId, List<OrganizationRolePK> ids) {
 		ids.forEach(f -> {
 			employeeOrganizationRoleRepository.deleteById(new EmployeeOrganizationRolePK(f, employeeId));
@@ -92,6 +99,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 	@Override
 	@Transactional
+	@ResponseStatus(code = HttpStatus.NO_CONTENT)
 	public void addLevel(String employeeId, List<OrganizationPositionLevelPK> ids) {
 		ids.forEach(f -> {
 			employeeOrganizationLevelRepository.save(new EmployeeOrganizationLevel(employeeId, f));
@@ -100,6 +108,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 	@Override
 	@Transactional
+	@ResponseStatus(code = HttpStatus.NO_CONTENT)
 	public void removeLevel(String employeeId, List<OrganizationPositionLevelPK> ids) {
 		ids.forEach(f -> {
 			employeeOrganizationLevelRepository.deleteById(new EmployeeOrganizationLevelPK(f, employeeId));
@@ -138,6 +147,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 	}
 
 	@Transactional
+	@ResponseStatus(code = HttpStatus.NO_CONTENT)
 	public void delBatch(String[] ids) {
 		employeeRelationRepository.deleteByIdEmployeeIdInOrIdParentIdIn(ids, ids);
 		employeeRepository.deleteByIdIn(ids);
@@ -191,6 +201,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 	@Override
 	@Transactional
+	@ResponseStatus(code = HttpStatus.NO_CONTENT)
 	public void delete(String[] ids) {
 		employeeRepository.deleteByIdIn(ids);
 	}

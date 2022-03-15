@@ -26,7 +26,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "spr_employee_organization_role")
 @NamedQueries({
 		@NamedQuery(name = "EmployeeOrganizationRole.findByEmployeeId", query = "SELECT o FROM EmployeeOrganizationRole o WHERE o.id.employeeId=: employeeId") })
-public class EmployeeOrganizationRole extends AbstractSparrowEntity{
+public class EmployeeOrganizationRole extends AbstractSparrowEntity {
 
 	/**
 	 * 
@@ -34,8 +34,10 @@ public class EmployeeOrganizationRole extends AbstractSparrowEntity{
 	private static final long serialVersionUID = 1L;
 	@EqualsAndHashCode.Include
 	@EmbeddedId
-//	@Audited
+	@Audited
 	private EmployeeOrganizationRolePK id;
+
+	
 	private String stat;
 
 	@JsonIgnore

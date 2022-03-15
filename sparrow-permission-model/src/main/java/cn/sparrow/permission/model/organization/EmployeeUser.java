@@ -39,7 +39,7 @@ public class EmployeeUser extends AbstractSparrowEntity{
 
 	@EqualsAndHashCode.Include
 	@EmbeddedId
-//	@Audited
+	@Audited
 	private EmployeeUserPK id;
 
 	@JsonIgnore
