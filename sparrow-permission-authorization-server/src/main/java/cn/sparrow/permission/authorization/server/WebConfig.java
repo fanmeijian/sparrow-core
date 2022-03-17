@@ -1,19 +1,13 @@
-package cn.sparrow.permission.mgt;
-
-import java.text.SimpleDateFormat;
+package cn.sparrow.permission.authorization.server;
 
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;
 
 @Configuration
 public class WebConfig {
@@ -37,27 +31,8 @@ public class WebConfig {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
 				registry.addMapping("/**").allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS").allowedHeaders("*")
-						.allowedOriginPatterns("http://localhost:4200").allowCredentials(true);
+						.allowedOrigins("http://localhost:4200").allowCredentials(true);
 			}
 		};
-	}
-
-	@Bean
-	public MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter() {
-		MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
-		ObjectMapper mapper = converter.getObjectMapper();
-		Hibernate5Module hibernate5Module = new Hibernate5Module();
-		mapper.registerModule(hibernate5Module);
-		mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
-		return converter;
-	}
-
-	@Bean
-	public ObjectMapper includeTransientObjectMapper() {
-		Hibernate5Module hibernate5Module = new Hibernate5Module();
-		hibernate5Module.disable(Hibernate5Module.Feature.USE_TRANSIENT_ANNOTATION);
-		ObjectMapper mapper = new ObjectMapper();
-		mapper.registerModule(hibernate5Module);
-		return mapper;
 	}
 }

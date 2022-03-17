@@ -22,8 +22,6 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import cn.sparrow.permission.mgt.common.exception.ApiError;
-
 @ControllerAdvice
 public class GlobalExceptionHandler{
   private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);

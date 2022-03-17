@@ -157,23 +157,6 @@
 					<outputKind>module</outputKind>
 				</configuration>
 			</plugin>
-			<!-- 生成angular的调用客户端
-			<plugin>
-				<groupId>cz.habarta.typescript-generator</groupId>
-				<artifactId>typescript-generator-maven-plugin</artifactId>
-				<version>${typescript-generator.version}</version>
-				<configuration>
-					<generateSpringApplicationClient>true</generateSpringApplicationClient>
-				</configuration>
-				<dependencies>
-					<dependency>
-						<groupId>cz.habarta.typescript-generator</groupId>
-						<artifactId>typescript-generator-spring</artifactId>
-						<version>${typescript-generator.version}</version>
-					</dependency>
-				</dependencies>
-			</plugin>
-			-->
 		</plugins>
 		<pluginManagement>
 			<plugins>

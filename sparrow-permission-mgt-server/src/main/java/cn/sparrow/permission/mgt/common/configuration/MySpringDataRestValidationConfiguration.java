@@ -1,4 +1,4 @@
-package cn.sparrow.permission.mgt.common.validation;
+package cn.sparrow.permission.mgt.common.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
