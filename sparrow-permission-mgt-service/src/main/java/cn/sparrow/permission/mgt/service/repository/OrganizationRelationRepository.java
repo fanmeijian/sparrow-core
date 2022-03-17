@@ -22,7 +22,7 @@ public interface OrganizationRelationRepository
 
   long countByIdParentId(String id);
 
-  long countByIdOrganizationId(String id);
+  long countByIdOrganizationId(String id);	
 
   @Transactional
   void deleteByIdIn(Set<OrganizationRelationPK> ids);

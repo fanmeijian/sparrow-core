@@ -334,7 +334,11 @@ public class OrganizationServiceImpl implements OrganizationService {
 
 		switch (type) {
 		case ORGANIZATION:
-			return organizationRelationRepository.findByIdParentId(organizationId, pageable);
+			if (organizationId.toLowerCase().equals("root")) {
+				return organizationRepository.findByIsRoot(true, Pageable.unpaged());
+			} else {
+				return organizationRelationRepository.findByIdParentId(organizationId, pageable);
+			}
 		case ROLE:
 			return organizationRoleRepository.findByIdOrganizationId(organizationId, pageable);
 		case LEVEL:
