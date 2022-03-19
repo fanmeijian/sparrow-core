@@ -2,10 +2,10 @@ package cn.sparrow.permission.mgt.api;
 
 import java.util.List;
 
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -41,7 +41,7 @@ public interface JobLevelRestService {
 			@RequestBody List<OrganizationPositionLevelPK> ids);
 
 	@Operation(summary = "移除上级")
-	@DeleteMapping("/{organizationLevelId}/parents")
+	@PutMapping("/{organizationLevelId}/parents/delete")
 	@ResponseBody
 	public void removeRelation(
 			@Parameter(example = "organizationId_levelId", schema = @Schema(implementation = String.class)) @PathVariable("organizationLevelId") OrganizationPositionLevelPK organizationLevelId,

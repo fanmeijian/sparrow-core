@@ -8,11 +8,11 @@ import javax.validation.constraints.NotNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.lang.Nullable;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -54,7 +54,7 @@ public interface OrganizationRestService {
 			@RequestBody Map<String, Object> map);
 
 	@Operation(summary = "删除组织")
-	@DeleteMapping("")
+	@PutMapping("/delete")
 	@ResponseBody
 	public void delete(@NotNull @RequestBody String[] ids);
 
@@ -64,7 +64,7 @@ public interface OrganizationRestService {
 	public void addParent(@PathVariable("organizationId") String organizationId, @RequestBody List<String> parentIds);
 
 	@Operation(summary = "移除所属上级")
-	@DeleteMapping("/{organizationId}/parents")
+	@PutMapping("/{organizationId}/parents/delete")
 	@ResponseBody
 	public void removeParent(@PathVariable("organizationId") String organizationId,
 			@RequestBody List<String> parentIds);

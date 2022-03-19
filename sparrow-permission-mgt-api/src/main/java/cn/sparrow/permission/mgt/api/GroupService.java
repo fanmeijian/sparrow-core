@@ -3,11 +3,11 @@ package cn.sparrow.permission.mgt.api;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -38,7 +38,7 @@ public interface GroupService extends GroupRestService{
 	public Group update(@PathVariable("groupId") String groupId, Map<String, Object> map);
 
 	@Operation(summary = "删除群组")
-	@DeleteMapping("")
+	@PutMapping("/delete")
 	@ResponseBody
 	public void delete(@RequestBody List<String> ids);
 
@@ -58,7 +58,7 @@ public interface GroupService extends GroupRestService{
 	public void setParentOrgs(@PathVariable("groupId") String groupId, @RequestBody List<String> orgs);
 
 	@Operation(summary = "移除所属组织")
-	@DeleteMapping("/{groupId}/parentOrganizations")
+	@PutMapping("/{groupId}/parentOrganizations/delete")
 	@ResponseBody
 	public void removeParentOrgs(@PathVariable("groupId") String groupId, @RequestBody List<String> orgs);
 
@@ -68,7 +68,7 @@ public interface GroupService extends GroupRestService{
 	public void addMembers(@PathVariable("groupId") String groupId, @NotNull GroupTypeEnum type, @RequestBody List<Object> memberIds);
 	
 	@Operation(summary = "移除组成员")
-	@DeleteMapping("/{groupId}/members")
+	@PutMapping("/{groupId}/members/delete")
 	@ResponseBody
 	public void removeMembers(@PathVariable("groupId") String groupId, @NotNull GroupTypeEnum type, @RequestBody List<Object> memberIds);
 	

@@ -179,6 +179,7 @@ public class OrganizationServiceImpl implements OrganizationService {
 		parentIds.forEach(f -> {
 			if (f.equals("root")) {
 				Organization organization = organizationRepository.getById(organizationId);
+				organization.setIsRoot(true);
 				organizationRepository.save(organization);
 			} else {
 				organizationRelationRepository

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -48,7 +49,7 @@ public interface ModelService{
 	public Model update(@PathVariable("modelId") String modelId, Map<String,Object> map);
 
 	@Operation(summary = "删除模型")
-	@DeleteMapping("")
+	@PutMapping("/delete")
 	@ResponseBody
 	public void delete( @RequestBody List<String> ids);
 
@@ -63,7 +64,7 @@ public interface ModelService{
 //	public void addPermissions( @RequestBody ModelPermission modelPermission);
 
 	@Operation(summary = "删除模型权限")
-	@DeleteMapping("/{modelId}/permissions")
+	@PutMapping("/{modelId}/permissions/delete")
 	@ResponseBody
 	public void removePermission(@PathVariable("modelId") String modelId);
 	

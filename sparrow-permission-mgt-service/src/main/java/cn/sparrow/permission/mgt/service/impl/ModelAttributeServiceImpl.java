@@ -1,5 +1,6 @@
 package cn.sparrow.permission.mgt.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -12,8 +13,10 @@ import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.ExampleMatcher.StringMatcher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import cn.sparrow.permission.mgt.api.ModelAttributeService;
 import cn.sparrow.permission.mgt.service.repository.ModelAttributeRepository;
@@ -76,44 +79,46 @@ public class ModelAttributeServiceImpl implements ModelAttributeService {
 
 	@Override
 	public Page<ModelAttribute> allAttributes(String modelId, Pageable pageable, ModelAttribute modelAttribute) {
-		// TODO Auto-generated method stub
-		return null;
+		modelAttribute.getId().setModelId(modelId);
+		return this.all(pageable, modelAttribute);
 	}
 
 	@Override
+	@ResponseStatus(code = HttpStatus.CREATED)
 	public ModelAttribute createAttribute(ModelAttribute modelAttribute) {
-		// TODO Auto-generated method stub
-		return null;
+		return this.create(modelAttribute);
 	}
 
 	@Override
 	public ModelAttribute getAttribute(String modelId, String attributeId) {
-		// TODO Auto-generated method stub
-		return null;
+		return this.get(new ModelAttributePK(modelId, attributeId));
 	}
 
 	@Override
 	public ModelAttribute updateAttribute(String modelId, String attributeId, Map<String, Object> map) {
-		// TODO Auto-generated method stub
-		return null;
+		return this.update(new ModelAttributePK(modelId, attributeId), map);
 	}
 
 	@Override
+	@ResponseStatus(code = HttpStatus.NO_CONTENT)
 	public void addAttributePermission(String modelId, String attributeId, PermissionToken permissionToken) {
-		// TODO Auto-generated method stub
-		
+		this.addPermission(new ModelAttributePK(modelId, attributeId), permissionToken);
 	}
 
 	@Override
+	@ResponseStatus(code = HttpStatus.NO_CONTENT)
 	public void removeAttributePermission(String modelId, String attributeId) {
-		// TODO Auto-generated method stub
-		
+		this.removePermission(new ModelAttributePK(modelId, attributeId));
 	}
 
 	@Override
-	public void deleteAttribute(List<String> attributeIds) {
-		// TODO Auto-generated method stub
-		
+	@ResponseStatus(code = HttpStatus.NO_CONTENT)
+	public void deleteAttribute(String modelId, List<String> attributeIds) {
+		List<ModelAttributePK> modelAttributePKs = new ArrayList<ModelAttributePK>();
+		attributeIds.forEach(attributeId->{
+			modelAttributePKs.add(new ModelAttributePK(modelId, attributeId));
+		});
+		this.delete(modelAttributePKs);
 	}
 
 	// @PostMapping("/modelAttributes/permissions")

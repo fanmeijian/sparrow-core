@@ -8,11 +8,11 @@ import javax.validation.constraints.NotNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.lang.Nullable;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -45,7 +45,7 @@ public interface RoleService extends RoleRestService{
 	public void setParentOrg(@PathVariable("roleId") String roleId, @RequestBody List<String> orgs);
 
 	@Operation(summary = "移除岗位所属组织")
-	@DeleteMapping("/{roleId}/parentOrganizations")
+	@PutMapping("/{roleId}/parentOrganizations/delete")
 	@ResponseBody
 	public void removeParentOrg(@PathVariable("roleId") String roleId, @RequestBody List<String> orgs);
 
@@ -66,7 +66,7 @@ public interface RoleService extends RoleRestService{
 	public Role update(@PathVariable("roleId") String roleId,@RequestBody Map<String,Object> map);
 
 	@Operation(summary = "删除岗位")
-	@DeleteMapping("")
+	@PutMapping("/delete")
 	@ResponseBody
 	public void delete(@NotNull @RequestBody final String[] ids);
 

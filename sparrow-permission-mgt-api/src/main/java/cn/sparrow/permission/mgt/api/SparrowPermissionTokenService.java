@@ -22,7 +22,7 @@ public interface SparrowPermissionTokenService {
   @GetMapping("/{tokenId}")
   @Operation(summary = "令牌详情")
   @ResponseBody
-  public SparrowPermissionToken get(String tokenId);
+  public SparrowPermissionToken get(@PathVariable("tokenId") String tokenId);
 
   @GetMapping("")
   @Operation(summary = "浏览令牌")

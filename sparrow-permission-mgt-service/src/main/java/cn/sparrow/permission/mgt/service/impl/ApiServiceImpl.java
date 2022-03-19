@@ -79,7 +79,7 @@ public class ApiServiceImpl implements ApiService {
 	@Override
 	public SparrowApi update(String apiId, Map<String, Object> map) {
 		SparrowApi source = apiRepository.getById(apiId);
-		PatchUpdateHelper.merge(source, map);
+		PatchUpdateHelper.merge(source, map, SparrowApi.class);
 		return apiRepository.save(source);
 	}
 

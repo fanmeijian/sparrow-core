@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -33,7 +34,7 @@ public interface ModelAttributeRestService {
 			@Nullable ModelAttribute modelAttribute);
 
 	@Operation(summary = "新增属性")
-	@PostMapping("/{modelId}/attributes")
+	@PostMapping("/attributes")
 	@ResponseBody
 	public ModelAttribute createAttribute(@RequestBody ModelAttribute modelAttribute);
 
@@ -57,13 +58,13 @@ public interface ModelAttributeRestService {
 			@PathVariable("attributeId") String attributeId, @RequestBody PermissionToken permissionToken);
 
 	@Operation(summary = "移除属性权限")
-	@DeleteMapping("/{modelId}/attributes/{attributeId}/permissions")
+	@PutMapping("/{modelId}/attributes/{attributeId}/permissions/delete")
 	@ResponseBody
 	public void removeAttributePermission(@PathVariable("modelId") String modelId,
 			@PathVariable("attributeId") String attributeId);
 
 	@Operation(summary = "删除属性")
-	@DeleteMapping("/{modelId}/attributes")
+	@PutMapping("/{modelId}/attributes/delete")
 	@ResponseBody
-	public void deleteAttribute(@RequestBody List<String> attributeIds);
+	public void deleteAttribute(@PathVariable("modelId") String modelId,@RequestBody List<String> attributeIds);
 }

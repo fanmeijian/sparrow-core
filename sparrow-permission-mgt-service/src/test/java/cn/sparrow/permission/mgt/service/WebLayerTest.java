@@ -5,6 +5,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.asyncDispatch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.request;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -57,7 +58,7 @@ public class WebLayerTest {
 //		this.mockMvc.perform(asyncDispatch(mvcResult)).andExpect(status().isCreated());
 
 		this.mockMvc
-				.perform(delete("/organizations").contentType(MediaType.APPLICATION_JSON)
+				.perform(put("/organizations/delete").contentType(MediaType.APPLICATION_JSON)
 						.content(new ObjectMapper().writeValueAsString(new String[] { "test" })))
 				.andDo(print()).andExpect(status().isOk());
 

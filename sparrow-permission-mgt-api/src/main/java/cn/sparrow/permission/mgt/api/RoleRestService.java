@@ -4,10 +4,10 @@ import java.util.List;
 
 import javax.validation.constraints.NotNull;
 
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -51,7 +51,7 @@ public interface RoleRestService {
 			@NotNull @RequestBody List<OrganizationRolePK> ids);
 
 	@Operation(summary = "移除上级岗位")
-	@DeleteMapping("/{organizationRoleId}/parents")
+	@PutMapping("/{organizationRoleId}/parents/delete")
 	@ResponseBody
 	public void delParents(
 			@Parameter(example = "organizationId_roleId", schema = @Schema(implementation = String.class)) @PathVariable("organizationRoleId") OrganizationRolePK organizationRoleId,
