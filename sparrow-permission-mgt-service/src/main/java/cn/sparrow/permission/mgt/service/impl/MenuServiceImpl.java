@@ -345,4 +345,9 @@ public class MenuServiceImpl implements MenuService {
 		});
 	}
 
+	@Override
+	public Menu get(String menuId) {
+		return menuRepository.findById(menuId).orElse(null);
+	}
+
 }

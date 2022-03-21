@@ -150,4 +150,9 @@ public class PositionLevelServiceImpl implements PositionLevelService {
 		});
 	}
 
+	@Override
+	public PositionLevel get(String positionLevelId) {
+		return levelRepository.findById(positionLevelId).orElse(null);
+	}
+
 }

@@ -30,6 +30,11 @@ public interface MenuRestService {
 	@ResponseBody
 	public Menu save(@RequestBody Menu menu);
 
+	@PostMapping("/{menuId}")
+	@Operation(summary = "菜单详情")
+	@ResponseBody
+	public Menu get(@PathVariable("menuId") String menuId);
+
 	@Operation(summary = "菜单树")
 	@ResponseBody
 	@GetMapping("/tree")

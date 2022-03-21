@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import cn.sparrow.permission.model.organization.Employee;
 import cn.sparrow.permission.model.organization.OrganizationPositionLevel;
 import cn.sparrow.permission.model.organization.OrganizationPositionLevelPK;
+import cn.sparrow.permission.model.organization.PositionLevel;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -21,6 +22,11 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @Tag(name = "职级服务")
 @RequestMapping("/jobLevels")
 public interface JobLevelRestService {
+	@Operation(summary = "职级详情")
+	@GetMapping("/{levelId}")
+	@ResponseBody
+	public PositionLevel get(@PathVariable("levelId") String positionLevelId);
+	
 	@Operation(summary = "获取下级")
 	@GetMapping("/{organizationLevelId}/children")
 	@ResponseBody

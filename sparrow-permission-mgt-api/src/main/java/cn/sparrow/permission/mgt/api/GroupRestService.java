@@ -17,6 +17,12 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @Tag(name = "群组服务")
 @RequestMapping("/groups")
 public interface GroupRestService {
+	
+	@Operation(summary = "群组详情")
+	@GetMapping("/{groupId}")
+	@ResponseBody
+	public Group get(@PathVariable("groupId") String groupId);
+	
 	@Operation(summary = "群组树")
 	@GetMapping("/tree")
 	@ResponseBody

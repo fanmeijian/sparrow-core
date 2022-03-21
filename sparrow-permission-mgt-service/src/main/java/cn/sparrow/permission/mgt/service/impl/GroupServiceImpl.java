@@ -282,4 +282,9 @@ public class GroupServiceImpl implements GroupService {
 			}
 		});
 	}
+
+	@Override
+	public Group get(String groupId) {
+		return groupRepository.findById(groupId).orElse(null);
+	}
 }
