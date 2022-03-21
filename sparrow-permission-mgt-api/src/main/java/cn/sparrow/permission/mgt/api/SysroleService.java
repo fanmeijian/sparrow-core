@@ -21,7 +21,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-@Tag(name = "角色服务")
+@Tag(name = "sysrole", description = "角色服务")
 @RequestMapping("/sysroles")
 public interface SysroleService {
 	

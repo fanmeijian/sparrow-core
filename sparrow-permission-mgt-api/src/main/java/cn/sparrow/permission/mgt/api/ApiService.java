@@ -22,7 +22,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-@Tag(name = "接口服务")
+@Tag(name = "sprapi", description = "接口服务")
 @RequestMapping("/apis")
 public interface ApiService{
 

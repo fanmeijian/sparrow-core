@@ -5,6 +5,11 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.ExampleMatcher.StringMatcher;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -204,6 +209,17 @@ public class EmployeeServiceImpl implements EmployeeService {
 	@ResponseStatus(code = HttpStatus.NO_CONTENT)
 	public void delete(String[] ids) {
 		employeeRepository.deleteByIdIn(ids);
+	}
+
+	@Override
+	public Employee get(String employeeId) {
+		return employeeRepository.findById(employeeId).orElse(null);
+	}
+
+	@Override
+	public Page<Employee> all(Pageable pageable, Employee employee) {
+		ExampleMatcher matcher = ExampleMatcher.matching().withIgnoreCase().withStringMatcher(StringMatcher.CONTAINING);
+		return employeeRepository.findAll(Example.of(employee, matcher), pageable);
 	}
 
 }

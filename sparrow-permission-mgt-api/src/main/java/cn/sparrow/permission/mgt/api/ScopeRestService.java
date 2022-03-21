@@ -22,8 +22,8 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-@Tag(name = "功能服务")
-@RequestMapping("/scopes")
+@Tag(name = "opscope", description = "功能服务")
+@RequestMapping("/opscopes")
 public interface ScopeRestService {
 	@PostMapping("")
 	@Operation(summary = "新增功能")

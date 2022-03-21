@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-@Tag(name = "审计日志服务")
+@Tag(name = "auditlog", description = "审计日志服务")
 @RequestMapping("/logs")
 public interface AuditLogRestService {
 	

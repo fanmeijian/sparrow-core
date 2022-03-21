@@ -36,23 +36,35 @@ public class OpenApiConfig {
 		securityScheme.setType(Type.HTTP);
 		securityScheme.setBearerFormat("JWT");
 		
-		List<Tag> tags = new ArrayList<Tag>();
-		for (int i = 0; i < 12; i++) {
-			tags.add(new Tag());
-		}
-		
-		tags.get(0).setName("令牌管理服务");
-		tags.get(1).setName("审计日志服务");
-		tags.get(2).setName("组织服务");
-		tags.get(3).setName("岗位服务");
-		tags.get(4).setName("职级服务");
-		tags.get(5).setName("群组服务");
-		tags.get(6).setName("人员服务");
-		tags.get(7).setName("接口服务");
-		tags.get(8).setName("菜单服务");
-		tags.get(9).setName("功能服务");
-		tags.get(10).setName("角色服务");
-		tags.get(11).setName("数据模型服务");
+//		List<Tag> tags = new ArrayList<Tag>();
+//		for (int i = 0; i < 12; i++) {
+//			tags.add(new Tag());
+//		}
+//		
+//		tags.get(0).setName("sprtoken");//令牌管理服务
+//		tags.get(0).setDescription("令牌管理服务");
+//		tags.get(1).setName("auditlog");//审计日志服务
+//		tags.get(1).setDescription("审计日志服务");
+//		tags.get(2).setName("organization");//组织服务
+//		tags.get(2).setDescription("组织服务");
+//		tags.get(3).setName("role");//岗位服务
+//		tags.get(3).setDescription("岗位服务");
+//		tags.get(4).setName("joblevel");//职级服务
+//		tags.get(4).setDescription("职级服务");
+//		tags.get(5).setName("group");//群组服务
+//		tags.get(5).setDescription("群组服务");
+//		tags.get(6).setName("employee");//人员服务
+//		tags.get(6).setDescription("人员服务");
+//		tags.get(7).setName("sprapi");//接口服务
+//		tags.get(7).setDescription("接口服务");
+//		tags.get(8).setName("menu");//菜单服务
+//		tags.get(8).setDescription("菜单服务");
+//		tags.get(9).setName("opscope");//功能服务
+//		tags.get(9).setDescription("功能服务");
+//		tags.get(10).setName("sysrole");//角色服务
+//		tags.get(10).setDescription("角色服务");
+//		tags.get(11).setName("datamodel");//数据模型服务
+//		tags.get(11).setDescription("数据模型服务");
 		
 		OpenAPI openAPI = new OpenAPI()
 				.components(new Components().addSecuritySchemes("bearerAuth",securityScheme ))
@@ -63,7 +75,7 @@ public class OpenApiConfig {
 						.version("v0.0.1").license(new License().name("Apache 2.0").url("https://github.com/fanmeijian/sparrow/blob/main/LICENSE")))
 				.externalDocs(new ExternalDocumentation().description("Sparrow Permission Wiki Documentation")
 						.url("https://github.com/fanmeijian/sparrow/wiki"));
-		openAPI.setTags(tags);
+//		openAPI.setTags(tags);
 		return openAPI;
 	}
 }

@@ -26,7 +26,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-@Tag(name = "组织服务")
+@Tag(name = "organization", description = "组织服务")
 @RequestMapping("/organizations")
 public interface OrganizationRestService {
 

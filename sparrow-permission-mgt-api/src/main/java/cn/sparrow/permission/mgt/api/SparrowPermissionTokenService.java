@@ -15,32 +15,33 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-@Tag(name = "令牌管理服务")
-@RequestMapping("/sparrowPermissionTokens")
+@Tag(name = "sprtoken", description = "令牌管理服务")
+@RequestMapping("/sprtokens")
 public interface SparrowPermissionTokenService {
-  
-  @GetMapping("/{tokenId}")
-  @Operation(summary = "令牌详情")
-  @ResponseBody
-  public SparrowPermissionToken get(@PathVariable("tokenId") String tokenId);
 
-  @GetMapping("")
-  @Operation(summary = "浏览令牌")
-  @ResponseBody
-  public Page<SparrowPermissionToken> all(Pageable pageable);
+	@GetMapping("/{tokenId}")
+	@Operation(summary = "令牌详情")
+	@ResponseBody
+	public SparrowPermissionToken get(@PathVariable("tokenId") String tokenId);
 
-  @PostMapping("")
-  @Operation(summary = "创建令牌")
-  @ResponseBody
-  public SparrowPermissionToken create(@RequestBody PermissionToken permissionToken);
+	@GetMapping("")
+	@Operation(summary = "浏览令牌")
+	@ResponseBody
+	public Page<SparrowPermissionToken> all(Pageable pageable);
 
-  @PutMapping("/{tokenId}")
-  @Operation(summary = "更新令牌")
-  @ResponseBody
-  public SparrowPermissionToken update(@PathVariable("tokenId") String tokenId,@RequestBody PermissionToken permissionToken);
+	@PostMapping("")
+	@Operation(summary = "创建令牌")
+	@ResponseBody
+	public SparrowPermissionToken create(@RequestBody PermissionToken permissionToken);
 
-  @GetMapping("/hasPermission")
-  @Operation(summary = "是否拥有权限")
-  @ResponseBody
-  public boolean hasPermission(String tokenId, String username) ;
+	@PutMapping("/{tokenId}")
+	@Operation(summary = "更新令牌")
+	@ResponseBody
+	public SparrowPermissionToken update(@PathVariable("tokenId") String tokenId,
+			@RequestBody PermissionToken permissionToken);
+
+	@GetMapping("/hasPermission")
+	@Operation(summary = "是否拥有权限")
+	@ResponseBody
+	public boolean hasPermission(String tokenId, String username);
 }

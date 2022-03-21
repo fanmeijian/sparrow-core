@@ -22,7 +22,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-@Tag(name = "数据模型服务")
+@Tag(name = "datamodel", description = "数据模型服务")
 @RequestMapping("/models")
 public interface ModelAttributeRestService {
 
@@ -65,5 +65,5 @@ public interface ModelAttributeRestService {
 	@Operation(summary = "删除属性")
 	@PutMapping("/{modelId}/attributes/delete")
 	@ResponseBody
-	public void deleteAttribute(@PathVariable("modelId") String modelId,@RequestBody List<String> attributeIds);
+	public void deleteAttribute(@PathVariable("modelId") String modelId, @RequestBody List<String> attributeIds);
 }

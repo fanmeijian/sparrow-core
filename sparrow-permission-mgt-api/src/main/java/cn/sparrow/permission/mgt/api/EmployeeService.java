@@ -3,6 +3,9 @@ package cn.sparrow.permission.mgt.api;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,7 +26,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-@Tag(name = "人员服务")
+@Tag(name = "employee", description = "人员服务")
 @RequestMapping("/employees")
 public interface EmployeeService {
 
@@ -31,6 +34,16 @@ public interface EmployeeService {
 	@PostMapping("")
 	@ResponseBody
 	public Employee create(@RequestBody Employee employee);
+	
+	@Operation(summary = "员工详情")
+	@GetMapping("/{employeeId}")
+	@ResponseBody
+	public Employee get(@PathVariable("employeeId") String employeeId);
+	
+	@Operation(summary = "员工详情")
+	@GetMapping("/all")
+	@ResponseBody
+	public Page<Employee> all(@Nullable Pageable pageable,@Nullable Employee employee);
 
 	@Operation(summary = "更新员工")
 	@PatchMapping("/{employeeId}")

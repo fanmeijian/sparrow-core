@@ -5,18 +5,14 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import cn.sparrow.permission.model.organization.Employee;
 import cn.sparrow.permission.model.organization.Organization;
 import cn.sparrow.permission.model.organization.OrganizationGroup;
 import cn.sparrow.permission.model.organization.OrganizationPositionLevel;
 import cn.sparrow.permission.model.organization.OrganizationRole;
-import io.swagger.v3.oas.annotations.tags.Tag;
 
-@Tag(name = "组织服务")
-@RequestMapping("/organizations")
-public interface OrganizationService extends OrganizationRestService{
+public interface OrganizationService extends OrganizationRestService {
 
 //	@Operation(summary = "获取下级组织")
 //	@GetMapping("/{organizationId}/children")
