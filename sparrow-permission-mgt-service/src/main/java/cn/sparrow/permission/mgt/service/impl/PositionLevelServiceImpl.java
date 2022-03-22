@@ -83,7 +83,7 @@ public class PositionLevelServiceImpl implements PositionLevelService {
 	public List<OrganizationPositionLevel> getParents(OrganizationPositionLevelPK id) {
 		List<OrganizationPositionLevel> positionLevels = new ArrayList<OrganizationPositionLevel>();
 		organizationLevelRelationRepository.findByIdId(id).forEach(f -> {
-			positionLevels.add(organizationLevelRepository.findById(f.getId().getId()).get());
+			positionLevels.add(organizationLevelRepository.findById(f.getId().getParentId()).get());
 		});
 		return positionLevels;
 	}
