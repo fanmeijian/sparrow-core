@@ -18,7 +18,7 @@ import cn.sparrow.permission.mgt.service.repository.OrganizationLevelRelationRep
 import cn.sparrow.permission.mgt.service.repository.OrganizationLevelRepository;
 import cn.sparrow.permission.mgt.service.repository.OrganizationRepository;
 import cn.sparrow.permission.mgt.service.repository.PositionLevelRepository;
-import cn.sparrow.permission.model.organization.Employee;
+import cn.sparrow.permission.model.organization.EmployeeOrganizationLevel;
 import cn.sparrow.permission.model.organization.Organization;
 import cn.sparrow.permission.model.organization.OrganizationPositionLevel;
 import cn.sparrow.permission.model.organization.OrganizationPositionLevelPK;
@@ -41,12 +41,8 @@ public class PositionLevelServiceImpl implements PositionLevelService {
 	OrganizationRepository organizationRepository;
 
 	@Override
-	public List<Employee> getEmployees(OrganizationPositionLevelPK organizationLevelId) {
-		List<Employee> employees = new ArrayList<Employee>();
-		employeeOrganizationLevelRepository.findByIdOrganizationLevelId(organizationLevelId).forEach(f -> {
-			employees.add(f.getEmployee());
-		});
-		return employees;
+	public List<EmployeeOrganizationLevel> getEmployees(OrganizationPositionLevelPK organizationLevelId) {
+		return employeeOrganizationLevelRepository.findByIdOrganizationLevelId(organizationLevelId);
 	}
 
 	@Override

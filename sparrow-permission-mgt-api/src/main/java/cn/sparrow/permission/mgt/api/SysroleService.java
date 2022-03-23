@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.sparrow.permission.model.resource.Sysrole;
+import cn.sparrow.permission.model.resource.UserSysrole;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -64,6 +65,6 @@ public interface SysroleService {
 	@Operation(summary = "角色用户列表")
 	@GetMapping("/{sysroleId}/users")
 	@ResponseBody
-	public List<String> getUsers(@PathVariable String sysroleId);
+	public Page<UserSysrole> getUsers(@PathVariable String sysroleId, @Nullable Pageable pageable);
 
 }

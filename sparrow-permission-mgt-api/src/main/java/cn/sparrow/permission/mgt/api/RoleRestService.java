@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.sparrow.permission.model.organization.Employee;
-import cn.sparrow.permission.model.organization.Organization;
+import cn.sparrow.permission.model.organization.OrganizationRole;
 import cn.sparrow.permission.model.organization.OrganizationRolePK;
 import cn.sparrow.permission.model.organization.OrganizationRoleRelation;
 import cn.sparrow.permission.model.organization.Role;
@@ -66,7 +66,7 @@ public interface RoleRestService {
 	@Operation(summary = "岗位所属的组织")
 	@GetMapping("/{roleId}/parentOrganizations")
 	@ResponseBody
-	public List<Organization> getParentOrganizations(@PathVariable("roleId") String roleId);
+	public List<OrganizationRole> getParentOrganizations(@PathVariable("roleId") String roleId);
 
 	@Operation(summary = "岗位详情")
 	@GetMapping("/{roleId}")

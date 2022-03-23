@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.sparrow.permission.constant.GroupTypeEnum;
 import cn.sparrow.permission.model.group.Group;
-import cn.sparrow.permission.model.organization.Organization;
+import cn.sparrow.permission.model.organization.OrganizationGroup;
 import cn.sparrow.permission.model.resource.SparrowTree;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -68,7 +68,7 @@ public interface GroupRestService {
 	@Operation(summary = "获取所属组织")
 	@GetMapping("/{groupId}/parentOrganizations")
 	@ResponseBody
-	public List<Organization> getParentOrgs(@PathVariable("groupId") String groupId);
+	public Page<OrganizationGroup> getParentOrgs(@PathVariable("groupId") String groupId, @Nullable Pageable pageable);
 
 	@Operation(summary = "设置所属组织")
 	@PostMapping("/{groupId}/parentOrganizations")

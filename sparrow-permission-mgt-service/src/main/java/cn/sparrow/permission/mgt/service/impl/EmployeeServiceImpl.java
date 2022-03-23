@@ -1,15 +1,14 @@
 package cn.sparrow.permission.mgt.service.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.domain.ExampleMatcher.StringMatcher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.ExampleMatcher.StringMatcher;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,8 +30,6 @@ import cn.sparrow.permission.model.organization.EmployeeRelation;
 import cn.sparrow.permission.model.organization.EmployeeRelationPK;
 import cn.sparrow.permission.model.organization.OrganizationPositionLevelPK;
 import cn.sparrow.permission.model.organization.OrganizationRolePK;
-import cn.sparrow.permission.model.organization.PositionLevel;
-import cn.sparrow.permission.model.organization.Role;
 import cn.sparrow.permission.model.resource.SparrowTree;
 
 @Service
@@ -159,13 +156,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 	}
 
 	@Override
-	public List<Employee> getChildren(String employeeId) {
-		List<Employee> employees = new ArrayList<Employee>();
-		employeeRelationRepository.findByIdParentId(employeeId).forEach(f -> {
-//			f.getEmployee().setChildCount(this.getChildCount(f.getEmployee().getId()));
-			employees.add(f.getEmployee());
-		});
-		return employees;
+	public List<EmployeeRelation> getChildren(String employeeId) {
+		return employeeRelationRepository.findByIdParentId(employeeId);
 	}
 
 	public long getChildCount(String parentId) {
@@ -173,30 +165,18 @@ public class EmployeeServiceImpl implements EmployeeService {
 	}
 
 	@Override
-	public List<Employee> getParents(String employeeId) {
-		List<Employee> employees = new ArrayList<Employee>();
-		employeeRelationRepository.findByIdEmployeeId(employeeId).forEach(f -> {
-			employees.add(f.getEmployee());
-		});
-		return employees;
+	public List<EmployeeRelation> getParents(String employeeId) {
+		return employeeRelationRepository.findByIdEmployeeId(employeeId);
 	}
 
 	@Override
-	public List<PositionLevel> getLevels(String employeeId) {
-		List<PositionLevel> positionLevels = new ArrayList<PositionLevel>();
-		employeeOrganizationLevelRepository.findByIdEmployeeId(employeeId).forEach(f -> {
-			positionLevels.add(positionLevelRepository.findById(f.getId().getOrganizationLevelId().getPositionLevelId()).get());
-		});
-		return positionLevels;
+	public List<EmployeeOrganizationLevel> getLevels(String employeeId) {
+		return employeeOrganizationLevelRepository.findByIdEmployeeId(employeeId);
 	}
 
 	@Override
-	public List<Role> getRoles(String employeeId) {
-		List<Role> roles = new ArrayList<Role>();
-		employeeOrganizationRoleRepository.findByIdEmployeeId(employeeId).forEach(f -> {
-			roles.add(roleRepository.findById(f.getId().getOrganizationRoleId().getRoleId()).get());
-		});
-		return roles;
+	public List<EmployeeOrganizationRole> getRoles(String employeeId) {
+		return employeeOrganizationRoleRepository.findByIdEmployeeId(employeeId);
 	}
 
 	@Override

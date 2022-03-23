@@ -34,6 +34,8 @@ import cn.sparrow.permission.model.group.Group;
 import cn.sparrow.permission.model.organization.Employee;
 import cn.sparrow.permission.model.organization.Organization;
 import cn.sparrow.permission.model.organization.OrganizationPositionLevelPK;
+import cn.sparrow.permission.model.organization.OrganizationRelation;
+import cn.sparrow.permission.model.organization.OrganizationRole;
 import cn.sparrow.permission.model.organization.OrganizationRolePK;
 import cn.sparrow.permission.model.organization.PositionLevel;
 import cn.sparrow.permission.model.organization.Role;
@@ -137,13 +139,23 @@ public class OrganizationTest {
 				roleService.setParentOrg(role.getId(), Arrays.asList(new String[] { parent.getId() }));
 
 				// 岗位所属组织列表
-				assertEquals(true, roleService.getParentOrganizations(role.getId())
-						.contains(organizationService.get(parent.getId())));
+				boolean flagHasParentOrg = false;
+				for(OrganizationRole organizationRole:roleService.getParentOrganizations(role.getId())) {
+					if(organizationRole.getId().getOrganizationId().equals(parent.getId())) {
+						flagHasParentOrg = true;
+					}
+				}
+				assertEquals(true, flagHasParentOrg);
 
 				// 删除岗位所属组织
 				roleService.removeParentOrg(role.getId(), Arrays.asList(new String[] { parent.getId() }));
-				assertEquals(false, roleService.getParentOrganizations(role.getId())
-						.contains(organizationService.get(parent.getId())));
+				flagHasParentOrg = false;
+				for(OrganizationRole organizationRole:roleService.getParentOrganizations(role.getId())) {
+					if(organizationRole.getId().getOrganizationId().equals(parent.getId())) {
+						flagHasParentOrg = true;
+					}
+				}
+				assertEquals(false, flagHasParentOrg);
 
 				roleService.setParentOrg(role.getId(), Arrays.asList(new String[] { parent.getId() }));
 
@@ -259,8 +271,13 @@ public class OrganizationTest {
 					organizationService.addParent(dept2.getId(), Arrays.asList(new String[] { dept1.getId() }));
 
 					// 获取上级
-					assertEquals(true, organizationService.getParents(dept2.getId())
-							.contains(organizationService.get(dept1.getId())));
+					boolean flagHasParent = false;
+					for (OrganizationRelation org:organizationService.getParents(dept2.getId())) {
+						if(org.getId().getParentId().equals(dept1.getId())) {
+							flagHasParent = true;
+						}
+					}
+					assertEquals(true,flagHasParent);
 
 					Organization dept3 = organizationService.create(new Organization("d2" + i + "" + j + "" + n,
 							"o" + i + "d2" + i + "" + j + "" + n, OrganizationTypeEnum.UNIT));

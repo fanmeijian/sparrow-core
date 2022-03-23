@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import cn.sparrow.permission.model.organization.Employee;
+import cn.sparrow.permission.model.organization.EmployeeOrganizationLevel;
 import cn.sparrow.permission.model.organization.Organization;
 import cn.sparrow.permission.model.organization.OrganizationPositionLevel;
 import cn.sparrow.permission.model.organization.OrganizationPositionLevelPK;
@@ -59,7 +59,7 @@ public interface JobLevelRestService {
 	@Operation(summary = "获取拥有此级别员工")
 	@GetMapping("/{organizationLevelId}/employees")
 	@ResponseBody
-	public List<Employee> getEmployees(
+	public List<EmployeeOrganizationLevel> getEmployees(
 			@Parameter(example = "organizationId_levelId", schema = @Schema(implementation = String.class)) @PathVariable("organizationLevelId") OrganizationPositionLevelPK organizationLevelId);
 	
 	@Operation(summary = "删除职级")

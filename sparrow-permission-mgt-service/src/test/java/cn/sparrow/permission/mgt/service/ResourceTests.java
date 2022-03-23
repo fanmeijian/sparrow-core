@@ -174,7 +174,7 @@ public class ResourceTests {
 		List<String> userSysroles =new ArrayList<>();
 		userSysroles.add(username);
 		sysroleService.addPermissions(sysrole.getId(),userSysroles);
-		assertEquals(username,sysroleService.getUsers(sysrole.getId()).get(0));
+		assertEquals(username,sysroleService.getUsers(sysrole.getId(), Pageable.unpaged()).toList().get(0).getId().getUsername());
 		
 //		log.info("{}" , userSysroleRepository.findByIdUsername(username));
 		

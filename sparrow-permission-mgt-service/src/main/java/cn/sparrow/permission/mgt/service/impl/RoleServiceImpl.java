@@ -11,9 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.ExampleMatcher.StringMatcher;
-import org.springframework.http.HttpStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -26,7 +26,6 @@ import cn.sparrow.permission.mgt.service.repository.OrganizationRoleRelationRepo
 import cn.sparrow.permission.mgt.service.repository.OrganizationRoleRepository;
 import cn.sparrow.permission.mgt.service.repository.RoleRepository;
 import cn.sparrow.permission.model.organization.Employee;
-import cn.sparrow.permission.model.organization.Organization;
 import cn.sparrow.permission.model.organization.OrganizationRole;
 import cn.sparrow.permission.model.organization.OrganizationRolePK;
 import cn.sparrow.permission.model.organization.OrganizationRoleRelation;
@@ -54,31 +53,12 @@ public class RoleServiceImpl implements RoleService {
 	@Transactional
 	@ResponseStatus(code = HttpStatus.CREATED)
 	public Role create(Role role) {
-		Role savedRole = roleRepository.save(role);
-		// 保存岗位所在的组织
-//		if (role.getOrganizationIds() != null) {
-//			role.getOrganizationIds().forEach(f -> {
-//				OrganizationRole organizationRole = organizationRoleRepository
-//						.save(new OrganizationRole(new OrganizationRolePK(f, savedRole.getId())));
-//				// 保存岗位之间的关系,注意这里的岗位关系指的是组织岗位之间的关系，因为岗位独立于组织没有意义
-//				if (role.getParentIds() != null) {
-//					role.getParentIds().forEach(parentId -> {
-//						organizationRoleRelationRepository.save(new OrganizationRoleRelation(
-//								new OrganizationRoleRelationPK(organizationRole.getId(), parentId)));
-//					});
-//				}
-//			});
-//		}
-		return savedRole;
+		return roleRepository.save(role);
 	}
 
 	@Override
-	public List<Organization> getParentOrganizations(@NotBlank String roleId) {
-		List<Organization> organizations = new ArrayList<Organization>();
-		organizationRoleRepository.findByIdRoleId(roleId).forEach(f -> {
-			organizations.add(organizationRepository.findById(f.getId().getOrganizationId()).get());
-		});
-		return organizations;
+	public List<OrganizationRole> getParentOrganizations(@NotBlank String roleId) {
+		return organizationRoleRepository.findByIdRoleId(roleId);
 	}
 
 	@Override

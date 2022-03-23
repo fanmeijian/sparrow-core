@@ -1,6 +1,5 @@
 package cn.sparrow.permission.mgt.service.impl;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -51,12 +50,8 @@ public class SysroleServiceImpl implements SysroleService {
 	}
 
 	@Override
-	public List<String> getUsers(String sysroleId) {
-		List<String> usernames = new ArrayList<String>();
-		userSysroleRepository.findByIdSysroleId(sysroleId).forEach(f -> {
-			usernames.add(f.getId().getUsername());
-		});
-		return usernames;
+	public Page<UserSysrole> getUsers(String sysroleId, Pageable pageable) {
+		return userSysroleRepository.findByIdSysroleId(sysroleId, pageable);
 	}
 
 	public void addMenus(String sysroleId, List<String> menuIds) {
@@ -67,43 +62,6 @@ public class SysroleServiceImpl implements SysroleService {
 		sysroleMenuRepository.saveAll(sysroleMenus);
 	}
 
-	// public void addUrlPermissions(String sysroleId, List<String> urlIds) {
-	// urlIds.forEach(f->{
-	// sysroleUrlPermissionRepository.save(new SysroleUrlPermission(new
-	// SysroleUrlPermissionPK(sysroleId, sysroleId)));
-	// });
-	// }
-	//
-	// @Transactional
-	// public void delUrlPermissions(String sysroleId, List<String> urlIds) {
-	// urlIds.forEach(f->{
-	// sysroleUrlPermissionRepository.delete(new SysroleUrlPermission(new
-	// SysroleUrlPermissionPK(sysroleId, sysroleId)));
-	// });
-	// }
-
-	// public void addDataPermissions(String sysroleId,
-	// Set<AbstractDataPermissionPK>
-	// dataPermissionPKs) {
-	// dataPermissionPKs.forEach(f->{
-	// sysroleDataPermissionRepository.save(new SysroleDataPermission(new
-	// SysroleDataPermissionPK(f.getModelName(), f.getPermission(),
-	// f.getPermissionType(),
-	// f.getDataId(), sysroleId)));
-	// });
-	// }
-	//
-	// @Transactional
-	// public void delDataPermissions(String sysroleId,
-	// Set<AbstractDataPermissionPK>
-	// dataPermissionPKs) {
-	// dataPermissionPKs.forEach(f->{
-	// sysroleDataPermissionRepository.deleteById(new
-	// SysroleDataPermissionPK(f.getModelName(),
-	// f.getPermission(), f.getPermissionType(), f.getDataId(), sysroleId));
-	// });
-	// }
-
 	public void init() {
 		sysroleRepository.save(new Sysrole("超级管理员", PreserveSysroleEnum.SYSADMIN.name()));
 		log.info("Create sysrole {}", PreserveSysroleEnum.SYSADMIN.name());
@@ -111,44 +69,11 @@ public class SysroleServiceImpl implements SysroleService {
 		sysroleRepository.save(new Sysrole("系统管理员", PreserveSysroleEnum.ADMIN.name()));
 		log.info("Create sysrole {}", PreserveSysroleEnum.ADMIN.name());
 
-		// urlRepository.findAll().forEach(f->{
-		// if(!f.getMethod().equals(HttpMethod.GET)) {
-		// sysroleUrlPermissionRepository.save(new SysroleUrlPermission(new
-		// SysroleUrlPermissionPK(sysroleRepository.findByCode(PreserveSysroleEnum.SYSADMIN.name()).get(0).getId(),
-		// f.getId())));
-		// logger.info("Grant sysrole {} url permission
-		// {}",PreserveSysroleEnum.ADMIN.name(),f.getUri());
-		// }
-		// });
-
 		userSysroleRepository.save(new UserSysrole(new UserSysrolePK("ROOT",
 				sysroleRepository.findByCode(PreserveSysroleEnum.SYSADMIN.name()).get(0).getId())));
 		log.info("Grant user {} sysrole SYSADMIN", PreserveSysroleEnum.ADMIN.name());
 
 	}
-	//
-	// public void addModelPermission(@NotEmpty String sysroleId,
-	// Set<AbstractModelPermissionPK>
-	// modelPermissionPKs) {
-	// modelPermissionPKs.forEach(f->{
-	// sysroleModelPermissionRepository.save(new SysroleModelPermission(new
-	// SysroleModelPermissionPK(f.getModelName(), f.getPermission(),
-	// f.getPermissionType(),
-	// sysroleId)));
-	// });
-	//
-	// }
-	//
-	// public void delModelPermission(@NotEmpty String sysroleId,
-	// Set<AbstractModelPermissionPK>
-	// modelPermissionPKs) {
-	// modelPermissionPKs.forEach(f->{
-	// sysroleModelPermissionRepository.delete(new SysroleModelPermission(new
-	// SysroleModelPermissionPK(f.getModelName(), f.getPermission(),
-	// f.getPermissionType(),
-	// sysroleId)));
-	// });
-	// }
 
 	@Override
 	@Transactional
@@ -163,10 +88,10 @@ public class SysroleServiceImpl implements SysroleService {
 	@Transactional
 	@ResponseStatus(code = HttpStatus.NO_CONTENT)
 	public void removePermissions(String sysroleId, List<String> usernames) {
-		usernames.forEach(f->{
+		usernames.forEach(f -> {
 			userSysroleRepository.deleteById(new UserSysrolePK(f, sysroleId));
 		});
-		
+
 	}
 
 	@Override
@@ -199,18 +124,4 @@ public class SysroleServiceImpl implements SysroleService {
 	public Sysrole get(String sysroleId) {
 		return sysroleRepository.findById(sysroleId).get();
 	}
-
-	// public void addPermissions(SysrolePermission permission) {
-	// if(permission.getUserSysrolePKs()!=null) {
-	// permission.getUserSysrolePKs().forEach(f->{
-	// userSysroleRepository.save(new UserSysrole(f));
-	// });
-	// }
-	// }
-	//
-	// public void delPermissions(SysrolePermission permission) {
-	// if(permission.getUserSysrolePKs()!=null) {
-	// userSysroleRepository.deleteByIdIn(permission.getUserSysrolePKs());
-	// }
-	// }
 }

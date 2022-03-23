@@ -11,6 +11,8 @@ import javax.validation.ValidationException;
 
 import org.hibernate.envers.Audited;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import cn.sparrow.permission.model.common.AbstractSparrowEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -35,10 +37,12 @@ public class EmployeeRelation extends AbstractSparrowEntity{
 	@Audited
 	private EmployeeRelationPK id;
 
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "employee_id", insertable = false, updatable = false)
 	private Employee employee;
 
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "parent_id	", insertable = false, updatable = false)
 	private Employee parent;

@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.sparrow.permission.model.resource.SparrowApi;
-import cn.sparrow.permission.model.resource.Sysrole;
+import cn.sparrow.permission.model.resource.SysroleApi;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -55,7 +55,7 @@ public interface ApiService{
 	@GetMapping("/{apiId}/permissions")
 	@Operation(summary = "可访问角色列表")
 	@ResponseBody
-	public Page<Sysrole> getPermissions(@PathVariable("apiId") String apiId, @Nullable Pageable pageable);
+	public Page<SysroleApi> getPermissions(@PathVariable("apiId") String apiId, @Nullable Pageable pageable);
 
 	@PostMapping("/{apiId}/permissions")
 	@Operation(summary = "增加授权")

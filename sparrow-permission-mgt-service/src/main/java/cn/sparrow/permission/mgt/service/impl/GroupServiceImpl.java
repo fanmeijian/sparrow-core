@@ -1,6 +1,5 @@
 package cn.sparrow.permission.mgt.service.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -47,7 +46,6 @@ import cn.sparrow.permission.model.group.GroupSysrolePK;
 import cn.sparrow.permission.model.group.GroupUser;
 import cn.sparrow.permission.model.group.GroupUserPK;
 import cn.sparrow.permission.model.organization.Employee;
-import cn.sparrow.permission.model.organization.Organization;
 import cn.sparrow.permission.model.organization.OrganizationGroup;
 import cn.sparrow.permission.model.organization.OrganizationGroupPK;
 import cn.sparrow.permission.model.resource.SparrowTree;
@@ -155,12 +153,8 @@ public class GroupServiceImpl implements GroupService {
 	}
 
 	@Override
-	public List<Organization> getParentOrgs(String groupId) {
-		List<Organization> organizations = new ArrayList<>();
-		organizationGroupRepository.findByIdGroupId(groupId).forEach(f -> {
-			organizations.add(organizationRepository.findById(f.getId().getOrganizationId()).get());
-		});
-		return organizations;
+	public Page<OrganizationGroup> getParentOrgs(String groupId, Pageable pageable) {
+		return organizationGroupRepository.findByIdGroupId(groupId, pageable);
 	}
 
 	@Override

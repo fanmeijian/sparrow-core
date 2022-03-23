@@ -13,7 +13,7 @@ import cn.sparrow.permission.model.organization.OrganizationRelationPK;
 
 public interface OrganizationRelationRepository
     extends JpaRepository<OrganizationRelation, OrganizationRelationPK> {
-  Set<OrganizationRelation> findByIdOrganizationId(String organizationId);
+  List<OrganizationRelation> findByIdOrganizationId(String organizationId);
   List<OrganizationRelation> findByIdParentId(String parentId);
   Page<OrganizationRelation> findByIdParentId(String parentId, Pageable pageable);
 
