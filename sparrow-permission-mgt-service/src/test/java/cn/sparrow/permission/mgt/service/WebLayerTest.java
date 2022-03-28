@@ -29,39 +29,39 @@ import cn.sparrow.permission.constant.OrganizationTypeEnum;
 import cn.sparrow.permission.mgt.api.OrganizationRestService;
 import cn.sparrow.permission.model.organization.Organization;
 
-@WebMvcTest
-public class WebLayerTest {
-	@Autowired
-	private MockMvc mockMvc;
-
-	@MockBean
-	OrganizationRestService organizationRestService;
-
-	EasyRandom generator = new EasyRandom();
-
-	@Test
-	public void webTest() throws Exception {
-		Organization organization = new Organization("name", "code", OrganizationTypeEnum.ORGANIZATION);
-		organization.setId("test");
-
-		when(organizationRestService.create(organization)).thenReturn(organization);
-		this.mockMvc
-				.perform(post("/organizations").contentType(MediaType.APPLICATION_JSON)
-						.content(new ObjectMapper().writeValueAsString(organization))).andDo(print()).andExpect(status().isOk());
-		
-//		when(organizationRestService.create(organization)).thenReturn(organization);
-//		MvcResult mvcResult = this.mockMvc
-//				.perform(post("/organizations").contentType(MediaType.APPLICATION_JSON)
-//						.content(new ObjectMapper().writeValueAsString(organization)))
-//				.andExpect(request().asyncStarted()).andReturn();
+//@WebMvcTest
+//public class WebLayerTest {
+//	@Autowired
+//	private MockMvc mockMvc;
 //
-//		this.mockMvc.perform(asyncDispatch(mvcResult)).andExpect(status().isCreated());
-
-		this.mockMvc
-				.perform(put("/organizations/delete").contentType(MediaType.APPLICATION_JSON)
-						.content(new ObjectMapper().writeValueAsString(new String[] { "test" })))
-				.andDo(print()).andExpect(status().isOk());
-
-	}
-
-}
+//	@MockBean
+//	OrganizationRestService organizationRestService;
+//
+//	EasyRandom generator = new EasyRandom();
+//
+//	@Test
+//	public void webTest() throws Exception {
+//		Organization organization = new Organization("name", "code", OrganizationTypeEnum.ORGANIZATION);
+//		organization.setId("test");
+//
+//		when(organizationRestService.create(organization)).thenReturn(organization);
+//		this.mockMvc
+//				.perform(post("/organizations").contentType(MediaType.APPLICATION_JSON)
+//						.content(new ObjectMapper().writeValueAsString(organization))).andDo(print()).andExpect(status().isOk());
+//		
+////		when(organizationRestService.create(organization)).thenReturn(organization);
+////		MvcResult mvcResult = this.mockMvc
+////				.perform(post("/organizations").contentType(MediaType.APPLICATION_JSON)
+////						.content(new ObjectMapper().writeValueAsString(organization)))
+////				.andExpect(request().asyncStarted()).andReturn();
+////
+////		this.mockMvc.perform(asyncDispatch(mvcResult)).andExpect(status().isCreated());
+//
+//		this.mockMvc
+//				.perform(put("/organizations/delete").contentType(MediaType.APPLICATION_JSON)
+//						.content(new ObjectMapper().writeValueAsString(new String[] { "test" })))
+//				.andDo(print()).andExpect(status().isOk());
+//
+//	}
+//
+//}

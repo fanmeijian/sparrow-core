@@ -51,4 +51,14 @@ public class AuditLogServiceImpl_ implements AuditLogRestService {
 		return null;
 	}
 
+	@Override
+	public List<?> getLog(String className) {
+		try {
+			return auditLogService.getLog(Class.forName(className));
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 }

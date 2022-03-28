@@ -51,13 +51,17 @@
 		<class>cn.sparrow.permission.model.resource.SparrowApi</class>
 		<class>cn.sparrow.permission.model.resource.SparrowFile</class>
 		<class>cn.sparrow.permission.model.resource.Sysrole</class>
-		<class>cn.sparrow.permission.model.resource.SysroleApiPK</class>
 		<class>cn.sparrow.permission.model.resource.SysroleApi</class>
+		<class>cn.sparrow.permission.model.resource.SysroleApiPK</class>
 		<class>cn.sparrow.permission.model.resource.SysroleMenu</class>
 		<class>cn.sparrow.permission.model.resource.SysroleMenuPK</class>
+		<class>cn.sparrow.permission.model.resource.SysroleScope</class>
+		<class>cn.sparrow.permission.model.resource.SysroleScopePK</class>
 		<class>cn.sparrow.permission.model.resource.UserFilePK</class>
 		<class>cn.sparrow.permission.model.resource.UserMenu</class>
 		<class>cn.sparrow.permission.model.resource.UserMenuPK</class>
+		<class>cn.sparrow.permission.model.resource.UserScope</class>
+		<class>cn.sparrow.permission.model.resource.UserScopePK</class>
 		<class>cn.sparrow.permission.model.resource.UserSysrole</class>
 		<class>cn.sparrow.permission.model.resource.UserSysrolePK</class>
 		<class>cn.sparrow.permission.model.token.DataPermissionToken</class>

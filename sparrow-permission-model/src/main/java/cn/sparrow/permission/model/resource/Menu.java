@@ -2,6 +2,7 @@ package cn.sparrow.permission.model.resource;
 
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -57,7 +58,7 @@ public class Menu extends AbstractSparrowEntity {
 
 	@NotAudited
 	@JsonIgnore
-	@OneToMany(mappedBy = "menu")
+	@OneToMany(mappedBy = "menu", cascade = CascadeType.REMOVE)
 	private Set<SysroleMenu> sysroleMenus;
 
 	public Menu(String code, String parentId) {
