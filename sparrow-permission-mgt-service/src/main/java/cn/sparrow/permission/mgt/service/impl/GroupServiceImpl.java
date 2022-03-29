@@ -144,7 +144,7 @@ public class GroupServiceImpl implements GroupService {
 	@Override
 	@ResponseStatus(code = HttpStatus.NO_CONTENT)
 	public void delete(List<String> ids) {
-		groupRepository.deleteAllByIdInBatch(ids);
+		groupRepository.deleteByIdIn(ids.toArray(new String[] {}));
 	}
 
 	@Override

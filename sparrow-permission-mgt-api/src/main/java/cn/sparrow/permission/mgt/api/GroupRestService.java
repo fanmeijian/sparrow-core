@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.sparrow.permission.constant.GroupTypeEnum;
@@ -58,7 +59,7 @@ public interface GroupRestService {
 	@PatchMapping("/{groupId}")
 	@ResponseBody
 	@io.swagger.v3.oas.annotations.parameters.RequestBody(content = @Content(schema = @Schema(implementation = Group.class)))
-	public Group update(@PathVariable("groupId") String groupId, Map<String, Object> map);
+	public Group update(@PathVariable("groupId") String groupId,@RequestBody Map<String, Object> map);
 
 	@Operation(summary = "删除群组")
 	@PutMapping("/delete")
@@ -83,11 +84,11 @@ public interface GroupRestService {
 	@Operation(summary = "添加组成员")
 	@PostMapping("/{groupId}/members")
 	@ResponseBody
-	public void addMembers(@PathVariable("groupId") String groupId, @NotNull GroupTypeEnum type, @RequestBody List<Object> memberIds);
+	public void addMembers(@PathVariable("groupId") String groupId, @RequestParam("type") GroupTypeEnum type, @RequestBody List<Object> memberIds);
 	
 	@Operation(summary = "移除组成员")
 	@PutMapping("/{groupId}/members/delete")
 	@ResponseBody
-	public void removeMembers(@PathVariable("groupId") String groupId, @NotNull GroupTypeEnum type, @RequestBody List<Object> memberIds);
+	public void removeMembers(@PathVariable("groupId") String groupId, @RequestParam("type") GroupTypeEnum type, @RequestBody List<Object> memberIds);
 
 }
