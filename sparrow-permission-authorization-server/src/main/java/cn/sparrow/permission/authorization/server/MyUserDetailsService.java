@@ -1,7 +1,9 @@
 package cn.sparrow.permission.authorization.server;
 
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -14,6 +16,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import cn.sparrow.permission.authorization.server.model.LoginLog;
 import cn.sparrow.permission.authorization.server.model.SparrowUser;
@@ -40,9 +44,16 @@ public class MyUserDetailsService implements UserDetailsService {
     // Assert.notNull(swdUser, "can not found user" + username);
     // Logger.getLogger(this.toString()).info("----------" + username + swdUser.getPassword() +
     // swdUser.getPassword());
-    logger.info("{} {}", sparrowUser.getPassword(), passwordEncoder.encode("password"));
+    
     loginLogRepository.save(new LoginLog(username, request.getRemoteAddr()));
     
+        
+    Enumeration<String> password = request.getParameterNames();
+    
+    while ( password.hasMoreElements())
+        System.out.println(password.nextElement());
+    
+    logger.info("{} {} {}",password, sparrowUser.getPassword(), passwordEncoder.encode("password"));
     List<String> roles = new ArrayList<String>();
     
     sparrowUser.getSysroles().forEach(f -> {

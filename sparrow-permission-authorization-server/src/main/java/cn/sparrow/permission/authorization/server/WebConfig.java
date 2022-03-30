@@ -18,6 +18,7 @@ public class WebConfig {
 		config.setAllowCredentials(true);
 		config.addAllowedOrigin("http://localhost:8091");
 		config.addAllowedOrigin("http://1.12.232.226:8091");
+		config.addAllowedOrigin("http://localhost:4200");
 		config.addAllowedHeader("*");
 		config.addAllowedMethod("*");
 		source.registerCorsConfiguration("/**", config);
@@ -32,7 +33,7 @@ public class WebConfig {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
 				registry.addMapping("/**").allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS").allowedHeaders("*")
-						.allowedOrigins("http://localhost","http://1.12.232.226:8091").allowCredentials(true);
+						.allowedOrigins("http://localhost:8091","http://1.12.232.226:8091","http://localhost:4200").allowCredentials(true);
 			}
 		};
 	}
