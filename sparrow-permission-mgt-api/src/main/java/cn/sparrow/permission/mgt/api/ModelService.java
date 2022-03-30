@@ -24,17 +24,17 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 @Tag(name = "datamodel", description = "数据模型服务")
 @RequestMapping("/models")
-public interface ModelService{
-	
+public interface ModelService {
+
 	@Operation(summary = "浏览模型")
 	@GetMapping("")
 	@ResponseBody
-	public Page<Model> models(@Nullable Pageable pageable,@Nullable Model model);
+	public Page<Model> models(@Nullable Pageable pageable, @Nullable Model model);
 
 	@Operation(summary = "新增模型")
 	@PostMapping("")
 	@ResponseBody
-	public Model create( @RequestBody Model model);
+	public Model create(@RequestBody Model model);
 
 	@Operation(summary = "模型详情")
 	@GetMapping("/{modelId}")
@@ -45,22 +45,30 @@ public interface ModelService{
 	@PatchMapping("/{modelId}")
 	@ResponseBody
 	@io.swagger.v3.oas.annotations.parameters.RequestBody(content = @Content(schema = @Schema(implementation = Model.class)))
-	public Model update(@PathVariable("modelId") String modelId, Map<String,Object> map);
+	public Model update(@PathVariable("modelId") String modelId, Map<String, Object> map);
 
 	@Operation(summary = "删除模型")
 	@PutMapping("/delete")
 	@ResponseBody
-	public void delete( @RequestBody List<String> ids);
+	public void delete(@RequestBody List<String> ids);
 
 	@Operation(summary = "设置模型权限")
 	@PostMapping("/{modelId}/permissions")
 	@ResponseBody
-	public void addPermission(@PathVariable("modelId") String modelId ,@RequestBody PermissionToken permissionToken);
-	
+	public void addPermission(@PathVariable("modelId") String modelId, @RequestBody PermissionToken permissionToken);
+
 	@Operation(summary = "删除模型权限")
 	@PutMapping("/{modelId}/permissions/delete")
 	@ResponseBody
 	public void removePermission(@PathVariable("modelId") String modelId);
-	
+
+	@Operation(summary = "浏览模型")
+	@GetMapping("/entities")
+	@ResponseBody
+	public List<Model> getAllEntities();
+
+	@Operation(summary = "初始化模型")
+	@GetMapping("/init")
+	@ResponseBody
 	public void init();
 }

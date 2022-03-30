@@ -1,7 +1,6 @@
 package cn.sparrow.permission.mgt.service.impl;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -25,7 +24,6 @@ import cn.sparrow.permission.mgt.service.repository.ModelRepository;
 import cn.sparrow.permission.mgt.service.repository.PermissionTokenRepository;
 import cn.sparrow.permission.model.resource.Model;
 import cn.sparrow.permission.model.resource.ModelAttribute;
-import cn.sparrow.permission.model.resource.ModelAttributePK;
 import cn.sparrow.permission.model.token.PermissionToken;
 import cn.sparrow.permission.model.token.SparrowPermissionToken;
 
@@ -67,22 +65,19 @@ public class ModelServiceImpl implements ModelService {
 		modelRepository.save(model);
 	}
 
+	@Transactional
+	@Override
 	public void init() {
 		Set<EntityType<?>> entityTypes = entityManager.getMetamodel().getEntities();
-		Map<String, List<String>> entitiesMap = new HashMap<String, List<String>>();
-
 		entityTypes.forEach(e -> {
-			Model model = modelRepository.save(new Model(e.getJavaType().getName(), true));
-
+			modelRepository.save(new Model(e.getJavaType().getName(), true));
 			List<String> attributes = new ArrayList<String>();
 			e.getAttributes().forEach(a -> {
 				attributes.add(a.getName());
 
-				modelAttributeRepository.save(new ModelAttribute(new ModelAttributePK(a.getName(), model.getName()),
-						a.getJavaType().getName()));
-
+				modelAttributeRepository
+						.save(new ModelAttribute(e.getJavaType().getName(), a.getName(), a.getJavaType().getName()));
 			});
-			entitiesMap.put(e.getJavaType().getName(), attributes);
 
 		});
 	}
@@ -122,6 +117,25 @@ public class ModelServiceImpl implements ModelService {
 			sparrowPermissionToken.setPermissionToken(permissionToken);
 			permissionTokenRepository.save(sparrowPermissionToken);
 		}
+	}
+
+	@Override
+	public List<Model> getAllEntities() {
+		Set<EntityType<?>> entityTypes = entityManager.getMetamodel().getEntities();
+		List<Model> models = new ArrayList<Model>();
+		entityTypes.forEach(e -> {
+			Model model = new Model(e.getJavaType().getName());
+
+			List<ModelAttribute> attributes = new ArrayList<ModelAttribute>();
+			e.getAttributes().forEach(a -> {
+				ModelAttribute modelAttribute = new ModelAttribute(e.getJavaType().getName(), a.getName(),
+						a.getJavaType().getName());
+				attributes.add(modelAttribute);
+			});
+			model.setModelAttributes(attributes);
+			models.add(model);
+		});
+		return models;
 	}
 
 }

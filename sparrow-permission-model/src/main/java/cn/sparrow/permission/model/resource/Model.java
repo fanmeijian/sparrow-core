@@ -13,8 +13,9 @@ import javax.persistence.Table;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 import cn.sparrow.permission.model.common.AbstractSparrowEntity;
 import cn.sparrow.permission.model.token.SparrowPermissionToken;
@@ -43,7 +44,7 @@ public class Model extends AbstractSparrowEntity {
 	private Boolean isSystem;
 
 	@NotAudited
-	@JsonIgnore
+	@JsonProperty(access = Access.READ_ONLY)
 	@OneToMany(targetEntity = ModelAttribute.class, cascade = CascadeType.ALL, mappedBy = "model")
 	private List<ModelAttribute> modelAttributes;
 

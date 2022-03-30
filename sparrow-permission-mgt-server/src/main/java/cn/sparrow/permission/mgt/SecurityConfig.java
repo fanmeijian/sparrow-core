@@ -106,7 +106,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		exampleApi.setPermission(ApiPermissionEnum.RESTRICT);
 		apiService.all(Pageable.unpaged(), exampleApi).forEach(url -> {
 			logger.debug("初始化受限资源: {} {} {} {} {}", url.getId(), url.getMethod(), url.getName(), url.getUri(),
-					apiService.getPermissions(url.getId(), Pageable.unpaged()).toList());
+					"");
 			try {
 				http.csrf().disable()
 						.authorizeRequests(
