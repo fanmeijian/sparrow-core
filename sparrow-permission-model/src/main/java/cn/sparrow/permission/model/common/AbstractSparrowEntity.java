@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
+import javax.persistence.EntityListeners;
 import javax.persistence.JoinColumn;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToOne;
@@ -14,6 +15,8 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.GenerationTime;
+import org.hibernate.annotations.GeneratorType;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.envers.NotAudited;
 
@@ -52,16 +55,15 @@ public abstract class AbstractSparrowEntity implements Serializable {
 	@NotAudited
 	private Date modifiedDate; // 最后更新时间
 
+	@GeneratorType(type = LoggedUserGenerator.class, when = GenerationTime.INSERT)
 	@Column(name = "created_by", insertable = true, updatable = false)
 	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	private String createdBy;
 
+	@GeneratorType(type = LoggedUserGenerator.class, when = GenerationTime.ALWAYS)
 	@Column(name = "modified_by", insertable = true, updatable = true)
 	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	private String modifiedBy;
-
-//  @Transient
-//  private Model model;
 
 	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	@Column(name = "data_permission_token_id")
@@ -72,22 +74,5 @@ public abstract class AbstractSparrowEntity implements Serializable {
 	@NotAudited
 	@JsonIgnore
 	private DataPermissionToken dataPermissionToken;
-
-	@PrePersist
-	private void preSave() {
-		this.createdBy = CurrentUser.INSTANCE.get();
-		this.modifiedBy = CurrentUser.INSTANCE.get();
-	}
-
-	@PreUpdate
-	private void preUpdate() {
-		this.modifiedBy = CurrentUser.INSTANCE.get();
-	}
-
-//	@Transient
-//	@Size(max = 0)
-//	@NotAudited
-//	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
-//	private List<String> errorMessage = new ArrayList<String>();
 
 }
