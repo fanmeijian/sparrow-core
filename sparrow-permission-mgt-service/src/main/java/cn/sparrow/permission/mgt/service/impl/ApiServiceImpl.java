@@ -51,7 +51,7 @@ public class ApiServiceImpl implements ApiService {
 	@Override
 	@ResponseStatus(code = HttpStatus.NO_CONTENT)
 	public void delete(List<String> ids) {
-		apiRepository.deleteAllByIdInBatch(ids);
+		apiRepository.deleteByIdIn(ids.toArray(new String[] {}));
 	}
 
 	@Override
