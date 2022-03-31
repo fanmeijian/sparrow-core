@@ -48,6 +48,8 @@
 		<class>cn.sparrow.permission.model.resource.ModelAttribute</class>
 		<class>cn.sparrow.permission.model.resource.ModelAttributePK</class>
 		<class>cn.sparrow.permission.model.resource.Scope</class>
+		<class>cn.sparrow.permission.model.resource.ScopeApi</class>
+		<class>cn.sparrow.permission.model.resource.ScopeApiPK</class>
 		<class>cn.sparrow.permission.model.resource.SparrowApi</class>
 		<class>cn.sparrow.permission.model.resource.SparrowFile</class>
 		<class>cn.sparrow.permission.model.resource.Sysrole</class>

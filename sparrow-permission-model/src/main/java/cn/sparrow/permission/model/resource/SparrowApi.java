@@ -1,16 +1,22 @@
 package cn.sparrow.permission.model.resource;
 
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
@@ -48,6 +54,11 @@ public class SparrowApi extends AbstractSparrowEntity {
 
 	@Column(name = "client_id")
 	private String clientId;
+	
+	@NotAudited
+	@JsonIgnore
+	@OneToMany(cascade = CascadeType.REMOVE, mappedBy = "sparrowApi")
+	private Set<ScopeApi> scopeApis;
 
 	public SparrowApi(String name, String uri, HttpMethodEnum method, String clientId, ApiPermissionEnum permission) {
 		this.name = name;

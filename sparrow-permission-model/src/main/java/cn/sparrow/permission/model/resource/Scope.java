@@ -59,4 +59,10 @@ public class Scope extends AbstractSparrowEntity {
 	@JsonIgnore
 	@OneToMany(cascade = CascadeType.REMOVE, mappedBy = "scope")
 	private Set<SysroleScope> sysroleScopes;
+	
+	@NotAudited
+	@JsonIgnore
+	@OneToMany(cascade = CascadeType.REMOVE, mappedBy = "scope")
+	private Set<ScopeApi> scopeApis;
+	
 }

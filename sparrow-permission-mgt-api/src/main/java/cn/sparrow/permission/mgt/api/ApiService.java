@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import cn.sparrow.permission.model.resource.ScopeApi;
 import cn.sparrow.permission.model.resource.SparrowApi;
 import cn.sparrow.permission.model.resource.SysroleApi;
 import io.swagger.v3.oas.annotations.Operation;
@@ -66,4 +67,19 @@ public interface ApiService{
 	@Operation(summary = "移除授权")
 	@ResponseBody
 	public void removePermissions(@PathVariable("apiId") String apiId, @RequestBody List<String> sysroleIds);
+	
+	@GetMapping("/{apiId}/scopes")
+	@Operation(summary = "浏览所属scope")
+	@ResponseBody
+	public List<ScopeApi> getScopes(@PathVariable("apiId") String apiId);
+
+	@PostMapping("/{apiId}/scopes")
+	@Operation(summary = "增加所属scope")
+	@ResponseBody
+	public void addScopes(@PathVariable("apiId") String apiId, @RequestBody List<String> scopeIds);
+	
+	@PutMapping("/{apiId}/scopes")
+	@Operation(summary = "取消所属scope")
+	@ResponseBody
+	public void removeScopes(@PathVariable("apiId") String apiId, @RequestBody List<String> scopeIds);
 }
