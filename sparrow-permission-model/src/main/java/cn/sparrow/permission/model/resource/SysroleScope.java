@@ -8,6 +8,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -21,6 +22,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Table(name = "spr_sysrole_scope")
+@Audited
 public class SysroleScope extends AbstractSparrowEntity {
 	/**
 	 * 
@@ -33,11 +35,13 @@ public class SysroleScope extends AbstractSparrowEntity {
 			@JoinColumn(name = "scope_id", insertable = false, updatable = false) })
 	private SysroleScopePK id;
 
+	@NotAudited
 	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "scope_id", insertable = false, updatable = false)
 	private Scope scope;
 
+	@NotAudited
 	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "sysrole_id", insertable = false, updatable = false)

@@ -68,7 +68,7 @@ public interface EmployeeService {
 	public List<EmployeeRelation> getParents(@PathVariable("employeeId") String employeeId);
 
 	@Operation(summary = "获取所属职级")
-	@GetMapping("/{employeeId}/positionLevels")
+	@GetMapping("/{employeeId}/levels")
 	@ResponseBody
 	public List<EmployeeOrganizationLevel> getLevels(@PathVariable("employeeId") String employeeId);
 
@@ -94,24 +94,24 @@ public interface EmployeeService {
 			@RequestBody List<OrganizationRolePK> organizationRoleIds);
 
 	@Operation(summary = "设置所属职级别")
-	@PostMapping("/{employeeId}/positionLevels")
+	@PostMapping("/{employeeId}/levels")
 	@ResponseBody
 	public void addLevel(@PathVariable("employeeId") String employeeId,
 			@RequestBody List<OrganizationPositionLevelPK> organizationPositionLevelIds);
 
 	@Operation(summary = "移除所属职级别")
-	@PutMapping("/{employeeId}/positionLevels/delete")
+	@PutMapping("/{employeeId}/levels/delete")
 	@ResponseBody
 	public void removeLevel(@PathVariable("employeeId") String employeeId,
 			@RequestBody List<OrganizationPositionLevelPK> organizationPositionLevelIds);
 
 	@Operation(summary = "设置员工上级")
-	@PostMapping("/{employeeId}/relation")
+	@PostMapping("/{employeeId}/parents")
 	@ResponseBody
 	public void addParent(@PathVariable("employeeId") String employeeId, @RequestBody List<String> parentIds);
 
 	@Operation(summary = "移除员工上级")
-	@PutMapping("/{employeeId}/relation/delete")
+	@PutMapping("/{employeeId}/parents/delete")
 	@ResponseBody
 	public void removeParent(@PathVariable("employeeId") String employeeId, @RequestBody List<String> parentIds);
 

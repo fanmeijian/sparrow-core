@@ -1,27 +1,42 @@
 package cn.sparrow.permission.mgt.service;
 
-import java.util.ArrayList;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import cn.sparrow.permission.mgt.api.PreserveRole;
-import cn.sparrow.permission.mgt.api.PreserveScope;
-import cn.sparrow.permission.mgt.api.scopes.ApiScope;
+import cn.sparrow.permission.mgt.model.SparrowUser;
+import cn.sparrow.permission.mgt.service.repository.UserSysroleRepository;
 
-@Service
+@Component
 public class JwtUserDetailsService implements UserDetailsService {
+
+	@Autowired
+	UserRepository userRepository;
+
+	@Autowired
+	UserSysroleRepository userSysroleRepository;
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		if ("javainuse".equals(username)) {
-//			return new User("javainuse", "$2a$10$slYQmyNdGzTn7ZLBXBChFOC9f6kFjAqPhccnP6DxlWXx2lPk1C3G6",
-//					new ArrayList<>());
-			return User.withUsername(username).password("$2a$10$slYQmyNdGzTn7ZLBXBChFOC9f6kFjAqPhccnP6DxlWXx2lPk1C3G6").roles(PreserveRole.ROLE_SYSADMIN,PreserveRole.ROLE_ADMIN, PreserveRole.ROLE_SUPER_ADMIN,PreserveRole.ROLE_SUPER_SYSADMIN).build();
-		} else {
+		try {
+			SparrowUser user = userRepository.findById(username).get();
+//			userSysroleRepository.findByIdUsername(username).stream().map(f -> f.getSysrole().getName())
+//					.collect(Collectors.toList()).toArray(new String[] {});
+			System.out.println(user.getPassword());
+			return User.withUsername(username).password(user.getPassword().replace("{bcrypt}", ""))
+					.roles(userSysroleRepository.findByIdUsername(username).stream().map(f -> f.getSysrole().getCode())
+							.collect(Collectors.toList()).toArray(new String[] {}))
+					.build();
+		} catch (NoSuchElementException e) {
 			throw new UsernameNotFoundException("User not found with username: " + username);
 		}
 	}

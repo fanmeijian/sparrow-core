@@ -7,10 +7,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -34,8 +36,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
-//	@Autowired
-//	private UserDetailsService jwtUserDetailsService;
+	@Autowired
+	private UserDetailsService jwtUserDetailsService;
 
 	@Autowired
 	private JwtRequestFilter jwtRequestFilter;
@@ -46,13 +48,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	ApiRepository apiRepository;
 
-//	@Autowired
-//	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-//		// configure AuthenticationManager so that it knows from where to load
-//		// user for matching credentials
-//		// Use BCryptPasswordEncoder
+	@Autowired
+	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+		// configure AuthenticationManager so that it knows from where to load
+		// user for matching credentials
+		// Use BCryptPasswordEncoder
 //		auth.userDetailsService(jwtUserDetailsService).passwordEncoder(passwordEncoder());
-//	}
+	}
 
 	@Bean
 	public PasswordEncoder passwordEncoder() {
@@ -68,12 +70,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity httpSecurity) throws Exception {
 		httpSecurity.headers().frameOptions().disable(); // use to control the h2 database console not blank
-		httpSecurity.csrf().disable().authorizeRequests().antMatchers("/h2-console/**").permitAll();
+		httpSecurity.cors().disable().csrf().disable().authorizeRequests().antMatchers("/h2-console/**","/authenticate").permitAll();
 
 		// We don't need CSRF for this example
 		httpSecurity.csrf().disable()
 				// dont authenticate this particular request
-				.authorizeRequests().antMatchers("/authenticate", "/swagger-ui/**", "/v3/**").permitAll().
+				.authorizeRequests().antMatchers("/swagger-ui/**", "/v3/**").permitAll().
 				// all other requests need to be authenticated
 				anyRequest().authenticated().and().
 				// make sure we use stateless session; session won't be used to
@@ -159,5 +161,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 		// Add a filter to validate the tokens with every request
 		httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+	}
+	
+	@Override
+	public void configure(WebSecurity web) throws Exception {
+		// Allow OPTIONS calls to be accessed without authentication
+		web.ignoring().antMatchers(HttpMethod.OPTIONS, "/**");
 	}
 }

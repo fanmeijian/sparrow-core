@@ -10,6 +10,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
 
 import cn.sparrow.permission.model.common.AbstractSparrowEntity;
 import lombok.AllArgsConstructor;
@@ -25,6 +26,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "spr_user_sysrole")
 @NamedQueries({
 	@NamedQuery(name = "UserSysrole.findByUsername", query = "SELECT o FROM UserSysrole o WHERE o.id.username = :username") })
+@Audited
 public class UserSysrole extends AbstractSparrowEntity {
   private static final long serialVersionUID = 1L;
 
@@ -33,13 +35,11 @@ public class UserSysrole extends AbstractSparrowEntity {
   @Audited
   private UserSysrolePK id;
   
+  @NotAudited
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "sysrole_id", insertable = false, updatable = false)
   private Sysrole sysrole;
-  
-//  @ManyToOne
-//  @JoinColumn(name = "menu_id", insertable = false, updatable = false)
-//  private Menu menu;
+
   
   public UserSysrole(UserSysrolePK id) {
     this.id = id;

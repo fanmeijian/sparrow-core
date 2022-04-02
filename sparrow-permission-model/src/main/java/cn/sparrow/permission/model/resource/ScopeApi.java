@@ -7,6 +7,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -21,6 +22,7 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
 @Data
 @NoArgsConstructor
+@Audited
 public class ScopeApi extends AbstractSparrowEntity{
 	
 	private static final long serialVersionUID = 1L;
@@ -29,11 +31,13 @@ public class ScopeApi extends AbstractSparrowEntity{
 	@Include
 	private ScopeApiPK id;
 	
+	@NotAudited
 	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "scope_id", insertable = false, updatable = false)
 	private Scope scope;
 	
+	@NotAudited
 	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "api_id", insertable = false, updatable = false)

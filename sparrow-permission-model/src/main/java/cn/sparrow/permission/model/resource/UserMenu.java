@@ -7,6 +7,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
 
 import cn.sparrow.permission.model.common.AbstractSparrowEntity;
 import lombok.Data;
@@ -18,6 +19,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Table(name = "spr_user_menu")
+@Audited
 public class UserMenu extends AbstractSparrowEntity {
 
 	/**
@@ -26,9 +28,9 @@ public class UserMenu extends AbstractSparrowEntity {
 	private static final long serialVersionUID = 1L;
 	@EqualsAndHashCode.Include
 	@EmbeddedId
-	@Audited
 	private UserMenuPK id;
 	
+	@NotAudited
 	@ManyToOne
 	@JoinColumn(name = "menu_id", insertable = false, updatable = false)
 	private Menu menu;

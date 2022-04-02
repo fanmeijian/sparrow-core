@@ -7,6 +7,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
 
 import cn.sparrow.permission.model.common.AbstractSparrowEntity;
 import lombok.Data;
@@ -18,6 +19,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Table(name = "spr_sysrole_api")
+@Audited
 public class SysroleApi extends AbstractSparrowEntity {
 	public SysroleApi(SysroleApiPK id) {
 		this.id = id;
@@ -34,10 +36,12 @@ public class SysroleApi extends AbstractSparrowEntity {
 	@Audited
 	private SysroleApiPK id;
 
+	@NotAudited
 	@ManyToOne
 	@JoinColumn(name = "api_id", insertable = false, updatable = false)
 	private SparrowApi sparrowApi;
 
+	@NotAudited
 	@ManyToOne
 	@JoinColumn(name = "sysrole_id", insertable = false, updatable = false)
 	private Sysrole sysrole;

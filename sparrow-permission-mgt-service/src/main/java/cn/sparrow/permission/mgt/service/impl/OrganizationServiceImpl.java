@@ -45,7 +45,7 @@ import cn.sparrow.permission.model.organization.OrganizationRolePK;
 import cn.sparrow.permission.model.resource.SparrowTree;
 
 @Service
-public class OrganizationServiceImpl extends AbstractPreserveScope implements OrganizationService {
+public class OrganizationServiceImpl extends AbstractPreserveScope implements OrganizationService, OrgScope {
 
 	@Autowired
 	OrganizationRelationRepository organizationRelationRepository;
@@ -79,30 +79,18 @@ public class OrganizationServiceImpl extends AbstractPreserveScope implements Or
 
 	@Override
 	public Page<OrganizationRole> getRoles(String organizationId, Pageable pageable) {
-		Page<OrganizationRole> roles = organizationRoleRepository.findByIdOrganizationId(organizationId, pageable);
-//		roles.forEach(f -> {
-//			f.setChildCount(organizationRoleRelationRepository.countByIdParentId(f.getId()));
-//		});
-		return roles;
+		return organizationRoleRepository.findByIdOrganizationId(organizationId, pageable);
 	}
 
 	@Override
 	public Page<OrganizationPositionLevel> getLevels(String organizationId, Pageable pageable) {
-		Page<OrganizationPositionLevel> organizationPositionLevels = organizationLevelRepository
+		return organizationLevelRepository
 				.findByIdOrganizationId(organizationId, pageable);
-//		organizationPositionLevels.forEach(f -> {
-//			f.setChildCount(organizationPositionLevelRelationRepository.countByIdParentId(f.getId()));
-//		});
-		return organizationPositionLevels;
 	}
 
 	@Override
 	public Page<Employee> getEmployees(@NotBlank String organizationId, Pageable pageable) {
-		Page<Employee> employees = employeeRepository.findByOrganizationId(organizationId, pageable);
-//		employees.forEach(f -> {
-//			f.setChildCount(employeeService.getChildCount(f.getId()));
-//		});
-		return employees;
+		return employeeRepository.findByOrganizationId(organizationId, pageable);
 	}
 
 	@Override
@@ -125,6 +113,7 @@ public class OrganizationServiceImpl extends AbstractPreserveScope implements Or
 	}
 
 	@Override
+	@PreAuthorize("hasAuthority('SCOPE_"+SCOPE_ADMIN_PARENT_LIST+"') or hasRole('ROLE_"+ROLE_ADMIN+"')")
 	public List<OrganizationRelation> getParents(String organizationId) {
 		return organizationRelationRepository.findByIdOrganizationId(organizationId);
 	}
@@ -132,6 +121,7 @@ public class OrganizationServiceImpl extends AbstractPreserveScope implements Or
 	@Override
 	@Transactional
 	@ResponseStatus(code = HttpStatus.NO_CONTENT)
+	@PreAuthorize("hasAuthority('SCOPE_"+SCOPE_ADMIN_DELETE+"') or hasRole('ROLE_"+ROLE_SUPER_ADMIN+"')")
 	public void delete(String[] ids) {
 		organizationRelationRepository.deleteByIdOrganizationIdInOrIdParentIdIn(ids, ids);
 		organizationRepository.deleteByIdIn(ids);
@@ -140,6 +130,7 @@ public class OrganizationServiceImpl extends AbstractPreserveScope implements Or
 	@Override
 	@Transactional
 	@ResponseStatus(code = HttpStatus.NO_CONTENT)
+	@PreAuthorize("hasAuthority('SCOPE_"+SCOPE_ADMIN_PARENT_ADD+"') or hasRole('ROLE_"+ROLE_ADMIN+"')")
 	public void addParent(String organizationId, List<String> parentIds) {
 
 		parentIds.forEach(f -> {
@@ -229,13 +220,13 @@ public class OrganizationServiceImpl extends AbstractPreserveScope implements Or
 
 	@Override
 	@ResponseStatus(code = HttpStatus.CREATED)
-	@PreAuthorize("hasAuthority('SCOPE_"+OrgScope.SCOPE_ADMIN_ORG_CREATE+"')")
+	@PreAuthorize("hasAuthority('SCOPE_"+SCOPE_ADMIN_CREATE+"') or hasRole('ROLE_"+ROLE_ADMIN+"')")
 	public Organization create(@Valid Organization organization) {
 		return organizationRepository.save(organization);
 	}
 
 	@Override
-//	@PreAuthorize("hasAuthority('SCOPE_"+OrgScope.ADMIN_ORG_UPDATE+"')")
+	@PreAuthorize("hasAuthority('SCOPE_"+SCOPE_ADMIN_UPDATE+"') or hasRole('ROLE_"+ROLE_ADMIN+"')")
 	public Organization update(String id, Map<String, Object> map) {
 		Organization source = organizationRepository.getById(id);
 		PatchUpdateHelper.merge(source, map);
@@ -245,6 +236,7 @@ public class OrganizationServiceImpl extends AbstractPreserveScope implements Or
 	@Override
 	@Transactional
 	@ResponseStatus(code = HttpStatus.NO_CONTENT)
+	@PreAuthorize("hasAuthority('SCOPE_"+SCOPE_ADMIN_PARENT_REMOVE+"') or hasRole('ROLE_"+ROLE_SUPER_ADMIN+"')")
 	public void removeParent(String organizationId, List<String> parentIds) {
 		parentIds.forEach(f -> {
 			if (f.equals("root")) {
@@ -266,11 +258,13 @@ public class OrganizationServiceImpl extends AbstractPreserveScope implements Or
 	}
 
 	@Override
+	@PreAuthorize("hasAuthority('SCOPE_"+SCOPE_ADMIN_READ+"') or hasRole('ROLE_"+ROLE_ADMIN+"')")
 	public Organization get(String organizationId) {
 		return organizationRepository.findById(organizationId).get();
 	}
 
 	@Override
+	@PreAuthorize("hasAuthority('SCOPE_"+SCOPE_ADMIN_CHILD_LIST+"') or hasRole('ROLE_"+ROLE_ADMIN+"')")
 	public Page<?> getChildren(String organizationId, OrganizationChildTypeEnum type, Pageable pageable) {
 
 		switch (type) {
