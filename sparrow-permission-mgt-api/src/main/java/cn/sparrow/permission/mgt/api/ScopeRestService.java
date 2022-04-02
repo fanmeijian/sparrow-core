@@ -50,6 +50,11 @@ public interface ScopeRestService {
 	@Operation(summary = "浏览功能")
 	@ResponseBody
 	public Page<Scope> all(@Nullable Pageable pageable, @Nullable Scope scope);
+	
+	@GetMapping("/preserve")
+	@Operation(summary = "浏览预置功能")
+	@ResponseBody
+	public List<String> preserveScopes();
 
 	@GetMapping("/{scopeId}/permissions")
 	@Operation(summary = "可访问角色列表")

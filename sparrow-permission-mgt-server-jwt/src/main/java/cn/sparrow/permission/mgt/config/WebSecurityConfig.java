@@ -75,87 +75,87 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				// dont authenticate this particular request
 				.authorizeRequests().antMatchers("/authenticate", "/swagger-ui/**", "/v3/**").permitAll().
 				// all other requests need to be authenticated
-				anyRequest().hasAnyAuthority("Sysrole").and().
+				anyRequest().authenticated().and().
 				// make sure we use stateless session; session won't be used to
 				// store user's state.
 				exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-
-		SparrowApi exampleApi = new SparrowApi();
-		exampleApi.setClientId("sparrow");
-		exampleApi.setPermission(ApiPermissionEnum.DENY);
-		exampleApi.setModelName(null);
-
-		apiService.all(Pageable.unpaged(), exampleApi).forEach(url -> {
-			log.debug("初始化拒绝额访问资源:" + url.getId() + " " + url.getMethod() + " " + url.getName() + " " + url.getUri());
-
-			try {
-				httpSecurity.csrf().disable().authorizeRequests().antMatchers(url.getMethod().toString(), url.getUri())
-						.denyAll();
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		});
-
-		exampleApi.setPermission(ApiPermissionEnum.ANONYMOUS);
-		apiService.all(Pageable.unpaged(), exampleApi).forEach(url -> {
-			log.debug("初始化匿名访问资源:" + url.getId() + " " + url.getMethod() + " " + url.getName() + " " + url.getUri());
-			try {
-				httpSecurity.csrf().disable().authorizeRequests().antMatchers(url.getMethod().toString(), url.getUri())
-						.permitAll();
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		});
 //
-		exampleApi.setPermission(ApiPermissionEnum.AUTHENTICATED);
-		apiService.all(Pageable.unpaged(), exampleApi).forEach(url -> {
-			try {
-				httpSecurity.csrf().disable().authorizeRequests((authorizeRequests) -> {
-					try {
-						authorizeRequests
-								.antMatchers(url.getMethod().toString(), url.getUri()).authenticated().and().
-						// make sure we use stateless session; session won't be used to
-						// store user's state.
-								exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and()
-								.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-					} catch (Exception e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				});
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			log.debug("初始化认证访问资源:" + url.getId() + " " + url.getMethod() + " " + url.getName() + " " + url.getUri());
-		});
+//		SparrowApi exampleApi = new SparrowApi();
+//		exampleApi.setClientId("sparrow");
+//		exampleApi.setPermission(ApiPermissionEnum.DENY);
+//		exampleApi.setModelName(null);
 //
-		exampleApi.setPermission(ApiPermissionEnum.RESTRICT);
-		List<SparrowApi> apis= apiRepository.findAll();
-		log.info("{}",apis.size());
-		apiService.all(Pageable.unpaged(), exampleApi).forEach(url -> {
-			log.debug("初始化受限资源: {} {} {} {} {}", url.getId(), url.getMethod(), url.getName(), url.getUri(), "");
-			try {
-				httpSecurity.csrf().disable().authorizeRequests((authorizeRequests) -> {
-					try {
-						authorizeRequests
-								.antMatchers(url.getMethod().toString(), url.getUri()).hasAnyRole("SYSADMIN").and().
-						// make sure we use stateless session; session won't be used to
-						// store user's state.
-								exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and()
-								.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-					} catch (Exception e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				});
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		});
+//		apiService.all(Pageable.unpaged(), exampleApi).forEach(url -> {
+//			log.debug("初始化拒绝额访问资源:" + url.getId() + " " + url.getMethod() + " " + url.getName() + " " + url.getUri());
+//
+//			try {
+//				httpSecurity.csrf().disable().authorizeRequests().antMatchers(url.getMethod().toString(), url.getUri())
+//						.denyAll();
+//			} catch (Exception e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//		});
+//
+//		exampleApi.setPermission(ApiPermissionEnum.ANONYMOUS);
+//		apiService.all(Pageable.unpaged(), exampleApi).forEach(url -> {
+//			log.debug("初始化匿名访问资源:" + url.getId() + " " + url.getMethod() + " " + url.getName() + " " + url.getUri());
+//			try {
+//				httpSecurity.csrf().disable().authorizeRequests().antMatchers(url.getMethod().toString(), url.getUri())
+//						.permitAll();
+//			} catch (Exception e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//		});
+////
+//		exampleApi.setPermission(ApiPermissionEnum.AUTHENTICATED);
+//		apiService.all(Pageable.unpaged(), exampleApi).forEach(url -> {
+//			try {
+//				httpSecurity.csrf().disable().authorizeRequests((authorizeRequests) -> {
+//					try {
+//						authorizeRequests
+//								.antMatchers(url.getMethod().toString(), url.getUri()).authenticated().and().
+//						// make sure we use stateless session; session won't be used to
+//						// store user's state.
+//								exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and()
+//								.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+//					} catch (Exception e) {
+//						// TODO Auto-generated catch block
+//						e.printStackTrace();
+//					}
+//				});
+//			} catch (Exception e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//			log.debug("初始化认证访问资源:" + url.getId() + " " + url.getMethod() + " " + url.getName() + " " + url.getUri());
+//		});
+////
+//		exampleApi.setPermission(ApiPermissionEnum.RESTRICT);
+//		List<SparrowApi> apis= apiRepository.findAll();
+//		log.info("{}",apis.size());
+//		apiService.all(Pageable.unpaged(), exampleApi).forEach(url -> {
+//			log.debug("初始化受限资源: {} {} {} {} {}", url.getId(), url.getMethod(), url.getName(), url.getUri(), "");
+//			try {
+//				httpSecurity.csrf().disable().authorizeRequests((authorizeRequests) -> {
+//					try {
+//						authorizeRequests
+//								.antMatchers(url.getMethod().toString(), url.getUri()).hasAnyRole("SYSADMIN").and().
+//						// make sure we use stateless session; session won't be used to
+//						// store user's state.
+//								exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and()
+//								.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+//					} catch (Exception e) {
+//						// TODO Auto-generated catch block
+//						e.printStackTrace();
+//					}
+//				});
+//			} catch (Exception e) {
+//				e.printStackTrace();
+//			}
+//		});
 
 		// Add a filter to validate the tokens with every request
 		httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);

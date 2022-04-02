@@ -29,7 +29,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 @Tag(name = "organization", description = "组织服务")
 @RequestMapping("/organizations")
-public interface OrganizationRestService {
+public interface OrganizationRestService extends PreserveScope {
 
 	@Operation(summary = "获取下级")
 	@GetMapping("/{organizationId}/children")

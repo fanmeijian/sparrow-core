@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -22,6 +23,7 @@ import cn.sparrow.permission.mgt.api.GroupService;
 import cn.sparrow.permission.mgt.api.OrganizationService;
 import cn.sparrow.permission.mgt.api.PositionLevelService;
 import cn.sparrow.permission.mgt.api.RoleService;
+import cn.sparrow.permission.mgt.api.scopes.OrgScope;
 import cn.sparrow.permission.mgt.service.repository.EmployeeRepository;
 import cn.sparrow.permission.mgt.service.repository.OrganizationGroupRepository;
 import cn.sparrow.permission.mgt.service.repository.OrganizationLevelRepository;
@@ -43,7 +45,7 @@ import cn.sparrow.permission.model.organization.OrganizationRolePK;
 import cn.sparrow.permission.model.resource.SparrowTree;
 
 @Service
-public class OrganizationServiceImpl implements OrganizationService {
+public class OrganizationServiceImpl extends AbstractPreserveScope implements OrganizationService {
 
 	@Autowired
 	OrganizationRelationRepository organizationRelationRepository;
@@ -227,11 +229,13 @@ public class OrganizationServiceImpl implements OrganizationService {
 
 	@Override
 	@ResponseStatus(code = HttpStatus.CREATED)
+	@PreAuthorize("hasAuthority('SCOPE_"+OrgScope.SCOPE_ADMIN_ORG_CREATE+"')")
 	public Organization create(@Valid Organization organization) {
 		return organizationRepository.save(organization);
 	}
 
 	@Override
+//	@PreAuthorize("hasAuthority('SCOPE_"+OrgScope.ADMIN_ORG_UPDATE+"')")
 	public Organization update(String id, Map<String, Object> map) {
 		Organization source = organizationRepository.getById(id);
 		PatchUpdateHelper.merge(source, map);

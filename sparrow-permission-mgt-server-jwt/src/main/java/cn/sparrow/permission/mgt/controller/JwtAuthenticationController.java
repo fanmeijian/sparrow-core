@@ -19,7 +19,9 @@ import org.springframework.web.bind.annotation.RestController;
 import cn.sparrow.permission.mgt.config.JwtTokenUtil;
 import cn.sparrow.permission.mgt.model.JwtRequest;
 import cn.sparrow.permission.mgt.model.JwtResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
+@Tag(name = "oauth2", description = "认证服务")
 @RestController
 @CrossOrigin
 public class JwtAuthenticationController {
