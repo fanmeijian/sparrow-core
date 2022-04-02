@@ -17,7 +17,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import cn.sparrow.permission.mgt.service.JwtUserDetailsService;
 import cn.sparrow.permission.model.common.CurrentUser;
-import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 
@@ -70,6 +69,8 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 				// After setting the Authentication in the context, we specify
 				// that the current user is authenticated. So it passes the Spring Security Configurations successfully.
 				SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+				
+				//用于设置hibernate获取操作用户日志使用
 				CurrentUser.logIn(username);
 			}
 		}

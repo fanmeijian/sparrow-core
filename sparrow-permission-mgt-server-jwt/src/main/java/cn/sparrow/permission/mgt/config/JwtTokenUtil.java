@@ -18,8 +18,8 @@ import io.jsonwebtoken.SignatureAlgorithm;
 public class JwtTokenUtil implements Serializable {
 
 	private static final long serialVersionUID = -2550185165626007488L;
-	
-	public static final long JWT_TOKEN_VALIDITY = 5*60*60;
+
+	public static final long JWT_TOKEN_VALIDITY = 5 * 60 * 60;
 
 	@Value("${jwt.secret}")
 	private String secret;
@@ -57,15 +57,14 @@ public class JwtTokenUtil implements Serializable {
 
 	public String generateToken(UserDetails userDetails) {
 		Map<String, Object> claims = new HashMap<>();
-//		claims.put("scope", "SCOPE_admin:org:create");
-//		claims.put("authorities", userDetails.getAuthorities());
 		return doGenerateToken(claims, userDetails.getUsername());
 	}
 
 	private String doGenerateToken(Map<String, Object> claims, String subject) {
 
 		return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
-				.setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY*1000)).signWith(SignatureAlgorithm.HS512, secret).compact();
+				.setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000))
+				.signWith(SignatureAlgorithm.HS512, secret).compact();
 	}
 
 	public Boolean canTokenBeRefreshed(String token) {
