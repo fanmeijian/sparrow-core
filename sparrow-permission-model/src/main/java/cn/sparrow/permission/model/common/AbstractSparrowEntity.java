@@ -8,8 +8,6 @@ import javax.persistence.EntityListeners;
 import javax.persistence.JoinColumn;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToOne;
-import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
@@ -30,6 +28,7 @@ import lombok.EqualsAndHashCode;
 @MappedSuperclass
 @Data
 @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
+@EntityListeners({ DeleteLogListener.class })
 public abstract class AbstractSparrowEntity implements Serializable {
 	/**
 	 * 
