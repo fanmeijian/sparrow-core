@@ -13,7 +13,7 @@ import java.lang.annotation.ElementType;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-public @interface Permission {
-	String username();
-	String modelName();
+public @interface ScopePermission {
+	String username() default "$curUser";
+	String scope();
 }

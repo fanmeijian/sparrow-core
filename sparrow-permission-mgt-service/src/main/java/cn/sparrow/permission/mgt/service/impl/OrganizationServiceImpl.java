@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import cn.sparrow.permission.constant.OrganizationChildTypeEnum;
+import cn.sparrow.permission.core.api.ScopePermission;
 import cn.sparrow.permission.mgt.api.EmployeeService;
 import cn.sparrow.permission.mgt.api.GroupService;
 import cn.sparrow.permission.mgt.api.OrganizationService;
@@ -220,6 +221,7 @@ public class OrganizationServiceImpl extends AbstractPreserveScope implements Or
 
 	@Override
 	@ResponseStatus(code = HttpStatus.CREATED)
+	@ScopePermission(scope = SCOPE_ADMIN_CREATE)
 	@PreAuthorize("hasAuthority('SCOPE_"+SCOPE_ADMIN_CREATE+"') or hasRole('ROLE_"+ROLE_ADMIN+"')")
 	public Organization create(@Valid Organization organization) {
 		return organizationRepository.save(organization);

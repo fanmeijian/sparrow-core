@@ -10,8 +10,10 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import cn.sparrow.permission.core.api.AuditLogService;
 import cn.sparrow.permission.core.api.EmployeeTokenService;
 import cn.sparrow.permission.core.api.PermissionService;
+import cn.sparrow.permission.core.api.ScopePermission;
 import cn.sparrow.permission.core.service.AuditLogServiceImpl;
 import cn.sparrow.permission.core.service.EmployeeTokenServiceImpl;
+import cn.sparrow.permission.core.service.PermissionAspect;
 import cn.sparrow.permission.core.service.PermissionServiceImpl;
 
 @Configuration
@@ -41,5 +43,10 @@ public class SparrowConfig {
 	@Bean
 	public AuditLogService auditLogService(EntityManager entityManager) {
 		return new AuditLogServiceImpl(entityManager);
+	}
+	
+	@Bean
+	public PermissionAspect scopePermission() {
+		return new PermissionAspect();
 	}
 }
