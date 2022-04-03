@@ -13,7 +13,7 @@ import cn.sparrow.permission.core.api.PermissionService;
 import cn.sparrow.permission.core.api.ScopePermission;
 import cn.sparrow.permission.core.service.AuditLogServiceImpl;
 import cn.sparrow.permission.core.service.EmployeeTokenServiceImpl;
-import cn.sparrow.permission.core.service.PermissionAspect;
+import cn.sparrow.permission.core.service.ScopePermissionAspect;
 import cn.sparrow.permission.core.service.PermissionServiceImpl;
 
 @Configuration
@@ -46,7 +46,7 @@ public class SparrowConfig {
 	}
 	
 	@Bean
-	public PermissionAspect scopePermission() {
-		return new PermissionAspect();
+	public ScopePermissionAspect scopePermission() {
+		return new ScopePermissionAspect();
 	}
 }

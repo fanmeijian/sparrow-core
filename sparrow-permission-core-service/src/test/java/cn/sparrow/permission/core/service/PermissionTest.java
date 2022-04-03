@@ -202,9 +202,6 @@ public class PermissionTest {
 				assertFalse("权限检查失败", permissionService.hasPermission(denyPermissionEmployeeId, tokenId, permissionEnum));
 				log.info("employee {} deny permission {}", denyPermissionEmployeeId, permissionEnum);
 			}
-			
-
 		}
-
 	}
 }

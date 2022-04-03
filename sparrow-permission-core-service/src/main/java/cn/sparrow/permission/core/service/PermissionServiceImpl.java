@@ -245,7 +245,7 @@ public class PermissionServiceImpl implements PermissionService {
 	public boolean hasPermission(String username, PermissionToken permissionToken, PermissionEnum permissionEnum) {
 		if (username.equals("ROOT"))
 			return true;
-		return this.hasPermission(new EmployeeTokenServiceImpl().getEmployeeTokenByUsername(username), permissionToken,
+		return this.hasPermission(new EmployeeTokenServiceImpl(entityManager).getEmployeeTokenByUsername(username), permissionToken,
 				permissionEnum);
 	}
 }

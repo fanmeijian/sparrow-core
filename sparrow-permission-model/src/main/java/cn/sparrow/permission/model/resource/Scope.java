@@ -8,6 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -23,6 +25,7 @@ import cn.sparrow.permission.model.common.AbstractSparrowEntity;
 import cn.sparrow.permission.model.token.SparrowPermissionToken;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 /*
  * 功能权限表，相当于oauth2的scope范围，可用于细粒度的控制
@@ -33,6 +36,8 @@ import lombok.EqualsAndHashCode;
 @Entity
 @Table(name = "spr_scope")
 @Audited
+@NoArgsConstructor
+@NamedQueries({@NamedQuery(name = "Scope.findByCode", query = "SELECT s FROM Scope s WHERE s.code = :code")})
 public class Scope extends AbstractSparrowEntity {
 	/**
 	 * 
@@ -48,11 +53,14 @@ public class Scope extends AbstractSparrowEntity {
 	private String name;
 	@Column(unique = true, nullable = false)
 	private String code; // app:module:action
+	
+	@Column(name = "permission_token_id")
+	private String permissionTokenId;
 
 	@JsonIgnore
 	@NotAudited
 	@OneToOne
-	@JoinColumn(name = "permission_token_id")
+	@JoinColumn(name = "permission_token_id", insertable = false, updatable = false)
 	private SparrowPermissionToken sparrowPermissionToken;
 
 	@NotAudited
@@ -64,5 +72,10 @@ public class Scope extends AbstractSparrowEntity {
 	@JsonIgnore
 	@OneToMany(cascade = CascadeType.REMOVE, mappedBy = "scope")
 	private Set<ScopeApi> scopeApis;
+	
+	public Scope(String name, String code) {
+		this.name = name;
+		this.code = code;
+	}
 	
 }

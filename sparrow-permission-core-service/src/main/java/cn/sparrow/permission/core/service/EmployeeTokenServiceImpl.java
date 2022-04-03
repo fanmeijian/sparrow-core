@@ -85,9 +85,13 @@ public class EmployeeTokenServiceImpl implements EmployeeTokenService {
 		List<OrganizationPositionLevelPK> positionLevelPKs = new ArrayList<OrganizationPositionLevelPK>();
 		List<String> groups = new ArrayList<String>();
 
+		List<EmployeeUser> employeeUsers = entityManager
+				.createNamedQuery("EmployeeUser.findByEmployeeId", EmployeeUser.class)
+				.setParameter("employeeId", employeeId).getResultList();
+
 		// 员工拥有的登录账户
-		if (employee.getEmployeeUsers() != null) {
-			employee.getEmployeeUsers().forEach(eu -> {
+		if (employeeUsers != null) {
+			employeeUsers.forEach(eu -> {
 				usernames.add(eu.getId().getUsername());
 				entityManager.createNamedQuery("UserSysrole.findByUsername", UserSysrole.class)
 						.setParameter("username", eu.getId().getUsername()).getResultList().forEach(us -> {
@@ -130,5 +134,5 @@ public class EmployeeTokenServiceImpl implements EmployeeTokenService {
 
 		return employeeToken;
 	}
-	
+
 }

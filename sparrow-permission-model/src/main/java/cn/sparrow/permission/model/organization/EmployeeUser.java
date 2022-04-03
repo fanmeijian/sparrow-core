@@ -36,6 +36,10 @@ public class EmployeeUser extends AbstractSparrowEntity{
 	public EmployeeUser(EmployeeUserPK employeeUserPK) {
 		this.id = employeeUserPK;
 	}
+	
+	public EmployeeUser(String employeeId, String username) {
+		this.id = new EmployeeUserPK(username, employeeId);
+	}
 
 	@EqualsAndHashCode.Include
 	@EmbeddedId
