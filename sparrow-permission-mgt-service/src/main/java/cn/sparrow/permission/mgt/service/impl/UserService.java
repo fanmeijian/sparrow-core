@@ -19,13 +19,16 @@ import cn.sparrow.permission.model.resource.UserSysrolePK;
 @Service
 public class UserService {
 
-  @Autowired UserMenuRepository userMenuRepository;
-  @Autowired UserSysroleRepository userSysroleRepository;
-  @Autowired SysroleRepository sysroleRepository;
+	@Autowired
+	UserMenuRepository userMenuRepository;
+	@Autowired
+	UserSysroleRepository userSysroleRepository;
+	@Autowired
+	SysroleRepository sysroleRepository;
 //  @Autowired UserModelPermissionRepository userModelPermissionRepository;
 //  @Autowired UserDataPermissionRepository userDataPermissionRepository;
-  
-  private static Logger logger = LoggerFactory.getLogger(UserService.class);
+
+	private static Logger logger = LoggerFactory.getLogger(UserService.class);
 
 //  public void addModelPermissions(String username,Set<AbstractModelPermissionPK> modelPermissionPKs) {
 //    modelPermissionPKs.forEach(f->{
@@ -54,17 +57,21 @@ public class UserService {
 //  }
 //  
 
-  public List<Sysrole> getSysroles(String username){
-    List<Sysrole> sysroles = new ArrayList<Sysrole>();
-    userSysroleRepository.findByIdUsername(username).forEach(f->{
-      sysroles.add(sysroleRepository.findById(f.getId().getSysroleId()).get());
-    });
-    return sysroles;
-  }
+	public List<Sysrole> getSysroles(String username) {
+		List<Sysrole> sysroles = new ArrayList<Sysrole>();
+		userSysroleRepository.findByIdUsername(username).forEach(f -> {
+			sysroles.add(sysroleRepository.findById(f.getId().getSysroleId()).get());
+		});
+		return sysroles;
+	}
 
-  public void init(String username) {
-    userSysroleRepository.save(new UserSysrole(new UserSysrolePK(username,PreserveSysroleEnum.SYSADMIN.name())));
-    logger.info("Grant user {} with role", username, PreserveSysroleEnum.SYSADMIN.name());
-  }
+	public List<UserSysrole> getUserSysroles(String username) {
+		return userSysroleRepository.findByIdUsername(username);
+	}
+
+	public void init(String username) {
+		userSysroleRepository.save(new UserSysrole(new UserSysrolePK(username, PreserveSysroleEnum.SYSADMIN.name())));
+		logger.info("Grant user {} with role", username, PreserveSysroleEnum.SYSADMIN.name());
+	}
 
 }

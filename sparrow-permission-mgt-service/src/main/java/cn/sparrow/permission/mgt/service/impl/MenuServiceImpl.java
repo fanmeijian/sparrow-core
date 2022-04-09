@@ -16,7 +16,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import cn.sparrow.permission.constant.MenuPermissionTargetEnum;
+import cn.sparrow.permission.constant.SysPermissionTarget;
 import cn.sparrow.permission.constant.MenuTreeTypeEnum;
 import cn.sparrow.permission.mgt.api.MenuService;
 import cn.sparrow.permission.mgt.api.SysroleService;
@@ -130,8 +130,8 @@ public class MenuServiceImpl extends AbstractPreserveScope implements MenuServic
 		List<Menu> menusSet = new ArrayList<Menu>();
 		getUserMenusWithParentAndChildren(username, menusSet);
 		// 整合用户拥有角色的菜单
-		userService.getSysroles(username).forEach(sysrole -> {
-			getSysroleMenusWithParentAndChildren(sysrole.getId(), menusSet);
+		userService.getUserSysroles(username).forEach(sysrole -> {
+			getSysroleMenusWithParentAndChildren(sysrole.getId().getSysroleId(), menusSet);
 		});
 
 		// 构建用户的菜单树
@@ -234,6 +234,7 @@ public class MenuServiceImpl extends AbstractPreserveScope implements MenuServic
 
 	@Override
 	public SparrowTree<Menu, String> getMyTree(Principal principal) {
+		log.debug(principal.getName());
 		return getTreeByUsername(principal.getName());
 	}
 
@@ -308,7 +309,7 @@ public class MenuServiceImpl extends AbstractPreserveScope implements MenuServic
 
 	@Override
 	@PreAuthorize("hasAuthority('SCOPE_" + SCOPE_ADMIN_PEM_LIST + "') or hasRole('ROLE_" + ROLE_ADMIN + "')")
-	public List<?> getPermissions(String menuId, MenuPermissionTargetEnum type) {
+	public List<?> getPermissions(String menuId, SysPermissionTarget type) {
 		switch (type) {
 		case SYSROLE:
 			return this.getSysroles(menuId);
@@ -324,7 +325,7 @@ public class MenuServiceImpl extends AbstractPreserveScope implements MenuServic
 	@Transactional
 	@ResponseStatus(code = HttpStatus.NO_CONTENT)
 	@PreAuthorize("hasAuthority('SCOPE_" + SCOPE_ADMIN_PEM_ADD + "') or hasRole('ROLE_" + ROLE_ADMIN + "')")
-	public void addPermission(String menuId, MenuPermissionTargetEnum type, @NotNull List<String> permissions) {
+	public void addPermission(String menuId, SysPermissionTarget type, @NotNull List<String> permissions) {
 		permissions.forEach(f->{
 			switch (type) {
 			case USER:
@@ -345,7 +346,7 @@ public class MenuServiceImpl extends AbstractPreserveScope implements MenuServic
 	@Transactional
 	@ResponseStatus(code = HttpStatus.NO_CONTENT)
 	@PreAuthorize("hasAuthority('SCOPE_" + SCOPE_ADMIN_PEM_REMOVE + "') or hasRole('ROLE_" + ROLE_SUPER_ADMIN + "')")
-	public void delPermission(String menuId, MenuPermissionTargetEnum type, @NotNull List<String> permissions) {
+	public void delPermission(String menuId, SysPermissionTarget type, @NotNull List<String> permissions) {
 		permissions.forEach(f->{
 			switch (type) {
 			case USER:

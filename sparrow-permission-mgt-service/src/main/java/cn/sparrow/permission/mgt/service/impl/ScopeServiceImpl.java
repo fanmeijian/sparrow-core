@@ -1,6 +1,5 @@
 package cn.sparrow.permission.mgt.service.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -17,9 +16,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import cn.sparrow.permission.constant.SysPermissionTarget;
 import cn.sparrow.permission.mgt.api.PreserveScope;
 import cn.sparrow.permission.mgt.api.ScopeService;
-import cn.sparrow.permission.mgt.api.scopes.OrgScope;
 import cn.sparrow.permission.mgt.api.scopes.ScopeScope;
 import cn.sparrow.permission.mgt.service.repository.ScopeRepository;
 import cn.sparrow.permission.mgt.service.repository.SysroleScopeRepository;
@@ -27,6 +26,8 @@ import cn.sparrow.permission.mgt.service.repository.UserScopeRepository;
 import cn.sparrow.permission.model.resource.Scope;
 import cn.sparrow.permission.model.resource.SysroleScope;
 import cn.sparrow.permission.model.resource.SysroleScopePK;
+import cn.sparrow.permission.model.resource.UserScope;
+import cn.sparrow.permission.model.resource.UserScopePK;
 
 @Service
 public class ScopeServiceImpl extends AbstractPreserveScope implements ScopeService, ScopeScope {
@@ -37,7 +38,7 @@ public class ScopeServiceImpl extends AbstractPreserveScope implements ScopeServ
 	SysroleScopeRepository sysroleScopeRepository;
 	@Autowired
 	UserScopeRepository userScopeRepository;
-	
+
 	@Autowired
 	PreserveScope[] preserveScopes;
 
@@ -78,34 +79,70 @@ public class ScopeServiceImpl extends AbstractPreserveScope implements ScopeServ
 
 	@Override
 	@PreAuthorize("hasAuthority('SCOPE_" + SCOPE_ADMIN_PEM_LIST + "') or hasRole('ROLE_" + ROLE_SYSADMIN + "')")
-	public Page<SysroleScope> getPermissions(String scopeId, Pageable pageable) {
-		return sysroleScopeRepository.findByIdScopeId(scopeId, pageable);
+	public Page<?> getPermissions(String scopeId, SysPermissionTarget type, Pageable pageable) {
+		Page<?> page = null;
+		switch (type) {
+		case SYSROLE:
+			page = sysroleScopeRepository.findByIdScopeId(scopeId, pageable);
+			break;
+		case USER:
+			page = userScopeRepository.findByIdScopeId(scopeId, pageable);
+			break;
+		default:
+			break;
+		}
+		return page;
 	}
 
 	@Override
 	@Transactional
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
 	@PreAuthorize("hasAuthority('SCOPE_" + SCOPE_ADMIN_PEM_ADD + "') or hasRole('ROLE_" + ROLE_SYSADMIN + "')")
-	public void addPermissions(String scopeId, List<String> sysroleIds) {
-		sysroleIds.forEach(f->{
-			sysroleScopeRepository.save(new SysroleScope(f,scopeId));
-		});
+	public void addPermissions(String scopeId, SysPermissionTarget type, List<?> ids) {
+		switch (type) {
+		case SYSROLE:
+			ids.forEach(f -> {
+				sysroleScopeRepository.save(new SysroleScope(f.toString(), scopeId));
+			});
+			break;
+		case USER:
+			ids.forEach(f -> {
+				userScopeRepository.save(new UserScope(f.toString(), scopeId));
+			});
+			break;
+		default:
+			break;
+		}
+
 	}
 
 	@Override
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
+	@Transactional
 	@PreAuthorize("hasAuthority('SCOPE_" + SCOPE_ADMIN_PEM_REMOVE + "') or hasRole('ROLE_" + ROLE_SUPER_SYSADMIN + "')")
-	public void removePermissions(String scopeId, List<String> sysroleIds) {
-		sysroleIds.forEach(f->{
-			sysroleScopeRepository.deleteById(new SysroleScopePK(f,scopeId));
-		});
+	public void removePermissions(String scopeId, SysPermissionTarget type, List<?> ids) {
+		switch (type) {
+		case SYSROLE:
+			ids.forEach(f -> {
+				sysroleScopeRepository.deleteById(new SysroleScopePK(f.toString(), scopeId));
+			});
+			break;
+		case USER:
+			ids.forEach(f -> {
+				userScopeRepository.deleteById(new UserScopePK(f.toString(), scopeId));
+			});
+			break;
+		default:
+			break;
+		}
+
 	}
 
 	@Override
 	@PreAuthorize("hasRole('ROLE_" + ROLE_SYSADMIN + "')")
 	public List<String> preserveScopes() {
 		List<String> scopes = this.getScopes();
-		for(PreserveScope preserveScope: preserveScopes) {
+		for (PreserveScope preserveScope : preserveScopes) {
 			scopes.addAll(preserveScope.getScopes());
 		}
 		return scopes;

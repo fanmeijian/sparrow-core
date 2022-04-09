@@ -1,5 +1,5 @@
 package cn.sparrow.permission.constant;
 
-public enum MenuPermissionTargetEnum {
+public enum SysPermissionTarget {
 	USER, SYSROLE
 }

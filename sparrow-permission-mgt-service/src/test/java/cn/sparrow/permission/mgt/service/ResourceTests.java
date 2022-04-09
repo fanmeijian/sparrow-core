@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
@@ -365,7 +366,9 @@ public class ResourceTests {
 	@Test
 	@Transactional
 	void scopeTest() {
-
+		scopeService.preserveScopes().forEach(f->{
+			System.out.println(UUID.randomUUID().toString().replace("-", "") + "," + f);
+		});
 		organizationServiceImpl.create(new Organization("test", "test", OrganizationTypeEnum.UNIT));
 	}
 }

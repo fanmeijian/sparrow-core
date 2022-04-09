@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import cn.sparrow.permission.constant.MenuPermissionTargetEnum;
+import cn.sparrow.permission.constant.SysPermissionTarget;
 import cn.sparrow.permission.constant.MenuTreeTypeEnum;
 import cn.sparrow.permission.model.resource.Menu;
 import cn.sparrow.permission.model.resource.SparrowTree;
@@ -51,18 +51,18 @@ public interface MenuRestService {
 	@GetMapping("/{menuId}/permissions")
 	@Operation(summary = "浏览授权")
 	@ResponseBody
-	public List<?> getPermissions(@PathVariable("menuId") String menuId, MenuPermissionTargetEnum type);
+	public List<?> getPermissions(@PathVariable("menuId") String menuId, SysPermissionTarget type);
 
 	@PostMapping("/{menuId}/permissions")
 	@Operation(summary = "设置菜单权限")
 	@ResponseBody
-	public void addPermission(@PathVariable("menuId") String menuId, MenuPermissionTargetEnum type,
+	public void addPermission(@PathVariable("menuId") String menuId, SysPermissionTarget type,
 			@NotNull @RequestBody List<String> permissions);
 
 	@PutMapping("/{menuId}/permissions/delete")
 	@Operation(summary = "取消菜单权限")
 	@ResponseBody
-	public void delPermission(@PathVariable("menuId") String menuId, MenuPermissionTargetEnum type,
+	public void delPermission(@PathVariable("menuId") String menuId, SysPermissionTarget type,
 			@NotNull @RequestBody List<String> permissions);
 	
 	@PutMapping("/delete")

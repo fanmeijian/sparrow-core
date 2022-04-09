@@ -41,4 +41,8 @@ public class UserScope extends AbstractSparrowEntity {
 	@JoinColumn(name = "scope_id", insertable = false, updatable = false)
 	private Scope scope;
 
+	public UserScope(String username, String scopeId) {
+		this.id = new UserScopePK(username, scopeId);
+	}
+
 }
