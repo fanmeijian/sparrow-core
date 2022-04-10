@@ -95,8 +95,8 @@
 				value="org.h2.Driver" />
 			<property name="javax.persistence.jdbc.url"
 				value="jdbc:h2:mem:spr;DB_CLOSE_DELAY=-1" />
-			<property name="hibernate.show_sql" value="true" />
-			<property name="hibernate.hbm2ddl.auto" value="create-drop" />
+			<property name="hibernate.show_sql" value="false" />
+			<property name="hibernate.hbm2ddl.auto" value="create" />
 			<!-- <property name="org.hibernate.envers.audit_table_suffix" value="_AUDIT_LOG"/> -->
 		</properties>
 	</persistence-unit>

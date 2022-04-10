@@ -16,6 +16,7 @@ import cn.sparrow.permission.model.group.GroupOrganization;
 import cn.sparrow.permission.model.group.GroupPositionLevel;
 import cn.sparrow.permission.model.group.GroupRole;
 import cn.sparrow.permission.model.group.GroupSysrole;
+import cn.sparrow.permission.model.group.GroupUser;
 import cn.sparrow.permission.model.organization.Employee;
 import cn.sparrow.permission.model.organization.EmployeeOrganizationLevel;
 import cn.sparrow.permission.model.organization.EmployeeOrganizationRole;
@@ -86,10 +87,17 @@ public class EmployeeTokenServiceImpl implements EmployeeTokenService {
 		List<String> organizations = new ArrayList<String>();
 		List<OrganizationRolePK> orgRoleIds = new ArrayList<OrganizationRolePK>();
 		List<OrganizationPositionLevelPK> orgJobLevelIds = new ArrayList<OrganizationPositionLevelPK>();
-		List<String> groups = new ArrayList<String>();
+		List<String> empGroups = new ArrayList<String>();
+		List<String> userGroups = new ArrayList<>();
 
-		// 员工拥有的角色
 		if (employee.getUsername() != null) {
+			// 员工所在的用户组
+			entityManager.createNamedQuery("GroupUser.findByUsername", GroupUser.class)
+					.setParameter("username", employee.getUsername()).getResultList().forEach(groupUser -> {
+						userGroups.add(groupUser.getId().getGroupId());
+					});
+
+			// 员工拥有的角色
 			entityManager.createNamedQuery("UserSysrole.findByUsername", UserSysrole.class)
 					.setParameter("username", employee.getUsername()).getResultList().forEach(us -> {
 						sysroles.add(us.getId().getSysroleId());
@@ -123,16 +131,17 @@ public class EmployeeTokenServiceImpl implements EmployeeTokenService {
 		// 员工所在的组
 		entityManager.createNamedQuery("GroupEmployee.findByEmployeeId", GroupEmployee.class)
 				.setParameter("employeeId", employeeId).getResultList().forEach(f -> {
-					groups.add(f.getId().getGroupId());
+					empGroups.add(f.getId().getGroupId());
 				});
 
 		EmployeeToken employeeToken = new EmployeeToken();
 		employeeToken.setUsername(employee.getUsername());
+		employeeToken.setUserGroups(userGroups);
 		employeeToken.setSysroles(sysroles);
 		employeeToken.setSysroleGroups(sysroleGroups);
 
 		employeeToken.setEmployeeId(employeeId);
-		employeeToken.setEmpGroups(groups);
+		employeeToken.setEmpGroups(empGroups);
 		employeeToken.setOrganizationIds(organizations);
 		employeeToken.setOrgRoleIds(orgRoleIds);
 		employeeToken.setOrgJobLevelIds(orgJobLevelIds);
@@ -142,7 +151,6 @@ public class EmployeeTokenServiceImpl implements EmployeeTokenService {
 		Set<String> roleGroups = new HashSet<String>();
 		Set<String> jobLevelGroups = new HashSet<String>();
 
-		
 		organizations.forEach(orgId -> {
 			// 获取用户所在组织的归属所有组
 			entityManager.createNamedQuery("GroupOrganization.findByOrgId", GroupOrganization.class)

@@ -44,6 +44,12 @@ public class PermissionServiceImpl implements PermissionService {
 	public boolean hasPermission(@NotNull EmployeeToken employeeToken, @NotNull PermissionToken permissionToken,
 			PermissionEnum permissionEnum) {
 
+		if (!permissionEnum.equals(PermissionEnum.ALL)) {
+			if (this.hasPermission(employeeToken, permissionToken, PermissionEnum.ALL)) {
+				return true;
+			}
+		}
+
 //		if (permissionToken == null || SecurityContextHolder.getContext().getAuthentication().getName().equals("ROOT"))
 //				SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains("ROLE_SYSADMIN1"))
 //			return true;

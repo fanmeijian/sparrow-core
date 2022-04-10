@@ -2,6 +2,8 @@ package cn.sparrow.permission.model.group;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 import org.hibernate.envers.Audited;
@@ -17,6 +19,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "spr_group_user")
 @Audited
+@NamedQueries({@NamedQuery(name = "GroupUser.findByUsername", query = "SELECT gu FROM GroupUser gu WHERE gu.id.username=:username")})
 public class GroupUser extends AbstractSparrowEntity {
 
 	private static final long serialVersionUID = 1L;
