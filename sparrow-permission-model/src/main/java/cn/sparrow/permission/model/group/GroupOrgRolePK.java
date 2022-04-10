@@ -9,11 +9,11 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Embeddable
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Embeddable
-public class GroupPositionLevelPK implements Serializable {
+public class GroupOrgRolePK implements Serializable {
 
 	/**
 	 * 
@@ -21,7 +21,9 @@ public class GroupPositionLevelPK implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Column(name = "group_id")
 	private String groupId;
-	@Column(name = "position_level_id")
-	private String positionLevelId;
+	@Column(name = "role_id")
+	private String roleId;
+	@Column(name = "org_id")
+	private String orgId;
 
 }

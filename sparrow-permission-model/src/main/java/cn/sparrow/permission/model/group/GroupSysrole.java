@@ -5,6 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 import org.hibernate.envers.Audited;
@@ -22,6 +24,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Table(name = "spr_group_sysrole")
+@NamedQueries({@NamedQuery(name = "GroupSysrole.findBySysroleId", query = "SELECT gsr FROM GroupSysrole gsr WHERE gsr.id.sysroleId=:sysroleId")})
 public class GroupSysrole extends AbstractSparrowEntity {
 
 

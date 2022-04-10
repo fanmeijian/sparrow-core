@@ -23,10 +23,10 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor
 @Entity
-@Table(name = "spr_group_position_level")
+@Table(name = "spr_group_org_job_level")
 @NamedQueries({
-		@NamedQuery(name = "GroupPositionLevel.findByJobLevelId", query = "SELECT gjl FROM GroupPositionLevel gjl WHERE gjl.id.positionLevelId=:jobLevelId") })
-public class GroupPositionLevel extends AbstractSparrowEntity {
+		@NamedQuery(name = "GroupOrgJobLevel.findByOrgJobLevelId", query = "SELECT gojl FROM GroupOrgJobLevel gojl WHERE gojl.id.positionLevelId=:jobLevelId AND gojl.id.orgId=:orgId") })
+public class GroupOrgJobLevel extends AbstractSparrowEntity {
 
 	/**
 	 * 
@@ -36,7 +36,7 @@ public class GroupPositionLevel extends AbstractSparrowEntity {
 	@EmbeddedId
 	@Audited
 	@JoinColumns({ @JoinColumn(name = "group_id"), @JoinColumn(name = "position_level_id") })
-	private GroupPositionLevelPK id;
+	private GroupOrgJobLevelPK id;
 
 	@JsonIgnore
 	@ManyToOne
@@ -48,12 +48,12 @@ public class GroupPositionLevel extends AbstractSparrowEntity {
 	@JoinColumn(name = "position_level_id", insertable = false, updatable = false)
 	private PositionLevel positionLevel;
 
-	public GroupPositionLevel(GroupPositionLevelPK id) {
+	public GroupOrgJobLevel(GroupOrgJobLevelPK id) {
 		this.id = id;
 	}
 
-	public GroupPositionLevel(String groupId, String positionLevelId) {
-		this.id = new GroupPositionLevelPK(groupId, positionLevelId);
+	public GroupOrgJobLevel(String groupId, String positionLevelId, String orgId) {
+		this.id = new GroupOrgJobLevelPK(groupId, positionLevelId,orgId);
 	}
 
 }

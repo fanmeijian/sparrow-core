@@ -4,9 +4,16 @@
 		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 		<class>cn.sparrow.permission.model.common.AbstractSparrowEntity</class>
 		<class>cn.sparrow.permission.model.common.AbstractSparrowUuidEntity</class>
+		<class>cn.sparrow.permission.model.common.BasePermission</class>
 		<class>cn.sparrow.permission.model.group.Group</class>
 		<class>cn.sparrow.permission.model.group.GroupEmployee</class>
 		<class>cn.sparrow.permission.model.group.GroupEmployeePK</class>
+		<class>cn.sparrow.permission.model.group.GroupModel</class>
+		<class>cn.sparrow.permission.model.group.GroupModelPK</class>
+		<class>cn.sparrow.permission.model.group.GroupOrgJobLevel</class>
+		<class>cn.sparrow.permission.model.group.GroupOrgJobLevelPK</class>
+		<class>cn.sparrow.permission.model.group.GroupOrgRole</class>
+		<class>cn.sparrow.permission.model.group.GroupOrgRolePK</class>
 		<class>cn.sparrow.permission.model.group.GroupOrganization</class>
 		<class>cn.sparrow.permission.model.group.GroupOrganizationPK</class>
 		<class>cn.sparrow.permission.model.group.GroupPositionLevel</class>
@@ -15,6 +22,8 @@
 		<class>cn.sparrow.permission.model.group.GroupRelationPK</class>
 		<class>cn.sparrow.permission.model.group.GroupRole</class>
 		<class>cn.sparrow.permission.model.group.GroupRolePK</class>
+		<class>cn.sparrow.permission.model.group.GroupScope</class>
+		<class>cn.sparrow.permission.model.group.GroupScopePK</class>
 		<class>cn.sparrow.permission.model.group.GroupSysrole</class>
 		<class>cn.sparrow.permission.model.group.GroupSysrolePK</class>
 		<class>cn.sparrow.permission.model.group.GroupUser</class>
@@ -42,12 +51,22 @@
 		<class>cn.sparrow.permission.model.organization.PositionLevel</class>
 		<class>cn.sparrow.permission.model.organization.Role</class>
 		<class>cn.sparrow.permission.model.resource.Menu</class>
+		<class>cn.sparrow.permission.model.resource.MenuPem</class>
+		<class>cn.sparrow.permission.model.resource.MenuPemPK</class>
 		<class>cn.sparrow.permission.model.resource.Model</class>
 		<class>cn.sparrow.permission.model.resource.ModelAttribute</class>
 		<class>cn.sparrow.permission.model.resource.ModelAttributePK</class>
+		<class>cn.sparrow.permission.model.resource.ModelGroupPem</class>
+		<class>cn.sparrow.permission.model.resource.ModelGroupPemPK</class>
+		<class>cn.sparrow.permission.model.resource.ModelPem</class>
+		<class>cn.sparrow.permission.model.resource.ModelPemPK</class>
 		<class>cn.sparrow.permission.model.resource.Scope</class>
 		<class>cn.sparrow.permission.model.resource.ScopeApi</class>
 		<class>cn.sparrow.permission.model.resource.ScopeApiPK</class>
+		<class>cn.sparrow.permission.model.resource.ScopeGroupPem</class>
+		<class>cn.sparrow.permission.model.resource.ScopeGroupPemPK</class>
+		<class>cn.sparrow.permission.model.resource.ScopePem</class>
+		<class>cn.sparrow.permission.model.resource.ScopePemPK</class>
 		<class>cn.sparrow.permission.model.resource.SparrowApi</class>
 		<class>cn.sparrow.permission.model.resource.SparrowFile</class>
 		<class>cn.sparrow.permission.model.resource.Sysrole</class>

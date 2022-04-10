@@ -22,6 +22,7 @@ import cn.sparrow.permission.model.token.SparrowPermissionToken;
 public class PermissionServiceImpl implements PermissionService {
 	private EntityManager entityManager;
 	PermissionExpressionService<String> permissionExpressionService;
+	PermissionExpressionServiceGroup permissionExpressionServiceGroup;
 	PermissionExpressionService<OrganizationRolePK> permissionExpressionServiceRole;
 	PermissionExpressionService<OrganizationPositionLevelPK> permissionExpressionServicePositionLevel;
 	PermissionExpressionServiceOrganization permissionExpressionServiceOrganization;
@@ -36,6 +37,7 @@ public class PermissionServiceImpl implements PermissionService {
 		this.permissionExpressionServiceRole = new PermissionExpressionServiceImpl<OrganizationRolePK>();
 		this.permissionExpressionServicePositionLevel = new PermissionExpressionServiceImpl<OrganizationPositionLevelPK>();
 		this.permissionExpressionServiceOrganization = new PermissionExpressionServiceOrganization(entityManager);
+		this.permissionExpressionServiceGroup = new PermissionExpressionServiceGroup(entityManager);
 	}
 
 	@Override
@@ -84,10 +86,11 @@ public class PermissionServiceImpl implements PermissionService {
 					}
 				}
 
+				// 需同时展开子组，看是否在里面。
 				for (PermissionExpression<?> permissionExpression : nullToEmptyList(
 						permissionExpress.get(PermissionTargetEnum.GROUP))) {
-					for (String groupId : employeeToken.getGroupIds()) {
-						if (permissionExpressionService.evaluate(groupId, permissionExpression)) {
+					for (String groupId : employeeToken.getAllGroups()) {
+						if (permissionExpressionServiceGroup.evaluate(groupId, permissionExpression)) {
 							return true;
 						}
 					}
@@ -95,7 +98,7 @@ public class PermissionServiceImpl implements PermissionService {
 
 				for (PermissionExpression<?> permissionExpression : nullToEmptyList(
 						permissionExpress.get(PermissionTargetEnum.ROLE))) {
-					for (OrganizationRolePK organizationRoleId : employeeToken.getRoleIds()) {
+					for (OrganizationRolePK organizationRoleId : employeeToken.getOrgRoleIds()) {
 						if (permissionExpressionServiceRole.evaluate(organizationRoleId, permissionExpression)) {
 							return true;
 						}
@@ -104,8 +107,7 @@ public class PermissionServiceImpl implements PermissionService {
 
 				for (PermissionExpression<?> permissionExpression : nullToEmptyList(
 						permissionExpress.get(PermissionTargetEnum.LEVEL))) {
-					for (OrganizationPositionLevelPK organizationPositionLevelId : employeeToken
-							.getPositionLevelIds()) {
+					for (OrganizationPositionLevelPK organizationPositionLevelId : employeeToken.getOrgJobLevelIds()) {
 						if (permissionExpressionServicePositionLevel.evaluate(organizationPositionLevelId,
 								permissionExpression)) {
 							return true;
@@ -152,10 +154,11 @@ public class PermissionServiceImpl implements PermissionService {
 					}
 				}
 
+				// 需同时展开子组，看是否在里面。
 				for (PermissionExpression<?> permissionExpression : nullToEmptyList(
 						permissionExpress.get(PermissionTargetEnum.GROUP))) {
-					for (String groupId : employeeToken.getGroupIds()) {
-						if (permissionExpressionService.evaluate(groupId, permissionExpression)) {
+					for (String groupId : employeeToken.getAllGroups()) {
+						if (permissionExpressionServiceGroup.evaluate(groupId, permissionExpression)) {
 							return true;
 						}
 					}
@@ -163,7 +166,7 @@ public class PermissionServiceImpl implements PermissionService {
 
 				for (PermissionExpression<?> permissionExpression : nullToEmptyList(
 						permissionExpress.get(PermissionTargetEnum.ROLE))) {
-					for (OrganizationRolePK organizationRoleId : employeeToken.getRoleIds()) {
+					for (OrganizationRolePK organizationRoleId : employeeToken.getOrgRoleIds()) {
 						if (permissionExpressionServiceRole.evaluate(organizationRoleId, permissionExpression)) {
 							return true;
 						}
@@ -172,8 +175,7 @@ public class PermissionServiceImpl implements PermissionService {
 
 				for (PermissionExpression<?> permissionExpression : nullToEmptyList(
 						permissionExpress.get(PermissionTargetEnum.LEVEL))) {
-					for (OrganizationPositionLevelPK organizationPositionLevelId : employeeToken
-							.getPositionLevelIds()) {
+					for (OrganizationPositionLevelPK organizationPositionLevelId : employeeToken.getOrgJobLevelIds()) {
 						if (permissionExpressionServicePositionLevel.evaluate(organizationPositionLevelId,
 								permissionExpression)) {
 							return true;
@@ -244,4 +246,5 @@ public class PermissionServiceImpl implements PermissionService {
 		return this.hasPermission(new EmployeeTokenServiceImpl(entityManager).getEmployeeTokenByUsername(username),
 				permissionToken, permissionEnum);
 	}
+
 }

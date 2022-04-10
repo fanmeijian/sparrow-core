@@ -13,6 +13,7 @@ import org.hibernate.envers.Audited;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import cn.sparrow.permission.model.common.AbstractSparrowEntity;
+import cn.sparrow.permission.model.organization.Organization;
 import cn.sparrow.permission.model.organization.Role;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -22,10 +23,10 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
 @NoArgsConstructor
 @Entity
-@Table(name = "spr_group_role")
+@Table(name = "spr_group_org_role")
 @NamedQueries({
-		@NamedQuery(name = "GroupRole.findByRoleId", query = "SELECT gr FROM GroupRole gr WHERE gr.id.roleId=:roleId") })
-public class GroupRole extends AbstractSparrowEntity {
+		@NamedQuery(name = "GroupOrgRole.findByOrgRoleId", query = "SELECT gor FROM GroupOrgRole gor WHERE gor.id.roleId=:roleId AND gor.id.orgId=:orgId") })
+public class GroupOrgRole extends AbstractSparrowEntity {
 
 	/**
 	 * 
@@ -34,7 +35,7 @@ public class GroupRole extends AbstractSparrowEntity {
 	@EqualsAndHashCode.Include
 	@EmbeddedId
 	@Audited
-	private GroupRolePK id;
+	private GroupOrgRolePK id;
 
 	@JsonIgnore
 	@ManyToOne
@@ -46,12 +47,17 @@ public class GroupRole extends AbstractSparrowEntity {
 	@JoinColumn(name = "role_id", insertable = false, updatable = false)
 	private Role role;
 
-	public GroupRole(GroupRolePK groupRolePK) {
-		this.id = groupRolePK;
+	@JsonIgnore
+	@ManyToOne
+	@JoinColumn(name = "org_id", insertable = false, updatable = false)
+	private Organization organization;
+
+	public GroupOrgRole(GroupOrgRolePK groupOrgRolePK) {
+		this.id = groupOrgRolePK;
 	}
 
-	public GroupRole(String groupId, String roleId) {
-		this.id = new GroupRolePK(groupId, roleId);
+	public GroupOrgRole(String groupId, String roleId, String orgId) {
+		this.id = new GroupOrgRolePK(groupId, roleId, orgId);
 	}
 
 }

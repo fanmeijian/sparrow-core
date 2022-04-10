@@ -4,6 +4,8 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
@@ -25,6 +27,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Table(name = "spr_group_relation")
+@NamedQueries({@NamedQuery(name = "GroupRelation.findByParentId", query = "SELECT gr FROM GroupRelation gr WHERE gr.id.parentId=:parentId")})
 public class GroupRelation extends AbstractSparrowEntity {
 
 	/**

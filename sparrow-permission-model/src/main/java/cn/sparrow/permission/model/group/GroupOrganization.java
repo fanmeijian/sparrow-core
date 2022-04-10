@@ -4,6 +4,8 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 import org.hibernate.envers.Audited;
@@ -21,6 +23,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Table(name = "spr_group_organization")
+@NamedQueries({@NamedQuery(name = "GroupOrganization.findByOrgId", query = "SELECT go FROM GroupOrganization go WHERE go.id.organizationId = :orgId")})
 public class GroupOrganization extends AbstractSparrowEntity {
 
 	private static final long serialVersionUID = 1L;

@@ -124,7 +124,7 @@ public class GroupServiceImpl extends AbstractPreserveScope implements GroupServ
 
 	@Override
 	@ResponseStatus(code = HttpStatus.CREATED)
-	@PreAuthorize("hasAuthority('SCOPE_"+SCOPE_ADMIN_CREATE+"') or hasRole('ROLE_"+ROLE_ADMIN+"')")
+	@PreAuthorize("hasAuthority('SCOPE_" + SCOPE_ADMIN_CREATE + "') or hasRole('ROLE_" + ROLE_ADMIN + "')")
 	public Group create(Group group) {
 		return groupRepository.save(group);
 	}
@@ -138,7 +138,7 @@ public class GroupServiceImpl extends AbstractPreserveScope implements GroupServ
 	}
 
 	@Override
-	@PreAuthorize("hasAuthority('SCOPE_"+SCOPE_ADMIN_UPDATE+"') or hasRole('ROLE_"+ROLE_ADMIN+"')")
+	@PreAuthorize("hasAuthority('SCOPE_" + SCOPE_ADMIN_UPDATE + "') or hasRole('ROLE_" + ROLE_ADMIN + "')")
 	public Group update(String groupId, Map<String, Object> map) {
 		Group source = groupRepository.getById(groupId);
 		PatchUpdateHelper.merge(source, map);
@@ -147,19 +147,19 @@ public class GroupServiceImpl extends AbstractPreserveScope implements GroupServ
 
 	@Override
 	@ResponseStatus(code = HttpStatus.NO_CONTENT)
-	@PreAuthorize("hasAuthority('SCOPE_"+SCOPE_ADMIN_DELETE+"') or hasRole('ROLE_"+ROLE_SUPER_ADMIN+"')")
+	@PreAuthorize("hasAuthority('SCOPE_" + SCOPE_ADMIN_DELETE + "') or hasRole('ROLE_" + ROLE_SUPER_ADMIN + "')")
 	public void delete(List<String> ids) {
 		groupRepository.deleteByIdIn(ids.toArray(new String[] {}));
 	}
 
 	@Override
-	@PreAuthorize("hasAuthority('SCOPE_"+SCOPE_ADMIN_LIST+"') or hasRole('ROLE_"+ROLE_ADMIN+"')")
+	@PreAuthorize("hasAuthority('SCOPE_" + SCOPE_ADMIN_LIST + "') or hasRole('ROLE_" + ROLE_ADMIN + "')")
 	public Page<Group> all(@Nullable Pageable pageable, @Nullable Group group) {
 		return groupRepository.search(group, pageable);
 	}
 
 	@Override
-	@PreAuthorize("hasAuthority('SCOPE_"+SCOPE_ADMIN_PARENT_ORG_LIST+"') or hasRole('ROLE_"+ROLE_ADMIN+"')")
+	@PreAuthorize("hasAuthority('SCOPE_" + SCOPE_ADMIN_PARENT_ORG_LIST + "') or hasRole('ROLE_" + ROLE_ADMIN + "')")
 	public Page<OrganizationGroup> getParentOrgs(String groupId, Pageable pageable) {
 		return organizationGroupRepository.findByIdGroupId(groupId, pageable);
 	}
@@ -167,7 +167,7 @@ public class GroupServiceImpl extends AbstractPreserveScope implements GroupServ
 	@Override
 	@Transactional
 	@ResponseStatus(code = HttpStatus.NO_CONTENT)
-	@PreAuthorize("hasAuthority('SCOPE_"+SCOPE_ADMIN_PARENT_ORG_ADD+"') or hasRole('ROLE_"+ROLE_ADMIN+"')")
+	@PreAuthorize("hasAuthority('SCOPE_" + SCOPE_ADMIN_PARENT_ORG_ADD + "') or hasRole('ROLE_" + ROLE_ADMIN + "')")
 	public void setParentOrgs(String groupId, List<String> orgs) {
 		orgs.forEach(f -> {
 			organizationGroupRepository.save(new OrganizationGroup(f, groupId));
@@ -177,7 +177,8 @@ public class GroupServiceImpl extends AbstractPreserveScope implements GroupServ
 	@Override
 	@Transactional
 	@ResponseStatus(code = HttpStatus.NO_CONTENT)
-	@PreAuthorize("hasAuthority('SCOPE_"+SCOPE_ADMIN_PARENT_ORG_REMOVE+"') or hasRole('ROLE_"+ROLE_SUPER_ADMIN+"')")
+	@PreAuthorize("hasAuthority('SCOPE_" + SCOPE_ADMIN_PARENT_ORG_REMOVE + "') or hasRole('ROLE_" + ROLE_SUPER_ADMIN
+			+ "')")
 	public void removeParentOrgs(String groupId, List<String> orgs) {
 		orgs.forEach(f -> {
 			organizationGroupRepository.deleteById(new OrganizationGroupPK(f, groupId));
@@ -185,7 +186,7 @@ public class GroupServiceImpl extends AbstractPreserveScope implements GroupServ
 	}
 
 	@Override
-	@PreAuthorize("hasAuthority('SCOPE_"+SCOPE_ADMIN_MEMBER_LIST+"') or hasRole('ROLE_"+ROLE_ADMIN+"')")
+	@PreAuthorize("hasAuthority('SCOPE_" + SCOPE_ADMIN_MEMBER_LIST + "') or hasRole('ROLE_" + ROLE_ADMIN + "')")
 	public Page<?> getMembers(String groupId, @NotNull GroupTypeEnum type, Pageable pageable) {
 		switch (type) {
 		case EMPLOYEE:
@@ -225,7 +226,7 @@ public class GroupServiceImpl extends AbstractPreserveScope implements GroupServ
 	@Override
 	@Transactional
 	@ResponseStatus(code = HttpStatus.NO_CONTENT)
-	@PreAuthorize("hasAuthority('SCOPE_"+SCOPE_ADMIN_MEMBER_ADD+"') or hasRole('ROLE_"+ROLE_ADMIN+"')")
+	@PreAuthorize("hasAuthority('SCOPE_" + SCOPE_ADMIN_MEMBER_ADD + "') or hasRole('ROLE_" + ROLE_ADMIN + "')")
 	public void addMembers(String groupId, @NotNull GroupTypeEnum type, List<Object> memberIds) {
 		memberIds.forEach(f -> {
 			switch (type) {
@@ -248,7 +249,7 @@ public class GroupServiceImpl extends AbstractPreserveScope implements GroupServ
 				groupUserRepository.save(new GroupUser(groupId, f.toString()));
 				break;
 			case GROUP:
-				groupRelationRepository.save(new GroupRelation(f.toString(),groupId));
+				groupRelationRepository.save(new GroupRelation(f.toString(), groupId));
 				break;
 			default:
 				break;
@@ -259,7 +260,7 @@ public class GroupServiceImpl extends AbstractPreserveScope implements GroupServ
 	@Override
 	@Transactional
 	@ResponseStatus(code = HttpStatus.NO_CONTENT)
-	@PreAuthorize("hasAuthority('SCOPE_"+SCOPE_ADMIN_MEMBER_REMOVE+"') or hasRole('ROLE_"+ROLE_SUPER_ADMIN+"')")
+	@PreAuthorize("hasAuthority('SCOPE_" + SCOPE_ADMIN_MEMBER_REMOVE + "') or hasRole('ROLE_" + ROLE_SUPER_ADMIN + "')")
 	public void removeMembers(String groupId, @NotNull GroupTypeEnum type, List<Object> memberIds) {
 		memberIds.forEach(f -> {
 			switch (type) {
@@ -282,7 +283,7 @@ public class GroupServiceImpl extends AbstractPreserveScope implements GroupServ
 				groupUserRepository.deleteById(new GroupUserPK(groupId, f.toString()));
 				break;
 			case GROUP:
-				groupRelationRepository.deleteById(new GroupRelationPK(f.toString(),groupId));
+				groupRelationRepository.deleteById(new GroupRelationPK(f.toString(), groupId));
 			default:
 				break;
 			}
@@ -290,7 +291,7 @@ public class GroupServiceImpl extends AbstractPreserveScope implements GroupServ
 	}
 
 	@Override
-	@PreAuthorize("hasAuthority('SCOPE_"+SCOPE_ADMIN_READ+"') or hasRole('ROLE_"+ROLE_ADMIN+"')")
+	@PreAuthorize("hasAuthority('SCOPE_" + SCOPE_ADMIN_READ + "') or hasRole('ROLE_" + ROLE_ADMIN + "')")
 	public Group get(String groupId) {
 		return groupRepository.findById(groupId).orElse(null);
 	}

@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Embeddable
-public class GroupPositionLevelPK implements Serializable {
+public class GroupOrgJobLevelPK implements Serializable {
 
 	/**
 	 * 
@@ -23,5 +23,6 @@ public class GroupPositionLevelPK implements Serializable {
 	private String groupId;
 	@Column(name = "position_level_id")
 	private String positionLevelId;
+	private String orgId;
 
 }

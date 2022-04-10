@@ -23,12 +23,5 @@ public class GroupRolePK implements Serializable {
 	private String groupId;
 	@Column(name = "role_id")
 	private String roleId;
-	// 用来确定岗位所属的组织，如果要适用所有的组织，设置为root
-	private String orgId = "root";
-	
-	public GroupRolePK(String groupId, String roleId) {
-		this.groupId = groupId;
-		this.roleId = roleId;
-	}
 
 }
