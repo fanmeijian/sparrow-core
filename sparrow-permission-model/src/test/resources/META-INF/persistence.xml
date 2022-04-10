@@ -26,8 +26,6 @@
 		<class>cn.sparrow.permission.model.organization.EmployeeOrganizationRolePK</class>
 		<class>cn.sparrow.permission.model.organization.EmployeeRelation</class>
 		<class>cn.sparrow.permission.model.organization.EmployeeRelationPK</class>
-		<class>cn.sparrow.permission.model.organization.EmployeeUser</class>
-		<class>cn.sparrow.permission.model.organization.EmployeeUserPK</class>
 		<class>cn.sparrow.permission.model.organization.Organization</class>
 		<class>cn.sparrow.permission.model.organization.OrganizationGroup</class>
 		<class>cn.sparrow.permission.model.organization.OrganizationGroupPK</class>

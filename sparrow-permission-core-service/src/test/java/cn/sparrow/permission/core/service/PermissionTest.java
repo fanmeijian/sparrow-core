@@ -21,8 +21,6 @@ import cn.sparrow.permission.constant.PermissionExpressionEnum;
 import cn.sparrow.permission.constant.PermissionTargetEnum;
 import cn.sparrow.permission.core.api.PermissionService;
 import cn.sparrow.permission.model.organization.Employee;
-import cn.sparrow.permission.model.organization.EmployeeUser;
-import cn.sparrow.permission.model.organization.EmployeeUserPK;
 import cn.sparrow.permission.model.organization.Organization;
 import cn.sparrow.permission.model.organization.OrganizationRelation;
 import cn.sparrow.permission.model.resource.Model;
@@ -47,7 +45,7 @@ public class PermissionTest {
 	private String tokenId;
 
 	@BeforeEach
-	public void before() {		
+	public void before() {
 		// 初始化组织架构
 		String orgId1 = "";
 		String orgId2 = "";
@@ -62,6 +60,7 @@ public class PermissionTest {
 		entityManager.persist(organization);
 		unit1 = organization.getId();
 		Employee employee = new Employee("张三", "00001", orgId1);
+		employee.setUsername("user1");
 		entityManager.persist(employee);
 		hasPermissionEmployeeId = employee.getId();
 		emp = employee.getId();
@@ -184,22 +183,19 @@ public class PermissionTest {
 		tokenId = sparrowPermissionToken.getId();
 //		String permissionTokenId = permissionTokenRepository.save(new SparrowPermissionToken(new PermissionToken(allowPermissions,null))).getId();
 
-		EmployeeUser employeeUser = new EmployeeUser(new EmployeeUserPK("user1", emp));
-		entityManager.persist(employeeUser);
-		entityManager.getTransaction().commit();
-//		entityManager.getTransaction().commit();
 	}
 
 	@Test
 	public void AuthorPermissionTest() {
 		PermissionService permissionService = new PermissionServiceImpl(entityManager);
 		for (PermissionEnum permissionEnum : PermissionEnum.values()) {
-			if(!permissionEnum.toString().contains("ALL")) {
+			if (!permissionEnum.toString().contains("ALL")) {
 				assertTrue("权限检查失败", permissionService.hasPermission(hasPermissionEmployeeId, tokenId, permissionEnum));
 				log.info("employee {} has permission {}", hasPermissionEmployeeId, permissionEnum);
 				assertFalse("权限检查失败", permissionService.hasPermission(noPermissionEmployeeId, tokenId, permissionEnum));
 				log.info("employee {} no permission {}", noPermissionEmployeeId, permissionEnum);
-				assertFalse("权限检查失败", permissionService.hasPermission(denyPermissionEmployeeId, tokenId, permissionEnum));
+				assertFalse("权限检查失败",
+						permissionService.hasPermission(denyPermissionEmployeeId, tokenId, permissionEnum));
 				log.info("employee {} deny permission {}", denyPermissionEmployeeId, permissionEnum);
 			}
 		}

@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<persistence version="2.2" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd">
+<persistence version="2.2"
+	xmlns="http://xmlns.jcp.org/xml/ns/persistence"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd">
 	<persistence-unit name="cn.sparrow.permission.domain1">
 		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 		<class>cn.sparrow.permission.model.common.AbstractSparrowEntity</class>
@@ -26,8 +29,6 @@
 		<class>cn.sparrow.permission.model.organization.EmployeeOrganizationRolePK</class>
 		<class>cn.sparrow.permission.model.organization.EmployeeRelation</class>
 		<class>cn.sparrow.permission.model.organization.EmployeeRelationPK</class>
-		<class>cn.sparrow.permission.model.organization.EmployeeUser</class>
-		<class>cn.sparrow.permission.model.organization.EmployeeUserPK</class>
 		<class>cn.sparrow.permission.model.organization.Organization</class>
 		<class>cn.sparrow.permission.model.organization.OrganizationGroup</class>
 		<class>cn.sparrow.permission.model.organization.OrganizationGroupPK</class>
@@ -71,11 +72,13 @@
 		<class>cn.sparrow.permission.model.token.SparrowEmployeeToken</class>
 		<class>cn.sparrow.permission.model.token.SparrowPermissionToken</class>
 		<properties>
-            <property name="javax.persistence.jdbc.driver" value="org.h2.Driver" />
-            <property name="javax.persistence.jdbc.url" value="jdbc:h2:mem:spr;DB_CLOSE_DELAY=-1" />
-            <property name="hibernate.show_sql" value="true" />
-            <property name="hibernate.hbm2ddl.auto" value="create-drop" />
-            <!-- <property name="org.hibernate.envers.audit_table_suffix" value="_AUDIT_LOG"/> -->
-        </properties>
+			<property name="javax.persistence.jdbc.driver"
+				value="org.h2.Driver" />
+			<property name="javax.persistence.jdbc.url"
+				value="jdbc:h2:mem:spr;DB_CLOSE_DELAY=-1" />
+			<property name="hibernate.show_sql" value="true" />
+			<property name="hibernate.hbm2ddl.auto" value="create-drop" />
+			<!-- <property name="org.hibernate.envers.audit_table_suffix" value="_AUDIT_LOG"/> -->
+		</properties>
 	</persistence-unit>
 </persistence>

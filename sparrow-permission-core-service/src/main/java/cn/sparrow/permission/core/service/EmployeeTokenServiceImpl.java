@@ -11,7 +11,6 @@ import cn.sparrow.permission.model.group.GroupEmployee;
 import cn.sparrow.permission.model.organization.Employee;
 import cn.sparrow.permission.model.organization.EmployeeOrganizationLevel;
 import cn.sparrow.permission.model.organization.EmployeeOrganizationRole;
-import cn.sparrow.permission.model.organization.EmployeeUser;
 import cn.sparrow.permission.model.organization.OrganizationPositionLevelPK;
 import cn.sparrow.permission.model.organization.OrganizationRolePK;
 import cn.sparrow.permission.model.resource.UserSysrole;
@@ -24,11 +23,9 @@ public class EmployeeTokenServiceImpl implements EmployeeTokenService {
 	@Override
 	// build it from data base, use to get the latest token
 	public EmployeeToken buildEmployeeTokenWithUsername(String username) {
-		List<EmployeeUser> employeeUsers = entityManager
-				.createNamedQuery("EmployeeUser.findByUsername", EmployeeUser.class).setParameter("username", username)
-				.getResultList();
-		EmployeeUser employeeUser = employeeUsers.get(0);
-		return buildEmployeeTokenWithEmployeeId(employeeUser.getId().getEmployeeId());
+		Employee employee = entityManager.createNamedQuery("Employee.findByUsername", Employee.class)
+				.setParameter("username", username).getSingleResult();
+		return buildEmployeeTokenWithEmployeeId(employee.getId());
 	}
 
 	/**
@@ -41,11 +38,10 @@ public class EmployeeTokenServiceImpl implements EmployeeTokenService {
 	@Override
 	public EmployeeToken getEmployeeTokenByUsername(String username) {
 		try {
-			EmployeeUser employeeUser = entityManager
-					.createNamedQuery("EmployeeUser.findByUsername", EmployeeUser.class)
+			Employee employee = entityManager.createNamedQuery("Employee.findByUsername", Employee.class)
 					.setParameter("username", username).getSingleResult();
 			SparrowEmployeeToken sparrowEmployeeToken = entityManager.find(SparrowEmployeeToken.class,
-					employeeUser.getId().getEmployeeId());
+					employee.getId());
 			if (sparrowEmployeeToken != null && sparrowEmployeeToken.getEmployeeToken() != null)
 				return sparrowEmployeeToken.getEmployeeToken();
 			else {
@@ -77,27 +73,18 @@ public class EmployeeTokenServiceImpl implements EmployeeTokenService {
 	public EmployeeToken buildEmployeeTokenWithEmployeeId(String employeeId) {
 
 		Employee employee = entityManager.find(Employee.class, employeeId);
-
-		List<String> usernames = new ArrayList<String>();
 		List<String> sysroles = new ArrayList<String>();
 		List<String> organizations = new ArrayList<String>();
 		List<OrganizationRolePK> rolePKs = new ArrayList<OrganizationRolePK>();
 		List<OrganizationPositionLevelPK> positionLevelPKs = new ArrayList<OrganizationPositionLevelPK>();
 		List<String> groups = new ArrayList<String>();
 
-		List<EmployeeUser> employeeUsers = entityManager
-				.createNamedQuery("EmployeeUser.findByEmployeeId", EmployeeUser.class)
-				.setParameter("employeeId", employeeId).getResultList();
-
 		// 员工拥有的登录账户
-		if (employeeUsers != null) {
-			employeeUsers.forEach(eu -> {
-				usernames.add(eu.getId().getUsername());
-				entityManager.createNamedQuery("UserSysrole.findByUsername", UserSysrole.class)
-						.setParameter("username", eu.getId().getUsername()).getResultList().forEach(us -> {
-							sysroles.add(us.getId().getSysroleId());
-						});
-			});
+		if (employee.getUsername() != null) {
+			entityManager.createNamedQuery("UserSysrole.findByUsername", UserSysrole.class)
+					.setParameter("username", employee.getUsername()).getResultList().forEach(us -> {
+						sysroles.add(us.getId().getSysroleId());
+					});
 		}
 
 		// 员工所在组织列表
@@ -125,8 +112,8 @@ public class EmployeeTokenServiceImpl implements EmployeeTokenService {
 
 		EmployeeToken employeeToken = new EmployeeToken();
 		employeeToken.setEmployeeId(employeeId);
-		employeeToken.setUsernames(usernames);
-		employeeToken.setSysroleIds(sysroles);
+		employeeToken.setUsername(employee.getUsername());
+		employeeToken.setSysroles(sysroles);
 		employeeToken.setGroupIds(groups);
 		employeeToken.setOrganizationIds(organizations);
 		employeeToken.setRoleIds(rolePKs);

@@ -10,6 +10,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
@@ -34,6 +36,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "spr_employee")
 @JsonIgnoreProperties(value = { "employeeUsers", "dataPermissionToken" }, allowGetters = true)
+@NamedQueries({@NamedQuery(name = "Employee.findByUsername", query = "SELECT e FROM Employee e WHERE e.username = :username")})
 public class Employee extends AbstractSparrowEntity {
 
 	/**
@@ -60,13 +63,7 @@ public class Employee extends AbstractSparrowEntity {
 	@Column(name = "organization_id")
 	private String organizationId;
 
-//	@Transient
-//	@JsonProperty(access = Access.READ_ONLY)
-//	private long childCount;
-
-	@JsonIgnore
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "employee")
-	private Set<EmployeeUser> employeeUsers;
+	private String username;
 
 	@JsonIgnore
 	@ManyToOne(fetch = FetchType.EAGER)
@@ -91,6 +88,13 @@ public class Employee extends AbstractSparrowEntity {
 		this.organizationId = organizationId;
 	}
 	
+	public Employee(String name, String code, String organizationId, String username) {
+		this.name = name;
+		this.code = code;
+		this.organizationId = organizationId;
+		this.username = username;
+	}
+
 	@PrePersist
 	private void preSave() {
 		if (isRoot == null) {
