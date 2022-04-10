@@ -36,6 +36,8 @@ public class Group extends AbstractSparrowEntity {
 	/**
 	 * 
 	 */
+	private static final long serialVersionUID = 1L;
+
 	@EqualsAndHashCode.Include
 	@Id
 	@GenericGenerator(name = "id-generator", strategy = "uuid")
@@ -43,7 +45,6 @@ public class Group extends AbstractSparrowEntity {
 	@Audited
 	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	private String id;
-	private static final long serialVersionUID = 1L;
 	@Column(unique = true)
 	@Audited
 	private String code;
@@ -70,7 +71,7 @@ public class Group extends AbstractSparrowEntity {
 	@JsonIgnore
 	@OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY, mappedBy = "group")
 	private Set<GroupEmployee> groupEmployees;
-	
+
 	@JsonIgnore
 	@OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY, mappedBy = "group")
 	private Set<GroupOrganization> groupOrganizations;

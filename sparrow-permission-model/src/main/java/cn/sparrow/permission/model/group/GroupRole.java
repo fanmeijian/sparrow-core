@@ -2,7 +2,6 @@ package cn.sparrow.permission.model.group;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -32,21 +31,23 @@ public class GroupRole extends AbstractSparrowEntity {
 	@EmbeddedId
 	@Audited
 	private GroupRolePK id;
-	@Audited
-	private String stat;
 
 	@JsonIgnore
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne
 	@JoinColumn(name = "group_id", insertable = false, updatable = false)
 	private Group group;
 
 	@JsonIgnore
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne
 	@JoinColumn(name = "role_id", insertable = false, updatable = false)
 	private Role role;
 
-	public GroupRole(GroupRolePK f) {
-		this.id = f;
+	public GroupRole(GroupRolePK groupRolePK) {
+		this.id = groupRolePK;
+	}
+
+	public GroupRole(String groupId, String roleId, String orgId) {
+		this.id = new GroupRolePK(groupId, roleId, orgId);
 	}
 
 	public GroupRole(String groupId, String roleId) {

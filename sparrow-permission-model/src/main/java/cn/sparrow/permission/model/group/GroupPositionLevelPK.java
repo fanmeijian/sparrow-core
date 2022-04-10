@@ -13,8 +13,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Embeddable
-public class GroupPositionLevelPK implements Serializable{
+public class GroupPositionLevelPK implements Serializable {
 
+	public GroupPositionLevelPK(String groupId, String positionLevelId) {
+		this.groupId = groupId;
+		this.positionLevelId = positionLevelId;
+	}
 	/**
 	 * 
 	 */
@@ -23,5 +27,6 @@ public class GroupPositionLevelPK implements Serializable{
 	private String groupId;
 	@Column(name = "position_level_id")
 	private String positionLevelId;
+	private String orgId = "root";
 
 }

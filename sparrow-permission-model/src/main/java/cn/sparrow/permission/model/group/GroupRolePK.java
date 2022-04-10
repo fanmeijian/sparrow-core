@@ -1,16 +1,19 @@
 package cn.sparrow.permission.model.group;
 
 import java.io.Serializable;
-import java.util.Objects;
+
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import lombok.Getter;
-import lombok.Setter;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Embeddable
-@Setter
-@Getter
-public class GroupRolePK implements Serializable{
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class GroupRolePK implements Serializable {
 
 	/**
 	 * 
@@ -20,32 +23,12 @@ public class GroupRolePK implements Serializable{
 	private String groupId;
 	@Column(name = "role_id")
 	private String roleId;
-
-	public GroupRolePK(){
-
-	}
-
+	// 用来确定岗位所属的组织，如果要适用所有的组织，设置为root
+	private String orgId = "root";
+	
 	public GroupRolePK(String groupId, String roleId) {
-		super();
 		this.groupId = groupId;
 		this.roleId = roleId;
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(groupId, roleId);
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		GroupRolePK other = (GroupRolePK) obj;
-		return Objects.equals(groupId, other.groupId) && Objects.equals(roleId, other.roleId);
 	}
 
 }

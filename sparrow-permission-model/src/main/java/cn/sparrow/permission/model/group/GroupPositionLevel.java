@@ -2,7 +2,6 @@ package cn.sparrow.permission.model.group;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
@@ -34,23 +33,25 @@ public class GroupPositionLevel extends AbstractSparrowEntity {
 	@Audited
 	@JoinColumns({ @JoinColumn(name = "group_id"), @JoinColumn(name = "position_level_id") })
 	private GroupPositionLevelPK id;
-	@Audited
-	private String stat;
 
 	@JsonIgnore
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne
 	@JoinColumn(name = "group_id", insertable = false, updatable = false)
 	private Group group;
 
 	@JsonIgnore
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne
 	@JoinColumn(name = "position_level_id", insertable = false, updatable = false)
 	private PositionLevel positionLevel;
 
-	public GroupPositionLevel(GroupPositionLevelPK f) {
-		this.id = f;
+	public GroupPositionLevel(GroupPositionLevelPK id) {
+		this.id = id;
 	}
 
+	public GroupPositionLevel(String groupId, String positionLevelId, String orgId) {
+		this.id = new GroupPositionLevelPK(groupId, positionLevelId, orgId);
+	}
+	
 	public GroupPositionLevel(String groupId, String positionLevelId) {
 		this.id = new GroupPositionLevelPK(groupId, positionLevelId);
 	}
