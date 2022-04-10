@@ -13,6 +13,10 @@
 		<class>cn.sparrow.permission.model.group.GroupEmployeePK</class>
 		<class>cn.sparrow.permission.model.group.GroupModel</class>
 		<class>cn.sparrow.permission.model.group.GroupModelPK</class>
+		<class>cn.sparrow.permission.model.group.GroupOrgJobLevel</class>
+		<class>cn.sparrow.permission.model.group.GroupOrgJobLevelPK</class>
+		<class>cn.sparrow.permission.model.group.GroupOrgRole</class>
+		<class>cn.sparrow.permission.model.group.GroupOrgRolePK</class>
 		<class>cn.sparrow.permission.model.group.GroupOrganization</class>
 		<class>cn.sparrow.permission.model.group.GroupOrganizationPK</class>
 		<class>cn.sparrow.permission.model.group.GroupPositionLevel</class>

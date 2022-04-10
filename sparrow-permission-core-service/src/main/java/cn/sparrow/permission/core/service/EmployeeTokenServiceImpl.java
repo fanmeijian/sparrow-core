@@ -142,6 +142,7 @@ public class EmployeeTokenServiceImpl implements EmployeeTokenService {
 		Set<String> roleGroups = new HashSet<String>();
 		Set<String> jobLevelGroups = new HashSet<String>();
 
+		
 		organizations.forEach(orgId -> {
 			// 获取用户所在组织的归属所有组
 			entityManager.createNamedQuery("GroupOrganization.findByOrgId", GroupOrganization.class)
