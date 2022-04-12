@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
-import javax.persistence.EntityListeners;
 import javax.persistence.JoinColumn;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToOne;
@@ -28,7 +27,6 @@ import lombok.EqualsAndHashCode;
 @MappedSuperclass
 @Data
 @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
-@EntityListeners({ DeleteLogListener.class })
 public abstract class AbstractSparrowEntity implements Serializable {
 	/**
 	 * 

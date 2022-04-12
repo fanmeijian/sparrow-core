@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import cn.sparrow.permission.constant.GroupTypeEnum;
 import cn.sparrow.permission.mgt.api.GroupService;
+import cn.sparrow.permission.mgt.api.RequestAuditLog;
 import cn.sparrow.permission.mgt.api.scopes.GroupScope;
 import cn.sparrow.permission.mgt.service.repository.EmployeeRepository;
 import cn.sparrow.permission.mgt.service.repository.GroupEmployeeRepository;
@@ -59,7 +60,7 @@ import jakarta.validation.constraints.NotNull;
  * @author fanmj
  *
  */
-
+@RequestAuditLog
 @Service
 public class GroupServiceImpl extends AbstractPreserveScope implements GroupService, GroupScope {
 

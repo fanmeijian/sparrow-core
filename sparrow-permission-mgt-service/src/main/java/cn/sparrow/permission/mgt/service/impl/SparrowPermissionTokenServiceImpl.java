@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 
 import cn.sparrow.permission.constant.PermissionEnum;
 import cn.sparrow.permission.core.api.PermissionService;
+import cn.sparrow.permission.exception.DenyPermissionException;
+import cn.sparrow.permission.exception.NoPermissionException;
 import cn.sparrow.permission.mgt.api.SparrowPermissionTokenService;
 import cn.sparrow.permission.mgt.service.repository.SparrowPermissionTokenRepository;
 import cn.sparrow.permission.model.token.PermissionToken;
@@ -31,7 +33,13 @@ public class SparrowPermissionTokenServiceImpl implements SparrowPermissionToken
     }
 
     public boolean hasPermission(String tokenId, String username) {
-        return permissionService.hasPermission(username, tokenId, PermissionEnum.READER);
+        try {
+			return permissionService.hasPermission(username, tokenId, PermissionEnum.READER);
+		} catch (DenyPermissionException | NoPermissionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
     }
 
     @Override
