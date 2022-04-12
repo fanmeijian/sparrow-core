@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.lang.Nullable;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -61,6 +62,17 @@ public interface ModelService {
 	@PutMapping("/{modelId}/permissions/delete")
 	@ResponseBody
 	public void removePermission(@PathVariable("modelId") String modelId);
+
+	@Operation(summary = "设置数据权限")
+	@PostMapping("/{modelId}/dataPermissions/{dataId}")
+	@ResponseBody
+	public void addDataPermission(@PathVariable("modelId") String modelId, @PathVariable("dataId") String dataId,
+			@RequestBody PermissionToken permissionToken);
+
+	@Operation(summary = "删除数据权限")
+	@DeleteMapping("/{modelId}/dataPermissions/{dataId}")
+	@ResponseBody
+	public void removeDataPermission(@PathVariable("modelId") String modelId, @PathVariable("dataId") String dataId);
 
 	@Operation(summary = "浏览模型")
 	@GetMapping("/entities")

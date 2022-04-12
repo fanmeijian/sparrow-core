@@ -3,6 +3,7 @@ package cn.sparrow.permission.model.token;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -26,28 +27,34 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "spr_data_permission_token")
 public class DataPermissionToken implements Serializable {
-  /**
-   * 
-   */
-  private static final long serialVersionUID = 1L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
+	@EqualsAndHashCode.Include
+	@Id
+	@GenericGenerator(name = "id-generator", strategy = "uuid")
+	@GeneratedValue(generator = "id-generator")
+	private String id;
 
-  @EqualsAndHashCode.Include
-  @Id
-  @GenericGenerator(name = "id-generator", strategy = "uuid")
-  @GeneratedValue(generator = "id-generator")
-  protected String id;
-  
-  @JoinColumn(name = "permission_token_id")
-  @OneToOne
-  private SparrowPermissionToken sparrowPermissionToken;
-  
-  @JoinColumn(name = "model_id")
-  @OneToOne
-  private Model model;
+	@Column(name = "permission_token_id")
+	private String permissionTokenId;
 
-  @OneToMany(mappedBy = "dataPermissionToken")
-  @LazyCollection(LazyCollectionOption.FALSE)
-  private List<FieldPermissionToken> fieldPermissionTokens;
+	@JoinColumn(name = "permission_token_id", insertable = false, updatable = false)
+	@OneToOne
+	private SparrowPermissionToken sparrowPermissionToken;
+
+	@JoinColumn(name = "model_id")
+	@OneToOne
+	private Model model;
+
+	@OneToMany(mappedBy = "dataPermissionToken")
+	@LazyCollection(LazyCollectionOption.FALSE)
+	private List<FieldPermissionToken> fieldPermissionTokens;
+
+	public DataPermissionToken(String permissionTokenId) {
+		this.permissionTokenId = permissionTokenId;
+	}
 
 }

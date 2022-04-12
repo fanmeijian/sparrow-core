@@ -14,16 +14,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.ExampleMatcher.StringMatcher;
+import org.springframework.http.HttpStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import cn.sparrow.permission.mgt.api.ModelService;
 import cn.sparrow.permission.mgt.service.repository.ModelAttributeRepository;
 import cn.sparrow.permission.mgt.service.repository.ModelRepository;
 import cn.sparrow.permission.mgt.service.repository.PermissionTokenRepository;
+import cn.sparrow.permission.model.common.AbstractSparrowEntity;
 import cn.sparrow.permission.model.resource.Model;
 import cn.sparrow.permission.model.resource.ModelAttribute;
+import cn.sparrow.permission.model.token.DataPermissionToken;
 import cn.sparrow.permission.model.token.PermissionToken;
 import cn.sparrow.permission.model.token.SparrowPermissionToken;
 
@@ -136,6 +140,39 @@ public class ModelServiceImpl implements ModelService {
 			models.add(model);
 		});
 		return models;
+	}
+
+	@Override
+	@Transactional
+	@ResponseStatus(code = HttpStatus.NO_CONTENT)
+	public void addDataPermission(String modelId, String dataId, PermissionToken permissionToken) {
+
+		try {
+			AbstractSparrowEntity abstractSparrowEntity = (AbstractSparrowEntity) entityManager
+					.find(Class.forName(modelId), dataId);
+
+			SparrowPermissionToken sparrowPermissionToken = permissionTokenRepository
+					.save(new SparrowPermissionToken(permissionToken));
+
+			DataPermissionToken dataPermissionToken = new DataPermissionToken(sparrowPermissionToken.getId());
+			entityManager.persist(dataPermissionToken);
+
+			abstractSparrowEntity.setDataPermissionTokenId(dataPermissionToken.getId());
+			entityManager.persist(abstractSparrowEntity);
+
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
+	@Override
+	@Transactional
+	@ResponseStatus(code = HttpStatus.NO_CONTENT)
+	public void removeDataPermission(String modelId, String dataId) {
+		// TODO Auto-generated method stub
+
 	}
 
 }

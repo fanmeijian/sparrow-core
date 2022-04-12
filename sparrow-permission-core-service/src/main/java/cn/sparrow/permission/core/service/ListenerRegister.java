@@ -34,6 +34,7 @@ public class ListenerRegister implements Integrator {
 		eventListenerRegistry.prependListeners(EventType.PRE_DELETE, SprEntityListener.class);
 		eventListenerRegistry.prependListeners(EventType.POST_LOAD, SprEntityListener.class);
 		eventListenerRegistry.prependListeners(EventType.POST_DELETE, SprEntityListener.class);
+		eventListenerRegistry.prependListeners(EventType.PRE_LOAD, SprEntityListener.class);
 
 		// 3) This form adds the specified listener(s) to the end of the listener chain
 //        eventListenerRegistry.appendListeners( EventType.MERGE,
