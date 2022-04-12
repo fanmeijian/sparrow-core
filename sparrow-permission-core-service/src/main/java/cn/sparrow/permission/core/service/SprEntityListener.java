@@ -40,6 +40,7 @@ import cn.sparrow.permission.model.common.AbstractSparrowEntity;
 import cn.sparrow.permission.model.common.CurrentEntityManager;
 import cn.sparrow.permission.model.common.CurrentUser;
 import cn.sparrow.permission.model.common.DeleteAuditLog;
+import cn.sparrow.permission.model.common.PermissionCheckResult;
 import cn.sparrow.permission.model.resource.Model;
 import cn.sparrow.permission.model.token.DataPermissionToken;
 import cn.sparrow.permission.model.token.PermissionToken;
@@ -90,10 +91,20 @@ public class SprEntityListener implements PersistEventListener, PreUpdateEventLi
 				DataPermissionToken dataPermissionToken = ((AbstractSparrowEntity) event.getEntity())
 						.getDataPermissionToken();
 				if (dataPermissionToken != null) {
-					if (!checkDataPermission(dataPermissionToken.getSparrowPermissionToken().getPermissionToken(),
-							PermissionEnum.READER)) {
+					PermissionCheckResult permissionCheckResult = new PermissionCheckResult();
+					int checkResult = checkDataPermission(
+							dataPermissionToken.getSparrowPermissionToken().getPermissionToken(),
+							PermissionEnum.READER);
+					if (checkResult == -1) {
 						emptyData(event.getEntity());
+						permissionCheckResult.setDenyDataRead(true);
 					}
+					if (checkResult == -2) {
+						emptyData(event.getEntity());
+						permissionCheckResult.setNoDataRead(true);
+
+					}
+					((AbstractSparrowEntity) event.getEntity()).setPermissionCheckResult(permissionCheckResult);
 				}
 			}
 
@@ -132,9 +143,9 @@ public class SprEntityListener implements PersistEventListener, PreUpdateEventLi
 		}
 	}
 
-	private boolean checkDataPermission(PermissionToken permissionToken, PermissionEnum permission) {
+	private int checkDataPermission(PermissionToken permissionToken, PermissionEnum permission) {
 		if (CurrentEntityManager.get() == null) {
-			return true;
+			return 0;
 		}
 
 		PermissionService permissionService = new PermissionServiceImpl(CurrentEntityManager.get());
@@ -143,10 +154,10 @@ public class SprEntityListener implements PersistEventListener, PreUpdateEventLi
 		} catch (DenyPermissionException | NoPermissionException e) {
 			// 读权限的时候，不直接抛出错误，而是将对象置为空
 			if (PermissionEnum.READER.equals(permission)) {
-				return false;
+				return e.getClass().isAssignableFrom(DenyPermissionException.class) ? -1 : -2;
 			}
 		}
-		return true;
+		return 0;
 	}
 
 	@Override

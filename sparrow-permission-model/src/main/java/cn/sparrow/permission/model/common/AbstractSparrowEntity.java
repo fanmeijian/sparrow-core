@@ -71,5 +71,10 @@ public abstract class AbstractSparrowEntity implements Serializable {
 	@NotAudited
 	@JsonIgnore
 	private DataPermissionToken dataPermissionToken;
+	
+	// 用于检查数据字段权限返回检查结果，因为不能直接中断。
+	@Transient
+	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
+	private PermissionCheckResult permissionCheckResult;
 
 }
