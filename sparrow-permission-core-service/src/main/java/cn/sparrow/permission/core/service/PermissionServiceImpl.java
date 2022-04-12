@@ -12,6 +12,8 @@ import cn.sparrow.permission.constant.PermissionTargetEnum;
 import cn.sparrow.permission.constant.PermissionTypeEnum;
 import cn.sparrow.permission.core.api.PermissionExpressionService;
 import cn.sparrow.permission.core.api.PermissionService;
+import cn.sparrow.permission.exception.DenyPermissionException;
+import cn.sparrow.permission.exception.NoPermissionException;
 import cn.sparrow.permission.model.organization.OrganizationPositionLevelPK;
 import cn.sparrow.permission.model.organization.OrganizationRolePK;
 import cn.sparrow.permission.model.token.EmployeeToken;
@@ -42,17 +44,7 @@ public class PermissionServiceImpl implements PermissionService {
 
 	@Override
 	public boolean hasPermission(@NotNull EmployeeToken employeeToken, @NotNull PermissionToken permissionToken,
-			PermissionEnum permissionEnum) {
-
-		if (!permissionEnum.equals(PermissionEnum.ALL)) {
-			if (this.hasPermission(employeeToken, permissionToken, PermissionEnum.ALL)) {
-				return true;
-			}
-		}
-
-//		if (permissionToken == null || SecurityContextHolder.getContext().getAuthentication().getName().equals("ROOT"))
-//				SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains("ROLE_SYSADMIN1"))
-//			return true;
+			PermissionEnum permissionEnum) throws DenyPermissionException, NoPermissionException {
 
 		if (permissionToken == null)
 			return true;
@@ -64,6 +56,8 @@ public class PermissionServiceImpl implements PermissionService {
 		Map<PermissionEnum, Map<PermissionTargetEnum, List<PermissionExpression<?>>>> allowPermission = permissionToken
 				.getAllowPermissions();
 
+		// 合并ALL的权限：
+
 		// deny
 		if (denyPermission != null) {
 			Map<PermissionTargetEnum, List<PermissionExpression<?>>> permissionExpress = denyPermission
@@ -72,14 +66,16 @@ public class PermissionServiceImpl implements PermissionService {
 				for (PermissionExpression<?> permissionExpression : nullToEmptyList(
 						permissionExpress.get(PermissionTargetEnum.EMPLOYEE))) {
 					if (permissionExpressionService.evaluate(employeeToken.getEmployeeId(), permissionExpression)) {
-						return false;
+						throw new DenyPermissionException(
+								PermissionTargetEnum.EMPLOYEE + " " + permissionEnum + " ");
 					}
 				}
 
 				for (PermissionExpression<?> permissionExpression : nullToEmptyList(
 						permissionExpress.get(PermissionTargetEnum.USER))) {
 					if (permissionExpressionService.evaluate(employeeToken.getUsername(), permissionExpression)) {
-						return true;
+						throw new DenyPermissionException(
+								PermissionTargetEnum.USER + " " + permissionEnum + " ");
 					}
 				}
 
@@ -87,7 +83,8 @@ public class PermissionServiceImpl implements PermissionService {
 						permissionExpress.get(PermissionTargetEnum.SYSROLE))) {
 					for (String sysroleId : employeeToken.getSysroles()) {
 						if (permissionExpressionService.evaluate(sysroleId, permissionExpression)) {
-							return true;
+							throw new DenyPermissionException(
+									PermissionTargetEnum.SYSROLE + " " + permissionEnum + " ");
 						}
 					}
 				}
@@ -97,7 +94,8 @@ public class PermissionServiceImpl implements PermissionService {
 						permissionExpress.get(PermissionTargetEnum.GROUP))) {
 					for (String groupId : employeeToken.getAllGroups()) {
 						if (permissionExpressionServiceGroup.evaluate(groupId, permissionExpression)) {
-							return true;
+							throw new DenyPermissionException(
+									PermissionTargetEnum.GROUP + " " + permissionEnum + " ");
 						}
 					}
 				}
@@ -106,7 +104,8 @@ public class PermissionServiceImpl implements PermissionService {
 						permissionExpress.get(PermissionTargetEnum.ROLE))) {
 					for (OrganizationRolePK organizationRoleId : employeeToken.getOrgRoleIds()) {
 						if (permissionExpressionServiceRole.evaluate(organizationRoleId, permissionExpression)) {
-							return true;
+							throw new DenyPermissionException(
+									PermissionTargetEnum.ROLE + " " + permissionEnum + " ");
 						}
 					}
 				}
@@ -116,7 +115,8 @@ public class PermissionServiceImpl implements PermissionService {
 					for (OrganizationPositionLevelPK organizationPositionLevelId : employeeToken.getOrgJobLevelIds()) {
 						if (permissionExpressionServicePositionLevel.evaluate(organizationPositionLevelId,
 								permissionExpression)) {
-							return true;
+							throw new DenyPermissionException(
+									PermissionTargetEnum.LEVEL + " " + permissionEnum + " ");
 						}
 					}
 				}
@@ -125,7 +125,8 @@ public class PermissionServiceImpl implements PermissionService {
 						permissionExpress.get(PermissionTargetEnum.ORGANIZATION))) {
 					for (String organizationId : employeeToken.getOrganizationIds()) {
 						if (permissionExpressionServiceOrganization.evaluate(organizationId, permissionExpression)) {
-							return true;
+							throw new DenyPermissionException(
+									PermissionTargetEnum.ORGANIZATION + " " + permissionEnum + " ");
 						}
 					}
 				}
@@ -202,7 +203,7 @@ public class PermissionServiceImpl implements PermissionService {
 		} else {
 			return true;
 		}
-		return false;
+		throw new NoPermissionException(permissionEnum.toString());
 
 	}
 
@@ -228,12 +229,12 @@ public class PermissionServiceImpl implements PermissionService {
 			if (permissionToken.getDenyPermissions().get(permissionEnum) != null)
 				return true;
 		}
-
 		return false;
 	}
 
 	@Override
-	public boolean hasPermission(String employeeId, String tokenId, PermissionEnum permissionEnum) {
+	public boolean hasPermission(String employeeId, String tokenId, PermissionEnum permissionEnum)
+			throws DenyPermissionException, NoPermissionException {
 		EmployeeToken employeeToken = new EmployeeTokenServiceImpl(entityManager)
 				.getEmployeeTokenByEmployeeId(employeeId);
 		PermissionToken permissionToken = entityManager.find(SparrowPermissionToken.class, tokenId)
@@ -246,7 +247,8 @@ public class PermissionServiceImpl implements PermissionService {
 	}
 
 	@Override
-	public boolean hasPermission(String username, PermissionToken permissionToken, PermissionEnum permissionEnum) {
+	public boolean hasPermission(String username, PermissionToken permissionToken, PermissionEnum permissionEnum)
+			throws DenyPermissionException, NoPermissionException {
 		if (username.equals("ROOT"))
 			return true;
 		return this.hasPermission(new EmployeeTokenServiceImpl(entityManager).getEmployeeTokenByUsername(username),

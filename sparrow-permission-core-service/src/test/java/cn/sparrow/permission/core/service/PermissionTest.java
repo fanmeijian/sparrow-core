@@ -4,7 +4,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -13,7 +12,6 @@ import java.util.Map;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import org.h2.util.New;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -23,6 +21,8 @@ import cn.sparrow.permission.constant.PermissionEnum;
 import cn.sparrow.permission.constant.PermissionExpressionEnum;
 import cn.sparrow.permission.constant.PermissionTargetEnum;
 import cn.sparrow.permission.core.api.PermissionService;
+import cn.sparrow.permission.exception.DenyPermissionException;
+import cn.sparrow.permission.exception.NoPermissionException;
 import cn.sparrow.permission.model.group.Group;
 import cn.sparrow.permission.model.group.GroupOrganization;
 import cn.sparrow.permission.model.group.GroupSysrole;
@@ -44,7 +44,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @ExtendWith(JpaUnit.class)
 @Transactional(TransactionMode.DISABLED)
-public class PermissionTest {
+public class PermissionTest{
 	@PersistenceContext(unitName = "cn.sparrow.permission.domain1")
 	private EntityManager entityManager;
 
@@ -54,7 +54,8 @@ public class PermissionTest {
 	private String tokenId;
 
 	@BeforeEach
-	public void before() {
+	public void before() {		
+		
 		// 初始化组织架构
 		String orgId1 = "";
 		String orgId2 = "";
@@ -240,95 +241,102 @@ public class PermissionTest {
 	}
 
 	@Test
-	public void AuthorPermissionTest() {
-		SparrowPermissionToken sparrowPermissionToken = entityManager.find(SparrowPermissionToken.class, tokenId);
-		List<Group> groups = entityManager.createQuery("SELECT g FROM Group g", Group.class).getResultList();
-		PermissionService permissionService = new PermissionServiceImpl(entityManager);
-		// 测试用户组权限
-		groups.forEach(group -> {
-			entityManager.persist(new GroupUser(group.getId(), "user" + (groups.indexOf(group) + 1)));
-		});
-
-		for (PermissionEnum permissionEnum : PermissionEnum.values()) {
-			if (!permissionEnum.toString().contains("ALL")) {
-				assertTrue("权限检查失败", permissionService.hasPermission(hasPermissionEmployeeId, tokenId, permissionEnum));
-//				log.info("employee {} has permission {}", hasPermissionEmployeeId, permissionEnum);
-				assertFalse("权限检查失败", permissionService.hasPermission(noPermissionEmployeeId, tokenId, permissionEnum));
-//				log.info("employee {} no permission {}", noPermissionEmployeeId, permissionEnum);
-				assertTrue("权限检查失败",
-						permissionService.hasPermission(denyPermissionEmployeeId, tokenId, permissionEnum));
-//				log.info("employee {} deny permission {}", denyPermissionEmployeeId, permissionEnum);
-			}
-		}
-		entityManager.createQuery("DELETE FROM GroupUser").executeUpdate();
-
-		// 测试角色权限
-		List<Sysrole> sysroles = entityManager.createQuery("SELECT g FROM Sysrole g", Sysrole.class).getResultList();
-		for (PermissionEnum permissionEnum : PermissionEnum.values()) {
-			if (!permissionEnum.toString().contains("ALL")) {
-				assertFalse("权限检查失败",
-						permissionService.hasPermission(hasPermissionEmployeeId, tokenId, permissionEnum));
-//				log.info("employee {} has permission {}", hasPermissionEmployeeId, permissionEnum);
-				assertFalse("权限检查失败", permissionService.hasPermission(noPermissionEmployeeId, tokenId, permissionEnum));
-//				log.info("employee {} no permission {}", noPermissionEmployeeId, permissionEnum);
-				assertFalse("权限检查失败",
-						permissionService.hasPermission(denyPermissionEmployeeId, tokenId, permissionEnum));
-//				log.info("employee {} deny permission {}", denyPermissionEmployeeId, permissionEnum);
-			}
-		}
-
-		// 授予用户角色
-		sysroles.forEach(sysrole -> {
-			entityManager.persist(new UserSysrole(sysrole.getId(), "user" + (sysroles.indexOf(sysrole) + 1)));
-		});
-
-		for (PermissionEnum permissionEnum : PermissionEnum.values()) {
-			if (!permissionEnum.toString().contains("ALL")) {
-				assertTrue("权限检查失败", permissionService.hasPermission(hasPermissionEmployeeId, tokenId, permissionEnum));
-//				log.info("employee {} has permission {}", hasPermissionEmployeeId, permissionEnum);
-				assertFalse("权限检查失败", permissionService.hasPermission(noPermissionEmployeeId, tokenId, permissionEnum));
-//				log.info("employee {} no permission {}", noPermissionEmployeeId, permissionEnum);
-				assertTrue("权限检查失败",
-						permissionService.hasPermission(denyPermissionEmployeeId, tokenId, permissionEnum));
-//				log.info("employee {} deny permission {}", denyPermissionEmployeeId, permissionEnum);
-			}
-		}
-
-		// 测试角色组权限
-		entityManager.persist(new GroupSysrole(groups.get(0).getId(), sysroles.get(1).getId()));
-		for (PermissionEnum permissionEnum : PermissionEnum.values()) {
-			if (!permissionEnum.toString().contains("ALL")) {
-				assertTrue("权限检查失败", permissionService.hasPermission(hasPermissionEmployeeId, tokenId, permissionEnum));
-//				log.info("employee {} has permission {}", hasPermissionEmployeeId, permissionEnum);
-				assertTrue("权限检查失败", permissionService.hasPermission(noPermissionEmployeeId, tokenId, permissionEnum));
-//				log.info("employee {} no permission {}", noPermissionEmployeeId, permissionEnum);
-				assertTrue("权限检查失败",
-						permissionService.hasPermission(denyPermissionEmployeeId, tokenId, permissionEnum));
-//				log.info("employee {} deny permission {}", denyPermissionEmployeeId, permissionEnum);
-			}
-		}
-
-		// 测试组织
-		Organization organization = new Organization("总公司", "010000000", OrganizationTypeEnum.ORGANIZATION);
-		entityManager.persist(organization);
-		sparrowPermissionToken.getPermissionToken().getAllowPermissions().put(PermissionEnum.READER,
-				Collections.singletonMap(PermissionTargetEnum.ORGANIZATION,
-						Collections.singletonList(new PermissionExpression<String>(PermissionExpressionEnum.IN,
-								Collections.singletonList(organization.getId())))));
-		Employee employee = new Employee("张三", "000011111111", organization.getId());
-		entityManager.persist(sparrowPermissionToken);
-		entityManager.persist(employee);
-		assertTrue("权限检查失败", permissionService.hasPermission(employee.getId(), tokenId, PermissionEnum.READER));
-		// 测试组织组
-		sparrowPermissionToken.getPermissionToken().getAllowPermissions().remove(PermissionEnum.READER);
-		assertFalse("权限检查失败", permissionService.hasPermission(employee.getId(), tokenId, PermissionEnum.READER));
+	public void AuthorPermissionTest() throws Exception{
 		
-		entityManager.persist(new GroupOrganization(groups.get(0).getId(), organization.getId()));
-		assertTrue("权限检查失败", permissionService.hasPermission(employee.getId(), tokenId, PermissionEnum.AUTHOR));
-		
-		employee.setOrganizationId(null);
-		entityManager.persist(employee);
-		assertFalse("权限检查失败", permissionService.hasPermission(employee.getId(), tokenId, PermissionEnum.READER));
+		try {
+
+			SparrowPermissionToken sparrowPermissionToken = entityManager.find(SparrowPermissionToken.class, tokenId);
+			List<Group> groups = entityManager.createQuery("SELECT g FROM Group g", Group.class).getResultList();
+			PermissionService permissionService = new PermissionServiceImpl(entityManager);
+			// 测试用户组权限
+			groups.forEach(group -> {
+				entityManager.persist(new GroupUser(group.getId(), "user" + (groups.indexOf(group) + 1)));
+			});
+
+			for (PermissionEnum permissionEnum : PermissionEnum.values()) {
+				if (!permissionEnum.toString().contains("ALL")) {
+					assertTrue("权限检查失败", permissionService.hasPermission(hasPermissionEmployeeId, tokenId, permissionEnum));
+//					log.info("employee {} has permission {}", hasPermissionEmployeeId, permissionEnum);
+					assertFalse("权限检查失败", permissionService.hasPermission(noPermissionEmployeeId, tokenId, permissionEnum));
+//					log.info("employee {} no permission {}", noPermissionEmployeeId, permissionEnum);
+					assertTrue("权限检查失败",
+							permissionService.hasPermission(denyPermissionEmployeeId, tokenId, permissionEnum));
+//					log.info("employee {} deny permission {}", denyPermissionEmployeeId, permissionEnum);
+				}
+			}
+			entityManager.createQuery("DELETE FROM GroupUser").executeUpdate();
+
+			// 测试角色权限
+			List<Sysrole> sysroles = entityManager.createQuery("SELECT g FROM Sysrole g", Sysrole.class).getResultList();
+			for (PermissionEnum permissionEnum : PermissionEnum.values()) {
+				if (!permissionEnum.toString().contains("ALL")) {
+					assertFalse("权限检查失败",
+							permissionService.hasPermission(hasPermissionEmployeeId, tokenId, permissionEnum));
+//					log.info("employee {} has permission {}", hasPermissionEmployeeId, permissionEnum);
+					assertFalse("权限检查失败", permissionService.hasPermission(noPermissionEmployeeId, tokenId, permissionEnum));
+//					log.info("employee {} no permission {}", noPermissionEmployeeId, permissionEnum);
+					assertFalse("权限检查失败",
+							permissionService.hasPermission(denyPermissionEmployeeId, tokenId, permissionEnum));
+//					log.info("employee {} deny permission {}", denyPermissionEmployeeId, permissionEnum);
+				}
+			}
+
+			// 授予用户角色
+			sysroles.forEach(sysrole -> {
+				entityManager.persist(new UserSysrole(sysrole.getId(), "user" + (sysroles.indexOf(sysrole) + 1)));
+			});
+
+			for (PermissionEnum permissionEnum : PermissionEnum.values()) {
+				if (!permissionEnum.toString().contains("ALL")) {
+					assertTrue("权限检查失败", permissionService.hasPermission(hasPermissionEmployeeId, tokenId, permissionEnum));
+//					log.info("employee {} has permission {}", hasPermissionEmployeeId, permissionEnum);
+					assertFalse("权限检查失败", permissionService.hasPermission(noPermissionEmployeeId, tokenId, permissionEnum));
+//					log.info("employee {} no permission {}", noPermissionEmployeeId, permissionEnum);
+					assertTrue("权限检查失败",
+							permissionService.hasPermission(denyPermissionEmployeeId, tokenId, permissionEnum));
+//					log.info("employee {} deny permission {}", denyPermissionEmployeeId, permissionEnum);
+				}
+			}
+
+			// 测试角色组权限
+			entityManager.persist(new GroupSysrole(groups.get(0).getId(), sysroles.get(1).getId()));
+			for (PermissionEnum permissionEnum : PermissionEnum.values()) {
+				if (!permissionEnum.toString().contains("ALL")) {
+					assertTrue("权限检查失败", permissionService.hasPermission(hasPermissionEmployeeId, tokenId, permissionEnum));
+//					log.info("employee {} has permission {}", hasPermissionEmployeeId, permissionEnum);
+					assertTrue("权限检查失败", permissionService.hasPermission(noPermissionEmployeeId, tokenId, permissionEnum));
+//					log.info("employee {} no permission {}", noPermissionEmployeeId, permissionEnum);
+					assertTrue("权限检查失败",
+							permissionService.hasPermission(denyPermissionEmployeeId, tokenId, permissionEnum));
+//					log.info("employee {} deny permission {}", denyPermissionEmployeeId, permissionEnum);
+				}
+			}
+
+			// 测试组织
+			Organization organization = new Organization("总公司", "010000000", OrganizationTypeEnum.ORGANIZATION);
+			entityManager.persist(organization);
+			sparrowPermissionToken.getPermissionToken().getAllowPermissions().put(PermissionEnum.READER,
+					Collections.singletonMap(PermissionTargetEnum.ORGANIZATION,
+							Collections.singletonList(new PermissionExpression<String>(PermissionExpressionEnum.IN,
+									Collections.singletonList(organization.getId())))));
+			Employee employee = new Employee("张三", "000011111111", organization.getId());
+			entityManager.persist(sparrowPermissionToken);
+			entityManager.persist(employee);
+			assertTrue("权限检查失败", permissionService.hasPermission(employee.getId(), tokenId, PermissionEnum.READER));
+			// 测试组织组
+			sparrowPermissionToken.getPermissionToken().getAllowPermissions().remove(PermissionEnum.READER);
+			assertFalse("权限检查失败", permissionService.hasPermission(employee.getId(), tokenId, PermissionEnum.READER));
+			
+			entityManager.persist(new GroupOrganization(groups.get(0).getId(), organization.getId()));
+			assertTrue("权限检查失败", permissionService.hasPermission(employee.getId(), tokenId, PermissionEnum.AUTHOR));
+			
+			employee.setOrganizationId(null);
+			entityManager.persist(employee);
+			assertFalse("权限检查失败", permissionService.hasPermission(employee.getId(), tokenId, PermissionEnum.READER));
+			
+		} catch (DenyPermissionException|NoPermissionException e) {
+			// TODO: handle exception
+		}
 		
 		
 	}

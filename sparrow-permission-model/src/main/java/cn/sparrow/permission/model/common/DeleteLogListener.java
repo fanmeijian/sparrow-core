@@ -23,6 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 public class DeleteLogListener {
 	@PostRemove
 	void delete(Object object) {
+		log.info("entity mananger {}", CurrentEntityManager.get());
 		Field[] fields = object.getClass().getDeclaredFields();
 //		log.info("{} {}", fields.length, CurrentUser.get());
 		for (Field field : fields) {

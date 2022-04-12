@@ -12,6 +12,7 @@ import org.aspectj.lang.annotation.Aspect;
 import cn.sparrow.permission.constant.PermissionEnum;
 import cn.sparrow.permission.core.api.PermissionService;
 import cn.sparrow.permission.core.api.ScopePermission;
+import cn.sparrow.permission.exception.NoPermissionException;
 import cn.sparrow.permission.model.common.CurrentUser;
 import cn.sparrow.permission.model.resource.Scope;
 import cn.sparrow.permission.model.token.PermissionToken;
