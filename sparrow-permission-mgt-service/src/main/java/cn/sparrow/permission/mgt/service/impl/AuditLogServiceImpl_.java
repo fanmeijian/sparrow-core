@@ -6,6 +6,11 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Id;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.ExampleMatcher.StringMatcher;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ReflectionUtils;
 
@@ -14,6 +19,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import cn.sparrow.permission.core.api.AuditLogService;
 import cn.sparrow.permission.mgt.api.AuditLogRestService;
+import cn.sparrow.permission.mgt.service.repository.DeleteAuditLogRepository;
+import cn.sparrow.permission.mgt.service.repository.RequestAuditLogRepository;
+import cn.sparrow.permission.model.common.DeleteAuditLog;
+import cn.sparrow.permission.model.common.RequestAuditLog;
 import lombok.NoArgsConstructor;
 
 @Service
@@ -22,6 +31,11 @@ public class AuditLogServiceImpl_ implements AuditLogRestService {
 
 	@Autowired
 	AuditLogService auditLogService;
+	@Autowired
+	DeleteAuditLogRepository deleteAuditLogRepository;
+	@Autowired
+	RequestAuditLogRepository requestAuditLogRepository;
+	
 	static Class<?> keyClass = null;
 
 	@Override
@@ -59,6 +73,18 @@ public class AuditLogServiceImpl_ implements AuditLogRestService {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	@Override
+	public Page<DeleteAuditLog> getAllDeleteLogs(Pageable pageable, DeleteAuditLog deleteAuditLog) {
+		ExampleMatcher matcher = ExampleMatcher.matching().withIgnoreCase().withStringMatcher(StringMatcher.CONTAINING);
+		return deleteAuditLogRepository.findAll(Example.of(deleteAuditLog, matcher), pageable);
+	}
+
+	@Override
+	public Page<RequestAuditLog> getAllRequestLogs(Pageable pageable, RequestAuditLog requestAuditLog) {
+		ExampleMatcher matcher = ExampleMatcher.matching().withIgnoreCase().withStringMatcher(StringMatcher.CONTAINING);
+		return requestAuditLogRepository.findAll(Example.of(requestAuditLog, matcher), pageable);
 	}
 
 }

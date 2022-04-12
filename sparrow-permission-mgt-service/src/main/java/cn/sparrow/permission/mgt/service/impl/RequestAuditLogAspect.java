@@ -16,7 +16,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import cn.sparrow.permission.mgt.api.RequestAuditLog;
+import cn.sparrow.permission.mgt.api.RequestAudit;
 import cn.sparrow.permission.mgt.service.repository.RequestAuditLogRepository;
 import lombok.extern.slf4j.Slf4j;
 
@@ -36,13 +36,13 @@ public class RequestAuditLogAspect {
 	}
 
 	@Around("publicMethod() && @annotation(auditLog)")
-	public Object LogExecutionTimeByMethod(ProceedingJoinPoint joinPoint, RequestAuditLog auditLog) throws Throwable {
+	public Object LogExecutionTimeByMethod(ProceedingJoinPoint joinPoint, RequestAudit auditLog) throws Throwable {
 		System.out.println(joinPoint + "1 -> " + auditLog);
 		return joinPoint.proceed();
 	}
 
 	@Around("publicMethod() && @within(auditLog)")
-	public Object LogExecutionTimeByClass(ProceedingJoinPoint joinPoint, RequestAuditLog auditLog) throws Throwable {
+	public Object LogExecutionTimeByClass(ProceedingJoinPoint joinPoint, RequestAudit auditLog) throws Throwable {
 		String actor = "anonymous";
 		String origin = "unidentified";
 
@@ -57,7 +57,7 @@ public class RequestAuditLogAspect {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		log.info("{} {} {} {}", joinPoint, joinPoint.getArgs(), actor, origin);
+//		log.debug("{} {} {} {}", joinPoint, joinPoint.getArgs(), actor, origin);
 		requestAuditLogRepository.save(new cn.sparrow.permission.model.common.RequestAuditLog(origin,
 				joinPoint.toString(), new ObjectMapper().writeValueAsString(joinPoint.getArgs())));
 		return joinPoint.proceed();
