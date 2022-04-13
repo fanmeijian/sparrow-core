@@ -2,6 +2,7 @@ package cn.sparrow.permission.model.token;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -42,9 +43,12 @@ public class FieldPermissionToken implements Serializable {
 			@JoinColumn(name = "attribute_id", referencedColumnName = "attribute_id") })
 	private ModelAttribute modelAttribute;
 
+	@Column(name = "permission_token_id", nullable = false)
+	private String permissionTokenId;
+
 	@OneToOne
-	@JoinColumn(name = "permission_token_id")
-	private SparrowPermissionToken permissionToken;
+	@JoinColumn(name = "permission_token_id", insertable = false, updatable = false)
+	private SparrowPermissionToken sparrowPermissionToken;
 
 	@JsonIgnore
 	@ManyToOne

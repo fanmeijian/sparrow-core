@@ -1,5 +1,6 @@
 package cn.sparrow.permission.model.common;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import lombok.Data;
@@ -10,11 +11,11 @@ public class PermissionCheckResult {
 	private boolean noDataRead = false;
 	private boolean denyDataRead = false;
 
-	private List<String> noReadAttrs;
-	private List<String> noReadFields;
-	private List<String> noUpdateFields;
-	
-	private List<String> denyReadAttrs;
-	private List<String> denyReadFields;
-	private List<String> denyUpdateFields;
+	private List<String> noReadAttrs = new ArrayList<>();
+	private List<String> noReadFields = new ArrayList<>();
+	private List<String> noUpdateFields = new ArrayList<>();
+
+	private List<String> denyReadAttrs = new ArrayList<>();
+	private List<String> denyReadFields = new ArrayList<>();
+	private List<String> denyUpdateFields = new ArrayList<>();
 }

@@ -38,7 +38,7 @@ public class DataPermissionToken implements Serializable {
 	@GeneratedValue(generator = "id-generator")
 	private String id;
 
-	@Column(name = "permission_token_id")
+	@Column(name = "permission_token_id", nullable = false)
 	private String permissionTokenId;
 
 	@JoinColumn(name = "permission_token_id", insertable = false, updatable = false)

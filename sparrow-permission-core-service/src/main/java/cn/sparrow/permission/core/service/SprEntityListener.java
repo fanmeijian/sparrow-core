@@ -87,11 +87,32 @@ public class SprEntityListener implements PersistEventListener, PreUpdateEventLi
 			// get data permission token
 //			CurrentEntityManager.get().find(DataPermissionToken.class, );
 
-			if (AbstractSparrowEntity.class.isAssignableFrom(event.getEntity().getClass())) {
+			if (AbstractSparrowEntity.class.isAssignableFrom(event.getEntity().getClass())
+					&& CurrentEntityManager.get() != null) {
 				DataPermissionToken dataPermissionToken = ((AbstractSparrowEntity) event.getEntity())
 						.getDataPermissionToken();
+				PermissionCheckResult permissionCheckResult = new PermissionCheckResult();
+
+				// 属性权限
+				Model model = CurrentEntityManager.get().find(Model.class, modelName);
+				model.getModelAttributes().forEach(f -> {
+					if (f.getSparrowPermissionToken() != null) {
+						int checkFieldResult = checkDataPermission(f.getSparrowPermissionToken().getPermissionToken(),
+								PermissionEnum.READER);
+						if (checkFieldResult == -1) {
+							permissionCheckResult.getNoReadAttrs().add(f.getId().getAttributeId());
+						}
+						if (checkFieldResult == -2) {
+							permissionCheckResult.getDenyReadAttrs().add(f.getId().getAttributeId());
+						}
+						if (checkFieldResult < 0) {
+							emptyDataField(event.getEntity(), f.getId().getAttributeId(), f.getType());
+						}
+					}
+				});
+
 				if (dataPermissionToken != null) {
-					PermissionCheckResult permissionCheckResult = new PermissionCheckResult();
+					// 数据权限
 					int checkResult = checkDataPermission(
 							dataPermissionToken.getSparrowPermissionToken().getPermissionToken(),
 							PermissionEnum.READER);
@@ -102,13 +123,30 @@ public class SprEntityListener implements PersistEventListener, PreUpdateEventLi
 					if (checkResult == -2) {
 						emptyData(event.getEntity());
 						permissionCheckResult.setNoDataRead(true);
-
 					}
-					((AbstractSparrowEntity) event.getEntity()).setPermissionCheckResult(permissionCheckResult);
-				}
-			}
 
-			// 字段读权限
+					// 字段权限
+					dataPermissionToken.getFieldPermissionTokens().forEach(f -> {
+						if (f.getSparrowPermissionToken() != null) {
+							int checkFieldResult = checkDataPermission(
+									f.getSparrowPermissionToken().getPermissionToken(), PermissionEnum.READER);
+							if (checkFieldResult == -1) {
+								permissionCheckResult.getDenyReadFields()
+										.add(f.getModelAttribute().getId().getAttributeId());
+							}
+							if (checkFieldResult == -2) {
+								permissionCheckResult.getNoReadFields()
+										.add(f.getModelAttribute().getId().getAttributeId());
+							}
+							if (checkFieldResult < 0) {
+								emptyDataField(event.getEntity(), f.getModelAttribute().getId().getAttributeId(),
+										f.getModelAttribute().getType());
+							}
+						}
+					});
+				}
+				((AbstractSparrowEntity) event.getEntity()).setPermissionCheckResult(permissionCheckResult);
+			}
 		}
 	}
 
@@ -243,8 +281,10 @@ public class SprEntityListener implements PersistEventListener, PreUpdateEventLi
 			for (Field field : fields) {
 				if (field.getName().equals(fieldName)) {
 					for (Annotation annotation : field.getDeclaredAnnotations()) {
-						if (annotation.annotationType().equals(Id.class)) {
+						if (annotation.annotationType().equals(Id.class)
+								|| annotation.annotationType().equals(EmbeddedId.class)) {
 							isId = true;
+							break;
 						}
 					}
 				}
