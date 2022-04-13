@@ -35,8 +35,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Table(name = "spr_employee")
-@JsonIgnoreProperties(value = { "employeeUsers", "dataPermissionToken" }, allowGetters = true)
-@NamedQueries({@NamedQuery(name = "Employee.findByUsername", query = "SELECT e FROM Employee e WHERE e.username = :username")})
+@NamedQueries({
+		@NamedQuery(name = "Employee.findByUsername", query = "SELECT e FROM Employee e WHERE e.username = :username") })
 public class Employee extends AbstractSparrowEntity {
 
 	/**
@@ -87,7 +87,7 @@ public class Employee extends AbstractSparrowEntity {
 		this.code = code;
 		this.organizationId = organizationId;
 	}
-	
+
 	public Employee(String name, String code, String organizationId, String username) {
 		this.name = name;
 		this.code = code;

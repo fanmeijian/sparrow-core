@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import cn.sparrow.permission.mgt.api.ModelAttributeService;
 import cn.sparrow.permission.mgt.service.repository.ModelAttributeRepository;
+import cn.sparrow.permission.mgt.service.repository.SparrowPermissionTokenRepository;
 import cn.sparrow.permission.model.resource.ModelAttribute;
 import cn.sparrow.permission.model.resource.ModelAttributePK;
 import cn.sparrow.permission.model.token.PermissionToken;
@@ -31,6 +32,8 @@ public class ModelAttributeServiceImpl implements ModelAttributeService {
 	@Autowired
 	ModelAttributeRepository modelAttributeRepository;
 	// @Autowired ModelAttributePermissionService modelAttributePermissionService;
+	@Autowired
+	SparrowPermissionTokenRepository sparrowPermissionTokenRepository;
 
 	@Override
 	public Page<ModelAttribute> all(Pageable pageable, ModelAttribute modelAttribute) {
@@ -44,7 +47,7 @@ public class ModelAttributeServiceImpl implements ModelAttributeService {
 	}
 
 	@Override
-	public ModelAttribute update(ModelAttributePK attributeId,Map<String, Object> map) {
+	public ModelAttribute update(ModelAttributePK attributeId, Map<String, Object> map) {
 		ModelAttribute source = modelAttributeRepository.getById(attributeId);
 		map.remove("id");
 		PatchUpdateHelper.merge(source, map);
@@ -100,9 +103,16 @@ public class ModelAttributeServiceImpl implements ModelAttributeService {
 	}
 
 	@Override
-	@ResponseStatus(code = HttpStatus.NO_CONTENT)
-	public void addAttributePermission(String modelId, String attributeId, PermissionToken permissionToken) {
-		this.addPermission(new ModelAttributePK(modelId, attributeId), permissionToken);
+	@ResponseStatus(code = HttpStatus.CREATED)
+	@Transactional
+	public SparrowPermissionToken addAttributePermission(String modelId, String attributeId,
+			PermissionToken permissionToken) {
+		SparrowPermissionToken sparrowPermissionToken = new SparrowPermissionToken(permissionToken);
+		sparrowPermissionTokenRepository.save(sparrowPermissionToken);
+		ModelAttribute modelAttribute = modelAttributeRepository.getById(new ModelAttributePK(modelId, attributeId));
+		modelAttribute.setPermissionTokenId(sparrowPermissionToken.getId());
+		modelAttributeRepository.save(modelAttribute);
+		return sparrowPermissionToken;
 	}
 
 	@Override
@@ -113,24 +123,13 @@ public class ModelAttributeServiceImpl implements ModelAttributeService {
 
 	@Override
 	@ResponseStatus(code = HttpStatus.NO_CONTENT)
+	@Transactional
 	public void deleteAttribute(String modelId, List<String> attributeIds) {
 		List<ModelAttributePK> modelAttributePKs = new ArrayList<ModelAttributePK>();
-		attributeIds.forEach(attributeId->{
+		attributeIds.forEach(attributeId -> {
 			modelAttributePKs.add(new ModelAttributePK(modelId, attributeId));
 		});
 		this.delete(modelAttributePKs);
 	}
-
-	// @PostMapping("/modelAttributes/permissions")
-	// public void addPermission(@NotNull @RequestBody final
-	// ModelAttributePermission modelAttributePermission) {
-	// modelAttributePermissionService.addPermissions(modelAttributePermission);
-	// }
-	//
-	// @DeleteMapping("/modelAttributes/permissions")
-	// public void delPermission(@NotNull @RequestBody final
-	// ModelAttributePermission modelAttributePermission) {
-	// modelAttributePermissionService.delPermissions(modelAttributePermission);
-	// }
 
 }

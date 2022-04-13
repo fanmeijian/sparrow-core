@@ -14,9 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.ExampleMatcher.StringMatcher;
-import org.springframework.http.HttpStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
@@ -110,7 +110,8 @@ public class ModelServiceImpl implements ModelService {
 	}
 
 	@Override
-	public void addPermission(String modelId, PermissionToken permissionToken) {
+	@ResponseStatus(HttpStatus.CREATED)
+	public SparrowPermissionToken addPermission(String modelId, PermissionToken permissionToken) {
 		Model model = modelRepository.findById(modelId).get();
 		SparrowPermissionToken sparrowPermissionToken = model.getSparrowPermissionToken();
 		if (sparrowPermissionToken == null) {
@@ -121,6 +122,7 @@ public class ModelServiceImpl implements ModelService {
 			sparrowPermissionToken.setPermissionToken(permissionToken);
 			permissionTokenRepository.save(sparrowPermissionToken);
 		}
+		return sparrowPermissionToken;
 	}
 
 	@Override
@@ -144,15 +146,14 @@ public class ModelServiceImpl implements ModelService {
 
 	@Override
 	@Transactional
-	@ResponseStatus(code = HttpStatus.NO_CONTENT)
-	public void addDataPermission(String modelId, String dataId, PermissionToken permissionToken) {
-
+	@ResponseStatus(code = HttpStatus.CREATED)
+	public SparrowPermissionToken addDataPermission(String modelId, String dataId, PermissionToken permissionToken) {
+		SparrowPermissionToken sparrowPermissionToken = null;
 		try {
 			AbstractSparrowEntity abstractSparrowEntity = (AbstractSparrowEntity) entityManager
 					.find(Class.forName(modelId), dataId);
 
-			SparrowPermissionToken sparrowPermissionToken = permissionTokenRepository
-					.save(new SparrowPermissionToken(permissionToken));
+			sparrowPermissionToken = permissionTokenRepository.save(new SparrowPermissionToken(permissionToken));
 
 			DataPermissionToken dataPermissionToken = new DataPermissionToken(sparrowPermissionToken.getId());
 			entityManager.persist(dataPermissionToken);
@@ -165,14 +166,21 @@ public class ModelServiceImpl implements ModelService {
 			e.printStackTrace();
 		}
 
+		return sparrowPermissionToken;
 	}
 
 	@Override
 	@Transactional
 	@ResponseStatus(code = HttpStatus.NO_CONTENT)
 	public void removeDataPermission(String modelId, String dataId) {
-		// TODO Auto-generated method stub
-
+		try {
+			AbstractSparrowEntity abstractSparrowEntity = (AbstractSparrowEntity) entityManager
+					.find(Class.forName(modelId), dataId);
+			abstractSparrowEntity.setDataPermissionTokenId(null);
+			entityManager.persist(abstractSparrowEntity);
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
 	}
 
 }

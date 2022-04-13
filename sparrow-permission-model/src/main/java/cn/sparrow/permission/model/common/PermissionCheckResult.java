@@ -1,12 +1,18 @@
 package cn.sparrow.permission.model.common;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
-public class PermissionCheckResult {
+@Getter
+@Setter
+@NoArgsConstructor
+public class PermissionCheckResult implements Serializable{
+	private static final long serialVersionUID = 1L;
 	// 没有读数据权限
 	private boolean noDataRead = false;
 	private boolean denyDataRead = false;

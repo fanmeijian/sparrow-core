@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.sparrow.permission.model.resource.Model;
 import cn.sparrow.permission.model.token.PermissionToken;
+import cn.sparrow.permission.model.token.SparrowPermissionToken;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -56,21 +57,21 @@ public interface ModelService {
 	@Operation(summary = "设置模型权限")
 	@PostMapping("/{modelId}/permissions")
 	@ResponseBody
-	public void addPermission(@PathVariable("modelId") String modelId, @RequestBody PermissionToken permissionToken);
+	public SparrowPermissionToken addPermission(@PathVariable("modelId") String modelId, @RequestBody PermissionToken permissionToken);
 
-	@Operation(summary = "删除模型权限")
-	@PutMapping("/{modelId}/permissions/delete")
+	@Operation(summary = "取消模型权限")
+	@DeleteMapping("/{modelId}/permissions")
 	@ResponseBody
 	public void removePermission(@PathVariable("modelId") String modelId);
 
 	@Operation(summary = "设置数据权限")
-	@PostMapping("/{modelId}/dataPermissions/{dataId}")
+	@PostMapping("/{modelId}/permissions/{dataId}")
 	@ResponseBody
-	public void addDataPermission(@PathVariable("modelId") String modelId, @PathVariable("dataId") String dataId,
+	public SparrowPermissionToken addDataPermission(@PathVariable("modelId") String modelId, @PathVariable("dataId") String dataId,
 			@RequestBody PermissionToken permissionToken);
 
-	@Operation(summary = "删除数据权限")
-	@DeleteMapping("/{modelId}/dataPermissions/{dataId}")
+	@Operation(summary = "取消数据权限")
+	@DeleteMapping("/{modelId}/permissions/{dataId}")
 	@ResponseBody
 	public void removeDataPermission(@PathVariable("modelId") String modelId, @PathVariable("dataId") String dataId);
 

@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
-import cn.sparrow.permission.model.common.AbstractSparrowEntity;
+import cn.sparrow.permission.model.common.BaseLog;
 import cn.sparrow.permission.model.token.SparrowPermissionToken;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -32,7 +32,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "spr_model")
 @Audited
 @JsonIgnoreProperties(value = {"modelAttributes","sparrowPermissionToken","dataPermissionToken"},allowGetters = true)
-public class Model extends AbstractSparrowEntity {
+public class Model extends BaseLog {
 
 	private static final long serialVersionUID = 1L;
 

@@ -1,6 +1,7 @@
 package cn.sparrow.permission.model.resource;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -33,16 +34,18 @@ public class ModelAttribute extends AbstractSparrowEntity {
 
 	@EqualsAndHashCode.Include
 	@EmbeddedId
-	@NotAudited
 	ModelAttributePK id;
 
 	private String type;
 	private String name;
 	private String remark;
+	@Column(name = "permission_token_id")
+	private String permissionTokenId;
 
+	@JsonIgnore
 	@NotAudited
 	@OneToOne(cascade = CascadeType.PERSIST)
-	@JoinColumn(name = "permission_token_id")
+	@JoinColumn(name = "permission_token_id", insertable = false, updatable = false)
 	private SparrowPermissionToken sparrowPermissionToken;
 
 	@NotAudited

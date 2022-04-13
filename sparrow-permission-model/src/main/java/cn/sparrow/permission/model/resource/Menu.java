@@ -28,7 +28,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor
 @Table(name = "spr_menu")
-@JsonIgnoreProperties(value = "dataPermissionToken", allowGetters = true)
+@JsonIgnoreProperties(value = {"permissionCheckResult"}, allowGetters = true)
 @Audited
 public class Menu extends AbstractSparrowEntity {
 

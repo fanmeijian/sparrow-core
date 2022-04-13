@@ -1,33 +1,26 @@
 package cn.sparrow.permission.model.common;
 
-import java.io.Serializable;
-import java.util.Date;
-
 import javax.persistence.Column;
 import javax.persistence.JoinColumn;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToOne;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.GenerationTime;
-import org.hibernate.annotations.GeneratorType;
-import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.envers.NotAudited;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import cn.sparrow.permission.model.token.DataPermissionToken;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
 @MappedSuperclass
-@Data
-@EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
-public abstract class AbstractSparrowEntity implements Serializable {
+@Getter
+@Setter
+@JsonIgnoreProperties(value = { "permissionCheckResult" }, allowGetters = true)
+public abstract class AbstractSparrowEntity extends BaseLog {
 	/**
 	 * 
 	 */
@@ -36,31 +29,7 @@ public abstract class AbstractSparrowEntity implements Serializable {
 	@Transient
 	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	@NotAudited
-	protected String modelName = this.getClass().getName();
-
-	@Column(name = "created_date", insertable = true, updatable = false)
-	@CreationTimestamp
-	@Temporal(TemporalType.TIMESTAMP)
-	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
-	@NotAudited
-	private Date createdDate; // 创建时间
-
-	@Column(name = "modified_date", insertable = true, updatable = true)
-	@UpdateTimestamp
-	@Temporal(TemporalType.TIMESTAMP)
-	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
-	@NotAudited
-	private Date modifiedDate; // 最后更新时间
-
-	@GeneratorType(type = LoggedUserGenerator.class, when = GenerationTime.INSERT)
-	@Column(name = "created_by", insertable = true, updatable = false)
-	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
-	private String createdBy;
-
-	@GeneratorType(type = LoggedUserGenerator.class, when = GenerationTime.ALWAYS)
-	@Column(name = "modified_by", insertable = true, updatable = true)
-	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
-	private String modifiedBy;
+	private String modelName = this.getClass().getName();
 
 	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	@Column(name = "data_permission_token_id")
@@ -71,10 +40,8 @@ public abstract class AbstractSparrowEntity implements Serializable {
 	@NotAudited
 	@JsonIgnore
 	private DataPermissionToken dataPermissionToken;
-	
-	// 用于检查数据字段权限返回检查结果，因为不能直接中断。
-	@Transient
-	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
-	private PermissionCheckResult permissionCheckResult;
 
+	// 用于检查数据字段权限返回检查结果，因为不能直接中断，要正常返回。
+	@Transient
+	private PermissionCheckResult permissionCheckResult;
 }
