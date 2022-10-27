@@ -17,9 +17,9 @@ import cn.sparrow.permission.model.common.CurrentUser;
 import cn.sparrow.permission.model.resource.Scope;
 import cn.sparrow.permission.model.token.PermissionToken;
 import cn.sparrow.permission.model.token.SparrowPermissionToken;
-import lombok.extern.slf4j.Slf4j;
+//import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
+//@Slf4j
 @Aspect
 public class ScopePermissionAspect {
 
@@ -28,11 +28,11 @@ public class ScopePermissionAspect {
 
 	@Around("@annotation(scopePermission)")
 	public Object hasPermission(ProceedingJoinPoint joinPoint, ScopePermission scopePermission) throws Throwable {
-		log.debug("permission aspect work: {}", scopePermission.username());
+//		log.debug("permission aspect work: {}", scopePermission.username());
 		PermissionService permissionService = new PermissionServiceImpl(entityManager);
-		log.debug("entityManager : {}", entityManager);
+//		log.debug("entityManager : {}", entityManager);
 		if (!scopePermission.username().equals("$curUser")) {
-			log.debug("cur user: {}", CurrentUser.get());
+//			log.debug("cur user: {}", CurrentUser.get());
 		}
 		Query query = entityManager.createNamedQuery("Scope.findByCode", Scope.class);
 		query.setParameter("code", scopePermission.scope());

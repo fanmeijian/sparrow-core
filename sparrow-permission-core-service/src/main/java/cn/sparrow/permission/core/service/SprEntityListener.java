@@ -44,9 +44,9 @@ import cn.sparrow.permission.model.common.PermissionCheckResult;
 import cn.sparrow.permission.model.resource.Model;
 import cn.sparrow.permission.model.token.DataPermissionToken;
 import cn.sparrow.permission.model.token.PermissionToken;
-import lombok.extern.slf4j.Slf4j;
+//import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
+//@Slf4j
 public class SprEntityListener implements PersistEventListener, PreUpdateEventListener, PreDeleteEventListener,
 		PostLoadEventListener, PostDeleteEventListener, PreLoadEventListener {
 
@@ -60,7 +60,7 @@ public class SprEntityListener implements PersistEventListener, PreUpdateEventLi
 	@Override
 	public void onPersist(PersistEvent event, Map createdAlready) throws HibernateException {
 		// TODO Auto-generated method stub
-		log.info("crete already {}", createdAlready);
+//		log.info("crete already {}", createdAlready);
 	}
 
 	@Override
