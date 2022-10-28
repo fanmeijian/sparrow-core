@@ -15,7 +15,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;
 
-@Configuration
+//@Configuration
 public class WebConfig {
 	@Bean
 	public FilterRegistrationBean<CorsFilter> corsFilter() {
