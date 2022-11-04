@@ -34,7 +34,7 @@ public interface WorkspaceService {
 
     @GetMapping(value = "/{workspaceId}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public Workspace get(String workspaceId);
+    public Workspace get(@PathVariable String workspaceId);
 
     @PostMapping(value = "/delete", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody

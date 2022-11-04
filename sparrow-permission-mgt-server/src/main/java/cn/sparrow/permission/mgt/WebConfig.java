@@ -15,23 +15,23 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;
 
-//@Configuration
+@Configuration
 public class WebConfig {
-	@Bean
-	public FilterRegistrationBean<CorsFilter> corsFilter() {
-		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-		CorsConfiguration config = new CorsConfiguration();
-		config.setAllowCredentials(true);
-		config.addAllowedOrigin("http://localhost:4200");
-		config.addAllowedOrigin("http://localhost:8091");
-		config.addAllowedOrigin("http://1.12.232.226:8091");
-		config.addAllowedHeader("*");
-		config.addAllowedMethod("*");
-		source.registerCorsConfiguration("/**", config);
-		FilterRegistrationBean<CorsFilter> bean = new FilterRegistrationBean<CorsFilter>(new CorsFilter(source));
-		bean.setOrder(0);
-		return bean;
-	}
+//	@Bean
+//	public FilterRegistrationBean<CorsFilter> corsFilter() {
+//		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+//		CorsConfiguration config = new CorsConfiguration();
+//		config.setAllowCredentials(true);
+//		config.addAllowedOrigin("http://localhost:4200");
+//		config.addAllowedOrigin("http://localhost:8091");
+//		config.addAllowedOrigin("http://1.12.232.226:8091");
+//		config.addAllowedHeader("*");
+//		config.addAllowedMethod("*");
+//		source.registerCorsConfiguration("/**", config);
+//		FilterRegistrationBean<CorsFilter> bean = new FilterRegistrationBean<CorsFilter>(new CorsFilter(source));
+//		bean.setOrder(0);
+//		return bean;
+//	}
 
 	@Bean
 	public WebMvcConfigurer corsConfigurer() {
